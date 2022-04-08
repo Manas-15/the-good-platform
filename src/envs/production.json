@@ -1,0 +1,6 @@
+{
+    "production": "true",
+    "ENV": "production",
+    "API_ROOT": "http://localhost/",
+    "perPage": "10"
+}
