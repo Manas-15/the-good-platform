@@ -1,0 +1,6 @@
+{
+    "production": "false",
+    "ENV": "production",
+    "API_ROOT": "http://192.168.2.190:8000/",
+    "perPage": "10"
+}
