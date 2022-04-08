@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import { Formik, Form } from 'formik';
-import {Link} from 'react-router-dom';
-import {LoginSchema} from './../Validations';
+import React, { useState } from "react";
+import { Formik, Form } from "formik";
+import { Link } from "react-router-dom";
+import { LoginSchema } from "./../Validations";
 
-const LoginForm = ({submit, disable, type}) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>", type)
-  return(
-    <div style={{width: '350px'}}>
+const LoginForm = ({ submit, disable, type }) => {
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>", type);
+  return (
+    <div style={{ width: "350px" }}>
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
         onSubmit={(values, event) => {
           // storeUser({ ...values });
@@ -25,55 +25,73 @@ const LoginForm = ({submit, disable, type}) => {
           isSubmitting,
           /* and other goodies */
         }) => (
-        <Form>
+          <Form>
             <h3>Sign In</h3>
             <div className="form-group">
-            <label>Email address</label>
-            <input type="email" 
-              name="email"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.email} 
-              className="form-control" 
-              placeholder="Enter email" 
-            />
-            <span className="error">{errors.email && touched.email && errors.email}</span>
+              <label>Email address</label>
+              <input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                className="form-control"
+                placeholder="Enter email"
+              />
+              <span className="error">
+                {errors.email && touched.email && errors.email}
+              </span>
             </div>
             <div className="form-group">
-            <label>Password</label>
-            <input type="password" 
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-              className="form-control" 
-              placeholder="Enter password" 
-            />
-            <span className="error">{errors.password && touched.password && errors.password}</span>
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password}
+                className="form-control"
+                placeholder="Enter password"
+              />
+              <span className="error">
+                {errors.password && touched.password && errors.password}
+              </span>
             </div>
             <div className="form-group">
-                <div className="custom-control custom-checkbox">
-                    <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                    <label className="custom-control-label" htmlFor="customCheck1">&nbsp;Remember me</label>
-                </div>
+              <div className="custom-control custom-checkbox">
+                <input
+                  type="checkbox"
+                  className="custom-control-input"
+                  id="customCheck1"
+                />
+                <label className="custom-control-label" htmlFor="customCheck1">
+                  &nbsp;Remember me
+                </label>
+              </div>
             </div>
             <div className="text-center m-3">
-              <button type="submit" disabled={isSubmitting} className="btn btn-primary btn-block">Submit</button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn btn-primary btn-block"
+              >
+                Submit
+              </button>
             </div>
             {/* {type!=="superadmin" ?  */}
-              <p className="forgot-password text-center">
-                Don't have an account? <Link to="/sign-up">Sign Up</Link>
-              </p>
+            <p className="forgot-password text-center">
+              Don't have an account? <Link to="/sign-up">Sign Up</Link>
+            </p>
             {/* : 
             ''
             }*/}
             <p className="forgot-password text-center">
-                Forgot <Link to="/forgot-password">Password?</Link>                
+              Forgot <Link to="/forgot-password">Password?</Link>
             </p>
-        </Form>
+          </Form>
         )}
       </Formik>
     </div>
-  )  
-}
+  );
+};
 export default LoginForm;

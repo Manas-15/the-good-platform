@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import {CorporateForm} from './CorporateForm';
+import React, { useState } from "react";
+import CorporateForm from "./CorporateForm";
 
 const AddCorporate = () => {
-  <CorporateForm type='admin' />
-}
+  return <CorporateForm type="admin" />;
+};
 export default AddCorporate;

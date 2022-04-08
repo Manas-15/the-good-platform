@@ -27,13 +27,13 @@
 .App-link {
   color: #61dafb;
 }
-.container .alert{
+.container .alert {
   position: absolute;
   margin-top: 130px;
   width: 80%;
   text-align: center;
 }
-.section .alert{
+.section .alert {
   position: fixed;
   top: 65px;
   width: 72%;
