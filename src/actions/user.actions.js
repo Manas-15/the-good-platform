@@ -11,14 +11,14 @@ export const userActions = {
     delete: _delete
 };
 
-function login(username, password, from) {
+function login(data, from) {
     return dispatch => {
-        dispatch(request({ username }));
+        dispatch(request({ data }));
 
-        userService.login(username, password)
+        userService.login(data)
             .then(
-                user => { 
-                    dispatch(success(user));
+                data => { 
+                    dispatch(success(data));
                     history.push(from);
                 },
                 error => {
@@ -28,8 +28,8 @@ function login(username, password, from) {
             );
     };
 
-    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+    function request(data) { return { type: userConstants.LOGIN_REQUEST, data } }
+    function success(data) { return { type: userConstants.LOGIN_SUCCESS, data } }
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 

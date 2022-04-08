@@ -1,25 +1,9 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import * as Yup from "yup";
-import API from "../services/api";
 import { LoginSchema } from "./../Validations";
+import { userActions } from "./../../actions";
 
-const authenticate = () => {
-  console.log("create coming");
-  axios({
-    url: API.login,
-    headers: {
-      "content-type": "application/octet-stream",
-      "x-rapidapi-host": "example.com",
-      // 'x-rapidapi-key': process.env.RAPIDAPI_KEY
-    },
-    params: {
-      search: "parameter",
-    },
-  });
-};
 const Login = () => (
   <div style={{ width: "350px" }}>
     <Formik
@@ -27,11 +11,9 @@ const Login = () => (
       validationSchema={LoginSchema}
       onSubmit={(values, { setSubmitting }) => {
         console.log("create coming 1111111", values);
-        authenticate();
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        if (values.email && values.password) {
+          dispatch(userActions.login(values));
+        }
       }}
     >
       {({

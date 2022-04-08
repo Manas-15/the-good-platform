@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Andolasoft Inc",
+        "size": "50-100",
+        "type": "Disaster",
+        "address": "IT Mancheswar, Bhubaneswar, Odisha, India"
+    },
+    {
+        "name": "Creatives Inc",
+        "size": "100-500",
+        "type": "Social Order",
+        "address": "11,3rd Flr Shivsadan, Mumbai, Mahastra, India"
+    },
+    {
+        "name": "Incscape",
+        "size": "50-100",
+        "type": "Disaster",
+        "address": "Rachana Avenue, Vadodara, Gujarat, India"
+    },
+    {
+        "name": "Academic Inc",
+        "size": "500-1000",
+        "type": "Social Change",
+        "address": "Dwerik Ganguly St, Kolkata, West Bengal, India"
+    },
+    {
+        "name": "Incporium",
+        "size": ">1000",
+        "type": "Disaster",
+        "address": "Patia, Bhubaneswar, Odisha, India"
+    }
+]

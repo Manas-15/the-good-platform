@@ -1,6 +1,7 @@
 // import config from 'config';
 import { authHeader } from '../helpers';
 import { useLocation } from 'react-router-dom';
+import axios from "axios";
 
 export const userService = {
     login,
@@ -12,21 +13,16 @@ export const userService = {
     delete: _delete
 };
 
-function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
-
-    return fetch(`http://localhost:3001/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
-
-            return user;
-        });
+function login(data) {
+    return axios.post(
+        process.env.REACT_APP_API_URL + "api/login/",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        }
+      );
 }
 
 function logout() {

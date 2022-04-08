@@ -57,14 +57,23 @@ function addCorporate(corporate) {
     return { type: corporateConstants.ADD_CORPORATE_FAILURE, error };
   }
 }
-function registerCorporate(corporate) {
+function registerCorporate(corporate, type) {
   return (dispatch) => {
     dispatch(request(corporate));
 
     corporateService.registerCorporate(corporate).then(
       (corporate) => {
         dispatch(success(corporate));
-        dispatch(alertActions.success("Corporate registered successfully"));
+        if (type === "admin") {
+          history.push("/login");
+        }
+        dispatch(
+          alertActions.success(
+            type === "admin"
+              ? "Corporate added successfully"
+              : "Corporate registered successfully"
+          )
+        );
       },
       (error) => {
         dispatch(failure(error.toString()));

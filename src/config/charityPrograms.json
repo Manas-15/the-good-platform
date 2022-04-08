@@ -1,0 +1,27 @@
+[
+    {
+        "cause": "Saving children",
+        "socialOrganization": "PM Cares Fund",
+        "category": "Disaster"
+    },
+    {
+        "cause": "End hunger & malnutrition",
+        "socialOrganization": "The Smile Foundation",
+        "category": "Social Change"
+    },
+    {
+        "cause": "Create economic opportunity",
+        "socialOrganization": "Hope Charity Organization",
+        "category": "Social Order"
+    },
+    {
+        "cause": "Prevent blindness & restore sight",
+        "socialOrganization": "Sisters of Charity",
+        "category": "Disaster"
+    },
+    {
+        "cause": "Improve health & fight disease",
+        "socialOrganization": "Life-Changing Foundation",
+        "category": "Disaster"
+    }
+]

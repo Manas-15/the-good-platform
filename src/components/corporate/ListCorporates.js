@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { corporateActions } from '../../actions';
 import { useDispatch, useSelector } from 'react-redux';
+import corporates from './../../config/corporates.json';
 
 const ListCorporates = () => {
   let history = useHistory();
-  const corporates = useSelector(state => state.corporates);
+  // const corporates = useSelector(state => state.corporates);
   const user = useSelector(state => state.authentication.user);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-      dispatch(corporateActions.getCorporates());
-  }, []);
-  console.log("sssssssssssssssssss", corporates)
+  // useEffect(() => {
+  //     dispatch(corporateActions.getCorporates());
+  // }, []);
   return (<div>
     <div className='row mb-4'>
       <div className='col-md-6'>
@@ -22,38 +22,50 @@ const ListCorporates = () => {
         <button type="button" className="btn btn-primary" onClick={()=>history.push("/corporates/add")}>Add Corporate</button>
       </div>
     </div>
-    {corporates.loading && <em>Loading corporates...</em>}
+    {/* {corporates.loading && <em>Loading corporates...</em>} */}
     <table className="table table-striped">
     <thead>
       <tr className='table-active'>
         <th scope="col">Sl#</th>
         <th scope="col">Name</th>
-        <th className='text-right'>Donation Raised</th>
-        <th className='text-center'>Number of Users</th>
-        <th scope="col">Start Date</th>
-        <th scope="text-center">Actions</th>
+        <th>Size</th>
+        <th>Type</th>
+        <th scope="col">Address</th>
+        <th className="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
-    {corporates.items && corporates.items.length > 0
-    ?
-        corporates.items.map((corporate, index) =>
-          <tr key={corporate.id}>
-            <td scope="row">1</td>
-            <td>{corporate.organizationName}</td>
-            <td className='text-right'>0</td>
-            <td className='text-center'>{corporate.organizationSize ? corporate.organizationSize : 0}</td>
-            <td>05/03/22</td>
-            <td>
-              <span className="bi-check-circle fs-5 cursor-pointer"></span>
-              <span className="bi-x-circle fs-5 ml-2 cursor-pointer"></span>
+    {
+    // corporates.items && corporates.items.length > 0
+    // ?
+        corporates.map((corporate, index) =>
+          <tr key={index}>
+            <td scope="row">{index+1}</td>
+            <td>{corporate.name}</td>
+            <td>{corporate.size}</td>
+            <td>{corporate.type}</td>
+            <td>{corporate.address.split(',').reduce((all, cur) => [
+                ...all,
+                <br/>,
+                cur
+              ])}</td>
+            <td className="text-center">
+              
+              <div className="dropdown">
+                  <span className="bi-three-dots"></span>
+                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a className="dropdown-item" href="#">Action</a>
+                    <a className="dropdown-item" href="#">Another action</a>
+                    <a className="dropdown-item" href="#">Something else here</a>
+                  </div>
+              </div>
             </td>
           </tr>
         )
-        :
-        <tr>
-          <td colspan="6" className='text-center'>No corporates found</td>
-        </tr>
+        // :
+        // <tr>
+        //   <td colSpan="6" className='text-center'>No corporates found</td>
+        // </tr>
       }
     </tbody>
   </table>
@@ -72,7 +84,27 @@ const ListCorporates = () => {
         </ul>
       </nav>
     </div>
-  </div>    
+  </div>
+  <div id="myModal" className="modal fade">
+    <div className="modal-dialog modal-confirm">
+      <div className="modal-content">
+        <div className="modal-header flex-column">
+          <div className="icon-box">
+            <i className="material-icons">&#xE5CD;</i>
+          </div>						
+          <h4 className="modal-title w-100">Are you sure?</h4>	
+          <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div className="modal-body">
+          <p>Do you really want to delete these records? This process cannot be undone.</p>
+        </div>
+        <div className="modal-footer justify-content-center">
+          <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" className="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>     
 </div>)
 }
 export default ListCorporates;

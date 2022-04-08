@@ -1,6 +1,8 @@
 import { Route, Router, Switch, Redirect } from "react-router-dom";
 import Dashboard from "../components/Dashboard";
 import ListCorporates from "../components/corporate/ListCorporates";
+import ListCharityPrograms from "../components/charityPrograms/ListCharityPrograms";
+import SocialOrganizations from "../components/socialOrganizations/ListSocialOrganizations";
 import AddCorporate from "../components/corporate/AddCorporate";
 import { PrivateRoute } from "../components/PrivateRoute";
 import React, { useEffect } from "react";
@@ -32,6 +34,16 @@ const CreateAuthRoutes = () => {
               exact
               path="/corporates/sign-up"
               component={CorporateSignUp}
+            />
+            <Route
+              exact
+              path="/charity-programs"
+              component={ListCharityPrograms}
+            />
+            <Route
+              exact
+              path="/social-organizations"
+              component={SocialOrganizations}
             />
             <Redirect from="*" to="/" />
           </Switch>

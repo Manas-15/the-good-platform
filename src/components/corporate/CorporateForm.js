@@ -39,7 +39,7 @@ const CorporateForm = ({ type }) => {
     console.log("create coming", values);
     setSubmitted(true);
     if (values.organizationName && values.email && values.regdNumber) {
-      dispatch(corporateActions.registerCorporate(values));
+      dispatch(corporateActions.registerCorporate(values, type));
     }
     // axios({
     //   'url': API.login,
