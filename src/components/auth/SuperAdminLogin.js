@@ -9,7 +9,7 @@ const SuperAdminLogin = (props) => {
   const dispatch = useDispatch();
   let history = useHistory();
 
-  const validateOtp = (values) => {
+  const login = (values) => {
     console.log("create coming here ...........", values)   
     // const navigate = useNavigate();    
     if (values.email && values.password) {
@@ -20,7 +20,7 @@ const SuperAdminLogin = (props) => {
   
   return (
     <LoginForm 
-      submit={(user) => validateOtp(user)}
+      submit={(user) => login(user)}
       disable={disable}
       userType={1}
     />

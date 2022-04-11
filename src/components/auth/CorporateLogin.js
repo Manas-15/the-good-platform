@@ -7,7 +7,7 @@ const CorporateLogin = (props) => {
   const dispatch = useDispatch();
   const [disable, setDisable] = useState(false);
 
-  const validateOtp = (values) => {
+  const login = (values) => {
     console.log("login corporate here ...........", values)   
     // const navigate = useNavigate();    
     if (values.email && values.password) {
@@ -18,7 +18,7 @@ const CorporateLogin = (props) => {
   
   return (
     <LoginForm 
-      submit={(user) => validateOtp(user)}
+      submit={(user) => login(user)}
       disable={disable}
       userType={2}
     />
