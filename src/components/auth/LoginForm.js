@@ -3,12 +3,12 @@ import { Formik, Form } from "formik";
 import { Link } from "react-router-dom";
 import { LoginSchema } from "./../Validations";
 
-const LoginForm = ({ submit, disable, type }) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>", type);
+const LoginForm = ({ submit, disable, userType }) => {
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>", userType);
   return (
     <div style={{ width: "350px" }}>
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ email: "", password: "", userType: userType}}
         validationSchema={LoginSchema}
         onSubmit={(values, event) => {
           // storeUser({ ...values });

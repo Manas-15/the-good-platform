@@ -10,8 +10,9 @@ const Login = () => (
       initialValues={{ email: "", password: "" }}
       validationSchema={LoginSchema}
       onSubmit={(values, { setSubmitting }) => {
-        console.log("create coming 1111111", values);
+        console.log("create coming 1111111", values, values.email, values.password);
         if (values.email && values.password) {
+          console.log("create coming 22222222222", values);
           dispatch(userActions.login(values));
         }
       }}

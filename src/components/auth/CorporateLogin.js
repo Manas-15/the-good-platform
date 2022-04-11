@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import LoginForm from './LoginForm';
-import { useHistory } from 'react-router-dom';
 import { userActions } from "./../../actions";
 import { useDispatch } from "react-redux";
 
-const SuperAdminLogin = (props) => {
-  const [disable, setDisable] = useState(false);
+const CorporateLogin = (props) => {
   const dispatch = useDispatch();
-  let history = useHistory();
+  const [disable, setDisable] = useState(false);
 
   const validateOtp = (values) => {
-    console.log("create coming here ...........", values)   
+    console.log("login corporate here ...........", values)   
     // const navigate = useNavigate();    
     if (values.email && values.password) {
-      console.log("create coming 22222222222", values);
+      console.log("create coming corporate", values);
       dispatch(userActions.login(values));
     }
   }
@@ -22,8 +20,8 @@ const SuperAdminLogin = (props) => {
     <LoginForm 
       submit={(user) => validateOtp(user)}
       disable={disable}
-      userType={1}
+      userType={2}
     />
   )
 }
-export default SuperAdminLogin;
+export default CorporateLogin;

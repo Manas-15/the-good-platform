@@ -19,7 +19,7 @@ function login(data) {
         data,
         {
           headers: {
-            "Content-Type": "application/json;charset=UTF-8",
+            "Content-Type": "x-www-form-urlencoded",
           },
         }
       );

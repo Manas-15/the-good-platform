@@ -1,6 +1,7 @@
 import { Route, Router, Switch, Redirect } from "react-router-dom";
 import SignUp from "../components/auth/SignUp";
 import CorporateSignUp from "../components/auth/CorporateSignUp";
+import CorporateLogin from "../components/auth/CorporateLogin";
 import EmployeeSignUp from "../components/auth/EmployeeSignUp";
 import SuperAdminLogin from "../components/auth/SuperAdminLogin";
 import Otp from "../components/auth/Otp";
@@ -37,6 +38,11 @@ const CreateNonAuthRoutes = () => {
               exact
               path="/corporates/sign-up"
               component={CorporateSignUp}
+            />
+            <Route
+              exact
+              path="/corporates/sign-in"
+              component={CorporateLogin}
             />
             <Route exact path="/employees/sign-up" component={EmployeeSignUp} />
             <Route

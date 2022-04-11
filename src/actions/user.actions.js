@@ -1,6 +1,6 @@
 import { userConstants } from '../constants';
 import { userService } from '../services';
-import { alertActions } from './';
+import { alertActions } from './alert.actions';
 import { history } from '../helpers';
 
 export const userActions = {
@@ -17,11 +17,13 @@ function login(data, from) {
 
         userService.login(data)
             .then(
-                data => { 
+                data => {
+                    console.log("success ------------------- login", from)
                     dispatch(success(data));
                     history.push(from);
                 },
                 error => {
+                    console.log("error ------------------- login")
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
                 }
