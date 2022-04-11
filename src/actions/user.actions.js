@@ -2,6 +2,8 @@ import { userConstants } from '../constants';
 import { userService } from '../services';
 import { alertActions } from './alert.actions';
 import { history } from '../helpers';
+import { useHistory } from "react-router-dom";
+
 
 export const userActions = {
     login,
@@ -18,12 +20,16 @@ function login(data, from) {
         userService.login(data)
             .then(
                 data => {
-                    console.log("success ------------------- login", from)
                     dispatch(success(data));
-                    history.push(from);
+                    localStorage.setItem(
+                      "user",
+                      JSON.stringify(data.data)
+                    );
+                    // let history = useHistory();
+                    history.push('/dashboard');
+                    dispatch(alertActions.success('Loggedin successful'));
                 },
                 error => {
-                    console.log("error ------------------- login")
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
                 }

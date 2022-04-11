@@ -8,11 +8,22 @@ import Otp from "../components/auth/Otp";
 import ForgotPassword from "../components/auth/ForgotPassword";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
-import { Link } from "react-router-dom";
+import { BrowserRouter, Link } from "react-router-dom";
+import { alertActions } from "./../actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const CreateNonAuthRoutes = () => {
+  const alert = useSelector((state) => state.alert);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    history.listen((location, action) => {
+      // clear alert on location change
+      dispatch(alertActions.clear());
+    });
+  }, []);
   return (
-    <Router history={history}>
+    <BrowserRouter history={history}>
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
           {alert.message && (
@@ -56,7 +67,7 @@ const CreateNonAuthRoutes = () => {
           </Switch>
         </div>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 };
 export default CreateNonAuthRoutes;

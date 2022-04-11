@@ -1,32 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => (
   <aside id="sidebar" className="sidebar">
     <ul className="sidebar-nav" id="sidebar-nav">
       <li className="nav-item">
-        <Link className="nav-link " to="/dashboard">
+        <NavLink className="nav-link " to="/dashboard" activeClassName="active">
           <i className="bi bi-grid"></i>
           <span>Dashboard</span>
-        </Link>
+        </NavLink>
       </li>
       <li className="nav-item">
-        <Link className="nav-link " to="/corporates">
+        <NavLink className="nav-link " to="/corporates" activeClassName="active">
           <i className="bi bi-building"></i>
           <span>Corporates</span>
-        </Link>
+        </NavLink>
       </li>
       <li className="nav-item">
-        <Link className="nav-link " to="/charity-programs">
+        <NavLink className="nav-link " to="/charity-programs" activeClassName="active">
           <i className="bi bi-heart"></i>
           <span>Charity Programs</span>
-        </Link>
+        </NavLink>
       </li>
       <li className="nav-item">
-        <Link className="nav-link " to="/social-organizations">
+        <NavLink className="nav-link " to="/social-organizations" activeClassName="active">
           <i className="bi bi-people-fill"></i>
           <span>Social Organization</span>
-        </Link>
+        </NavLink>
       </li>
       {/* <li className="nav-item">
         <a className="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">

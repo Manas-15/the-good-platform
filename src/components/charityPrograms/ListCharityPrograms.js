@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import charityPrograms from "./../../config/charityPrograms.json";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const ListCharityPrograms = () => {
   let history = useHistory();
@@ -39,8 +40,8 @@ const ListCharityPrograms = () => {
                   <button type="submit" className="btn btn-primary btn-sm">
                     Donate
                   </button>
-                  <span className="bi-gear fs-5 ml-2 cursor-pointer"></span>
-                  <span className="bi-suit-heart fs-5 ml-2 cursor-pointer"></span>
+                  <Link><span className="bi-gear fs-5 ml-2 cursor-pointer"></span></Link>
+                  <Link><span className="bi-suit-heart fs-5 ml-2 cursor-pointer text-danger"></span></Link>
                 </td>
               </tr>
             ))

@@ -1,4 +1,4 @@
-import { Route, Router, Switch, Redirect } from "react-router-dom";
+import { Route, BrowserRouter, Router, Switch, Redirect } from "react-router-dom";
 import Dashboard from "../components/Dashboard";
 import ListCorporates from "../components/corporate/ListCorporates";
 import ListCharityPrograms from "../components/charityPrograms/ListCharityPrograms";
@@ -10,10 +10,20 @@ import { history } from "../helpers";
 import CorporateSignUp from "../components/auth/CorporateSignUp";
 import Header from "./../components/layouts/Header";
 import Sidebar from "./../components/layouts/Sidebar";
+import { alertActions } from "./../actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const CreateAuthRoutes = () => {
+  const alert = useSelector((state) => state.alert);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    history.listen((location, action) => {
+      // clear alert on location change
+      dispatch(alertActions.clear());
+    });
+  }, []);
   return (
-    <Router history={history}>
+    <BrowserRouter history={history}>
       <main id="main" className="main">
         <section className="section dashboard">
           {alert.message && (
@@ -22,10 +32,10 @@ const CreateAuthRoutes = () => {
           <Header />
           <Sidebar />
           <Switch>
-            <PrivateRoute exact path="/" component={ListCorporates} />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <PrivateRoute exact path="/corporates" component={ListCorporates} />
-            <PrivateRoute
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/corporates" component={ListCorporates} />
+            <Route
               exact
               path="/corporates/add"
               component={AddCorporate}
@@ -49,7 +59,7 @@ const CreateAuthRoutes = () => {
           </Switch>
         </section>
       </main>
-    </Router>
+    </BrowserRouter>
   );
 };
 export default CreateAuthRoutes;

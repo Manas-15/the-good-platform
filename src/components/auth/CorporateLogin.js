@@ -9,6 +9,16 @@ const CorporateLogin = (props) => {
 
   const login = (values) => {
     console.log("login corporate here ...........", values)   
+    // localStorage.setItem(
+    //   "user",
+    //   JSON.stringify({
+    //     firstName: "Ansuman",
+    //     lastName: "Ansuman",
+    //     username: "Ansuman",
+    //     password: "test1234",
+    //     token: "fake-jwt-token",
+    //   })
+    // );
     // const navigate = useNavigate();    
     if (values.email && values.password) {
       console.log("create coming corporate", values);

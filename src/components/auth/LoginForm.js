@@ -8,6 +8,7 @@ const LoginForm = ({ submit, disable, userType }) => {
   return (
     <div style={{ width: "350px" }}>
       <Formik
+        enableReinitialize
         initialValues={{ email: "", password: "", userType: userType }}
         validationSchema={LoginSchema}
         onSubmit={(values, event) => {

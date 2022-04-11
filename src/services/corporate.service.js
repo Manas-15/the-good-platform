@@ -41,12 +41,21 @@ function registerCorporate(data) {
   // };
 
   // return fetch(`http://192.168.2.190:8000/api/corporate_register/`, requestOptions).then(handleResponse);
+  // return axios.post(
+  //   process.env.REACT_APP_API_URL + "api/corporate_register/",
+  //   data,
+  //   {
+  //     headers: {
+  //       "Content-Type": "application/json;charset=UTF-8",
+  //     },
+  //   }
+  // );
   return axios.post(
-    process.env.REACT_APP_API_URL + "api/corporate_register/",
+    process.env.REACT_APP_API_URL + "api/corporate_register",
     data,
     {
       headers: {
-        "Content-Type": "application/json;charset=UTF-8",
+        "Content-Type": "application/json;",
       },
     }
   );

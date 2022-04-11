@@ -13,16 +13,11 @@ export const userService = {
     delete: _delete
 };
 
-function login(data) {
+function login(data){
     return axios.post(
-        process.env.REACT_APP_API_URL + "api/login/",
-        data,
-        {
-          headers: {
-            "Content-Type": "x-www-form-urlencoded",
-          },
-        }
-      );
+        "/api/login/",
+        data
+      )
 }
 
 function logout() {
@@ -81,6 +76,7 @@ function _delete(id) {
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
+        console.log("response aaaaaaaaaaaaa", )
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
@@ -91,6 +87,8 @@ function handleResponse(response) {
 
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
+        }else{
+            
         }
 
         return data;

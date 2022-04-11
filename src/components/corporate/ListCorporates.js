@@ -46,7 +46,7 @@ const ListCorporates = () => {
             // corporates.items && corporates.items.length > 0
             // ?
             corporates.map((corporate, index) => (
-              <tr key={index}>
+              <tr key={index+1}>
                 <td scope="row">{index + 1}</td>
                 <td>{corporate.name}</td>
                 <td>{corporate.size}</td>
@@ -57,23 +57,17 @@ const ListCorporates = () => {
                     .reduce((all, cur) => [...all, <br />, cur])}
                 </td>
                 <td className="text-center">
-                  <div className="dropdown">
+                  <a className="icon" href="#" data-bs-toggle="dropdown">
                     <span className="bi-three-dots"></span>
-                    <div
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a className="dropdown-item" href="#">
-                        Action
-                      </a>
-                      <a className="dropdown-item" href="#">
-                        Another action
-                      </a>
-                      <a className="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </div>
-                  </div>
+                  </a>
+                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li className="dropdown-header text-start">
+                      Approve
+                    </li>
+                    <li className="dropdown-header text-start">
+                      Reject
+                    </li>
+                  </ul>
                 </td>
               </tr>
             ))

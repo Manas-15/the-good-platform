@@ -13,7 +13,6 @@ const SuperAdminLogin = (props) => {
     console.log("create coming here ...........", values);
     // const navigate = useNavigate();
     if (values.email && values.password) {
-      console.log("create coming 22222222222", values);
       dispatch(userActions.login(values));
     }
   };
