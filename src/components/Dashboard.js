@@ -4,14 +4,6 @@ const Dashboard = () => (
   <div>
     <div class="pagetitle">
       <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="index.html">Home</a>
-          </li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
     </div>
     <section class="section dashboard">
       <div class="row">
@@ -27,7 +19,6 @@ const Dashboard = () => (
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
-
                     <li>
                       <a class="dropdown-item" href="#">
                         Today
@@ -45,12 +36,10 @@ const Dashboard = () => (
                     </li>
                   </ul>
                 </div>
-
                 <div class="card-body">
                   <h5 class="card-title">
                     Sales <span>| Today</span>
                   </h5>
-
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-cart"></i>
@@ -66,7 +55,6 @@ const Dashboard = () => (
                 </div>
               </div>
             </div>
-
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card revenue-card">
                 <div class="filter">
@@ -77,7 +65,6 @@ const Dashboard = () => (
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
-
                     <li>
                       <a class="dropdown-item" href="#">
                         Today
@@ -95,12 +82,10 @@ const Dashboard = () => (
                     </li>
                   </ul>
                 </div>
-
                 <div class="card-body">
                   <h5 class="card-title">
                     Revenue <span>| This Month</span>
                   </h5>
-
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-currency-dollar"></i>
@@ -126,7 +111,6 @@ const Dashboard = () => (
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
-
                     <li>
                       <a class="dropdown-item" href="#">
                         Today
@@ -173,7 +157,6 @@ const Dashboard = () => (
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
-
                     <li>
                       <a class="dropdown-item" href="#">
                         Today
@@ -191,14 +174,11 @@ const Dashboard = () => (
                     </li>
                   </ul>
                 </div>
-
                 <div class="card-body">
                   <h5 class="card-title">
                     Reports <span>/Today</span>
                   </h5>
-
                   <div id="reportsChart"></div>
-
                   {/* <script>
                     document.addEventListener("DOMContentLoaded", () ={" "}
                     {new ApexCharts(document.querySelector("#reportsChart"), {
@@ -266,7 +246,6 @@ const Dashboard = () => (
                 </div>
               </div>
             </div>
-
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
                 <div class="filter">
@@ -277,7 +256,6 @@ const Dashboard = () => (
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
-
                     <li>
                       <a class="dropdown-item" href="#">
                         Today
@@ -295,12 +273,10 @@ const Dashboard = () => (
                     </li>
                   </ul>
                 </div>
-
                 <div class="card-body">
                   <h5 class="card-title">
                     Recent Sales <span>| Today</span>
                   </h5>
-
                   <table class="table table-borderless datatable">
                     <thead>
                       <tr>

@@ -1,11 +1,9 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => (
-    <aside id="sidebar" className="sidebar">
-
+  <aside id="sidebar" className="sidebar">
     <ul className="sidebar-nav" id="sidebar-nav">
-
       <li className="nav-item">
         <Link className="nav-link " to="/dashboard">
           <i className="bi bi-grid"></i>
@@ -54,5 +52,5 @@ const Sidebar = () => (
       </li> */}
     </ul>
   </aside>
-)
+);
 export default Sidebar;

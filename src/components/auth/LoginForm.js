@@ -8,7 +8,7 @@ const LoginForm = ({ submit, disable, userType }) => {
   return (
     <div style={{ width: "350px" }}>
       <Formik
-        initialValues={{ email: "", password: "", userType: userType}}
+        initialValues={{ email: "", password: "", userType: userType }}
         validationSchema={LoginSchema}
         onSubmit={(values, event) => {
           // storeUser({ ...values });
