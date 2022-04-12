@@ -11,9 +11,8 @@ const Header = () => {
   const location = useLocation();
   const logout = () => {
     localStorage.removeItem("user");
-    history.push("/superadmin/sign-in");
+    history.push("/");
     // location.reload(true);
-    console.log(".......................", history);
     // return { type: userConstants.LOGOUT };
   };
   const user = JSON.parse(localStorage.getItem("user"));

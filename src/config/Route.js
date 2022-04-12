@@ -37,10 +37,11 @@ const CreateRoutes = () => {
       dispatch(alertActions.clear());
     });
   }, []);
-  const user = useSelector((state) => state.authentication.user);
+  // const user = useSelector((state) => state.authentication.user);
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <BrowserRouter history={history}>
-      {user ? (
+      {user?.token ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message && (
@@ -50,31 +51,28 @@ const CreateRoutes = () => {
             <Sidebar />
             <Switch>
               <Route exact path="/" component={Dashboard} />
-              {user.user_type === 1 ? (
-                <>
-                  <Route exact path="/corporates" component={ListCorporates} />
-                  <Route
-                    exact
-                    path="/corporates/add"
-                    component={AddCorporate}
-                  />
-                  <Route
-                    exact
-                    path="/charity-programs"
-                    component={ListCharityPrograms}
-                  />
-                  <Route
-                    exact
-                    path="/social-organizations"
-                    component={SocialOrganizations}
-                  />
-                  <Redirect from="*" to="/" />
-                </>
-              ) : (
-                <>
-                  <Route exact path="/employees" component={ListEmployees} />
-                  <Redirect from="*" to="/" />
-                </>
+              {user?.user_type === 1 && (
+                <Route exact path="/corporates" component={ListCorporates} />
+              )}
+              {user?.user_type === 1 && (
+                <Route exact path="/corporates/add" component={AddCorporate} />
+              )}
+              {user?.user_type === 1 && (
+                <Route
+                  exact
+                  path="/charity-programs"
+                  component={ListCharityPrograms}
+                />
+              )}
+              {user?.user_type === 1 && (
+                <Route
+                  exact
+                  path="/social-organizations"
+                  component={SocialOrganizations}
+                />
+              )}
+              {user?.user_type === 2 && (
+                <Route exact path="/employees" component={ListEmployees} />
               )}
               <Route exact path="/dashboard" component={Dashboard} />
               <Route
@@ -82,6 +80,7 @@ const CreateRoutes = () => {
                 path="/corporates/sign-up"
                 component={CorporateSignUp}
               />
+              <Redirect from="*" to="/" />
             </Switch>
           </section>
         </main>

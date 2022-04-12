@@ -30,8 +30,9 @@ function login(data, from) {
                     dispatch(alertActions.success('Loggedin successful'));
                 },
                 error => {
+                    console.log("eeeeeeeeeeeeeeeee error", error.toString())
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    dispatch(alertActions.error(error.toString() === 'Error: Request failed with status code 404' ? "Email or Password is not valid" :  error.toString()));
                 }
             );
     };
