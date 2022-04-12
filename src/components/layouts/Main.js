@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import ListCorporates from "../corporate/ListCorporates";
-import AddCorporate from "../corporate/AddCorporate";
+import ListCorporates from "../Corporate/ListCorporates";
+import AddCorporate from "../Corporate/AddCorporate";
 
 const Main = () => (
   <main id="main" className="main">

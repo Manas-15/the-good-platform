@@ -1,5 +1,5 @@
 import React from "react";
-import CorporateForm from "./../corporate/CorporateForm";
+import CorporateForm from "./../Corporate/CorporateForm";
 
 const CorporateSignUp = () => {
   return <CorporateForm type="corporate" />;

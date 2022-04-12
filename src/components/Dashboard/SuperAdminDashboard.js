@@ -11,7 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-const Dashboard = () => {
+const SuperAdminDashboard = () => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -42,13 +42,19 @@ const Dashboard = () => {
     datasets: [
       {
         label: 'Donation',
-        data: [10000, 5000, 30000, 25000, 15000, 8000, 25000],
+        data: [1000, 5000, 3000, 2500, 1500, 8000, 2500],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
+      {
+        label: 'Corporates',
+        data: [1000, 2500, 1500, 500, 450, 2300, 3500],
+        borderColor: 'rgb(0, 0, 128)',
+        backgroundColor: 'rgba(0, 0, 128, 0.5)',
+      },
     ],
   };
-  return <div>
+  return (<div>
     <div className="pagetitle">
       <h1>Dashboard</h1>
     </div>
@@ -363,6 +369,6 @@ const Dashboard = () => {
         </div>
       </div>
     </section>
-  </div>
+  </div>)
 }
-export default Dashboard;
+export default SuperAdminDashboard;

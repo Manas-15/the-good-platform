@@ -6,27 +6,27 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import Dashboard from "../components/Dashboard";
-import ListCorporates from "../components/corporate/ListCorporates";
-import ListCharityPrograms from "../components/charityPrograms/ListCharityPrograms";
-import ListEmployees from "../components/employee/ListEmployees";
-import SocialOrganizations from "../components/socialOrganizations/ListSocialOrganizations";
-import AddCorporate from "../components/corporate/AddCorporate";
+import Dashboard from "../components/Dashboard/Dashboard";
+import ListCorporates from "../components/Corporate/ListCorporates";
+import ListCharityPrograms from "../components/CharityPrograms/ListCharityPrograms";
+import ListEmployees from "../components/Employee/ListEmployees";
+import SocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
+import AddCorporate from "../components/Corporate/AddCorporate";
 import { PrivateRoute } from "../components/PrivateRoute";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
-import CorporateSignUp from "../components/auth/CorporateSignUp";
-import Header from "../components/layouts/Header";
-import Sidebar from "../components/layouts/Sidebar";
+import CorporateSignUp from "../components/Auth/CorporateSignUp";
+import Header from "../components/Layouts/Header";
+import Sidebar from "../components/Layouts/Sidebar";
 import { alertActions } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 
-import SignUp from "../components/auth/SignUp";
-import CorporateLogin from "../components/auth/CorporateLogin";
-import EmployeeSignUp from "../components/auth/EmployeeSignUp";
-import SuperAdminLogin from "../components/auth/SuperAdminLogin";
-import Otp from "../components/auth/Otp";
-import ForgotPassword from "../components/auth/ForgotPassword";
+import SignUp from "../components/Auth/SignUp";
+import CorporateLogin from "../components/Auth/CorporateLogin";
+import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
+import SuperAdminLogin from "../components/Auth/SuperAdminLogin";
+import Otp from "../components/Auth/Otp";
+import ForgotPassword from "../components/Auth/ForgotPassword";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -37,7 +37,7 @@ const CreateRoutes = () => {
       dispatch(alertActions.clear());
     });
   }, []);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = useSelector((state) => state.authentication.user);
   return (
     <BrowserRouter history={history}>
       {user ? (
@@ -50,26 +50,36 @@ const CreateRoutes = () => {
             <Sidebar />
             <Switch>
               <Route exact path="/" component={Dashboard} />
+              {user.user_type === 1 ? (
+                <>
+                  <Route exact path="/corporates" component={ListCorporates} />
+                  <Route
+                    exact
+                    path="/corporates/add"
+                    component={AddCorporate}
+                  />
+                  <Route
+                    exact
+                    path="/charity-programs"
+                    component={ListCharityPrograms}
+                  />
+                  <Route exact path="/employees" component={ListEmployees} />
+                  <Route
+                    exact
+                    path="/social-organizations"
+                    component={SocialOrganizations}
+                  />
+                  <Redirect from="*" to="/" />
+                </>
+              ) : (
+                <Redirect from="*" to="/" />
+              )}
               <Route exact path="/dashboard" component={Dashboard} />
-              <Route exact path="/corporates" component={ListCorporates} />
-              <Route exact path="/corporates/add" component={AddCorporate} />
               <Route
                 exact
                 path="/corporates/sign-up"
                 component={CorporateSignUp}
               />
-              <Route
-                exact
-                path="/charity-programs"
-                component={ListCharityPrograms}
-              />
-              <Route exact path="/employees" component={ListEmployees} />
-              <Route
-                exact
-                path="/social-organizations"
-                component={SocialOrganizations}
-              />
-              <Redirect from="*" to="/" />
             </Switch>
           </section>
         </main>
