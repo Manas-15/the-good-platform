@@ -19,7 +19,7 @@ function getCorporates() {
   // return fetch(`http://localhost:3000/corporates`, requestOptions).then(
   //   handleResponse
   // );
-  return axios.get("/corporates/", { headers: authHeader() }).then(handleResponse);
+  return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
 
 function addCorporate(data) {

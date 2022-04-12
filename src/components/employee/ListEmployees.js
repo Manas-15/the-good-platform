@@ -23,7 +23,7 @@ const ListEmployees = () => {
           <button
             type="button"
             className="btn btn-primary"
-            onClick={() => history.push("/corporates/add")}
+            // onClick={() => history.push("/corporates/add")}
           >
             Add Employee
           </button>

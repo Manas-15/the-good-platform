@@ -15,7 +15,10 @@ function getCorporates() {
 
     corporateService.getCorporates().then(
       (corporates) => dispatch(success(corporates)),
-      (error) => dispatch(failure(error.toString()))
+      error => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
     );
   };
 

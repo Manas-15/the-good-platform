@@ -2,17 +2,19 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
-import corporates from "./../../config/corporates.json";
+// import corporates from "./../../config/corporates.json";
 
 const ListCorporates = () => {
   let history = useHistory();
-  // const corporates = useSelector(state => state.corporates);
+  const corporates = useSelector(state => state.corporates);
   const user = useSelector((state) => state.authentication.user);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //     dispatch(corporateActions.getCorporates());
-  // }, []);
+  useEffect(() => {
+      dispatch(corporateActions.getCorporates());
+  }, []);
+  // const test = corporates.items.data.message.corporates
+  console.log("corporates.items >>>>>>>>>>>", corporates?.items?.data?.corporates)
   return (
     <div>
       <div className="row mb-4">
@@ -29,7 +31,7 @@ const ListCorporates = () => {
           </button>
         </div>
       </div>
-      {/* {corporates.loading && <em>Loading corporates...</em>} */}
+      {corporates.loading && <em>Loading corporates...</em>}
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
@@ -43,18 +45,18 @@ const ListCorporates = () => {
         </thead>
         <tbody>
           {
-            // corporates.items && corporates.items.length > 0
-            // ?
-            corporates.map((corporate, index) => (
+            corporates?.items?.data?.corporates && corporates?.items?.data?.corporates.length > 0
+            ?
+            corporates?.items?.data?.corporates.map((corporate, index) => (
               <tr key={index+1}>
                 <td scope="row">{index + 1}</td>
-                <td>{corporate.name}</td>
-                <td>{corporate.size}</td>
-                <td>{corporate.type}</td>
+                <td>{corporate.organization_name}</td>
+                <td>{corporate.organization_size}</td>
+                <td>{corporate.organization_type}</td>
                 <td>
-                  {corporate.address
+                  {/* {corporate.address
                     .split(",")
-                    .reduce((all, cur) => [...all, <br />, cur])}
+                    .reduce((all, cur) => [...all, <br />, cur])} */}
                 </td>
                 <td className="text-center">
                   <a className="icon" href="#" data-bs-toggle="dropdown">
@@ -71,10 +73,10 @@ const ListCorporates = () => {
                 </td>
               </tr>
             ))
-            // :
-            // <tr>
-            //   <td colSpan="6" className='text-center'>No corporates found</td>
-            // </tr>
+            :
+            <tr>
+              <td colSpan="6" className='text-center'>No corporates found</td>
+            </tr>
           }
         </tbody>
       </table>
