@@ -63,7 +63,6 @@ const CreateRoutes = () => {
                     path="/charity-programs"
                     component={ListCharityPrograms}
                   />
-                  <Route exact path="/employees" component={ListEmployees} />
                   <Route
                     exact
                     path="/social-organizations"
@@ -72,7 +71,10 @@ const CreateRoutes = () => {
                   <Redirect from="*" to="/" />
                 </>
               ) : (
-                <Redirect from="*" to="/" />
+                <>
+                  <Route exact path="/employees" component={ListEmployees} />
+                  <Redirect from="*" to="/" />
+                </>
               )}
               <Route exact path="/dashboard" component={Dashboard} />
               <Route

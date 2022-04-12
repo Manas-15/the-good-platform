@@ -22,7 +22,7 @@ const initialValues = {
   city: "",
   state: "",
   country: "",
-  userType: "",
+  user_type: "",
 };
 const sizeOptions = [
   { value: "1-50", label: "1-50" },
@@ -38,9 +38,9 @@ const CorporateForm = ({ type }) => {
     (state) => state.corporates.addingCorporate
   );
   if(type==='admin'){
-    initialValues.userType = 1
+    initialValues.user_type = 1
   }else if(type==='corporate'){
-    initialValues.userType = 2
+    initialValues.user_type = 2
   }
   const dispatch = useDispatch();
   const corporateRegister = (values) => {
