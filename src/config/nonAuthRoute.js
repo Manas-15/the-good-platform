@@ -43,7 +43,7 @@ const CreateNonAuthRoutes = () => {
       <div className="auth-wrapper">
         <div className="auth-inner">
           <Switch>
-            <Route exact path="/" component={SuperAdminLogin} />
+            <Route exact path="/" component={CorporateLogin} />
             <Route exact path="/sign-up" component={SignUp} />
             <Route
               exact

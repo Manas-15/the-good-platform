@@ -2,6 +2,7 @@ import { Route, BrowserRouter, Router, Switch, Redirect } from "react-router-dom
 import Dashboard from "../components/Dashboard";
 import ListCorporates from "../components/corporate/ListCorporates";
 import ListCharityPrograms from "../components/charityPrograms/ListCharityPrograms";
+import ListEmployees from "../components/employee/ListEmployees";
 import SocialOrganizations from "../components/socialOrganizations/ListSocialOrganizations";
 import AddCorporate from "../components/corporate/AddCorporate";
 import { PrivateRoute } from "../components/PrivateRoute";
@@ -49,6 +50,11 @@ const CreateAuthRoutes = () => {
               exact
               path="/charity-programs"
               component={ListCharityPrograms}
+            />
+            <Route
+              exact
+              path="/employees"
+              component={ListEmployees}
             />
             <Route
               exact

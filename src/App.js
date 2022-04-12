@@ -7,6 +7,7 @@ import CreateNonAuthRoutes from "./config/nonAuthRoute";
 const App = () => {
   useEffect(() => {
     console.log("cccccccccccccccccc after success")
+    // history.push('/dashboard');
     window.process = {
       ...window.process,
     };

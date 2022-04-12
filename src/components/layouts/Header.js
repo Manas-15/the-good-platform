@@ -3,18 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import { userActions } from "../../actions";
 import { userConstants } from "../../constants";
-import { Routes, Link, Route, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { history } from "../../helpers";
 
 const Header = () => {
   // let history = useHistory();
+  const location = useLocation();
   const logout = () => {
-    console.log("ccccccccccccc logut here", localStorage.getItem("user"));
     localStorage.removeItem("user");
     history.push("/superadmin/sign-in");
+    location.reload(true);
     console.log(".......................", history);
     // return { type: userConstants.LOGOUT };
   };
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -64,13 +66,13 @@ const Header = () => {
                 className="rounded-circle"
               />
               <span className="d-none d-md-block dropdown-toggle ps-2">
-                Ansuman
+                {user?.name}
               </span>
             </a>
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>Ansuman Taria</h6>
-                <span>Web Designer</span>
+                <h6>{user?.name}</h6>
+                <span>{user?.email}</span>
               </li>
               <li>
                 <hr className="dropdown-divider" />

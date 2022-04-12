@@ -1,0 +1,27 @@
+[
+  {
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "address": "IT Mancheswar, Bhubaneswar, Odisha, India"
+  },
+  {
+    "name": "Martin Guptil",
+    "email": "martin@gmail.com",
+    "address": "11,3rd Flr Shivsadan, Mumbai, Mahastra, India"
+  },
+  {
+    "name": "Shivam Gill",
+    "email": "shivam@gmail.com",
+    "address": "Rachana Avenue, Vadodara, Gujarat, India"
+  },
+  {
+    "name": "Rahul Tripathy",
+    "email": "rahul@gmail.com",
+    "address": "Dwerik Ganguly St, Kolkata, West Bengal, India"
+  },
+  {
+    "name": "Manas Mishra",
+    "email": "manas@gmail.com",
+    "address": "Patia, Bhubaneswar, Odisha, India"
+  }
+]
