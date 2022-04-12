@@ -1,6 +1,6 @@
 {
     "production": "false",
     "ENV": "production",
-    "API_ROOT": "http://localhost/",
+    "API_ROOT": "http://3.111.224.242/",
     "perPage": "10"
 }

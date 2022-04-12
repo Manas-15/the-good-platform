@@ -183,7 +183,7 @@ const EmployeeSignUp = () => {
               <div className="col-md-8">
                 <select
                   name="corporateId"
-                  class="form-select"
+                  className="form-select"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 >
@@ -206,7 +206,7 @@ const EmployeeSignUp = () => {
               <div className="col-md-8">
                 <select
                   name="gender"
-                  class="form-select"
+                  className="form-select"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 >

@@ -1,8 +1,7 @@
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import React, { useEffect } from "react";
-import CreateAuthRoutes from "./config/authRoute";
-import CreateNonAuthRoutes from "./config/nonAuthRoute";
+import CreateRoutes from "./config/Route";
 
 const App = () => {
   useEffect(() => {
@@ -14,11 +13,7 @@ const App = () => {
   }, []);
   return (
     <div className="App">
-      {localStorage.getItem("user") ? (
-        <CreateAuthRoutes />
-      ) : (
-        <CreateNonAuthRoutes />
-      )}
+        <CreateRoutes />
     </div>
   );
 };

@@ -14,12 +14,15 @@ const initialValues = {
   regdNumber: "",
   organizationSize: "",
   organizationType: "",
+  corporatePan: "",
+  gstn: "",
   contactNumber: "",
   contactPerson: "",
   address: "",
   city: "",
   state: "",
   country: "",
+  userType: "",
 };
 const sizeOptions = [
   { value: "1-50", label: "1-50" },
@@ -34,6 +37,11 @@ const CorporateForm = ({ type }) => {
   const addingCorporate = useSelector(
     (state) => state.corporates.addingCorporate
   );
+  if(type==='admin'){
+    initialValues.userType = 1
+  }else if(type==='corporate'){
+    initialValues.userType = 2
+  }
   const dispatch = useDispatch();
   const corporateRegister = (values) => {
     console.log("create coming", values);
@@ -130,7 +138,7 @@ const CorporateForm = ({ type }) => {
                   onBlur={handleBlur}
                   value={values.website}
                   className="form-control"
-                  placeholder="Website"
+                  placeholder="Enter website"
                 />
                 <span className="error">
                   {errors.website && touched.website && errors.website}
@@ -149,7 +157,7 @@ const CorporateForm = ({ type }) => {
                   onBlur={handleBlur}
                   value={values.regdNumber}
                   className="form-control"
-                  placeholder="Regd Number"
+                  placeholder="Enter regd number"
                 />
                 <span className="error">
                   {errors.regdNumber && touched.regdNumber && errors.regdNumber}
@@ -158,7 +166,7 @@ const CorporateForm = ({ type }) => {
             </div>
             <div className="row mb-4">
               <div className="col-md-4">
-                <label className="mt-1">Organization Size</label>
+                <label className="mt-1">Size</label>
               </div>
               <div className="col-md-8">
                 <select
@@ -183,7 +191,7 @@ const CorporateForm = ({ type }) => {
             </div>
             <div className="row mb-4">
               <div className="col-md-4">
-                <label className="mt-1">Organization Type</label>
+                <label className="mt-1">Type</label>
               </div>
               <div className="col-md-8">
                 <input
@@ -193,12 +201,54 @@ const CorporateForm = ({ type }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.organizationType}
-                  placeholder="Organization Type"
+                  placeholder="Enter type"
                 />
                 <span className="error">
                   {errors.organizationType &&
                     touched.organizationType &&
                     errors.organizationType}
+                </span>
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-4">
+                <label className="mt-1">Corporate PAN</label>
+              </div>
+              <div className="col-md-8">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="corporatePan"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.corporatePan}
+                  placeholder="Enter PAN"
+                />
+                <span className="error">
+                  {errors.corporatePan &&
+                    touched.corporatePan &&
+                    errors.corporatePan}
+                </span>
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-4">
+                <label className="mt-1">GSTN</label>
+              </div>
+              <div className="col-md-8">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="gstn"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.gstn}
+                  placeholder="Enter GSTN"
+                />
+                <span className="error">
+                  {errors.gstn &&
+                    touched.gstn &&
+                    errors.gstn}
                 </span>
               </div>
             </div>

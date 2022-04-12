@@ -66,8 +66,9 @@ function registerCorporate(corporate, type) {
 
     corporateService.registerCorporate(corporate).then(
       (corporate) => {
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaa ccc", corporate)
         dispatch(success(corporate));
-        if (type === "admin") {
+        if (type !== "admin") {
           history.push("/login");
         }
         dispatch(

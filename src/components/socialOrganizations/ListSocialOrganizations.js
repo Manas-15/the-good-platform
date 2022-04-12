@@ -24,7 +24,7 @@ const ListCharityPrograms = () => {
             <th scope="col">Name</th>
             <th>Date Added</th>
             <th className="text-center">Charity Programs</th>
-            <th className="text-center">Actions</th>
+            {/* <th className="text-center">Actions</th> */}
           </tr>
         </thead>
         <tbody>
@@ -37,16 +37,16 @@ const ListCharityPrograms = () => {
                 <td className="text-center">
                   {socialOrganization.charityPrograms}
                 </td>
-                <td className="text-center">
+                {/* <td className="text-center">
                   <button type="submit" className="btn btn-primary btn-sm">
                     Activate
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">
+              <td colSpan="4" className="text-center">
                 No corporates found
               </td>
             </tr>

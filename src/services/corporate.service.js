@@ -61,7 +61,7 @@ function registerCorporate(data) {
   //     },
   //   }
   // );
-  return axios.post("/api/corporate_register/", data).then(handleResponse);
+  return axios.post(process.env.REACT_APP_API_URL + "api/corporate_register/", data);
 }
 function handleResponse(response) {
   return response.text().then((text) => {

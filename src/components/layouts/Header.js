@@ -12,7 +12,7 @@ const Header = () => {
   const logout = () => {
     localStorage.removeItem("user");
     history.push("/superadmin/sign-in");
-    location.reload(true);
+    // location.reload(true);
     console.log(".......................", history);
     // return { type: userConstants.LOGOUT };
   };

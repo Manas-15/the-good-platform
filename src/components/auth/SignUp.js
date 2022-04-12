@@ -167,7 +167,7 @@ const SignUp = () => {
               <div className="col-md-8">
                 <select
                   name="organizationSize"
-                  class="form-select"
+                  className="form-select"
                   onChange={handleChange}
                 >
                   <option selected>Select Corporate Size</option>
