@@ -1,19 +1,25 @@
 import { Button, Modal } from "react-bootstrap";
-export default function ConfirmationDialog({title, content, handleOK, open, handleCancel}) {
+export default function ConfirmationDialog({
+  title,
+  content,
+  handleOK,
+  open,
+  handleCancel,
+}) {
   return (
     <Modal show={open} onHide={handleCancel}>
-    <Modal.Header closeButton>
+      <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>{content}</Modal.Body>
-    <Modal.Footer>
+      </Modal.Header>
+      <Modal.Body>{content}</Modal.Body>
+      <Modal.Footer>
         <Button variant="primary" onClick={handleOK}>
-        Confirm
+          Confirm
         </Button>
         <Button variant="danger" onClick={handleCancel}>
-        Cancel
+          Cancel
         </Button>
-    </Modal.Footer>
+      </Modal.Footer>
     </Modal>
   );
 }

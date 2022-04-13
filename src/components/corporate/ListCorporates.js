@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
-import { Link, useLocation } from "react-router-dom";
 // import corporates from "./../../config/corporates.json";
 
 const ListCorporates = () => {
@@ -15,15 +14,18 @@ const ListCorporates = () => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
-  const handleOpen = (title, content) => {
+  const [selectedCorporate, setSelectedCorporate] = useState(Object);
+  const handleOpen = (title, item) => {
     setOpen(true);
     setActionType(title);
+    setSelectedCorporate(item);
     if (title === "approve") {
       setActionTitle("Approve Confirmation");
+      setActionContent(`Are you sure to approve "${item.organization_name}"?`);
     } else {
       setActionTitle("Reject Confirmation");
+      setActionContent(`Are you sure to reject "${item.organization_name}"?`);
     }
-    setActionContent(content);
   };
   const handleClose = () => setOpen(false);
   console.log("initialize open", open);
@@ -33,7 +35,7 @@ const ListCorporates = () => {
   // const test = corporates.items.data.message.corporates
 
   return (
-    <div>      
+    <div>
       <div className="row mb-4">
         <div className="col-md-6">
           <h4>Corporates</h4>
@@ -79,33 +81,17 @@ const ListCorporates = () => {
                     <span className="bi-three-dots"></span>
                   </a>
                   <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li className="dropdown-header text-start">
-                      <a
-                        className="bi-check-circle cursor-pointer"
-                        onClick={() =>
-                          handleOpen(
-                            "approve",
-                            `Are you sure to approve "${corporate.organization_name}"?`
-                          )
-                        }
-                      >
-                        {" "}
-                        Approve
-                      </a>
+                    <li
+                      className="dropdown-header text-start"
+                      onClick={() => handleOpen("approve", corporate)}
+                    >
+                      <span className="bi-check-circle"> Approve</span>
                     </li>
-                    <li className="dropdown-header text-start">
-                      <a
-                        className="bi-x-circle cursor-pointer"
-                        onClick={() =>
-                          handleOpen(
-                            "reject",
-                            `Are you sure to reject "${corporate.organization_name}"?`
-                          )
-                        }
-                      >
-                        {" "}
-                        Reject
-                      </a>
+                    <li
+                      className="dropdown-header text-start"
+                      onClick={() => handleOpen("reject", corporate)}
+                    >
+                      <span className="bi-x-circle"> Reject</span>
                     </li>
                   </ul>
                 </td>

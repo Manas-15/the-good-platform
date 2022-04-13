@@ -24,7 +24,7 @@ const ListCharityPrograms = () => {
             <th scope="col">Sl#</th>
             <th scope="col">Cause</th>
             <th>Social Organization</th>
-            <th className="text-center">Category</th>
+            <th>Category</th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
@@ -35,7 +35,7 @@ const ListCharityPrograms = () => {
                 <td scope="row">{index + 1}</td>
                 <td>{charityProgram.cause}</td>
                 <td>{charityProgram.socialOrganization}</td>
-                <td className="text-center">{charityProgram.category}</td>
+                <td>{charityProgram.category}</td>
                 <td className="text-center">
                   <button type="submit" className="btn btn-primary btn-sm">
                     Donate

@@ -1,21 +1,17 @@
-// import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect } from "react";
-import { userActions } from "../../actions";
-import { userConstants } from "../../constants";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { history } from "../../helpers";
 
 const Header = () => {
-  // let history = useHistory();
   const location = useLocation();
   const logout = () => {
     localStorage.removeItem("user");
     history.push("/");
-    // location.reload(true);
-    // return { type: userConstants.LOGOUT };
   };
   const user = JSON.parse(localStorage.getItem("user"));
+  const showHideLeftSidebar = () => {
+    document.body.classList.toggle("toggle-sidebar");
+  };
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -27,7 +23,10 @@ const Header = () => {
           />
           <h4 className="mb-0 logo-color">The Good Platform</h4>
         </a>
-        <i className="bi bi-list toggle-sidebar-btn"></i>
+        <i
+          className="bi bi-list toggle-sidebar-btn"
+          onClick={showHideLeftSidebar}
+        ></i>
       </div>
       <div className="search-bar">
         <form
