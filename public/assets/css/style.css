@@ -104,6 +104,7 @@ h1, h2, h3, h4, h5, h6 {
   animation-fill-mode: both;
   border: 0;
   box-shadow: 0 5px 30px 0 rgba(82, 63, 105, 0.2);
+  min-width: 0rem;
 }
 .dropdown-menu .dropdown-header, .dropdown-menu .dropdown-footer {
   text-align: center;
@@ -332,6 +333,9 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 .logo {
   line-height: 1;
+}
+.logo:hover {
+  text-decoration: none;
 }
 @media (min-width: 1200px) {
   .logo {
@@ -580,6 +584,13 @@ h1, h2, h3, h4, h5, h6 {
 .sidebar-nav .nav-item {
   margin-bottom: 5px;
 }
+.sidebar-nav .nav-link.active {
+  background: #4154f1;
+  color: #fff;
+}
+.sidebar-nav .nav-link.active i {
+  color: #fff;
+}
 .sidebar-nav .nav-heading {
   font-size: 11px;
   text-transform: uppercase;
@@ -611,11 +622,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #899bbd;
 }
 .sidebar-nav .nav-link:hover {
-  color: #4154f1;
-  background: #f6f9ff;
+  color: #fff;
+  background: #4154f1;
 }
 .sidebar-nav .nav-link:hover i {
-  color: #4154f1;
+  color: #fff;
 }
 .sidebar-nav .nav-link .bi-chevron-down {
   margin-right: 0;
