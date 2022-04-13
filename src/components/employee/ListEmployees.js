@@ -81,7 +81,7 @@ const ListEmployees = () => {
           <p>Showing 1 to 10 of 20 records</p>
         </div>
         <div className="col-md-6" style={{ textAlign: "right" }}>
-          <nav aria-label="Page navigation example">
+          <nav aria-label="Page navigation example" className="d-inline-block">
             <ul className="pagination">
               <li className="page-item">
                 <a className="page-link" href="#">

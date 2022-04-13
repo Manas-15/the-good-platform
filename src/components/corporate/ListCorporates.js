@@ -14,7 +14,6 @@ const ListCorporates = () => {
       dispatch(corporateActions.getCorporates());
   }, []);
   // const test = corporates.items.data.message.corporates
-  console.log("corporates.items >>>>>>>>>>>", corporates?.items?.data?.corporates)
   return (
     <div>
       <div className="row mb-4">
@@ -64,10 +63,15 @@ const ListCorporates = () => {
                   </a>
                   <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <li className="dropdown-header text-start">
-                      Approve
+                    <span className="bi-check-circle"></span> Approve
+                    <a href="#" data-href="delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a>
+
+<button class="btn btn-default" data-href="/delete.php?id=54" data-toggle="modal" data-target="#confirm-delete">
+    Delete record #54
+</button>
                     </li>
                     <li className="dropdown-header text-start">
-                      Reject
+                    <span className="bi-x-circle"></span> Reject
                     </li>
                   </ul>
                 </td>
@@ -85,7 +89,7 @@ const ListCorporates = () => {
           <p>Showing 1 to 10 of 20 records</p>
         </div>
         <div className="col-md-6" style={{ textAlign: "right" }}>
-          <nav aria-label="Page navigation example">
+          <nav aria-label="Page navigation example" className="d-inline-block">
             <ul className="pagination">
               <li className="page-item">
                 <a className="page-link" href="#">
@@ -154,6 +158,22 @@ const ListCorporates = () => {
           </div>
         </div>
       </div>
+      <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                ...
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
   );
 };

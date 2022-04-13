@@ -7,6 +7,8 @@ export const corporateActions = {
   addCorporate,
   registerCorporate,
   getCorporates,
+  approveCorporate,
+  rejectCorporate,
 };
 
 function getCorporates() {
@@ -15,9 +17,20 @@ function getCorporates() {
 
     corporateService.getCorporates().then(
       (corporates) => dispatch(success(corporates)),
-      error => {
+
+      (error) => {
+        console.log("errorerrorerror", error);
         dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
+        dispatch(
+          alertActions.error(
+            error.toString()
+          )
+          // alertActions.error(
+          //   error.toString() === "Error: Request failed with status code 401"
+          //     ? "Token is invalid or expired"
+          //     : error.toString()
+          // )
+        );
       }
     );
   };
@@ -66,9 +79,10 @@ function registerCorporate(corporate, type) {
 
     corporateService.registerCorporate(corporate).then(
       (corporate) => {
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaaa ccc", corporate)
         dispatch(success(corporate));
-        if (type !== "admin") {
+        if (type === "admin") {
+          history.push("/corporates");
+        }else{
           history.push("/login");
         }
         dispatch(
@@ -94,5 +108,79 @@ function registerCorporate(corporate, type) {
   }
   function failure(error) {
     return { type: corporateConstants.ADD_CORPORATE_FAILURE, error };
+  }
+}
+function approveCorporate(corporate, type) {
+  return (dispatch) => {
+    dispatch(request(corporate));
+
+    corporateService.approveCorporate(corporate).then(
+      (corporate) => {
+        dispatch(success(corporate));
+        if (type === "admin") {
+          history.push("/corporates");
+        }else{
+          history.push("/login");
+        }
+        dispatch(
+          alertActions.success(
+            type === "admin"
+              ? "Corporate added successfully"
+              : "Corporate registered successfully"
+          )
+        );
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(corporate) {
+    return { type: corporateConstants.APPROVE_CORPORATE_REQUEST, corporate };
+  }
+  function success(corporate) {
+    return { type: corporateConstants.APPROVE_CORPORATE_SUCCESS, corporate };
+  }
+  function failure(error) {
+    return { type: corporateConstants.APPROVE_CORPORATE_FAILURE, error };
+  }
+}
+function rejectCorporate(corporate, type) {
+  return (dispatch) => {
+    dispatch(request(corporate));
+
+    corporateService.rejectCorporate(corporate).then(
+      (corporate) => {
+        dispatch(success(corporate));
+        if (type === "admin") {
+          history.push("/corporates");
+        }else{
+          history.push("/login");
+        }
+        dispatch(
+          alertActions.success(
+            type === "admin"
+              ? "Corporate added successfully"
+              : "Corporate registered successfully"
+          )
+        );
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(corporate) {
+    return { type: corporateConstants.REJECT_CORPORATE_REQUEST, corporate };
+  }
+  function success(corporate) {
+    return { type: corporateConstants.REJECT_CORPORATE_SUCCESS, corporate };
+  }
+  function failure(error) {
+    return { type: corporateConstants.REJECT_CORPORATE_FAILURE, error };
   }
 }

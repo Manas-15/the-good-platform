@@ -231,7 +231,7 @@ const SuperAdminDashboard = () => {
                           <th scope="row">
                             <a href="#">1</a>
                           </th>
-                          <td>Brandon Jacob</td>
+                          <td>Donarium</td>
                           <td>
                             <a href="#" className="text-primary">
                               Disaster
@@ -246,7 +246,7 @@ const SuperAdminDashboard = () => {
                           <th scope="row">
                             <a href="#">2</a>
                           </th>
-                          <td>Bridie Kessler</td>
+                          <td>Indicom Pvt. Ltd.</td>
                           <td>
                             <a href="#" className="text-primary">
                               Social Order
@@ -263,7 +263,7 @@ const SuperAdminDashboard = () => {
                           <th scope="row">
                             <a href="#">3</a>
                           </th>
-                          <td>Ashleigh Langosh</td>
+                          <td>Birla Group</td>
                           <td>
                             <a href="#" className="text-primary">
                               Disaster
@@ -278,7 +278,7 @@ const SuperAdminDashboard = () => {
                           <th scope="row">
                             <a href="#">4</a>
                           </th>
-                          <td>Angus Grady</td>
+                          <td>Universe Donar</td>
                           <td>
                             <a href="#" className="text-primar">
                               Social Order
@@ -293,7 +293,7 @@ const SuperAdminDashboard = () => {
                           <th scope="row">
                             <a href="#">5</a>
                           </th>
-                          <td>Raheem Lehner</td>
+                          <td>Bengal Infra</td>
                           <td>
                             <a href="#" className="text-primary">
                               Disaster

@@ -30,7 +30,6 @@ const CorporateLogin = (props) => {
     <LoginForm 
       submit={(user) => login(user)}
       disable={disable}
-      userType={2}
     />
   )
 }

@@ -8,6 +8,8 @@ export const corporateService = {
   addCorporate,
   registerCorporate,
   getCorporates,
+  approveCorporate,
+  rejectCorporate,
 };
 
 function getCorporates() {
@@ -19,7 +21,8 @@ function getCorporates() {
   // return fetch(`http://localhost:3000/corporates`, requestOptions).then(
   //   handleResponse
   // );
-  return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
+  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
+  return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list");
 }
 
 function addCorporate(data) {
@@ -61,7 +64,22 @@ function registerCorporate(data) {
   //     },
   //   }
   // );
-  return axios.post(process.env.REACT_APP_API_URL + "api/corporate_register/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporate_register/",
+    data
+  );
+}
+function approveCorporate(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporate_approve/",
+    data
+  );
+}
+function rejectCorporate(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporate_reject/",
+    data
+  );
 }
 function handleResponse(response) {
   return response.text().then((text) => {

@@ -39,13 +39,27 @@ const CreateRoutes = () => {
   }, []);
   // const user = useSelector((state) => state.authentication.user);
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log("ddddddddddddddddd after added corporate", user);
   return (
-    <BrowserRouter history={history}>
+    <Router history={history}>
       {user?.token ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message && (
-              <div className={`alert ${alert.type}`}>{alert.message}</div>
+              <div
+                className={`alert ${alert.type} alert-dismissible`}
+                role="alert"
+              >
+                {alert.message}
+                <button
+                  type="button"
+                  className="close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
             )}
             <Header />
             <Sidebar />
@@ -89,7 +103,20 @@ const CreateRoutes = () => {
           <nav className="navbar navbar-expand-lg navbar-light fixed-top">
             <div className="container">
               {alert.message && (
-                <div className={`alert ${alert.type}`}>{alert.message}</div>
+                <div
+                  className={`alert ${alert.type} alert-dismissible`}
+                  role="alert"
+                >
+                  {alert.message}
+                  <button
+                    type="button"
+                    className="close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
               )}
               <Link className="navbar-brand" to={"/sign-in"}>
                 <img
@@ -139,7 +166,7 @@ const CreateRoutes = () => {
           </div>
         </>
       )}
-    </BrowserRouter>
+    </Router>
   );
 };
 export default CreateRoutes;
