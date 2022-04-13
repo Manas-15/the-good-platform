@@ -104,7 +104,6 @@ h1, h2, h3, h4, h5, h6 {
   animation-fill-mode: both;
   border: 0;
   box-shadow: 0 5px 30px 0 rgba(82, 63, 105, 0.2);
-  min-width: 0rem;
 }
 .dropdown-menu .dropdown-header, .dropdown-menu .dropdown-footer {
   text-align: center;
@@ -334,18 +333,22 @@ h1, h2, h3, h4, h5, h6 {
 .logo {
   line-height: 1;
 }
-.logo:hover {
-  text-decoration: none;
-}
 @media (min-width: 1200px) {
   .logo {
     width: 280px;
   }
 }
 .logo img {
-  max-height: 40px;
+  max-height: 26px;
   margin-right: 6px;
 }
+.logo span {
+  font-size: 26px;
+  font-weight: 700;
+  color: #012970;
+  font-family: "Nunito", sans-serif;
+}
+
 .header {
   transition: all 0.5s;
   z-index: 997;
@@ -584,13 +587,6 @@ h1, h2, h3, h4, h5, h6 {
 .sidebar-nav .nav-item {
   margin-bottom: 5px;
 }
-.sidebar-nav .nav-link.active {
-  background: #4154f1;
-  color: #fff;
-}
-.sidebar-nav .nav-link.active i {
-  color: #fff;
-}
 .sidebar-nav .nav-heading {
   font-size: 11px;
   text-transform: uppercase;
@@ -622,11 +618,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #899bbd;
 }
 .sidebar-nav .nav-link:hover {
-  color: #fff;
-  background: #4154f1;
+  color: #4154f1;
+  background: #f6f9ff;
 }
 .sidebar-nav .nav-link:hover i {
-  color: #fff;
+  color: #4154f1;
 }
 .sidebar-nav .nav-link .bi-chevron-down {
   margin-right: 0;
@@ -649,14 +645,12 @@ h1, h2, h3, h4, h5, h6 {
   transition: 0.3;
   padding: 10px 0 10px 40px;
   transition: 0.3s;
-  text-decoration: auto;
 }
 .sidebar-nav .nav-content a i {
   font-size: 6px;
   margin-right: 8px;
   line-height: 0;
   border-radius: 50%;
-  text-decoration: auto;
 }
 .sidebar-nav .nav-content a:hover, .sidebar-nav .nav-content a.active {
   color: #4154f1;

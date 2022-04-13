@@ -25,7 +25,6 @@ function login(data, from) {
         dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
-        console.log("eeeeeeeeeeeeeeeee error", error.toString());
         dispatch(failure(error.toString()));
         dispatch(
           alertActions.error(

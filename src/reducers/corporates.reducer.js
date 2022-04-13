@@ -23,13 +23,13 @@ export function corporates(state = {}, action) {
     case corporateConstants.APPROVE_CORPORATE_REQUEST:
       return { approveCorporate: true };
     case corporateConstants.APPROVE_CORPORATE_SUCCESS:
-      return {};
+      return { item: action.corporate };
     case corporateConstants.APPROVE_CORPORATE_FAILURE:
       return {};
     case corporateConstants.REJECT_CORPORATE_REQUEST:
       return { rejectCorporate: true };
     case corporateConstants.REJECT_CORPORATE_SUCCESS:
-      return {};
+      return { item: action.corporate };
     case corporateConstants.REJECT_CORPORATE_FAILURE:
       return {};
     default:

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 import { userActions } from "./../../actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const CorporateLogin = (props) => {
   const dispatch = useDispatch();
-  const [disable, setDisable] = useState(false);
-
+  const loggingIn = useSelector((state) => state.users.loggingIn);
   const login = (values) => {
-    console.log("login corporate here ...........", values)   
     // localStorage.setItem(
     //   "user",
     //   JSON.stringify({
@@ -29,7 +27,7 @@ const CorporateLogin = (props) => {
   return (
     <LoginForm 
       submit={(user) => login(user)}
-      disable={disable}
+      disable={loggingIn}
     />
   )
 }

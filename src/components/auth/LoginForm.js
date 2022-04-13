@@ -73,7 +73,7 @@ const LoginForm = ({ submit, disable, userType }) => {
             <div className="text-center m-3">
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={disable}
                 className="btn btn-primary btn-block"
               >
                 Submit

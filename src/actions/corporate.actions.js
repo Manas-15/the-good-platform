@@ -117,16 +117,10 @@ function approveCorporate(corporate, type) {
     corporateService.approveCorporate(corporate).then(
       (corporate) => {
         dispatch(success(corporate));
-        if (type === "admin") {
-          history.push("/corporates");
-        }else{
-          history.push("/login");
-        }
+        history.push("/corporates");
         dispatch(
           alertActions.success(
-            type === "admin"
-              ? "Corporate added successfully"
-              : "Corporate registered successfully"
+            "Corporate approved successfully"
           )
         );
       },
@@ -154,16 +148,10 @@ function rejectCorporate(corporate, type) {
     corporateService.rejectCorporate(corporate).then(
       (corporate) => {
         dispatch(success(corporate));
-        if (type === "admin") {
-          history.push("/corporates");
-        }else{
-          history.push("/login");
-        }
+        history.push("/corporates");
         dispatch(
           alertActions.success(
-            type === "admin"
-              ? "Corporate added successfully"
-              : "Corporate registered successfully"
+            "Corporate rejected successfully"
           )
         );
       },

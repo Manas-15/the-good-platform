@@ -37,9 +37,13 @@ const CreateRoutes = () => {
       dispatch(alertActions.clear());
     });
   }, []);
+  if (alert.message) {
+    setTimeout(() => {
+      dispatch(alertActions.clear());
+    }, 8000);
+  }
   // const user = useSelector((state) => state.authentication.user);
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("ddddddddddddddddd after added corporate", user);
   return (
     <Router history={history}>
       {user?.token ? (

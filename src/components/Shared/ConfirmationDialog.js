@@ -7,7 +7,7 @@ export default function ConfirmationDialog({
   handleCancel,
 }) {
   return (
-    <Modal show={open} onHide={handleCancel}>
+    <Modal show={open} onHide={handleCancel} backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

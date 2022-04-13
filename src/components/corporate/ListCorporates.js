@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import { useHistory } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,12 +27,19 @@ const ListCorporates = () => {
       setActionContent(`Are you sure to reject "${item.organization_name}"?`);
     }
   };
+  const confirm = () => {
+    handleClose();
+    // if (actionType === "approve") {
+    //   dispatch(corporateActions.approveCorporate());
+    // } else {
+    //   dispatch(corporateActions.rejectCorporate());
+    // }
+  };
   const handleClose = () => setOpen(false);
   console.log("initialize open", open);
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
-  // const test = corporates.items.data.message.corporates
 
   return (
     <div>
@@ -65,38 +72,45 @@ const ListCorporates = () => {
         <tbody>
           {corporates?.items?.data?.corporates &&
           corporates?.items?.data?.corporates.length > 0 ? (
-            corporates?.items?.data?.corporates.map((corporate, index) => (
-              <tr key={index + 1}>
-                <td scope="row">{index + 1}</td>
-                <td>{corporate.organization_name}</td>
-                <td>{corporate.organization_size}</td>
-                <td>{corporate.organization_type}</td>
-                <td>
-                  {/* {corporate.address
-                    .split(",")
-                    .reduce((all, cur) => [...all, <br />, cur])} */}
-                </td>
-                <td className="text-center">
-                  <a className="icon" href="#" data-bs-toggle="dropdown">
-                    <span className="bi-three-dots"></span>
-                  </a>
-                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li
-                      className="dropdown-header text-start"
-                      onClick={() => handleOpen("approve", corporate)}
-                    >
-                      <span className="bi-check-circle"> Approve</span>
-                    </li>
-                    <li
-                      className="dropdown-header text-start"
-                      onClick={() => handleOpen("reject", corporate)}
-                    >
-                      <span className="bi-x-circle"> Reject</span>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-            ))
+            corporates?.items?.data?.corporates.map((corporate, index) => {
+              const ref = createRef();
+              // const handleClick = () =>
+              // index > 6 && ref.current.scrollIntoView({
+              //   behavior: 'smooth',
+              // });
+              return (
+                <tr key={index + 1} ref={ref}>
+                  <td scope="row">{index + 1}</td>
+                  <td>{corporate.organization_name}</td>
+                  <td>{corporate.organization_size}</td>
+                  <td>{corporate.organization_type}</td>
+                  <td>
+                    {/* {corporate.address
+                      .split(",")
+                      .reduce((all, cur) => [...all, <br />, cur])} */}
+                  </td>
+                  <td className="text-center">
+                    <a className="icon" href="#" data-bs-toggle="dropdown">
+                      <span className="bi-three-dots"></span>
+                    </a>
+                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
+                      <li
+                        className="dropdown-header text-start"
+                        onClick={() => handleOpen("approve", corporate)}
+                      >
+                        <span className="bi-check-circle"> Approve</span>
+                      </li>
+                      <li
+                        className="dropdown-header text-start"
+                        onClick={() => handleOpen("reject", corporate)}
+                      >
+                        <span className="bi-x-circle"> Reject</span>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              );
+            })
           ) : (
             <tr>
               <td colSpan="6" className="text-center">
@@ -148,12 +162,10 @@ const ListCorporates = () => {
           title={actionTitle}
           content={actionContent}
           handleOK={() => {
-            handleClose();
-            alert("yeah");
+            confirm();
           }}
           handleCancel={() => {
             handleClose();
-            alert("cancel");
           }}
         />
       )}

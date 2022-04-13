@@ -5,15 +5,13 @@ import CreateRoutes from "./config/Route";
 
 const App = () => {
   useEffect(() => {
-    console.log("cccccccccccccccccc after success")
-    // history.push('/dashboard');
     window.process = {
       ...window.process,
     };
   }, []);
   return (
     <div className="App">
-        <CreateRoutes />
+      <CreateRoutes />
     </div>
   );
 };

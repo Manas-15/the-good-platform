@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import LoginForm from "./LoginForm";
 import { useHistory } from "react-router-dom";
 import { userActions } from "./../../actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const SuperAdminLogin = (props) => {
-  const [disable, setDisable] = useState(false);
+  const loggingIn = useSelector((state) => state.users.loggingIn);
   const dispatch = useDispatch();
   let history = useHistory();
 
@@ -18,7 +18,7 @@ const SuperAdminLogin = (props) => {
   };
 
   return (
-    <LoginForm submit={(user) => login(user)} disable={disable} />
+    <LoginForm submit={(user) => login(user)} disable={loggingIn} />
   );
 };
 export default SuperAdminLogin;

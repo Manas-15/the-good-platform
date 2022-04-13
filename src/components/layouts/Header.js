@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { history } from "../../helpers";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
@@ -8,7 +9,9 @@ const Header = () => {
     localStorage.removeItem("user");
     history.push("/");
   };
-  const user = JSON.parse(localStorage.getItem("user"));
+  // const user = JSON.parse(localStorage.getItem("user"));
+  const user = useSelector((state) => state.authentication.user);
+  console.log("user111111111111", user)
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
   };

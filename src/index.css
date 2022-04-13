@@ -108,9 +108,13 @@ h4.logo-style {
   margin: 4px 0 0px 10px;
   color: #b77c10;
 }
-ul.dropdown-menu li:hover {
+ul.dropdown-menu.actions {min-width: auto;margin: 0px -20px 0 0 !important;}
+ul.dropdown-menu.actions li:hover {
   text-decoration: none;
   cursor: pointer;
   color: #fff;
   background: #0d6efd;
+}
+.alert.show {
+  transition: all 250ms linear 2s;
 }
