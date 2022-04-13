@@ -333,13 +333,16 @@ h1, h2, h3, h4, h5, h6 {
 .logo {
   line-height: 1;
 }
+.logo:hover {
+  text-decoration: none;
+}
 @media (min-width: 1200px) {
   .logo {
     width: 280px;
   }
 }
 .logo img {
-  max-height: 26px;
+  max-height: 40px;
   margin-right: 6px;
 }
 .logo span {
@@ -587,6 +590,13 @@ h1, h2, h3, h4, h5, h6 {
 .sidebar-nav .nav-item {
   margin-bottom: 5px;
 }
+.sidebar-nav .nav-link.active {
+  background: #4154f1;
+  color: #fff;
+}
+.sidebar-nav .nav-link.active i {
+  color: #fff;
+}
 .sidebar-nav .nav-heading {
   font-size: 11px;
   text-transform: uppercase;
@@ -618,11 +628,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #899bbd;
 }
 .sidebar-nav .nav-link:hover {
-  color: #4154f1;
-  background: #f6f9ff;
+  color: #fff;
+  background: #4154f1;
 }
 .sidebar-nav .nav-link:hover i {
-  color: #4154f1;
+  color: #fff;
 }
 .sidebar-nav .nav-link .bi-chevron-down {
   margin-right: 0;
@@ -645,12 +655,14 @@ h1, h2, h3, h4, h5, h6 {
   transition: 0.3;
   padding: 10px 0 10px 40px;
   transition: 0.3s;
+  text-decoration: auto;
 }
 .sidebar-nav .nav-content a i {
   font-size: 6px;
   margin-right: 8px;
   line-height: 0;
   border-radius: 50%;
+  text-decoration: auto;
 }
 .sidebar-nav .nav-content a:hover, .sidebar-nav .nav-content a.active {
   color: #4154f1;
