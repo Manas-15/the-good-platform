@@ -1,21 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
+import ConfirmationDialog from "./../Shared/ConfirmationDialog";
+import { Link, useLocation } from "react-router-dom";
 // import corporates from "./../../config/corporates.json";
 
 const ListCorporates = () => {
   let history = useHistory();
-  const corporates = useSelector(state => state.corporates);
+  const corporates = useSelector((state) => state.corporates);
   const user = useSelector((state) => state.authentication.user);
   const dispatch = useDispatch();
-
+  const [open, setOpen] = useState(false);
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionContent, setActionContent] = useState("");
+  const [actionType, setActionType] = useState("");
+  const handleOpen = (title, content) => {
+    setOpen(true);
+    setActionType(title);
+    if (title === "approve") {
+      setActionTitle("Approve Confirmation");
+    } else {
+      setActionTitle("Reject Confirmation");
+    }
+    setActionContent(content);
+  };
+  const handleClose = () => setOpen(false);
+  console.log("initialize open", open);
   useEffect(() => {
-      dispatch(corporateActions.getCorporates());
+    dispatch(corporateActions.getCorporates());
   }, []);
   // const test = corporates.items.data.message.corporates
+
   return (
-    <div>
+    <div>      
       <div className="row mb-4">
         <div className="col-md-6">
           <h4>Corporates</h4>
@@ -43,11 +61,10 @@ const ListCorporates = () => {
           </tr>
         </thead>
         <tbody>
-          {
-            corporates?.items?.data?.corporates && corporates?.items?.data?.corporates.length > 0
-            ?
+          {corporates?.items?.data?.corporates &&
+          corporates?.items?.data?.corporates.length > 0 ? (
             corporates?.items?.data?.corporates.map((corporate, index) => (
-              <tr key={index+1}>
+              <tr key={index + 1}>
                 <td scope="row">{index + 1}</td>
                 <td>{corporate.organization_name}</td>
                 <td>{corporate.organization_size}</td>
@@ -63,25 +80,44 @@ const ListCorporates = () => {
                   </a>
                   <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <li className="dropdown-header text-start">
-                    <span className="bi-check-circle"></span> Approve
-                    <a href="#" data-href="delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a>
-
-<button class="btn btn-default" data-href="/delete.php?id=54" data-toggle="modal" data-target="#confirm-delete">
-    Delete record #54
-</button>
+                      <a
+                        className="bi-check-circle cursor-pointer"
+                        onClick={() =>
+                          handleOpen(
+                            "approve",
+                            `Are you sure to approve "${corporate.organization_name}"?`
+                          )
+                        }
+                      >
+                        {" "}
+                        Approve
+                      </a>
                     </li>
                     <li className="dropdown-header text-start">
-                    <span className="bi-x-circle"></span> Reject
+                      <a
+                        className="bi-x-circle cursor-pointer"
+                        onClick={() =>
+                          handleOpen(
+                            "reject",
+                            `Are you sure to reject "${corporate.organization_name}"?`
+                          )
+                        }
+                      >
+                        {" "}
+                        Reject
+                      </a>
                     </li>
                   </ul>
                 </td>
               </tr>
             ))
-            :
+          ) : (
             <tr>
-              <td colSpan="6" className='text-center'>No corporates found</td>
+              <td colSpan="6" className="text-center">
+                No corporates found
+              </td>
             </tr>
-          }
+          )}
         </tbody>
       </table>
       <div className="row mb-4">
@@ -120,60 +156,21 @@ const ListCorporates = () => {
           </nav>
         </div>
       </div>
-      <div id="myModal" className="modal fade">
-        <div className="modal-dialog modal-confirm">
-          <div className="modal-content">
-            <div className="modal-header flex-column">
-              <div className="icon-box">
-                <i className="material-icons">&#xE5CD;</i>
-              </div>
-              <h4 className="modal-title w-100">Are you sure?</h4>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-hidden="true"
-              >
-                &times;
-              </button>
-            </div>
-            <div className="modal-body">
-              <p>
-                Do you really want to delete these records? This process cannot
-                be undone.
-              </p>
-            </div>
-            <div className="modal-footer justify-content-center">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button type="button" className="btn btn-danger">
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                ...
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-danger btn-ok">Delete</a>
-            </div>
-        </div>
-    </div>
-</div>
+      {open && (
+        <ConfirmationDialog
+          open={true}
+          title={actionTitle}
+          content={actionContent}
+          handleOK={() => {
+            handleClose();
+            alert("yeah");
+          }}
+          handleCancel={() => {
+            handleClose();
+            alert("cancel");
+          }}
+        />
+      )}
     </div>
   );
 };
