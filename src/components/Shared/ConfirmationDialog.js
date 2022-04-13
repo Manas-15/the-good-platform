@@ -1,8 +1,9 @@
 import { Button, Modal } from "react-bootstrap";
+import ReactHtmlParser from 'react-html-parser';
 export default function ConfirmationDialog({
   title,
   content,
-  handleOK,
+  handleConfirm,
   open,
   handleCancel,
 }) {
@@ -11,9 +12,9 @@ export default function ConfirmationDialog({
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{content}</Modal.Body>
+      <Modal.Body>{ReactHtmlParser(content)}</Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleOK}>
+        <Button variant="primary" onClick={handleConfirm}>
           Confirm
         </Button>
         <Button variant="danger" onClick={handleCancel}>

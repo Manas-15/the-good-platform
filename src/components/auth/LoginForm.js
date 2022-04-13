@@ -28,7 +28,7 @@ const LoginForm = ({ submit, disable, userType }) => {
         }) => (
           <Form>
             <h3>Sign In</h3>
-            <div className="form-group">
+            <div className="form-group m-0">
               <label>Email address</label>
               <input
                 type="email"
@@ -43,7 +43,7 @@ const LoginForm = ({ submit, disable, userType }) => {
                 {errors.email && touched.email && errors.email}
               </span>
             </div>
-            <div className="form-group">
+            <div className="form-group m-0">
               <label>Password</label>
               <input
                 type="password"

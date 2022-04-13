@@ -14,9 +14,9 @@ export const userService = {
 };
 
 function login(data) {
-    console.log("login 0939 >>>>>>>>>>>>>>>>>>>")
-    // process.env.REACT_APP_API_URL
-  return axios.post( process.env.REACT_APP_API_URL + "api/login/", data);
+  console.log("login 0939 >>>>>>>>>>>>>>>>>>>");
+  // process.env.REACT_APP_API_URL
+  return axios.post(process.env.REACT_APP_API_URL + "api/login/", data);
 }
 
 function logout() {
@@ -85,7 +85,6 @@ function _delete(id) {
 function handleResponse(response) {
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
-    console.log("response aaaaaaaaaaaaa");
     if (!response.ok) {
       if (response.status === 401) {
         // auto logout if 401 response returned from api

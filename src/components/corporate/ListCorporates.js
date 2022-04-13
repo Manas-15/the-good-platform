@@ -15,16 +15,20 @@ const ListCorporates = () => {
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
   const [selectedCorporate, setSelectedCorporate] = useState(Object);
-  const handleOpen = (title, item) => {
+  const handleOpen = (action, item) => {
     setOpen(true);
-    setActionType(title);
+    setActionType(action);
     setSelectedCorporate(item);
-    if (title === "approve") {
+    if (action === "approve") {
       setActionTitle("Approve Confirmation");
-      setActionContent(`Are you sure to approve "${item.organization_name}"?`);
+      setActionContent(
+        `Are you sure to approve <strong>"${item.organization_name}"</strong>?`
+      );
     } else {
       setActionTitle("Reject Confirmation");
-      setActionContent(`Are you sure to reject "${item.organization_name}"?`);
+      setActionContent(
+        `Are you sure to reject <strong>"${item.organization_name}"</strong>?`
+      );
     }
   };
   const confirm = () => {
@@ -161,7 +165,7 @@ const ListCorporates = () => {
           open={true}
           title={actionTitle}
           content={actionContent}
-          handleOK={() => {
+          handleConfirm={() => {
             confirm();
           }}
           handleCancel={() => {
