@@ -40,8 +40,12 @@ const ListCharityPrograms = () => {
                   <button type="submit" className="btn btn-primary btn-sm">
                     Donate
                   </button>
-                  <Link><span className="bi-gear fs-5 ml-2 cursor-pointer"></span></Link>
-                  <Link><span className="bi-suit-heart fs-5 ml-2 cursor-pointer text-danger"></span></Link>
+                  <Link>
+                    <span className="bi-gear fs-5 ml-2 cursor-pointer"></span>
+                  </Link>
+                  <Link>
+                    <span className="bi-suit-heart fs-5 ml-2 cursor-pointer text-danger"></span>
+                  </Link>
                 </td>
               </tr>
             ))

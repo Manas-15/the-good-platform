@@ -17,8 +17,6 @@ const SuperAdminLogin = (props) => {
     }
   };
 
-  return (
-    <LoginForm submit={(user) => login(user)} disable={loggingIn} />
-  );
+  return <LoginForm submit={(user) => login(user)} disable={loggingIn} />;
 };
 export default SuperAdminLogin;

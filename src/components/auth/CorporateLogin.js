@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import LoginForm from './LoginForm';
+import React, { useState } from "react";
+import LoginForm from "./LoginForm";
 import { userActions } from "./../../actions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,18 +17,13 @@ const CorporateLogin = (props) => {
     //     token: "fake-jwt-token",
     //   })
     // );
-    // const navigate = useNavigate();    
+    // const navigate = useNavigate();
     if (values.email && values.password) {
       console.log("create coming corporate", values);
       dispatch(userActions.login(values));
     }
-  }
-  
-  return (
-    <LoginForm 
-      submit={(user) => login(user)}
-      disable={loggingIn}
-    />
-  )
-}
+  };
+
+  return <LoginForm submit={(user) => login(user)} disable={loggingIn} />;
+};
 export default CorporateLogin;

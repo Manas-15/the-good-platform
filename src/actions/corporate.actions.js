@@ -22,9 +22,7 @@ function getCorporates() {
         console.log("errorerrorerror", error);
         dispatch(failure(error.toString()));
         dispatch(
-          alertActions.error(
-            error.toString()
-          )
+          alertActions.error(error.toString())
           // alertActions.error(
           //   error.toString() === "Error: Request failed with status code 401"
           //     ? "Token is invalid or expired"
@@ -82,7 +80,7 @@ function registerCorporate(corporate, type) {
         dispatch(success(corporate));
         if (type === "admin") {
           history.push("/corporates");
-        }else{
+        } else {
           history.push("/login");
         }
         dispatch(
@@ -118,11 +116,7 @@ function approveCorporate(corporate, type) {
       (corporate) => {
         dispatch(success(corporate));
         history.push("/corporates");
-        dispatch(
-          alertActions.success(
-            "Corporate approved successfully"
-          )
-        );
+        dispatch(alertActions.success("Corporate approved successfully"));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -149,11 +143,7 @@ function rejectCorporate(corporate, type) {
       (corporate) => {
         dispatch(success(corporate));
         history.push("/corporates");
-        dispatch(
-          alertActions.success(
-            "Corporate rejected successfully"
-          )
-        );
+        dispatch(alertActions.success("Corporate rejected successfully"));
       },
       (error) => {
         dispatch(failure(error.toString()));
