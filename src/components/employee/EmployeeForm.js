@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, useField, useFormikContext } from "formik";
 import { Link } from "react-router-dom";
 import { EmployeeSchema } from "./../Validations";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "./../../actions";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const initialValues = {
   name: "",
   email: "",
   empId: "",
   pan: "",
-  corporateId: "",
+  corporateId: 1,
   organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
@@ -19,6 +21,7 @@ const initialValues = {
   city: "",
   state: "",
   country: "",
+  userType: 3,
 };
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
@@ -30,12 +33,28 @@ const genderOptions = [
   { value: "Female", label: "Female" },
   { value: "Transgender", label: "Transgender" },
 ];
+// const FormDatePicker = (props) => {
+//   console.log("FormDatePicker >>>>>>>>>>>>>>>>>", props)
+//   return (
+//     <Field name="organizationJoiningDate" className="form-control">
+//       {({ field, meta, form: { setFieldValue } }) => {
+//         return (
+//           <DatePicker
+//             {...field}
+//             selected={field.value || null}
+//             onChange={(val) => {
+//               setFieldValue(field.name, val);
+//             }}
+//           />
+//         );
+//       }}
+//     </Field>
+//   );
+// };
 const EmployeeForm = ({ type }) => {
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
-  const addingEmployee = useSelector(
-    (state) => state.employees.addingEmployee
-  );
+  const addingEmployee = useSelector((state) => state.employees.addingEmployee);
   // if(type==='corporate'){
   //   initialValues.userType = 2
   // }else if(type==='corporate'){
@@ -44,7 +63,7 @@ const EmployeeForm = ({ type }) => {
   const dispatch = useDispatch();
   const employeeRegister = (values) => {
     setSubmitted(true);
-    if (values.organizationName && values.email && values.corporateId) {
+    if (values.name && values.email && values.corporateId) {
       dispatch(employeeActions.registerEmployee(values, type));
     }
   };
@@ -69,7 +88,9 @@ const EmployeeForm = ({ type }) => {
           /* and other goodies */
         }) => (
           <Form>
-            <h3>{type === "corporate" ? "Add Employee" : "Employee Register"}</h3>
+            <h3>
+              {type === "corporate" ? "Add Employee" : "Employee Register"}
+            </h3>
             <hr />
             <h6>Basic Information</h6>
             <div className="row mb-4">
@@ -77,39 +98,19 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Employee Name</label>
               </div>
               <div className="col-md-8 form-group col">
-                {/* <input
-                  type="text"
+                <Field
                   name="name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                  className="form-control"
-                  placeholder="Enter employee name"
-                />
-                <span className="error">
-                  {errors.name && touched.name && errors.name}
-                </span> */}
-                <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
-                <ErrorMessage name="name" component="div" className="invalid-feedback" />
-              </div>
-            </div>
-            <div className="row mb-4">
-              <div className="col-md-4">
-                <label className="mt-1">Employee ID</label>
-              </div>
-              <div className="col-md-8">
-                <input
                   type="text"
-                  name="empId"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.empId}
-                  className="form-control"
-                  placeholder="Enter employee ID"
+                  className={
+                    "form-control" +
+                    (errors.name && touched.name ? " is-invalid" : "")
+                  }
                 />
-                <span className="error">
-                  {errors.empId && touched.empId && errors.empId}
-                </span>
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -117,18 +118,39 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Employee Email</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="email"
+                <Field
                   name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                  className="form-control"
-                  placeholder="Enter email"
+                  type="email"
+                  className={
+                    "form-control" +
+                    (errors.email && touched.email ? " is-invalid" : "")
+                  }
                 />
-                <span className="error">
-                  {errors.email && touched.email && errors.email}
-                </span>
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="invalid-feedback"
+                />
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-4">
+                <label className="mt-1">Employee ID</label>
+              </div>
+              <div className="col-md-8">
+                <Field
+                  name="empId"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.empId && touched.empId ? " is-invalid" : "")
+                  }
+                />
+                <ErrorMessage
+                  name="empId"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -136,18 +158,19 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">PAN Number</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
+                <Field
                   name="pan"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.pan}
-                  className="form-control"
-                  placeholder="Enter pan"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.pan && touched.pan ? " is-invalid" : "")
+                  }
                 />
-                <span className="error">
-                  {errors.pan && touched.pan && errors.pan}
-                </span>
+                <ErrorMessage
+                  name="pan"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -155,45 +178,52 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Organization Joining Date</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
+                <Field
                   name="organizationJoiningDate"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.organizationJoiningDate}
-                  className="form-control"
-                  placeholder="Enter regd number"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.organizationJoiningDate &&
+                    touched.organizationJoiningDate
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.organizationJoiningDate &&
-                    touched.organizationJoiningDate &&
-                    errors.organizationJoiningDate}
-                </span>
+                {/* <FormDatePicker /> */}
+                <ErrorMessage
+                  name="organizationJoiningDate"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
               <div className="col-md-4">
-                <label className="mt-1">Select Organization</label>
+                <label className="mt-1">Corporate</label>
               </div>
               <div className="col-md-8">
-                <select
+                <Field
                   name="corporateId"
-                  className="form-select"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  as="select"
+                  className={
+                    "form-control" +
+                    (errors.corporateId && touched.corporateId
+                      ? " is-invalid"
+                      : "")
+                  }
                 >
-                  <option value="none">Select Organization</option>
+                  <option value="none">Select Corporate</option>
                   {organizationOptions.map((corporate, index) => (
                     <option value={corporate.value} key={index}>
                       {corporate.label}
                     </option>
                   ))}
-                </select>
-                <span className="error">
-                  {errors.corporateId &&
-                    touched.corporateId &&
-                    errors.corporateId}
-                </span>
+                </Field>
+                <ErrorMessage
+                  name="corporateId"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -201,11 +231,13 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Gender</label>
               </div>
               <div className="col-md-8">
-                <select
+                <Field
                   name="gender"
-                  className="form-select"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  as="select"
+                  className={
+                    "form-control" +
+                    (errors.gender && touched.gender ? " is-invalid" : "")
+                  }
                 >
                   <option value="none">Select Gender</option>
                   {genderOptions.map((gender, index) => (
@@ -213,10 +245,12 @@ const EmployeeForm = ({ type }) => {
                       {gender.label}
                     </option>
                   ))}
-                </select>
-                <span className="error">
-                  {errors.gender && touched.gender && errors.gender}
-                </span>
+                </Field>
+                <ErrorMessage
+                  name="gender"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <hr />
@@ -226,20 +260,21 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Contact Number</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="contactNumber"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.contactNumber}
-                  placeholder="Enter contact number"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.contactNumber && touched.contactNumber
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.contactNumber &&
-                    touched.contactNumber &&
-                    errors.contactNumber}
-                </span>
+                <ErrorMessage
+                  name="contactNumber"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -247,14 +282,13 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Address</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="address"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.address}
-                  placeholder="Enter address"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.address && touched.address ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>
@@ -263,14 +297,13 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">City</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="city"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.city}
-                  placeholder="Enter city"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.city && touched.city ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>
@@ -279,14 +312,13 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">State</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="state"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.state}
-                  placeholder="Enter state"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.state && touched.state ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>

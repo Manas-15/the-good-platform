@@ -19,7 +19,7 @@ export function employees(state = {}, action) {
     case employeeConstants.ADD_EMPLOYEE_SUCCESS:
       return {};
     case employeeConstants.ADD_EMPLOYEE_FAILURE:
-      return {};    
+      return {};
     default:
       return state;
   }

@@ -1,4 +1,3 @@
-// import config from 'config';
 import { authHeader } from "../helpers";
 import { useLocation } from "react-router-dom";
 import axios from "axios";

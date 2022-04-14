@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import employees from "./../../config/employees.json";
 
@@ -45,7 +44,7 @@ const ListEmployees = () => {
             // corporates.items && corporates.items.length > 0
             // ?
             employees.map((employee, index) => (
-              <tr key={index+1}>
+              <tr key={index + 1}>
                 <td scope="row">{index + 1}</td>
                 <td>{employee.name}</td>
                 <td>{employee.email}</td>
@@ -59,12 +58,8 @@ const ListEmployees = () => {
                     <span className="bi-three-dots"></span>
                   </a>
                   <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li className="dropdown-header text-start">
-                      Activate
-                    </li>
-                    <li className="dropdown-header text-start">
-                      Deactivate
-                    </li>
+                    <li className="dropdown-header text-start">Activate</li>
+                    <li className="dropdown-header text-start">Deactivate</li>
                   </ul>
                 </td>
               </tr>
