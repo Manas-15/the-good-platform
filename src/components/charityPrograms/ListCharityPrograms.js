@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import charityPrograms from "./../../config/charityPrograms.json";
+import charityPrograms from "../../config/charityPrograms.json";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 

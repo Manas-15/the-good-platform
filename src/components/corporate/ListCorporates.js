@@ -4,11 +4,15 @@ import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
 // import corporates from "./../../config/corporates.json";
-
+const actionInitialValues = {
+  userId: "",
+  requestType: "",
+};
 const ListCorporates = () => {
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
   const user = useSelector((state) => state.authentication.user);
+  const actionMsg = useSelector((state) => state.corporates.msg);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -19,28 +23,48 @@ const ListCorporates = () => {
     setOpen(true);
     setActionType(action);
     setSelectedCorporate(item);
-    if (action === "approve") {
-      setActionTitle("Approve Confirmation");
-      setActionContent(
-        `Are you sure to approve <strong>"${item.organization_name}"</strong>?`
-      );
-    } else {
-      setActionTitle("Reject Confirmation");
-      setActionContent(
-        `Are you sure to reject <strong>"${item.organization_name}"</strong>?`
-      );
-    }
+    // if (action === "approve") {
+    setActionTitle(`${action} Confirmation`);
+    setActionContent(
+      `Are you sure to ${action.toLowerCase()} <strong>"${
+        item.organizationName
+      }"</strong>?`
+    );
+    // } else {
+    //   setActionTitle("Reject Confirmation");
+    //   setActionContent(
+    //     `Are you sure to reject <strong>"${item.organization_name}"</strong>?`
+    //   );
+    // }
   };
   const confirm = () => {
     handleClose();
+    actionInitialValues.userId = selectedCorporate.userId;
+    actionInitialValues.requestType = actionType;
+    dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
     // if (actionType === "approve") {
-    //   dispatch(corporateActions.approveCorporate());
-    // } else {
-    //   dispatch(corporateActions.rejectCorporate());
+    //   dispatch(corporateActions.approveCorporate(actionInitialValues));
+    // } else if (actionType === "reject") {
+    //   dispatch(corporateActions.rejectCorporate(actionInitialValues));
+    // } else if (actionType === "activate") {
+    //   dispatch(corporateActions.activateCorporate(actionInitialValues));
+    // } else if (actionType === "deactivate") {
+    //   dispatch(corporateActions.deactivateCorporate(actionInitialValues));
     // }
   };
   const handleClose = () => setOpen(false);
-  console.log("initialize open", open);
+  if(actionMsg === 'Success'){
+    let corporate = corporates?.items.find(item => item.id == selectedCorporate.id)
+    if(actionType === 'Approve'){
+      corporate.isApprove = true
+    }else if(actionType === 'Reject'){
+      corporate.isApprove = false
+    }else if(actionType === 'Activate'){
+      corporate.isActive = true
+    }else if(actionType === 'Deactivate'){
+      corporate.isActive = false
+    }
+  }
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
@@ -74,9 +98,9 @@ const ListCorporates = () => {
           </tr>
         </thead>
         <tbody>
-          {corporates?.items?.data?.corporates &&
-          corporates?.items?.data?.corporates.length > 0 ? (
-            corporates?.items?.data?.corporates.map((corporate, index) => {
+          {corporates?.items &&
+          corporates?.items.length > 0 ? (
+            corporates?.items.map((corporate, index) => {
               const ref = createRef();
               // const handleClick = () =>
               // index > 6 && ref.current.scrollIntoView({
@@ -85,31 +109,47 @@ const ListCorporates = () => {
               return (
                 <tr key={index + 1} ref={ref}>
                   <td scope="row">{index + 1}</td>
-                  <td>{corporate.organization_name}</td>
-                  <td>{corporate.organization_size}</td>
-                  <td>{corporate.organization_type}</td>
+                  <td>{corporate?.organizationName}</td>
+                  <td>{corporate?.organizationSize}</td>
+                  <td>{corporate?.organizationType}</td>
                   <td>
-                    {/* {corporate.address
-                      .split(",")
-                      .reduce((all, cur) => [...all, <br />, cur])} */}
+                    {corporate?.address}
+                    <br />
+                    {corporate?.city}
+                    <br />
+                    {corporate?.state}
+                    <br />
+                    {corporate?.country}
                   </td>
                   <td className="text-center">
                     <a className="icon" href="#" data-bs-toggle="dropdown">
                       <span className="bi-three-dots"></span>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                      <li
+                    {!corporate?.isApprove ? <><li
                         className="dropdown-header text-start"
-                        onClick={() => handleOpen("approve", corporate)}
+                        onClick={() => handleOpen("Approve", corporate)}
                       >
                         <span className="bi-check-circle"> Approve</span>
                       </li>
                       <li
                         className="dropdown-header text-start"
-                        onClick={() => handleOpen("reject", corporate)}
+                        onClick={() => handleOpen("Reject", corporate)}
                       >
                         <span className="bi-x-circle"> Reject</span>
+                      </li></> : null}
+                      {corporate?.isApprove ? <><li
+                        className="dropdown-header text-start"
+                        onClick={() => handleOpen("Activate", corporate)}
+                      >
+                        <span className="bi-check-circle"> Activate</span>
                       </li>
+                      <li
+                        className="dropdown-header text-start"
+                        onClick={() => handleOpen("Deactivate", corporate)}
+                      >
+                        <span className="bi-x-circle"> Deacticate</span>
+                      </li></> : null}
                     </ul>
                   </td>
                 </tr>

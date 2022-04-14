@@ -9,6 +9,9 @@ export const corporateActions = {
   getCorporates,
   approveCorporate,
   rejectCorporate,
+  activateCorporate,
+  deactivateCorporate,
+  corporateAccountRequest,
 };
 
 function getCorporates() {
@@ -108,11 +111,39 @@ function registerCorporate(corporate, type) {
     return { type: corporateConstants.ADD_CORPORATE_FAILURE, error };
   }
 }
-function approveCorporate(corporate, type) {
+function corporateAccountRequest(actionValues) {
   return (dispatch) => {
-    dispatch(request(corporate));
+    dispatch(request(actionValues));
 
-    corporateService.approveCorporate(corporate).then(
+    corporateService.corporateAccountRequest(actionValues).then(
+      (msg) => {
+        dispatch(success(msg));
+        // history.push("/corporates");
+        // console.log("ddddddddddddddddddddd success action", msg)
+        dispatch(alertActions.success(`Corporate ${actionValues.requestType.toLowerCase()}ed successfully`));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(corporate) {
+    return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
+  }
+  function success(msg) {
+    return { type: corporateConstants.CORPORATE_ACTION_SUCCESS, msg };
+  }
+  function failure(error) {
+    return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };
+  }
+}
+function approveCorporate(actionValues) {
+  return (dispatch) => {
+    dispatch(request(actionValues));
+
+    corporateService.approveCorporate(actionValues).then(
       (corporate) => {
         dispatch(success(corporate));
         history.push("/corporates");
@@ -162,3 +193,59 @@ function rejectCorporate(corporate, type) {
     return { type: corporateConstants.REJECT_CORPORATE_FAILURE, error };
   }
 }
+function activateCorporate(corporate, type) {
+  return (dispatch) => {
+    dispatch(request(corporate));
+
+    corporateService.activateCorporate(corporate).then(
+      (corporate) => {
+        dispatch(success(corporate));
+        history.push("/corporates");
+        dispatch(alertActions.success("Corporate activated successfully"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(corporate) {
+    return { type: corporateConstants.REJECT_CORPORATE_REQUEST, corporate };
+  }
+  function success(corporate) {
+    return { type: corporateConstants.REJECT_CORPORATE_SUCCESS, corporate };
+  }
+  function failure(error) {
+    return { type: corporateConstants.REJECT_CORPORATE_FAILURE, error };
+  }
+}
+
+function deactivateCorporate(corporate, type) {
+  return (dispatch) => {
+    dispatch(request(corporate));
+
+    corporateService.deactivateCorporate(corporate).then(
+      (corporate) => {
+        dispatch(success(corporate));
+        history.push("/corporates");
+        dispatch(alertActions.success("Corporate deactivated successfully"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(corporate) {
+    return { type: corporateConstants.REJECT_CORPORATE_REQUEST, corporate };
+  }
+  function success(corporate) {
+    return { type: corporateConstants.REJECT_CORPORATE_SUCCESS, corporate };
+  }
+  function failure(error) {
+    return { type: corporateConstants.REJECT_CORPORATE_FAILURE, error };
+  }
+}
+

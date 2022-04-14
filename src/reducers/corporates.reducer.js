@@ -8,7 +8,7 @@ export function corporates(state = {}, action) {
       };
     case corporateConstants.GET_CORPORATES_SUCCESS:
       return {
-        items: action.corporates,
+        items: action.corporates?.data?.corporates,
       };
     case corporateConstants.GET_CORPORATES_FAILURE:
       return {
@@ -20,6 +20,12 @@ export function corporates(state = {}, action) {
       return {};
     case corporateConstants.ADD_CORPORATE_FAILURE:
       return {};
+    case corporateConstants.CORPORATE_ACTION_REQUEST:
+      return { items: state.items, actionRequest: true };
+    case corporateConstants.CORPORATE_ACTION_SUCCESS:
+      return { items: state.items, msg: action?.msg?.data?.msg };
+    case corporateConstants.CORPORATE_ACTION_FAILURE:
+      return {items: state.items, error: action.error,};
     case corporateConstants.APPROVE_CORPORATE_REQUEST:
       return { approveCorporate: true };
     case corporateConstants.APPROVE_CORPORATE_SUCCESS:

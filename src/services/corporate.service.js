@@ -9,6 +9,9 @@ export const corporateService = {
   getCorporates,
   approveCorporate,
   rejectCorporate,
+  activateCorporate,
+  deactivateCorporate,
+  corporateAccountRequest,
 };
 
 function getCorporates() {
@@ -25,6 +28,12 @@ function registerCorporate(data) {
     data
   );
 }
+function corporateAccountRequest(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporate_account_request/",
+    data
+  );
+}
 function approveCorporate(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporate_approve/",
@@ -34,6 +43,18 @@ function approveCorporate(data) {
 function rejectCorporate(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporate_reject/",
+    data
+  );
+}
+function activateCorporate(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporate_activate/",
+    data
+  );
+}
+function deactivateCorporate(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporate_deactivate/",
     data
   );
 }
