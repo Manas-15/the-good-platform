@@ -26,7 +26,7 @@ function registerCorporate(data) {
 }
 function corporateAccountRequest(data) {
   return axios.post(
-    process.env.REACT_APP_API_URL + "api/corporate_account_request//",
+    process.env.REACT_APP_API_URL + "api/corporate_account_request/",
     data
   );
 }

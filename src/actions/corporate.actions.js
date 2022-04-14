@@ -7,8 +7,7 @@ export const corporateActions = {
   addCorporate,
   registerCorporate,
   getCorporates,
-  approveCorporate,
-  rejectCorporate,
+  corporateAccountRequest,
 };
 
 function getCorporates() {
@@ -77,7 +76,7 @@ function registerCorporate(corporate, type) {
 
     corporateService.registerCorporate(corporate).then(
       (corporate) => {
-        dispatch(success(corporate));
+        dispatch(success());
         if (type === "admin") {
           history.push("/corporates");
         } else {
@@ -115,11 +114,13 @@ function corporateAccountRequest(actionValues) {
     corporateService.corporateAccountRequest(actionValues).then(
       (msg) => {
         dispatch(success(msg));
-        // history.push("/corporates");
-        // console.log("ddddddddddddddddddddd success action", msg)
         dispatch(
           alertActions.success(
-            `Corporate ${actionValues.requestType.toLowerCase()}d successfully`
+            `Corporate ${
+              actionValues.requestType === "Reject"
+                ? "rejected"
+                : actionValues.requestType.toLowerCase() + "d"
+            } successfully`
           )
         );
       },
@@ -133,8 +134,8 @@ function corporateAccountRequest(actionValues) {
   function request(corporate) {
     return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
   }
-  function success(msg) {
-    return { type: corporateConstants.CORPORATE_ACTION_SUCCESS, msg };
+  function success() {
+    return { type: corporateConstants.CORPORATE_ACTION_SUCCESS };
   }
   function failure(error) {
     return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };

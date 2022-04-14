@@ -12,7 +12,6 @@ const ListCorporates = () => {
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
   const user = useSelector((state) => state.authentication.user);
-  const actionMsg = useSelector((state) => state.corporates.msg);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -23,50 +22,20 @@ const ListCorporates = () => {
     setOpen(true);
     setActionType(action);
     setSelectedCorporate(item);
-    // if (action === "approve") {
     setActionTitle(`${action} Confirmation`);
     setActionContent(
       `Are you sure to ${action.toLowerCase()} <strong>"${
         item.organizationName
       }"</strong>?`
     );
-    // } else {
-    //   setActionTitle("Reject Confirmation");
-    //   setActionContent(
-    //     `Are you sure to reject <strong>"${item.organization_name}"</strong>?`
-    //   );
-    // }
   };
   const confirm = () => {
     handleClose();
     actionInitialValues.userId = selectedCorporate.userId;
     actionInitialValues.requestType = actionType;
     dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
-    // if (actionType === "approve") {
-    //   dispatch(corporateActions.approveCorporate(actionInitialValues));
-    // } else if (actionType === "reject") {
-    //   dispatch(corporateActions.rejectCorporate(actionInitialValues));
-    // } else if (actionType === "activate") {
-    //   dispatch(corporateActions.activateCorporate(actionInitialValues));
-    // } else if (actionType === "deactivate") {
-    //   dispatch(corporateActions.deactivateCorporate(actionInitialValues));
-    // }
   };
   const handleClose = () => setOpen(false);
-  if (actionMsg === "Success") {
-    let corporate = corporates?.items.find(
-      (item) => item.id == selectedCorporate.id
-    );
-    if (actionType === "Approve") {
-      corporate.isApprove = true;
-    } else if (actionType === "Reject") {
-      corporate.isApprove = false;
-    } else if (actionType === "Activate") {
-      corporate.isActive = true;
-    } else if (actionType === "Deactivate") {
-      corporate.isActive = false;
-    }
-  }
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
@@ -127,8 +96,7 @@ const ListCorporates = () => {
                       <span className="bi-three-dots"></span>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                      {corporate?.isApprove === null ||
-                      !corporate?.isApprove ? (
+                      {!corporate?.isApprove ? (
                         <li
                           className="dropdown-header text-start"
                           onClick={() => handleOpen("Approve", corporate)}
@@ -136,12 +104,12 @@ const ListCorporates = () => {
                           <span className="bi-check-circle"> Approve</span>
                         </li>
                       ) : null}
-                      {corporate?.isApprove === null || corporate?.isApprove ? (
+                      {corporate?.isApprove === null ? (
                         <li
                           className="dropdown-header text-start"
                           onClick={() => handleOpen("Reject", corporate)}
                         >
-                          <span className="bi-x-circle"> Disapprove</span>
+                          <span className="bi-x-circle"> Reject</span>
                         </li>
                       ) : null}
                       {corporate?.isApprove && !corporate?.isActive ? (
@@ -155,9 +123,9 @@ const ListCorporates = () => {
                       {corporate?.isApprove && corporate?.isActive ? (
                         <li
                           className="dropdown-header text-start"
-                          onClick={() => handleOpen("Deactivate", corporate)}
+                          onClick={() => handleOpen("Inactivate", corporate)}
                         >
-                          <span className="bi-slash-circle"> Deacticate</span>
+                          <span className="bi-slash-circle"> Inactivate</span>
                         </li>
                       ) : null}
                     </ul>

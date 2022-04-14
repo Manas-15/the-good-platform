@@ -21,9 +21,32 @@ export function corporates(state = {}, action) {
     case corporateConstants.ADD_CORPORATE_FAILURE:
       return {};
     case corporateConstants.CORPORATE_ACTION_REQUEST:
-      return { items: state.items, actionRequest: true };
+      return {
+        items: state.items,
+        actionRequest: true,
+        corporateId: action.corporate.userId,
+        requestType: action.corporate.requestType,
+      };
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
-      return { items: state.items, msg: action?.msg?.data?.msg };
+      return {
+        items: state.items.map((item) => {
+          if (item.userId === state.corporateId) {
+            if (
+              state.requestType === "Approve" ||
+              state.requestType === "Reject"
+            ) {
+              return { ...item, isApprove: state.requestType === "Approve" };
+            }
+            if (
+              state.requestType === "Activate" ||
+              state.requestType === "Inactivate"
+            ) {
+              return { ...item, isActive: state.requestType === "Activate" };
+            }
+          }
+          return item;
+        }),
+      };
     case corporateConstants.CORPORATE_ACTION_FAILURE:
       return { items: state.items, error: action.error };
     default:
