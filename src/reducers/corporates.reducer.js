@@ -25,19 +25,7 @@ export function corporates(state = {}, action) {
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
       return { items: state.items, msg: action?.msg?.data?.msg };
     case corporateConstants.CORPORATE_ACTION_FAILURE:
-      return {items: state.items, error: action.error,};
-    case corporateConstants.APPROVE_CORPORATE_REQUEST:
-      return { approveCorporate: true };
-    case corporateConstants.APPROVE_CORPORATE_SUCCESS:
-      return { item: action.corporate };
-    case corporateConstants.APPROVE_CORPORATE_FAILURE:
-      return {};
-    case corporateConstants.REJECT_CORPORATE_REQUEST:
-      return { rejectCorporate: true };
-    case corporateConstants.REJECT_CORPORATE_SUCCESS:
-      return { item: action.corporate };
-    case corporateConstants.REJECT_CORPORATE_FAILURE:
-      return {};
+      return { items: state.items, error: action.error };
     default:
       return state;
   }

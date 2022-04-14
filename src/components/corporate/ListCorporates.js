@@ -53,16 +53,18 @@ const ListCorporates = () => {
     // }
   };
   const handleClose = () => setOpen(false);
-  if(actionMsg === 'Success'){
-    let corporate = corporates?.items.find(item => item.id == selectedCorporate.id)
-    if(actionType === 'Approve'){
-      corporate.isApprove = true
-    }else if(actionType === 'Reject'){
-      corporate.isApprove = false
-    }else if(actionType === 'Activate'){
-      corporate.isActive = true
-    }else if(actionType === 'Deactivate'){
-      corporate.isActive = false
+  if (actionMsg === "Success") {
+    let corporate = corporates?.items.find(
+      (item) => item.id == selectedCorporate.id
+    );
+    if (actionType === "Approve") {
+      corporate.isApprove = true;
+    } else if (actionType === "Reject") {
+      corporate.isApprove = false;
+    } else if (actionType === "Activate") {
+      corporate.isActive = true;
+    } else if (actionType === "Deactivate") {
+      corporate.isActive = false;
     }
   }
   useEffect(() => {
@@ -98,8 +100,7 @@ const ListCorporates = () => {
           </tr>
         </thead>
         <tbody>
-          {corporates?.items &&
-          corporates?.items.length > 0 ? (
+          {corporates?.items && corporates?.items.length > 0 ? (
             corporates?.items.map((corporate, index) => {
               const ref = createRef();
               // const handleClick = () =>
@@ -126,30 +127,39 @@ const ListCorporates = () => {
                       <span className="bi-three-dots"></span>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                    {!corporate?.isApprove ? <><li
-                        className="dropdown-header text-start"
-                        onClick={() => handleOpen("Approve", corporate)}
-                      >
-                        <span className="bi-check-circle"> Approve</span>
-                      </li>
-                      <li
-                        className="dropdown-header text-start"
-                        onClick={() => handleOpen("Reject", corporate)}
-                      >
-                        <span className="bi-x-circle"> Reject</span>
-                      </li></> : null}
-                      {corporate?.isApprove ? <><li
-                        className="dropdown-header text-start"
-                        onClick={() => handleOpen("Activate", corporate)}
-                      >
-                        <span className="bi-check-circle"> Activate</span>
-                      </li>
-                      <li
-                        className="dropdown-header text-start"
-                        onClick={() => handleOpen("Deactivate", corporate)}
-                      >
-                        <span className="bi-x-circle"> Deacticate</span>
-                      </li></> : null}
+                      {corporate?.isApprove === null ||
+                      !corporate?.isApprove ? (
+                        <li
+                          className="dropdown-header text-start"
+                          onClick={() => handleOpen("Approve", corporate)}
+                        >
+                          <span className="bi-check-circle"> Approve</span>
+                        </li>
+                      ) : null}
+                      {corporate?.isApprove === null || corporate?.isApprove ? (
+                        <li
+                          className="dropdown-header text-start"
+                          onClick={() => handleOpen("Reject", corporate)}
+                        >
+                          <span className="bi-x-circle"> Disapprove</span>
+                        </li>
+                      ) : null}
+                      {corporate?.isApprove && !corporate?.isActive ? (
+                        <li
+                          className="dropdown-header text-start"
+                          onClick={() => handleOpen("Activate", corporate)}
+                        >
+                          <span className="bi-power"> Activate</span>
+                        </li>
+                      ) : null}
+                      {corporate?.isApprove && corporate?.isActive ? (
+                        <li
+                          className="dropdown-header text-start"
+                          onClick={() => handleOpen("Deactivate", corporate)}
+                        >
+                          <span className="bi-slash-circle"> Deacticate</span>
+                        </li>
+                      ) : null}
                     </ul>
                   </td>
                 </tr>

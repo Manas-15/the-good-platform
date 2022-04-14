@@ -9,9 +9,6 @@ export const corporateActions = {
   getCorporates,
   approveCorporate,
   rejectCorporate,
-  activateCorporate,
-  deactivateCorporate,
-  corporateAccountRequest,
 };
 
 function getCorporates() {
@@ -120,7 +117,11 @@ function corporateAccountRequest(actionValues) {
         dispatch(success(msg));
         // history.push("/corporates");
         // console.log("ddddddddddddddddddddd success action", msg)
-        dispatch(alertActions.success(`Corporate ${actionValues.requestType.toLowerCase()}ed successfully`));
+        dispatch(
+          alertActions.success(
+            `Corporate ${actionValues.requestType.toLowerCase()}d successfully`
+          )
+        );
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -139,113 +140,3 @@ function corporateAccountRequest(actionValues) {
     return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };
   }
 }
-function approveCorporate(actionValues) {
-  return (dispatch) => {
-    dispatch(request(actionValues));
-
-    corporateService.approveCorporate(actionValues).then(
-      (corporate) => {
-        dispatch(success(corporate));
-        history.push("/corporates");
-        dispatch(alertActions.success("Corporate approved successfully"));
-      },
-      (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
-      }
-    );
-  };
-
-  function request(corporate) {
-    return { type: corporateConstants.APPROVE_CORPORATE_REQUEST, corporate };
-  }
-  function success(corporate) {
-    return { type: corporateConstants.APPROVE_CORPORATE_SUCCESS, corporate };
-  }
-  function failure(error) {
-    return { type: corporateConstants.APPROVE_CORPORATE_FAILURE, error };
-  }
-}
-function rejectCorporate(corporate, type) {
-  return (dispatch) => {
-    dispatch(request(corporate));
-
-    corporateService.rejectCorporate(corporate).then(
-      (corporate) => {
-        dispatch(success(corporate));
-        history.push("/corporates");
-        dispatch(alertActions.success("Corporate rejected successfully"));
-      },
-      (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
-      }
-    );
-  };
-
-  function request(corporate) {
-    return { type: corporateConstants.REJECT_CORPORATE_REQUEST, corporate };
-  }
-  function success(corporate) {
-    return { type: corporateConstants.REJECT_CORPORATE_SUCCESS, corporate };
-  }
-  function failure(error) {
-    return { type: corporateConstants.REJECT_CORPORATE_FAILURE, error };
-  }
-}
-function activateCorporate(corporate, type) {
-  return (dispatch) => {
-    dispatch(request(corporate));
-
-    corporateService.activateCorporate(corporate).then(
-      (corporate) => {
-        dispatch(success(corporate));
-        history.push("/corporates");
-        dispatch(alertActions.success("Corporate activated successfully"));
-      },
-      (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
-      }
-    );
-  };
-
-  function request(corporate) {
-    return { type: corporateConstants.REJECT_CORPORATE_REQUEST, corporate };
-  }
-  function success(corporate) {
-    return { type: corporateConstants.REJECT_CORPORATE_SUCCESS, corporate };
-  }
-  function failure(error) {
-    return { type: corporateConstants.REJECT_CORPORATE_FAILURE, error };
-  }
-}
-
-function deactivateCorporate(corporate, type) {
-  return (dispatch) => {
-    dispatch(request(corporate));
-
-    corporateService.deactivateCorporate(corporate).then(
-      (corporate) => {
-        dispatch(success(corporate));
-        history.push("/corporates");
-        dispatch(alertActions.success("Corporate deactivated successfully"));
-      },
-      (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
-      }
-    );
-  };
-
-  function request(corporate) {
-    return { type: corporateConstants.REJECT_CORPORATE_REQUEST, corporate };
-  }
-  function success(corporate) {
-    return { type: corporateConstants.REJECT_CORPORATE_SUCCESS, corporate };
-  }
-  function failure(error) {
-    return { type: corporateConstants.REJECT_CORPORATE_FAILURE, error };
-  }
-}
-
