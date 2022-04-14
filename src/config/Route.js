@@ -12,7 +12,7 @@ import ListCharityPrograms from "../components/CharityPrograms/ListCharityProgra
 import ListEmployees from "../components/Employee/ListEmployees";
 import SocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
 import AddCorporate from "../components/Corporate/AddCorporate";
-import { PrivateRoute } from "../components/PrivateRoute";
+import AddEmployee from "../components/Employee/AddEmployee";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
 import CorporateSignUp from "../components/Auth/CorporateSignUp";
@@ -91,6 +91,9 @@ const CreateRoutes = () => {
               )}
               {user?.user_type === 2 && (
                 <Route exact path="/employees" component={ListEmployees} />
+              )}
+              {user?.user_type === 2 && (
+                <Route path="/employees/add" component={AddEmployee} />
               )}
               <Route exact path="/dashboard" component={Dashboard} />
               <Route

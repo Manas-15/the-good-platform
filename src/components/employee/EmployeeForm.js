@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { EmployeeSchema } from "./../Validations";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { corporateActions } from "./../../actions";
+import { employeeActions } from "./../../actions";
 
 const initialValues = {
   name: "",
@@ -33,32 +33,20 @@ const genderOptions = [
 const EmployeeForm = ({ type }) => {
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
-  const addingCorporate = useSelector(
-    (state) => state.corporates.addingCorporate
+  const addingEmployee = useSelector(
+    (state) => state.employees.addingEmployee
   );
-  if(type==='corporate'){
-    initialValues.userType = 2
-  }else if(type==='corporate'){
-    initialValues.userType = 3
-  }
+  // if(type==='corporate'){
+  //   initialValues.userType = 2
+  // }else if(type==='corporate'){
+  //   initialValues.userType = 3
+  // }
   const dispatch = useDispatch();
-  const corporateRegister = (values) => {
-    console.log("create coming", values);
+  const employeeRegister = (values) => {
     setSubmitted(true);
-    if (values.organizationName && values.email && values.regdNumber) {
-      dispatch(corporateActions.registerCorporate(values, type));
+    if (values.organizationName && values.email && values.corporateId) {
+      dispatch(employeeActions.registerEmployee(values, type));
     }
-    // axios({
-    //   'url': API.login,
-    //   'headers': {
-    //       'content-type':'application/octet-stream',
-    //       'x-rapidapi-host':'example.com',
-    //       // 'x-rapidapi-key': process.env.RAPIDAPI_KEY
-    //   },
-    //   'params': {
-    //       'search':'parameter',
-    //   },
-    // })
   };
 
   return (
@@ -67,7 +55,7 @@ const EmployeeForm = ({ type }) => {
         initialValues={initialValues}
         validationSchema={EmployeeSchema}
         onSubmit={(values, { setSubmitting }) => {
-          corporateRegister(values);
+          employeeRegister(values);
         }}
       >
         {({
@@ -80,16 +68,16 @@ const EmployeeForm = ({ type }) => {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <form>
-            <h3>Employee Register</h3>
+          <Form>
+            <h3>{type === "corporate" ? "Add Employee" : "Employee Register"}</h3>
             <hr />
             <h6>Basic Information</h6>
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Employee Name</label>
               </div>
-              <div className="col-md-8">
-                <input
+              <div className="col-md-8 form-group col">
+                {/* <input
                   type="text"
                   name="name"
                   onChange={handleChange}
@@ -100,7 +88,9 @@ const EmployeeForm = ({ type }) => {
                 />
                 <span className="error">
                   {errors.name && touched.name && errors.name}
-                </span>
+                </span> */}
+                <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
+                <ErrorMessage name="name" component="div" className="invalid-feedback" />
               </div>
             </div>
             <div className="row mb-4">
@@ -186,7 +176,7 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Select Organization</label>
               </div>
               <div className="col-md-8">
-              <select
+                <select
                   name="corporateId"
                   className="form-select"
                   onChange={handleChange}
@@ -194,7 +184,9 @@ const EmployeeForm = ({ type }) => {
                 >
                   <option value="none">Select Organization</option>
                   {organizationOptions.map((corporate, index) => (
-                    <option value={corporate.value} key={index}>{corporate.label}</option>
+                    <option value={corporate.value} key={index}>
+                      {corporate.label}
+                    </option>
                   ))}
                 </select>
                 <span className="error">
@@ -217,7 +209,9 @@ const EmployeeForm = ({ type }) => {
                 >
                   <option value="none">Select Gender</option>
                   {genderOptions.map((gender, index) => (
-                    <option value={gender.value} key={index}>{gender.label}</option>
+                    <option value={gender.value} key={index}>
+                      {gender.label}
+                    </option>
                   ))}
                 </select>
                 <span className="error">
@@ -308,22 +302,32 @@ const EmployeeForm = ({ type }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.country}
-                  placeholder="Enter country"
+                  placeholder="Country"
                 />
               </div>
             </div>
             <div className="text-center">
-              <button type="submit" className="btn btn-primary btn-block">
-                {addingCorporate && (
-                  <span className="spinner-border spinner-border-sm mr-1"></span>
-                )}
-                Register
-              </button>
+              <div className="row">
+                <div className="col-md-4 offset-md-4">
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-block"
+                    disabled={addingEmployee}
+                  >
+                    {addingEmployee && (
+                      <span className="spinner-border spinner-border-sm mr-1"></span>
+                    )}
+                    {type === "corporate" ? "Add" : "Register"}
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="forgot-password text-center">
-              Already registered? <Link to="/sign-in">Sign In</Link>
-            </div>
-          </form>
+            {type === "employee" && (
+              <div className="forgot-password text-center">
+                Already registered? <Link to="/sign-in">Sign In</Link>
+              </div>
+            )}
+          </Form>
         )}
       </Formik>
     </div>

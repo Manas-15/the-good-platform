@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { CorporateSchema } from "./../Validations";
 import { useHistory } from "react-router-dom";
@@ -37,10 +37,10 @@ const CorporateForm = ({ type }) => {
   const addingCorporate = useSelector(
     (state) => state.corporates.addingCorporate
   );
-  if(type==='admin'){
-    initialValues.userType = 1
-  }else if(type==='corporate'){
-    initialValues.userType = 2
+  if (type === "admin") {
+    initialValues.userType = 1;
+  } else if (type === "corporate") {
+    initialValues.userType = 2;
   }
   const dispatch = useDispatch();
   const corporateRegister = (values) => {
@@ -49,17 +49,6 @@ const CorporateForm = ({ type }) => {
     if (values.organizationName && values.email && values.regdNumber) {
       dispatch(corporateActions.registerCorporate(values, type));
     }
-    // axios({
-    //   'url': API.login,
-    //   'headers': {
-    //       'content-type':'application/octet-stream',
-    //       'x-rapidapi-host':'example.com',
-    //       // 'x-rapidapi-key': process.env.RAPIDAPI_KEY
-    //   },
-    //   'params': {
-    //       'search':'parameter',
-    //   },
-    // })
   };
 
   return (
@@ -91,20 +80,21 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Organization Name</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
+                <Field
                   name="organizationName"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.organizationName}
-                  className="form-control"
-                  placeholder="Organization Name"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.organizationName && touched.organizationName
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.organizationName &&
-                    touched.organizationName &&
-                    errors.organizationName}
-                </span>
+                <ErrorMessage
+                  name="organizationName"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -112,18 +102,19 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Organization Email</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="email"
+                <Field
                   name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                  className="form-control"
-                  placeholder="Organization Email"
+                  type="email"
+                  className={
+                    "form-control" +
+                    (errors.email && touched.email ? " is-invalid" : "")
+                  }
                 />
-                <span className="error">
-                  {errors.email && touched.email && errors.email}
-                </span>
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -131,18 +122,19 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Website</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
+                <Field
                   name="website"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.website}
-                  className="form-control"
-                  placeholder="Enter website"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.website && touched.website ? " is-invalid" : "")
+                  }
                 />
-                <span className="error">
-                  {errors.website && touched.website && errors.website}
-                </span>
+                <ErrorMessage
+                  name="website"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -150,18 +142,21 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Regd Number</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
+                <Field
                   name="regdNumber"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.regdNumber}
-                  className="form-control"
-                  placeholder="Enter regd number"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.regdNumber && touched.regdNumber
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.regdNumber && touched.regdNumber && errors.regdNumber}
-                </span>
+                <ErrorMessage
+                  name="regdNumber"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -169,11 +164,15 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Size</label>
               </div>
               <div className="col-md-8">
-                <select
+                <Field
                   name="organizationSize"
-                  className="form-select"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  as="select"
+                  className={
+                    "form-control" +
+                    (errors.organizationSize && touched.organizationSize
+                      ? " is-invalid"
+                      : "")
+                  }
                 >
                   <option value="none">Select Corporate Size</option>
                   {sizeOptions.map((size, index) => (
@@ -181,12 +180,12 @@ const CorporateForm = ({ type }) => {
                       {size.label}
                     </option>
                   ))}
-                </select>
-                <span className="error">
-                  {errors.organizationSize &&
-                    touched.organizationSize &&
-                    errors.organizationSize}
-                </span>
+                </Field>
+                <ErrorMessage
+                  name="organizationSize"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -194,20 +193,21 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Type</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="organizationType"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.organizationType}
-                  placeholder="Enter type"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.organizationType && touched.organizationType
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.organizationType &&
-                    touched.organizationType &&
-                    errors.organizationType}
-                </span>
+                <ErrorMessage
+                  name="organizationType"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -215,20 +215,21 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Corporate PAN</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="corporatePan"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.corporatePan}
-                  placeholder="Enter PAN"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.corporatePan && touched.corporatePan
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.corporatePan &&
-                    touched.corporatePan &&
-                    errors.corporatePan}
-                </span>
+                <ErrorMessage
+                  name="corporatePan"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -236,20 +237,19 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">GSTN</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="gstn"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.gstn}
-                  placeholder="Enter GSTN"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.gstn && touched.gstn ? " is-invalid" : "")
+                  }
                 />
-                <span className="error">
-                  {errors.gstn &&
-                    touched.gstn &&
-                    errors.gstn}
-                </span>
+                <ErrorMessage
+                  name="gstn"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <hr />
@@ -259,20 +259,21 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Contact Number</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="contactNumber"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.contactNumber}
-                  placeholder="Contact Number"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.contactNumber && touched.contactNumber
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.contactNumber &&
-                    touched.contactNumber &&
-                    errors.contactNumber}
-                </span>
+                <ErrorMessage
+                  name="contactNumber"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -280,20 +281,21 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Contact Person</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="contactPerson"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.contactPerson}
-                  placeholder="Contact Person"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.contactPerson && touched.contactPerson
+                      ? " is-invalid"
+                      : "")
+                  }
                 />
-                <span className="error">
-                  {errors.contactPerson &&
-                    touched.contactPerson &&
-                    errors.contactPerson}
-                </span>
+                <ErrorMessage
+                  name="contactPerson"
+                  component="div"
+                  className="invalid-feedback"
+                />
               </div>
             </div>
             <div className="row mb-4">
@@ -301,14 +303,13 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Address</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="address"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.address}
-                  placeholder="Address"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.address && touched.address ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>
@@ -317,14 +318,13 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">City</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="city"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.city}
-                  placeholder="City"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.city && touched.city ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>
@@ -333,14 +333,13 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">State</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="state"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.state}
-                  placeholder="State"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.state && touched.state ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>
@@ -349,14 +348,13 @@ const CorporateForm = ({ type }) => {
                 <label className="mt-1">Country</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+                <Field
                   name="country"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.country}
-                  placeholder="Country"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.country && touched.country ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>
