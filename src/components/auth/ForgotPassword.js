@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 import { Link } from "react-router-dom";
 import { LoginSchema } from "./../Validations";
@@ -10,7 +10,6 @@ const ForgotPassword = ({ submit, disable, type }) => {
         initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
         onSubmit={(values, event) => {
-          // storeUser({ ...values });
           submit(values);
         }}
       >
@@ -22,7 +21,6 @@ const ForgotPassword = ({ submit, disable, type }) => {
           handleBlur,
           handleSubmit,
           isSubmitting,
-          /* and other goodies */
         }) => (
           <Form>
             <h3>Forgot Password</h3>

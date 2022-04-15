@@ -15,7 +15,6 @@ const Otp = () => {
     //desired function to be performed on clicking resend button
   };
   function handleSubmit(e) {
-    console.log(">>>>>>>>>>>>>>>>>>>> login");
     e.preventDefault();
     setSubmitted(true);
     // if (email && password) {

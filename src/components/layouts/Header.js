@@ -10,7 +10,6 @@ const Header = () => {
     localStorage.removeItem("user");
     history.push("/");
   };
-  // const user = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.authentication.user);
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
@@ -78,11 +77,10 @@ const Header = () => {
               <li>
                 <hr className="dropdown-divider" />
               </li>
-
               <li>
                 <Link
                   className="dropdown-item d-flex align-items-center"
-                  to="/profile"                  
+                  to="/profile"
                 >
                   <i className="bi bi-person"></i>
                   <span>Profile</span>

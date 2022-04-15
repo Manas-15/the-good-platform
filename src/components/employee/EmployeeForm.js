@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "./../../actions";
 import DatePicker from "react-datepicker";
+import * as moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
 const initialValues = {
@@ -34,6 +35,7 @@ const genderOptions = [
   { value: "Female", label: "Female" },
   { value: "Transgender", label: "Transgender" },
 ];
+
 const FormDatePicker = ({ errors, touched }) => {
   return (
     <>
@@ -52,7 +54,8 @@ const FormDatePicker = ({ errors, touched }) => {
               autoComplete="none"
               maxDate={new Date()}
               selected={field.value || null}
-              onChange={(val) => {
+              dateFormat="dd-MM-yyyy"
+              onChange={(val) => {             
                 setFieldValue(field.name, val);
               }}
             />
@@ -79,6 +82,10 @@ const EmployeeForm = ({ type }) => {
   const dispatch = useDispatch();
   const employeeRegister = (values) => {
     setSubmitted(true);
+    console.log("date format initialValues.organizationJoiningDate >>>>>>>>>>>>>>>>>>>", Date.parse(values.organizationJoiningDate))
+    const selectedDate = moment(Date.parse(values.organizationJoiningDate)).format("YYYY-MM-DD");
+    console.log("date format >>>>>>>>>>>>>>>>>>>", selectedDate)
+    values.organizationJoiningDate = selectedDate;    
     if (values.employeeName && values.email && values.corporateProfileId) {
       dispatch(employeeActions.registerEmployee(values, type));
     }
@@ -342,14 +349,13 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Country</label>
               </div>
               <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control"
+              <Field
                   name="country"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.country}
-                  placeholder="Country"
+                  type="text"
+                  className={
+                    "form-control" +
+                    (errors.country && touched.country ? " is-invalid" : "")
+                  }
                 />
               </div>
             </div>

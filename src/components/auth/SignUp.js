@@ -44,17 +44,6 @@ const SignUp = () => {
     ) {
       dispatch(corporateActions.addCorporate(values));
     }
-    // axios({
-    //   'url': API.login,
-    //   'headers': {
-    //       'content-type':'application/octet-stream',
-    //       'x-rapidapi-host':'example.com',
-    //       // 'x-rapidapi-key': process.env.RAPIDAPI_KEY
-    //   },
-    //   'params': {
-    //       'search':'parameter',
-    //   },
-    // })
   };
 
   return (

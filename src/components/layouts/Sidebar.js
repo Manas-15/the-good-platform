@@ -11,7 +11,13 @@ const Sidebar = () => {
           <span>Dashboard</span>
         </NavLink>
       </li>
-      {user?.user_type === 1 ? (
+      <li className="nav-item">
+        <NavLink className="nav-link " to="/charity-programs" activeClassName="active">
+          <i className="bi bi-grid"></i>
+          <span>Charity Programs</span>
+        </NavLink>
+      </li>
+      {/* {user?.user_type === 1 ? (
         <>
           <li className="nav-item">
             <NavLink
@@ -44,7 +50,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
         </>
-      ) : (
+      ) : ( 
         <li className="nav-item">
           <NavLink
             className="nav-link "
@@ -55,7 +61,7 @@ const Sidebar = () => {
             <span>Employees</span>
           </NavLink>
         </li>
-      )}
+      )} */}
 
       {/* <li className="nav-item">
         <a className="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
