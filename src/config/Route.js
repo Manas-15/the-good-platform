@@ -27,6 +27,7 @@ import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import SuperAdminLogin from "../components/Auth/SuperAdminLogin";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
+import Profile from "../components/Profile/Profile";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -69,6 +70,7 @@ const CreateRoutes = () => {
             <Sidebar />
             <Switch>
               <Route exact path="/" component={Dashboard} />
+              <Route exact path="/profile" component={Profile} />
               {user?.user_type === 1 && (
                 <Route exact path="/corporates" component={ListCorporates} />
               )}

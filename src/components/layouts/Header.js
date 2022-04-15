@@ -1,7 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { history } from "../../helpers";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
@@ -11,7 +12,6 @@ const Header = () => {
   };
   // const user = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.authentication.user);
-  console.log("user111111111111", user)
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
   };
@@ -80,13 +80,13 @@ const Header = () => {
               </li>
 
               <li>
-                <a
+                <Link
                   className="dropdown-item d-flex align-items-center"
-                  href="users-profile.html"
+                  to="/profile"                  
                 >
                   <i className="bi bi-person"></i>
-                  <span>My Profile</span>
-                </a>
+                  <span>Profile</span>
+                </Link>
               </li>
               <li>
                 <hr className="dropdown-divider" />
