@@ -32,14 +32,16 @@ export const CorporateSchema = Yup.object().shape({
 });
 
 export const EmployeeSchema = Yup.object().shape({
-  name: Yup.string().required("Employee name is required"),
+  employeeName: Yup.string().required("Employee name is required"),
   email: Yup.string()
     .required("Employee email is required")
     .email("Invalid email address"),
-  empId: Yup.string().required("Employee ID is required"),
+  employeeId: Yup.string().required("Employee ID is required"),
   pan: Yup.string().required("PAN is required"),
-  corporateId: Yup.string().required("Please select organization"),
-  organizationJoiningDate: Yup.string().required("Organization is required"),
+  corporateProfileId: Yup.string().required("Please select organization"),
+  organizationJoiningDate: Yup.date()
+    .nullable()
+    .required("Organization joining date is required"),
   gender: Yup.string().required("Please select gender"),
   contactNumber: Yup.string()
     .required("Contact number is required")

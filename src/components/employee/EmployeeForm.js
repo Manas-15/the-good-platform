@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, useField, useFormikContext } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { EmployeeSchema } from "./../Validations";
 import { useHistory } from "react-router-dom";
@@ -9,11 +9,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const initialValues = {
-  name: "",
+  employeeName: "",
   email: "",
-  empId: "",
+  employeeId: "",
   pan: "",
-  corporateId: 1,
+  corporateProfileId: 1,
   organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
@@ -22,6 +22,7 @@ const initialValues = {
   state: "",
   country: "",
   userType: 3,
+  password: "test@123",
 };
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
@@ -33,24 +34,39 @@ const genderOptions = [
   { value: "Female", label: "Female" },
   { value: "Transgender", label: "Transgender" },
 ];
-// const FormDatePicker = (props) => {
-//   console.log("FormDatePicker >>>>>>>>>>>>>>>>>", props)
-//   return (
-//     <Field name="organizationJoiningDate" className="form-control">
-//       {({ field, meta, form: { setFieldValue } }) => {
-//         return (
-//           <DatePicker
-//             {...field}
-//             selected={field.value || null}
-//             onChange={(val) => {
-//               setFieldValue(field.name, val);
-//             }}
-//           />
-//         );
-//       }}
-//     </Field>
-//   );
-// };
+const FormDatePicker = ({ errors, touched }) => {
+  return (
+    <>
+      <Field name="organizationJoiningDate">
+        {({ field, meta, form: { setFieldValue } }) => {
+          return (
+            <DatePicker
+              {...field}
+              className={
+                "form-control" +
+                (errors.organizationJoiningDate &&
+                touched.organizationJoiningDate
+                  ? " is-invalid"
+                  : "")
+              }
+              autoComplete="none"
+              maxDate={new Date()}
+              selected={field.value || null}
+              onChange={(val) => {
+                setFieldValue(field.name, val);
+              }}
+            />
+          );
+        }}
+      </Field>
+      <ErrorMessage
+        name="organizationJoiningDate"
+        component="div"
+        className="invalid-feedback d-inline-block"
+      />
+    </>
+  );
+};
 const EmployeeForm = ({ type }) => {
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
@@ -63,7 +79,7 @@ const EmployeeForm = ({ type }) => {
   const dispatch = useDispatch();
   const employeeRegister = (values) => {
     setSubmitted(true);
-    if (values.name && values.email && values.corporateId) {
+    if (values.employeeName && values.email && values.corporateProfileId) {
       dispatch(employeeActions.registerEmployee(values, type));
     }
   };
@@ -99,15 +115,17 @@ const EmployeeForm = ({ type }) => {
               </div>
               <div className="col-md-8 form-group col">
                 <Field
-                  name="name"
+                  name="employeeName"
                   type="text"
                   className={
                     "form-control" +
-                    (errors.name && touched.name ? " is-invalid" : "")
+                    (errors.employeeName && touched.employeeName
+                      ? " is-invalid"
+                      : "")
                   }
                 />
                 <ErrorMessage
-                  name="name"
+                  name="employeeName"
                   component="div"
                   className="invalid-feedback"
                 />
@@ -139,15 +157,17 @@ const EmployeeForm = ({ type }) => {
               </div>
               <div className="col-md-8">
                 <Field
-                  name="empId"
+                  name="employeeId"
                   type="text"
                   className={
                     "form-control" +
-                    (errors.empId && touched.empId ? " is-invalid" : "")
+                    (errors.employeeId && touched.employeeId
+                      ? " is-invalid"
+                      : "")
                   }
                 />
                 <ErrorMessage
-                  name="empId"
+                  name="employeeId"
                   component="div"
                   className="invalid-feedback"
                 />
@@ -178,7 +198,7 @@ const EmployeeForm = ({ type }) => {
                 <label className="mt-1">Organization Joining Date</label>
               </div>
               <div className="col-md-8">
-                <Field
+                {/* <Field
                   name="organizationJoiningDate"
                   type="text"
                   className={
@@ -188,26 +208,21 @@ const EmployeeForm = ({ type }) => {
                       ? " is-invalid"
                       : "")
                   }
-                />
-                {/* <FormDatePicker /> */}
-                <ErrorMessage
-                  name="organizationJoiningDate"
-                  component="div"
-                  className="invalid-feedback"
-                />
+                /> */}
+                <FormDatePicker errors={errors} touched={touched} />
               </div>
             </div>
-            <div className="row mb-4">
+            {/* <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Corporate</label>
               </div>
               <div className="col-md-8">
                 <Field
-                  name="corporateId"
+                  name="corporateProfileId"
                   as="select"
                   className={
                     "form-control" +
-                    (errors.corporateId && touched.corporateId
+                    (errors.corporateProfileId && touched.corporateProfileId
                       ? " is-invalid"
                       : "")
                   }
@@ -220,12 +235,12 @@ const EmployeeForm = ({ type }) => {
                   ))}
                 </Field>
                 <ErrorMessage
-                  name="corporateId"
+                  name="corporateProfileId"
                   component="div"
                   className="invalid-feedback"
                 />
               </div>
-            </div>
+            </div> */}
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Gender</label>
