@@ -53,10 +53,10 @@ const FormDatePicker = ({ errors, touched }) => {
               }
               autoComplete="none"
               maxDate={new Date()}
-              selected={field.value || null}
-              dateFormat="dd-MM-yyyy"
-              onChange={(val) => {             
-                setFieldValue(field.name, val);
+              selected={(field.value && new Date(field.value)) || null}
+              dateFormat="yyyy-MM-dd"
+              onChange={(val) => {
+                setFieldValue(field.name, moment(val).format("YYYY-MM-DD"));
               }}
             />
           );
@@ -82,10 +82,14 @@ const EmployeeForm = ({ type }) => {
   const dispatch = useDispatch();
   const employeeRegister = (values) => {
     setSubmitted(true);
-    console.log("date format initialValues.organizationJoiningDate >>>>>>>>>>>>>>>>>>>", Date.parse(values.organizationJoiningDate))
-    const selectedDate = moment(Date.parse(values.organizationJoiningDate)).format("YYYY-MM-DD");
-    console.log("date format >>>>>>>>>>>>>>>>>>>", selectedDate)
-    values.organizationJoiningDate = selectedDate;    
+    // console.log("date format initialValues.organizationJoiningDate >>>>>>>>>>>>>>>>>>>", Date.parse(values.organizationJoiningDate))
+    // const selectedDate = moment(Date.parse(values.organizationJoiningDate)).format("YYYY-MM-DD");
+    
+    // values["organizationJoiningDate"] = moment(values.organizationJoiningDate).format('YYYY-MM-DD')
+    console.log("date format >>>>>>>>>>>>>>>>>>>", values)
+    // values.organizationJoiningDate = selectedDate;  
+    // values.organizationJoiningDate = moment(values.organizationJoiningDate).format('YYYY-MM-DD')  
+
     if (values.employeeName && values.email && values.corporateProfileId) {
       dispatch(employeeActions.registerEmployee(values, type));
     }
