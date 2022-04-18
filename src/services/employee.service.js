@@ -5,6 +5,8 @@ import axios from "axios";
 export const employeeService = {
   registerEmployee,
   getEmployees,
+  getEmployee,
+  updateEmployee,
 };
 
 function getEmployees() {
@@ -14,6 +16,18 @@ function registerEmployee(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/employee_register/",
     data
+  );
+}
+function getEmployee(id) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_profile/",
+    id
+  );
+}
+function updateEmployee(id) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_update/",
+    id
   );
 }
 function handleResponse(response) {

@@ -20,6 +20,18 @@ export function employees(state = {}, action) {
       return {};
     case employeeConstants.ADD_EMPLOYEE_FAILURE:
       return {};
+    case employeeConstants.GET_EMPLOYEE_REQUEST:
+      return { updatingEmployee: true };
+    case employeeConstants.GET_EMPLOYEE_SUCCESS:
+      return { item: action.employees?.data?.employee };
+    case employeeConstants.GET_EMPLOYEE_FAILURE:
+      return { error: action.error };
+    case employeeConstants.UPDATE_EMPLOYEE_REQUEST:
+      return { updatingEmployee: true };
+    case employeeConstants.UPDATE_EMPLOYEE_SUCCESS:
+      return { item: action.employees?.data?.employee };
+    case employeeConstants.UPDATE_EMPLOYEE_FAILURE:
+      return { error: action.error };
     default:
       return state;
   }

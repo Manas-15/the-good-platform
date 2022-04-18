@@ -36,14 +36,7 @@ function getAll() {
 }
 
 function getById(id) {
-  const requestOptions = {
-    method: "GET",
-    headers: authHeader(),
-  };
-
-  return fetch(`http://localhost:3001/users/${id}`, requestOptions).then(
-    handleResponse
-  );
+  return axios.post(process.env.REACT_APP_API_URL + "api/profile/", id);
 }
 
 function register(user) {

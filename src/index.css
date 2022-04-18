@@ -222,17 +222,21 @@ ul.dropdown-menu.actions li:hover {
 }
 
 .sidepanel  {
-  width: 0;
+  width: 450px;
   position: fixed;
   z-index: 1;
   height: 100%;
   top: 55px;
   right: 0;
   background-color: #fff;
-  transition: 0.5s;
   padding-top: 60px;
   border-left: 2px solid #ccc;
   overflow: hidden;
+  transform: translateX(100%);
+  transition: transform ease-out 0.3s;
+}
+.sidepanel.is-open {
+  transform: translateX(0);
 }
 .sidepanel a {
   padding: 8px 8px 8px 32px;
@@ -243,7 +247,8 @@ ul.dropdown-menu.actions li:hover {
   transition: 0.3s;
 }
 .sidepanel a:hover {
-  color: #f1f1f1;
+  color: #4154f1;
+  text-decoration: none;
 }
 .sidepanel .closebtn {
   position: absolute;

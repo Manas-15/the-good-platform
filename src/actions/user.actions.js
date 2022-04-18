@@ -10,6 +10,7 @@ export const userActions = {
   register,
   getAll,
   delete: _delete,
+  getById,
 };
 
 function login(data, from) {
@@ -20,12 +21,10 @@ function login(data, from) {
       (data) => {
         dispatch(success(data));
         localStorage.setItem("user", JSON.stringify(data.data));
-        // let history = useHistory();
         history.push("/dashboard");
         dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
-        console.log("dddddddddddddddddddd ", error);
         dispatch(failure(error.toString()));
         dispatch(
           alertActions.error(
@@ -122,5 +121,26 @@ function _delete(id) {
   }
   function failure(id, error) {
     return { type: userConstants.DELETE_FAILURE, id, error };
+  }
+}
+// prefixed function name with underscore because delete is a reserved word in javascript
+function getById(id) {
+  return (dispatch) => {
+    dispatch(request(id));
+
+    userService.getById(id).then(
+      (user) => dispatch(success(id)),
+      (error) => dispatch(failure(id, error.toString()))
+    );
+  };
+
+  function request(id) {
+    return { type: userConstants.GET_PROFILE_REQUEST, id };
+  }
+  function success(id) {
+    return { type: userConstants.GET_PROFILE_SUCCESS, id };
+  }
+  function failure(id, error) {
+    return { type: userConstants.GET_PROFILE_FAILURE, id, error };
   }
 }
