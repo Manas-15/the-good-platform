@@ -3,12 +3,21 @@ import { useHistory } from "react-router-dom";
 import charityPrograms from "../../config/charityPrograms.json";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 const ListCharityPrograms = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
   const user = useSelector((state) => state.authentication.user);
   const dispatch = useDispatch();
+  const openNav = () => {
+    console.log("2222222222222222222222");
+    document.getElementById("mySidepanel").style.width = "450px";
+  };
+  const closeNav = () => {
+    console.log("2222222222222222222222 111");
+    document.getElementById("mySidepanel").style.width = "0";
+  };
 
   return (
     <div>
@@ -37,7 +46,11 @@ const ListCharityPrograms = () => {
                 <td>{charityProgram.socialOrganization}</td>
                 <td>{charityProgram.category}</td>
                 <td className="text-center">
-                  <button type="submit" className="btn btn-primary btn-sm">
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-sm"
+                    onClick={openNav}
+                  >
                     Donate
                   </button>
                   <Link>
@@ -92,6 +105,93 @@ const ListCharityPrograms = () => {
               </li>
             </ul>
           </nav>
+        </div>
+      </div>
+      <div id="mySidepanel" className="sidepanel">
+        <div className="donate-header">
+          <div className="row">
+            <div className="col-md-10 p-3">
+              <span className="pl-3">
+                You can make a big difference to their lives?
+              </span>
+            </div>
+            <div className="col-md-2">
+              <a href="javascript:void(0)" class="closebtn" onClick={closeNav}>
+                ×
+              </a>
+            </div>
+          </div>
+
+          <ul className="nav nav-tabs nav-tabs-bordered">
+            <li className="nav-item">
+              <button
+                className="nav-link active"
+                data-bs-toggle="tab"
+                data-bs-target="#give-once"
+              >
+                Give Once
+              </button>
+            </li>
+            <li className="nav-item">
+              <button
+                className="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#give-monthly"
+              >
+                Give monthly
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div className="tab-content pt-2">
+          <div className="tab-pane fade show active give-once" id="give-once">
+            ssssss
+          </div>
+          <div className="tab-pane fade show give-monthly" id="give-monthly">
+            <div className="row mb-4">
+              <div className="col-md-12">Choose an amount to donate</div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-6 text-right">
+                <Button variant="outline-secondary w-50">800</Button>{" "}
+              </div>
+              <div className="col-md-6">
+                <Button variant="outline-secondary w-50">1000</Button>{" "}
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-6 text-right">
+                <Button variant="outline-secondary w-50">1500</Button>{" "}
+              </div>
+              <div className="col-md-6">
+                <Button variant="outline-secondary w-50">2000</Button>{" "}
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-12">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Other Amount"
+                />
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-12 text-center">
+                <p>
+                  <span className="bi-heart-fill fs-5 ml-2 cursor-pointer text-danger"></span> How will my donation help?
+                </p>
+                <p>Your contribution will used towards giving India's underprevileged children happier childhoods.</p>
+                <p>Your dontaions are tax excepted under 80G of the Indian Income Tax Act.</p>
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-12 text-center">
+                <Button className="btn btn-secondary w-100 rounded-pill"><span className="bi-heart-fill fs-5 ml-2 cursor-pointer text-danger"></span> Donate</Button>{" "}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
