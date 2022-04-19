@@ -22,7 +22,7 @@ const DonationPreferences = () => {
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Charity Programs</h4>
+          <h4>Donation Preferences</h4>
         </div>
       </div>
       {/* {corporates.loading && <em>Loading charity programs...</em>} */}
@@ -54,6 +54,7 @@ const DonationPreferences = () => {
                       offlabel='Monthly'
                       offstyle='success'
                       style='w-100 mx-1'
+                      size="sm"
                       onChange={(checked) => {
                         console.log("checked ............", checked)
                       }}
