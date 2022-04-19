@@ -32,6 +32,12 @@ export function employees(state = {}, action) {
       return { item: action.employees?.data?.employee };
     case employeeConstants.UPDATE_EMPLOYEE_FAILURE:
       return { error: action.error };
+    case employeeConstants.SAVE_EMPLOYEE_PASSWORD_REQUEST:
+      return { savingEmployeePassword: true };
+    case employeeConstants.SAVE_EMPLOYEE_PASSWORD_SUCCESS:
+      return {};
+    case employeeConstants.SAVE_EMPLOYEE_PASSWORD_FAILURE:
+      return { error: action.error };
     default:
       return state;
   }

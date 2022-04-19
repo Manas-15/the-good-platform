@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { Field } from "formik";
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 const DonationPreferences = () => {
   let history = useHistory();
@@ -45,19 +45,28 @@ const DonationPreferences = () => {
                 <td>{charityProgram.cause}</td>
                 <td>{charityProgram.socialOrganization}</td>
                 <td>{charityProgram.category}</td>
-                <td><input name="amount" type="text" size="4" maxLength={10} defaultValue={charityProgram.amount} className="form-control"/></td>
+                <td>
+                  <input
+                    name="amount"
+                    type="text"
+                    size="4"
+                    maxLength={10}
+                    defaultValue={charityProgram.amount}
+                    className="form-control"
+                  />
+                </td>
                 <td className="text-center">
                   <BootstrapSwitchButton
-                      checked={charityProgram.frequency}
-                      onlabel='Once'
-                      onstyle='primary'
-                      offlabel='Monthly'
-                      offstyle='success'
-                      style='w-100 mx-1'
-                      size="sm"
-                      onChange={(checked) => {
-                        console.log("checked ............", checked)
-                      }}
+                    checked={charityProgram.frequency}
+                    onlabel="Once"
+                    onstyle="primary"
+                    offlabel="Monthly"
+                    offstyle="success"
+                    style="w-100 mx-1"
+                    size="sm"
+                    onChange={(checked) => {
+                      console.log("checked ............", checked);
+                    }}
                   />
                 </td>
               </tr>
@@ -109,7 +118,7 @@ const DonationPreferences = () => {
       </div>
       <div className="row">
         <div className="col-md-12 text-right">
-          <Button variant="primary" onClick={''}>
+          <Button variant="primary" onClick={""}>
             Confirm Donation Preferences
           </Button>
         </div>

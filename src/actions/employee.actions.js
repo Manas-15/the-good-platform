@@ -6,6 +6,7 @@ import { history } from "../helpers";
 export const employeeActions = {
   registerEmployee,
   getEmployees,
+  setEmployeePassword
 };
 
 function getEmployees() {
@@ -61,5 +62,31 @@ function registerEmployee(employee, type) {
   }
   function failure(error) {
     return { type: employeeConstants.ADD_EMPLOYEE_FAILURE, error };
+  }
+}
+function setEmployeePassword(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+
+    employeeService.setEmployeePassword(data).then(
+      (data) => {
+        dispatch(success());
+        history.push("/");
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(data) {
+    return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_REQUEST, data };
+  }
+  function success() {
+    return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_SUCCESS};
+  }
+  function failure(error) {
+    return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_FAILURE, error };
   }
 }

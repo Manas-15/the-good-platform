@@ -8,7 +8,6 @@ const CorporateLogin = (props) => {
   const loggingIn = useSelector((state) => state.users.loggingIn);
   const login = (values) => {
     if (values.email && values.password) {
-      console.log("create coming corporate", values);
       dispatch(userActions.login(values));
     }
   };

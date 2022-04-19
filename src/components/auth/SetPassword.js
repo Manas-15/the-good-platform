@@ -3,8 +3,11 @@ import { Formik, Form, Field } from "formik";
 import { Link } from "react-router-dom";
 import { SetPasswordSchema } from "./../Validations";
 import PasswordField from "./../Shared/PasswordField";
+import { employeeActions } from "./../../actions";
+import { useDispatch } from "react-redux";
 
 const SetPassword = ({ submit, disable, type }) => {
+  const dispatch = useDispatch();
   const [passwordValid, setIsPasswordValid] = useState(false);
   const [passwordConfirmationValid, setIsPasswordConfirmationValid] =
     useState(false);
@@ -23,9 +26,16 @@ const SetPassword = ({ submit, disable, type }) => {
       setPasswordConfirmationShown(!passwordConfirmationShown);
     }
   };
-  const setPassword = (values) => [
-    console.log("<<<<<<<<<<< values >>>>>>>>>>>>>>>", values),
-  ];
+  const setPassword = (values) => {
+    console.log(
+      "<<<<<<<<<<< Setting employee password >>>>>>>>>>>>>>>",
+      values
+    );
+    if (values.password && values.passwordConfirmation) {
+      console.log("create coming corporate", values);
+      dispatch(employeeActions.setEmployeePassword(values));
+    }
+  };
   return (
     <div style={{ width: "350px" }}>
       <Formik

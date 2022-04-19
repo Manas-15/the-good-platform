@@ -7,6 +7,7 @@ export const employeeService = {
   getEmployees,
   getEmployee,
   updateEmployee,
+  setEmployeePassword,
 };
 
 function getEmployees() {
@@ -26,6 +27,9 @@ function getEmployee(id) {
 }
 function updateEmployee(id) {
   return axios.post(process.env.REACT_APP_API_URL + "api/employee_update/", id);
+}
+function setEmployeePassword(data) {
+  return axios.post(process.env.REACT_APP_API_URL + "api/employee_password_save/", data);
 }
 function handleResponse(response) {
   return response.text().then((text) => {

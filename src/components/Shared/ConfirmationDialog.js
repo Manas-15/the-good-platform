@@ -1,5 +1,5 @@
 import { Button, Modal } from "react-bootstrap";
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from "react-html-parser";
 export default function ConfirmationDialog({
   title,
   content,
