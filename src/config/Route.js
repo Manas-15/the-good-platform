@@ -16,6 +16,7 @@ import AddEmployee from "../components/Employee/AddEmployee";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
 import CorporateSignUp from "../components/Auth/CorporateSignUp";
+import DonationPreferences from "../components/DonationPreferences/DonationPreferences";
 import Header from "../components/Layouts/Header";
 import Sidebar from "../components/Layouts/Sidebar";
 import { alertActions } from "../actions";
@@ -83,6 +84,11 @@ const CreateRoutes = () => {
                 exact
                 path="/charity-programs"
                 component={ListCharityPrograms}
+              />
+              <Route
+                exact
+                path="/donation-preferences"
+                component={DonationPreferences}
               />
               {/* {user?.user_type === 1 && (
                 <Route

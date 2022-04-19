@@ -4,11 +4,13 @@ import charityPrograms from "../../config/charityPrograms.json";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import Donate from "./Donate";
 
 const ListCharityPrograms = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
   const user = useSelector((state) => state.authentication.user);
+  const [activeFrequenctTab, setActiveFrequenctTab] = useState('once');
   const dispatch = useDispatch();
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
@@ -130,8 +132,10 @@ const ListCharityPrograms = () => {
                   className="nav-link active"
                   data-bs-toggle="tab"
                   data-bs-target="#give-once"
+                  onClick={()=>setActiveFrequenctTab('once')}
                 >
-                  Give Once
+                  <span>Give Once</span>
+                  {activeFrequenctTab === "once" && <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>}
                 </button>
               </li>
               <li className="nav-item">
@@ -139,8 +143,10 @@ const ListCharityPrograms = () => {
                   className="nav-link"
                   data-bs-toggle="tab"
                   data-bs-target="#give-monthly"
+                  onClick={()=>setActiveFrequenctTab('monthly')}
                 >
-                  Give monthly
+                  <span>Give Monthly</span>
+                  {activeFrequenctTab === "monthly" && <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>}
                 </button>
               </li>
             </ul>
@@ -148,93 +154,10 @@ const ListCharityPrograms = () => {
 
           <div className="tab-content pt-2">
             <div className="tab-pane fade show active give-once" id="give-once">
-              <div className="row mb-4">
-                <div className="col-md-12 mt-4">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter Amount"
-                  />
-                </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-md-12 text-center">
-                  <p>
-                    <span className="bi-heart-fill fs-5 ml-2 cursor-pointer text-danger"></span>{" "}
-                    How will my donation help?
-                  </p>
-                  <p>
-                    Your contribution will used towards giving India's
-                    underprevileged children happier childhoods.
-                  </p>
-                  <p>
-                    Your dontaions are tax excepted under 80G of the Indian
-                    Income Tax Act.
-                  </p>
-                </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-md-12 text-center">
-                  <Button className="btn btn-secondary w-100 rounded-pill">
-                    <span className="bi-heart-fill fs-5 ml-2 cursor-pointer text-dark"></span>{" "}
-                    Donate
-                  </Button>{" "}
-                </div>
-              </div>
+              <Donate frequency="once" />              
             </div>
             <div className="tab-pane fade show give-monthly" id="give-monthly">
-              <div className="row mb-4">
-                <div className="col-md-12">Choose an amount to donate</div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-md-6 text-right">
-                  <Button variant="outline-secondary w-50">800</Button>{" "}
-                </div>
-                <div className="col-md-6">
-                  <Button variant="outline-secondary w-50">1000</Button>{" "}
-                </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-md-6 text-right">
-                  <Button variant="outline-secondary w-50">1500</Button>{" "}
-                </div>
-                <div className="col-md-6">
-                  <Button variant="outline-secondary w-50">2000</Button>{" "}
-                </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-md-12">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Other Amount"
-                  />
-                </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-md-12 text-center">
-                  <p>
-                    <span className="bi-heart-fill fs-5 ml-2 cursor-pointer text-danger"></span>{" "}
-                    How will my donation help?
-                  </p>
-                  <p>
-                    Your contribution will used towards giving India's
-                    underprevileged children happier childhoods.
-                  </p>
-                  <p>
-                    Your dontaions are tax excepted under 80G of the Indian
-                    Income Tax Act.
-                  </p>
-                </div>
-              </div>
-              <div className="row mb-4">
-                <div className="col-md-12 text-center">
-                  <Button className="btn btn-secondary w-100 rounded-pill">
-                    <span className="bi-heart-fill fs-5 ml-2 text-dark"></span>{" "}
-                    Donate
-                  </Button>{" "}
-                </div>
-              </div>
+              <Donate frequency="monthly" />
             </div>
           </div>
         </div>

@@ -17,6 +17,12 @@ const Sidebar = () => {
           <span>Charity Programs</span>
         </NavLink>
       </li>
+      <li className="nav-item">
+        <NavLink className="nav-link " to="/donation-preferences" activeClassName="active">
+          <i className="bi bi-grid"></i>
+          <span>Donation Preferences</span>
+        </NavLink>
+      </li>
       {/* {user?.user_type === 1 ? (
         <>
           <li className="nav-item">

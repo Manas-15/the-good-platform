@@ -252,19 +252,15 @@ ul.dropdown-menu.actions li:hover {
 }
 .sidepanel .closebtn {
   position: absolute;
-  top: 40px;
-  right: 25px;
-  font-size: 36px;
-}
-.sidepanel .closebtn {
-  position: absolute;
   top: -20px;
   right: 15px;
   font-size: 36px;
+  color: #fff;
 }
 .donate-header {
-  background: #ccc;
-  margin-top: -54px;
+  background: #2e66cd;
+    margin-top: -54px;
+    color: #fff;
 }
 .sidepanel p {
   font-size: 14px;
@@ -325,3 +321,5 @@ ul.dropdown-menu.actions li:hover {
   width: 100%;
   background: green;
 }
+.donate-header .nav-link span {font-size: .85rem;font-weight: 500;color: #fff;}
+.donate-header .nav-link.active span {color: #000;}

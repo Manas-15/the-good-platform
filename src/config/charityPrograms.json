@@ -2,26 +2,36 @@
   {
     "cause": "Saving children",
     "socialOrganization": "PM Cares Fund",
-    "category": "Disaster"
+    "category": "Disaster",
+    "amount": 1500,
+    "frequency": true
   },
   {
     "cause": "End hunger & malnutrition",
     "socialOrganization": "The Smile Foundation",
-    "category": "Social Change"
+    "category": "Social Change",
+    "amount": 500,
+    "frequency": false
   },
   {
     "cause": "Create economic opportunity",
     "socialOrganization": "Hope Charity Organization",
-    "category": "Social Order"
+    "category": "Social Order",
+    "amount": 2000,
+    "frequency": false
   },
   {
     "cause": "Prevent blindness & restore sight",
     "socialOrganization": "Sisters of Charity",
-    "category": "Disaster"
+    "category": "Disaster",
+    "amount": 2500,
+    "frequency": true
   },
   {
     "cause": "Improve health & fight disease",
     "socialOrganization": "Life-Changing Foundation",
-    "category": "Disaster"
+    "category": "Disaster",
+    "amount": 800,
+    "frequency": false
   }
 ]

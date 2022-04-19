@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const ThankYou = () => {
   return (
     <div className="text-center">
-      <span className="bi-check-circle display-4"></span>
-      <h1 className="display-4">Thank You!</h1>
+      <span className="bi-check-circle display-4 text-success"></span>
+      <h1 className="display-4 text-success">Thank You!</h1>
       <p className="fs-5">
         Thank you for registering with our platform. Your application is
         currently in review. <br />

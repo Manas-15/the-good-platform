@@ -3,16 +3,16 @@ import React from "react";
 const PasswordStrengthIndicator = ({
     validity: { minChar, upperChar, number, specialChar },
     isComplete,
-    type
+    name
 }) => {
     let count = minChar + upperChar + number + specialChar;   
     const strengthClass = ['password-meter text-left mb-4', count < 4 ? 'd-block' : 'd-none'].join(' ').trim();
     if(count === 4){
-      isComplete();
+      isComplete = true;
     }
     return (
         <div className={strengthClass}>
-            <p className="text-primary mt-3">{type === 'password' ? 'Password' : 'Confirm password'} must contain:</p>
+            <p className="text-primary mt-3">{name === "password" ? "Password" : "Confirm Password"} must contain:</p>
             <div className="strength-meter mt-2">
               <div className="strength-meter-fill" data-strength={count}></div>
             </div>
