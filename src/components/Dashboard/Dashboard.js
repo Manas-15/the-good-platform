@@ -1,5 +1,5 @@
 import React from "react";
-import EmployeeDashboard  from "./EmployeeDashboard";
+import EmployeeDashboard from "./EmployeeDashboard";
 
 const Dashboard = () => {
   return <EmployeeDashboard />;

@@ -25,10 +25,7 @@ function getEmployee(id) {
   );
 }
 function updateEmployee(id) {
-  return axios.post(
-    process.env.REACT_APP_API_URL + "api/employee_update/",
-    id
-  );
+  return axios.post(process.env.REACT_APP_API_URL + "api/employee_update/", id);
 }
 function handleResponse(response) {
   return response.text().then((text) => {

@@ -27,6 +27,7 @@ import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import SuperAdminLogin from "../components/Auth/SuperAdminLogin";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
+import SetPassword from "../components/Auth/SetPassword";
 import Profile from "../components/Profile/Profile";
 
 const CreateRoutes = () => {
@@ -71,20 +72,18 @@ const CreateRoutes = () => {
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/profile" component={Profile} />
-              {user?.user_type === 1 && (
+              {/* {user?.user_type === 1 && (
                 <Route exact path="/corporates" component={ListCorporates} />
               )}
               {user?.user_type === 1 && (
                 <Route exact path="/corporates/add" component={AddCorporate} />
-              )}
-              {user?.user_type === 1 && (
-                <Route
-                  exact
-                  path="/charity-programs"
-                  component={ListCharityPrograms}
-                />
-              )}
-              {user?.user_type === 1 && (
+              )} */}
+              <Route
+                exact
+                path="/charity-programs"
+                component={ListCharityPrograms}
+              />
+              {/* {user?.user_type === 1 && (
                 <Route
                   exact
                   path="/social-organizations"
@@ -96,12 +95,12 @@ const CreateRoutes = () => {
               )}
               {user?.user_type === 2 && (
                 <Route path="/employees/add" component={AddEmployee} />
-              )}
+              )} */}
               <Route exact path="/dashboard" component={Dashboard} />
               <Route
                 exact
                 path="/corporates/sign-up"
-                component={CorporateSignUp}
+                component={EmployeeSignUp}
               />
               <Redirect from="*" to="/" />
             </Switch>
@@ -142,7 +141,7 @@ const CreateRoutes = () => {
             <div className="auth-inner">
               <Switch>
                 <Route exact path="/" component={CorporateLogin} />
-                <Route exact path="/sign-up" component={CorporateSignUp} />
+                <Route exact path="/sign-up" component={EmployeeSignUp} />
                 <Route
                   exact
                   path="/corporates/sign-up"
@@ -167,6 +166,11 @@ const CreateRoutes = () => {
                   exact
                   path="/forgot-password"
                   component={ForgotPassword}
+                />
+                <Route
+                  exact
+                  path="/set-password"
+                  component={SetPassword}
                 />
                 <Route exact path="/superadmin/otp" component={Otp} />
                 <Redirect from="*" to="/" />

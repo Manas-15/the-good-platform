@@ -10,6 +10,11 @@ export const LoginSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
+export const SetPasswordSchema = Yup.object().shape({
+  password: Yup.string().required('Password is required'),
+  passwordConfirmation: Yup.string().required('Confirm password is required').oneOf([Yup.ref('password'), null], 'Password and confirm password must match')
+});
+
 export const CorporateSchema = Yup.object().shape({
   organizationName: Yup.string().required("Organization name is required"),
   email: Yup.string()

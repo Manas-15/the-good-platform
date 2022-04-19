@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Profile = () => {
   const user = useSelector((state) => state.authentication.user);
   return (
-    <>    
+    <>
       <section className="section profile">
         <div className="row">
           <div class="pagetitle">
