@@ -24,6 +24,8 @@ const SetPassword = ({ submit, disable, type }) => {
     useState(false);
   const [passwordConfirmationValidity, setPasswordConfirmationValidity] =
     useState(validateRegx);
+  const [passwordShown, setPasswordShown] = useState(false);
+  const [passwordConfirmationShown, setPasswordConfirmationShown] = useState(false);
   const onChangePassword = (password, type) => {
     if (type === "password") {
       setPasswordField(password);
@@ -48,6 +50,13 @@ const SetPassword = ({ submit, disable, type }) => {
       ? setIsPasswordValid(true)
       : setIsPasswordConfirmationValid(true);
   };
+  const toggleShowPassword = (type) => {
+    if(type === "password"){
+      setPasswordShown(!passwordShown)
+    }else{
+      setPasswordConfirmationShown(!passwordConfirmationShown)
+    }
+  }
   return (
     <div style={{ width: "350px" }}>
       <Formik
@@ -66,17 +75,27 @@ const SetPassword = ({ submit, disable, type }) => {
           handleSubmit,
           isSubmitting,
         }) => (
-          <Form autoComplete="off">
+          <Form autoComplete="nope">
             <h3>Set Password</h3>
             <div className="form-group">
-              <label>
-                <strong>Create your password</strong>
-              </label>
+              
+                <div className="row">
+                  <div className="col-md-10">
+                  <label><strong>Create your password</strong></label>
+                  </div>
+                  <div className="col-md-2 text-right mt-4">
+                    <Link onClick={() => toggleShowPassword('password')}>
+                      <span className={passwordShown ? "bi-eye-fill fs-5" : "bi-eye-slash-fill fs-5"} ></span>
+                    </Link>
+                  </div>
+                </div>
+                
+                
               <Field
                 name="password"
-                type="password"
+                type={passwordShown ? "text" : "password"}
                 placeholder="Enter password"
-                autoComplete="nope"
+                autoComplete="off"
                 onFocus={() => setPasswordFocused(true)}
                 onKeyUp={(e) => onChangePassword(e.target.value, "password")}
                 className={"form-control"}
@@ -85,18 +104,26 @@ const SetPassword = ({ submit, disable, type }) => {
                 <PasswordStrengthIndicator
                   validity={passwordValidity}
                   isComplete={() => handlePasswordValid("password")}
+                  type="password"
                 />
               )}
             </div>
             <div className="form-group">
-              <label>
-                <strong>Confirm your password</strong>
-              </label>
+            <div className="row">
+                  <div className="col-md-10">
+                  <label><strong>Confirm your password</strong></label>
+                  </div>
+                  <div className="col-md-2 text-right mt-4">
+                    <Link onClick={() => toggleShowPassword('confirm')}>
+                      <span className={passwordConfirmationShown ? "bi-eye-fill fs-5" : "bi-eye-slash-fill fs-5"} ></span>
+                    </Link>
+                  </div>
+                </div>
               <Field
                 name="passwordConfirmation"
-                type="password"
+                type={passwordConfirmationShown ? "text" : "password"}
                 placeholder="Enter confirm password"
-                autoComplete="nope"
+                autoComplete="off"
                 onFocus={() => setPasswordConfirmationFocused(true)}
                 onKeyUp={(e) => onChangePassword(e.target.value, "confirm")}
                 className={"form-control"}
@@ -104,9 +131,9 @@ const SetPassword = ({ submit, disable, type }) => {
               {passwordConfirmationFocused &&
                 passwordConfirmation.length > 2 && (
                   <PasswordStrengthIndicator
-                    validity={passwordConfirmationValidity}
-                    type="confirm"
+                    validity={passwordConfirmationValidity}                    
                     isComplete={() => handlePasswordValid("confirm")}
+                    type="confirm"
                   />
                 )}
               {passwordValid && passwordConfirmationValid && (
@@ -117,18 +144,15 @@ const SetPassword = ({ submit, disable, type }) => {
                 </span>
               )}
             </div>
-            <div className="text-center m-3">
+            <div className="text-center mt-5">
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !passwordConfirmationValid || !passwordValid || errors.passwordConfirmation || errors.password}
                 className="btn btn-primary btn-block"
               >
                 Submit
               </button>
             </div>
-            <p className="forgot-password text-center">
-              Back to Sign In? <Link to="/sign-in">Sign In</Link>
-            </p>
           </Form>
         )}
       </Formik>
