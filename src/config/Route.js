@@ -28,6 +28,7 @@ import SuperAdminLogin from "../components/Auth/SuperAdminLogin";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
+import ThankYou from "../components/Auth/ThankYou";
 import Profile from "../components/Profile/Profile";
 
 const CreateRoutes = () => {
@@ -166,6 +167,11 @@ const CreateRoutes = () => {
                   exact
                   path="/forgot-password"
                   component={ForgotPassword}
+                />
+                <Route
+                  exact
+                  path="/thank-you"
+                  component={ThankYou}
                 />
                 <Route
                   exact
