@@ -39,18 +39,12 @@ function registerEmployee(employee, type) {
     employeeService.registerEmployee(employee).then(
       (employee) => {
         dispatch(success());
-        if (type === "corporate") {
-          history.push("/employees");
-        } else {
-          history.push("/login");
-        }
-        dispatch(
-          alertActions.success(
-            type === "corporate"
-              ? "Employee added successfully"
-              : "Employee registered successfully"
-          )
-        );
+        history.push("/thank-you");
+        // dispatch(
+        //   alertActions.success(
+        //     "Employee registered successfully"
+        //   )
+        // );
       },
       (error) => {
         dispatch(failure(error.toString()));
