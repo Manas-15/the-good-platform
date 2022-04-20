@@ -29,8 +29,8 @@ const ListCharityPrograms = () => {
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
-            <th scope="col">Sl#</th>
-            <th scope="col">Cause</th>
+            <th >Sl#</th>
+            <th >Cause</th>
             <th>Social Organization</th>
             <th>Category</th>
             <th className="text-center">Actions</th>
@@ -40,7 +40,7 @@ const ListCharityPrograms = () => {
           {charityPrograms ? (
             charityPrograms.map((charityProgram, index) => (
               <tr key={index + 1}>
-                <td scope="row">{index + 1}</td>
+                <td >{index + 1}</td>
                 <td>{charityProgram.cause}</td>
                 <td>{charityProgram.socialOrganization}</td>
                 <td>{charityProgram.category}</td>
@@ -118,7 +118,7 @@ const ListCharityPrograms = () => {
               <div className="col-md-2">
                 <a
                   href="javascript:void(0)"
-                  class="closebtn"
+                  className="closebtn"
                   onClick={closeNav}
                 >
                   ×

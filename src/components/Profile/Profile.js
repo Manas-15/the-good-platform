@@ -8,7 +8,7 @@ const Profile = () => {
     <>
       <section className="section profile">
         <div className="row">
-          <div class="pagetitle">
+          <div className="pagetitle">
             <h1>Profile</h1>
           </div>
         </div>

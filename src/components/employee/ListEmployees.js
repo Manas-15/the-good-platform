@@ -32,10 +32,10 @@ const ListEmployees = () => {
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
-            <th scope="col">Sl#</th>
-            <th scope="col">Name</th>
+            <th >Sl#</th>
+            <th >Name</th>
             <th>Email</th>
-            <th scope="col">Address</th>
+            <th >Address</th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
@@ -45,7 +45,7 @@ const ListEmployees = () => {
             // ?
             employees.map((employee, index) => (
               <tr key={index + 1}>
-                <td scope="row">{index + 1}</td>
+                <td >{index + 1}</td>
                 <td>{employee.name}</td>
                 <td>{employee.email}</td>
                 <td>

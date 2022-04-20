@@ -41,7 +41,7 @@ const DonationPreferences = () => {
           {charityPrograms ? (
             charityPrograms.map((charityProgram, index) => (
               <tr key={index + 1}>
-                <td scope="row">{index + 1}</td>
+                <td >{index + 1}</td>
                 <td>{charityProgram.cause}</td>
                 <td>{charityProgram.socialOrganization}</td>
                 <td>{charityProgram.category}</td>

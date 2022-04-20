@@ -220,16 +220,16 @@ const CorporateDashboard = () => {
                     <table className="table table-borderless datatable">
                       <thead>
                         <tr>
-                          <th scope="col">Sl#</th>
-                          <th scope="col">Corporates</th>
-                          <th scope="col">Type</th>
-                          <th scope="col">Size</th>
-                          <th scope="col">Status</th>
+                          <th >Sl#</th>
+                          <th >Corporates</th>
+                          <th >Type</th>
+                          <th >Size</th>
+                          <th >Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <th scope="row">
+                          <th >
                             <a href="#">1</a>
                           </th>
                           <td>Brandon Jacob</td>
@@ -244,7 +244,7 @@ const CorporateDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th scope="row">
+                          <th >
                             <a href="#">2</a>
                           </th>
                           <td>Bridie Kessler</td>
@@ -261,7 +261,7 @@ const CorporateDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th scope="row">
+                          <th >
                             <a href="#">3</a>
                           </th>
                           <td>Ashleigh Langosh</td>
@@ -276,7 +276,7 @@ const CorporateDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th scope="row">
+                          <th >
                             <a href="#">4</a>
                           </th>
                           <td>Angus Grady</td>
@@ -291,7 +291,7 @@ const CorporateDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th scope="row">
+                          <th >
                             <a href="#">5</a>
                           </th>
                           <td>Raheem Lehner</td>
