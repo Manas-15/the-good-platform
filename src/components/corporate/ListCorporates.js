@@ -60,11 +60,11 @@ const ListCorporates = () => {
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
-            <th >Sl#</th>
-            <th >Name</th>
+            <th>Sl#</th>
+            <th>Name</th>
             <th>Size</th>
             <th>Type</th>
-            <th >Address</th>
+            <th>Address</th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
@@ -78,7 +78,7 @@ const ListCorporates = () => {
               // });
               return (
                 <tr key={index + 1} ref={ref}>
-                  <td >{index + 1}</td>
+                  <td>{index + 1}</td>
                   <td>{corporate?.organizationName}</td>
                   <td>{corporate?.organizationSize}</td>
                   <td>{corporate?.organizationType}</td>

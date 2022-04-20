@@ -10,7 +10,7 @@ const ListCharityPrograms = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
   const user = useSelector((state) => state.authentication.user);
-  const [activeFrequenctTab, setActiveFrequenctTab] = useState('once');
+  const [activeFrequenctTab, setActiveFrequenctTab] = useState("once");
   const dispatch = useDispatch();
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
@@ -29,8 +29,8 @@ const ListCharityPrograms = () => {
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
-            <th >Sl#</th>
-            <th >Cause</th>
+            <th>Sl#</th>
+            <th>Charity Program Name</th>
             <th>Social Organization</th>
             <th>Category</th>
             <th className="text-center">Actions</th>
@@ -40,7 +40,7 @@ const ListCharityPrograms = () => {
           {charityPrograms ? (
             charityPrograms.map((charityProgram, index) => (
               <tr key={index + 1}>
-                <td >{index + 1}</td>
+                <td>{index + 1}</td>
                 <td>{charityProgram.cause}</td>
                 <td>{charityProgram.socialOrganization}</td>
                 <td>{charityProgram.category}</td>
@@ -132,10 +132,12 @@ const ListCharityPrograms = () => {
                   className="nav-link active"
                   data-bs-toggle="tab"
                   data-bs-target="#give-once"
-                  onClick={()=>setActiveFrequenctTab('once')}
+                  onClick={() => setActiveFrequenctTab("once")}
                 >
                   <span>Give Once</span>
-                  {activeFrequenctTab === "once" && <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>}
+                  {activeFrequenctTab === "once" && (
+                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
+                  )}
                 </button>
               </li>
               <li className="nav-item">
@@ -143,10 +145,12 @@ const ListCharityPrograms = () => {
                   className="nav-link"
                   data-bs-toggle="tab"
                   data-bs-target="#give-monthly"
-                  onClick={()=>setActiveFrequenctTab('monthly')}
+                  onClick={() => setActiveFrequenctTab("monthly")}
                 >
                   <span>Give Monthly</span>
-                  {activeFrequenctTab === "monthly" && <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>}
+                  {activeFrequenctTab === "monthly" && (
+                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
+                  )}
                 </button>
               </li>
             </ul>
@@ -154,7 +158,7 @@ const ListCharityPrograms = () => {
 
           <div className="tab-content pt-2">
             <div className="tab-pane fade show active give-once" id="give-once">
-              <Donate frequency="once" />              
+              <Donate frequency="once" />
             </div>
             <div className="tab-pane fade show give-monthly" id="give-monthly">
               <Donate frequency="monthly" />

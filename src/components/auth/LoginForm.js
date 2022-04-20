@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { LoginSchema } from "./../Validations";
+import { Button } from "react-bootstrap";
 
 const LoginForm = ({ submit, disable, userType }) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>", userType);
   return (
     <div style={{ width: "350px" }}>
       <Formik
@@ -30,33 +30,39 @@ const LoginForm = ({ submit, disable, userType }) => {
             <h3>Sign In</h3>
             <div className="form-group m-0">
               <label>Email address</label>
-              <input
-                type="email"
-                name="email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-                className="form-control"
-                placeholder="Enter email"
-              />
-              <span className="error">
-                {errors.email && touched.email && errors.email}
-              </span>
+              <Field
+                  name="email"
+                  type="email"
+                  className={
+                    "form-control" +
+                    (errors.email && touched.email
+                      ? " is-invalid"
+                      : "")
+                  }
+                />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="invalid-feedback"
+                />
             </div>
             <div className="form-group m-0">
               <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-                className="form-control"
-                placeholder="Enter password"
-              />
-              <span className="error">
-                {errors.password && touched.password && errors.password}
-              </span>
+              <Field
+                  name="password"
+                  type="password"
+                  className={
+                    "form-control" +
+                    (errors.password && touched.password
+                      ? " is-invalid"
+                      : "")
+                  }
+                />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="invalid-feedback"
+                />
             </div>
             <div className="form-group">
               <div className="custom-control custom-checkbox">
@@ -71,21 +77,17 @@ const LoginForm = ({ submit, disable, userType }) => {
               </div>
             </div>
             <div className="text-center m-3">
-              <button
+              <Button
                 type="submit"
                 disabled={disable}
                 className="btn btn-primary btn-block"
               >
                 Submit
-              </button>
+              </Button>
             </div>
-            {/* {type!=="superadmin" ?  */}
             <p className="forgot-password text-center">
               Don't have an account? <Link to="/sign-up">Sign Up</Link>
             </p>
-            {/* : 
-            ''
-            }*/}
             <p className="forgot-password text-center">
               Forgot <Link to="/forgot-password">Password?</Link>
             </p>

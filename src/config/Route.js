@@ -26,6 +26,7 @@ import SignUp from "../components/Auth/SignUp";
 import CorporateLogin from "../components/Auth/CorporateLogin";
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import SuperAdminLogin from "../components/Auth/SuperAdminLogin";
+import EmployeeLogin from "../components/Auth/EmployeeLogin";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
@@ -147,7 +148,7 @@ const CreateRoutes = () => {
           <div className="auth-wrapper">
             <div className="auth-inner">
               <Switch>
-                <Route exact path="/" component={CorporateLogin} />
+                <Route exact path="/" component={EmployeeLogin} />
                 <Route exact path="/sign-up" component={EmployeeSignUp} />
                 <Route
                   exact
