@@ -5,6 +5,7 @@ import axios from "axios";
 export const employeeService = {
   login,
   validateOtp,
+  resendOtp,
   registerEmployee,
   getEmployees,
   getEmployee,
@@ -22,6 +23,11 @@ function validateOtp(data) {
   console.log("validate otp employee >>>>>>>>>>>>>>>>>>>");
   // process.env.REACT_APP_API_URL
   return axios.post(process.env.REACT_APP_API_URL + "api/validate_otp/", data);
+}
+function resendOtp(data) {
+  console.log("validate otp employee >>>>>>>>>>>>>>>>>>>");
+  // process.env.REACT_APP_API_URL
+  return axios.post(process.env.REACT_APP_API_URL + "api/resend_otp/", data);
 }
 function logout() {
   // remove user from local storage to log user out

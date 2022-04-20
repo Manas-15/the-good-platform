@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Donate from "./Donate";
+import "./../../assets/css/charityProgramsList.scss";
 
 const ListCharityPrograms = () => {
   let history = useHistory();

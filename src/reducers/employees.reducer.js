@@ -13,6 +13,27 @@ export function employee(state = {}, action) {
       };
     case employeeConstants.EMPLOYEE_LOGIN_FAILURE:
       return { loggingIn: false };
+    case employeeConstants.VALIDATE_OTP_REQUEST:
+      return {
+        validitingOtp: true,
+      };
+    case employeeConstants.VALIDATE_OTP_SUCCESS:
+      return {
+        validitedOtp: true,
+        user: action?.data?.data,
+      };
+    case employeeConstants.VALIDATE_OTP_FAILURE:
+      return { validitingOtp: false };
+    case employeeConstants.RESEND_OTP_REQUEST:
+      return {
+        resendOtp: true,
+      };
+    case employeeConstants.RESEND_OTP_SUCCESS:
+      return {
+        resentdOtp: true,
+      };
+    case employeeConstants.RESEND_OTP_FAILURE:
+      return { resendOtp: false };
     case employeeConstants.EMPLOYEE_LOGOUT:
       return {};
     case employeeConstants.GET_EMPLOYEES_REQUEST:

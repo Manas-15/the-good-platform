@@ -83,8 +83,7 @@ const CreateRoutes = () => {
         </main>
       ) : (
         <>
-          <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-            <div className="container">
+            <div className="container authForm">
               {alert.message && (
                 <div
                   className={`alert ${alert.type} alert-dismissible`}
@@ -101,19 +100,9 @@ const CreateRoutes = () => {
                   </button>
                 </div>
               )}
-              <Link className="navbar-brand" to={"/sign-in"}>
-                <img
-                  src="/assets/img/logo.png"
-                  alt="The Good Platform Logo"
-                  height={35}
-                  style={{ float: "left" }}
-                />
-                <h4 className="mb-0 logo-style">The Good Platform</h4>
-              </Link>
             </div>
-          </nav>
           <div className="auth-wrapper">
-            <div className="auth-inner">
+            <div className="container authForm">
               <Switch>
                 <Route exact path="/" component={EmployeeLogin} />
                 <Route exact path="/sign-up" component={EmployeeSignUp} />                

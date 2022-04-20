@@ -6,10 +6,11 @@ import { history } from "../helpers";
 export const employeeActions = {
   login,
   validateOtp,
+  resendOtp,
   logout,
   registerEmployee,
   getEmployees,
-  setEmployeePassword
+  setEmployeePassword,
 };
 
 function login(data, from) {
@@ -50,7 +51,7 @@ function validateOtp(data, from) {
   return (dispatch) => {
     dispatch(request({ data }));
 
-    employeeService.login(data).then(
+    employeeService.validateOtp(data).then(
       (data) => {
         dispatch(success(data));
         localStorage.setItem("user", JSON.stringify(data.data));
@@ -77,6 +78,37 @@ function validateOtp(data, from) {
   }
   function failure(error) {
     return { type: employeeConstants.VALIDATE_OTP_FAILURE, error };
+  }
+}
+function resendOtp(data) {
+  return (dispatch) => {
+    dispatch(request({ data }));
+
+    employeeService.resendOtp(data).then(
+      (data) => {
+        dispatch(success(data));
+        dispatch(alertActions.success("Otp was successful resent."));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(
+          alertActions.error(
+            error.toString() === "Error: Request failed with status code 404"
+              ? "Unable to send otp."
+              : error.toString()
+          )
+        );
+      }
+    );
+  };
+  function request(data) {
+    return { type: employeeConstants.RESEND_OTP_REQUEST, data };
+  }
+  function success(data) {
+    return { type: employeeConstants.RESEND_OTP_SUCCESS, data };
+  }
+  function failure(error) {
+    return { type: employeeConstants.RESEND_OTP_FAILURE, error };
   }
 }
 function logout() {
@@ -158,7 +190,7 @@ function setEmployeePassword(data) {
     return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_REQUEST, data };
   }
   function success() {
-    return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_SUCCESS};
+    return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_SUCCESS };
   }
   function failure(error) {
     return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_FAILURE, error };

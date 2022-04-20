@@ -5,7 +5,19 @@ import { LoginSchema } from "./../Validations";
 
 const ForgotPassword = ({ submit, disable, type }) => {
   return (
-    <div style={{ width: "350px" }}>
+    <>
+      <div class="row align-items-center authFormMargin">
+        <div class="col-md-6">
+          <div class="authForm">
+            <h1 class="textHeading">Welcome back to The Good Platform!</h1>
+            <p class="textParagraph">
+              Enter your registered details here to get started
+            </p>
+            <img height="350" src="/assets/img/smartphone2.png" />
+          </div>
+        </div>
+        <div class="col-md-5 formStyles">
+          <div class="registrationContent forgotRightContent">
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
@@ -23,7 +35,8 @@ const ForgotPassword = ({ submit, disable, type }) => {
           isSubmitting,
         }) => (
           <Form>
-            <h3>Forgot Password</h3>
+            <h5 className="text-center cardHeading">Forgot Password</h5>
+            <p class="authForm text-inverse text-center registartionText">It happens to the best of us, we'll send you a link to reset your password</p>
             <div className="form-group">
               <label>Email address</label>
               <input
@@ -43,18 +56,21 @@ const ForgotPassword = ({ submit, disable, type }) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn btn-primary btn-block"
+                className="btn forgotPasswordSubmitButton"
               >
-                Submit
+                Reset My Password
               </button>
             </div>
             <p className="forgot-password text-center">
-              Back to Sign In? <Link to="/sign-in">Sign In</Link>
+              Don't have an account? <Link to="/sign-up">Sign Up</Link>
             </p>
           </Form>
         )}
       </Formik>
     </div>
+    </div>
+    </div>
+    </>
   );
 };
 export default ForgotPassword;

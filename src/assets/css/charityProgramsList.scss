@@ -1,0 +1,53 @@
+$color_1: #818181;
+$color_2: #4154f1;
+$color_3: #fff;
+$background-color_1: #fff;
+
+.sidepanel {
+	width: 450px;
+	position: fixed;
+	z-index: 1;
+	height: 100%;
+	top: 55px;
+	right: 0;
+	background-color: $background-color_1;
+	padding-top: 60px;
+	border-left: 2px solid #ccc;
+	overflow: hidden;
+	transform: translateX(100%);
+	transition: transform ease-out 0.3s;
+	a {
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		font-size: 25px;
+		color: $color_1;
+		display: block;
+		transition: 0.3s;
+		&:hover {
+			color: $color_2;
+			text-decoration: none;
+		}
+	}
+	.closebtn {
+		position: absolute;
+		top: -20px;
+		right: 15px;
+		font-size: 36px;
+		color: $color_3;
+	}
+	p {
+		font-size: 14px;
+	}
+}
+.sidepanel.is-open {
+	transform: translateX(0);
+}
+.donate-header {
+	background: #2e66cd;
+	margin-top: -54px;
+	color: $color_3;
+}
+.donate-btn {
+	border: 1px solid #ccc;
+	background: #ccc;
+}

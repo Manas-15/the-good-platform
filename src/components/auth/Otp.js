@@ -39,7 +39,7 @@ const Otp = () => {
   //   dispatch(employeeConstants.logout());
   // }, []);
   return (
-    <div className="text-center" style={{ width: "550px" }}>
+    <div className="text-center">
       <h3 className="mb-4">Enter one time password (OTP)</h3>
       <p>
         One time password has been sent to your email id ****2006@gmail.com.
@@ -59,7 +59,7 @@ const Otp = () => {
               borderRadius: "8px",
               width: "54px",
               height: "54px",
-              fontSize: "12px",
+              fontSize: "20px",
               color: "#000",
               fontWeight: "400",
               caretColor: "blue",
@@ -76,6 +76,7 @@ const Otp = () => {
               type="submit"
               className="btn btn-primary btn-block"
               onClick={handleSubmit}
+              disabled={code.length < 6}
             >
               Validate
             </button>

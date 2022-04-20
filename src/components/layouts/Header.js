@@ -21,9 +21,8 @@ const Header = () => {
           <img
             src="/assets/img/logo.png"
             alt="The Good Platform Logo"
-            height={35}
+            height={30}
           />
-          <h4 className="mb-0 logo-color">The Good Platform</h4>
         </a>
         <i
           className="bi bi-list toggle-sidebar-btn"
