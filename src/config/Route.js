@@ -16,7 +16,6 @@ import Sidebar from "../components/Layouts/Sidebar";
 import { alertActions } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 
-import SignUp from "../components/Auth/SignUp";
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
 import Otp from "../components/Auth/Otp";
@@ -138,7 +137,7 @@ const CreateRoutes = () => {
                   path="/set-password"
                   component={SetPassword}
                 />
-                <Route exact path="/superadmin/otp" component={Otp} />
+                <Route exact path="/otp" component={Otp} />
                 <Redirect from="*" to="/" />
               </Switch>
             </div>

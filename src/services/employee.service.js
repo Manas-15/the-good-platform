@@ -10,6 +10,7 @@ export const employeeService = {
   getEmployee,
   updateEmployee,
   setEmployeePassword,
+  logout,
 };
 
 function login(data) {
@@ -22,8 +23,13 @@ function validateOtp(data) {
   // process.env.REACT_APP_API_URL
   return axios.post(process.env.REACT_APP_API_URL + "api/validate_otp/", data);
 }
+function logout() {
+  // remove user from local storage to log user out
+  localStorage.removeItem("user");
+}
 function getEmployees() {
   return axios.get(process.env.REACT_APP_API_URL + "api/employee_list");
+  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
 function registerEmployee(data) {
   return axios.post(

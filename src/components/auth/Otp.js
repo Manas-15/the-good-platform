@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OtpInput from "react-otp-input";
 import OtpTimer from "otp-timer";
-import { userActions } from "../../actions";
+import { employeeActions } from "../../actions";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "formik";
@@ -31,12 +31,12 @@ const Otp = () => {
       })
     );
     const { from } = location.state || { from: { pathname: "/" } };
-    dispatch(userActions.login("Ansuman", "test1234", from));
+    // dispatch(employeeConstants.login("Ansuman", "test1234", from));
     // }
   }
   // reset login status
   // useEffect(() => {
-  //   dispatch(userActions.logout());
+  //   dispatch(employeeConstants.logout());
   // }, []);
   return (
     <div className="text-center" style={{ width: "550px" }}>
@@ -45,7 +45,7 @@ const Otp = () => {
         One time password has been sent to your email id ****2006@gmail.com.
         Please enter the same here to login.
       </p>
-      <Form name="form" onSubmit={handleSubmit}>
+      <form name="form">
         <div className="d-inline-block mb-4">
           <OtpInput
             value={code}
@@ -81,7 +81,7 @@ const Otp = () => {
             </button>
           </div>
         </div>
-      </Form>
+      </form>
       <div className="row text-center mt-4">
         <div className="col-md-12 resend">
           <OtpTimer

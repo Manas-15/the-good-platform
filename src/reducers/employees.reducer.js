@@ -1,7 +1,20 @@
 import { employeeConstants } from "../constants";
 
-export function employees(state = {}, action) {
+export function employee(state = {}, action) {
   switch (action.type) {
+    case employeeConstants.EMPLOYEE_LOGIN_REQUEST:
+      return {
+        loggingIn: true,
+      };
+    case employeeConstants.EMPLOYEE_LOGIN_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action?.data?.data,
+      };
+    case employeeConstants.EMPLOYEE_LOGIN_FAILURE:
+      return { loggingIn: false };
+    case employeeConstants.EMPLOYEE_LOGOUT:
+      return {};
     case employeeConstants.GET_EMPLOYEES_REQUEST:
       return {
         loading: true,

@@ -6,6 +6,7 @@ import { history } from "../helpers";
 export const employeeActions = {
   login,
   validateOtp,
+  logout,
   registerEmployee,
   getEmployees,
   setEmployeePassword
@@ -77,6 +78,10 @@ function validateOtp(data, from) {
   function failure(error) {
     return { type: employeeConstants.VALIDATE_OTP_FAILURE, error };
   }
+}
+function logout() {
+  employeeService.logout();
+  return { type: employeeConstants.LOGOUT };
 }
 function getEmployees() {
   return (dispatch) => {

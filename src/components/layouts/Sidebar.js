@@ -13,13 +13,13 @@ const Sidebar = () => {
       </li>
       <li className="nav-item">
         <NavLink className="nav-link " to="/charity-programs" activeClassName="active">
-          <i className="bi bi-grid"></i>
+          <i className="bi bi-heart"></i>
           <span>Charity Programs</span>
         </NavLink>
       </li>
       <li className="nav-item">
         <NavLink className="nav-link " to="/donation-preferences" activeClassName="active">
-          <i className="bi bi-grid"></i>
+          <i className="bi bi-handbag"></i>
           <span>Donation Preferences</span>
         </NavLink>
       </li>
