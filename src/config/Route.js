@@ -7,15 +7,9 @@ import {
   Redirect,
 } from "react-router-dom";
 import Dashboard from "../components/Dashboard/Dashboard";
-import ListCorporates from "../components/Corporate/ListCorporates";
 import ListCharityPrograms from "../components/CharityPrograms/ListCharityPrograms";
-import ListEmployees from "../components/Employee/ListEmployees";
-import SocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
-import AddCorporate from "../components/Corporate/AddCorporate";
-import AddEmployee from "../components/Employee/AddEmployee";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
-import CorporateSignUp from "../components/Auth/CorporateSignUp";
 import DonationPreferences from "../components/DonationPreferences/DonationPreferences";
 import Header from "../components/Layouts/Header";
 import Sidebar from "../components/Layouts/Sidebar";
@@ -23,9 +17,7 @@ import { alertActions } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 
 import SignUp from "../components/Auth/SignUp";
-import CorporateLogin from "../components/Auth/CorporateLogin";
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
-import SuperAdminLogin from "../components/Auth/SuperAdminLogin";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
@@ -75,12 +67,6 @@ const CreateRoutes = () => {
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/profile" component={Profile} />
-              {/* {user?.user_type === 1 && (
-                <Route exact path="/corporates" component={ListCorporates} />
-              )}
-              {user?.user_type === 1 && (
-                <Route exact path="/corporates/add" component={AddCorporate} />
-              )} */}
               <Route
                 exact
                 path="/charity-programs"
@@ -91,25 +77,7 @@ const CreateRoutes = () => {
                 path="/donation-preferences"
                 component={DonationPreferences}
               />
-              {/* {user?.user_type === 1 && (
-                <Route
-                  exact
-                  path="/social-organizations"
-                  component={SocialOrganizations}
-                />
-              )}
-              {user?.user_type === 2 && (
-                <Route exact path="/employees" component={ListEmployees} />
-              )}
-              {user?.user_type === 2 && (
-                <Route path="/employees/add" component={AddEmployee} />
-              )} */}
               <Route exact path="/dashboard" component={Dashboard} />
-              <Route
-                exact
-                path="/corporates/sign-up"
-                component={EmployeeSignUp}
-              />
               <Redirect from="*" to="/" />
             </Switch>
           </section>
@@ -149,26 +117,11 @@ const CreateRoutes = () => {
             <div className="auth-inner">
               <Switch>
                 <Route exact path="/" component={EmployeeLogin} />
-                <Route exact path="/sign-up" component={EmployeeSignUp} />
-                <Route
-                  exact
-                  path="/corporates/sign-up"
-                  component={CorporateSignUp}
-                />
-                <Route
-                  exact
-                  path="/corporates/sign-in"
-                  component={CorporateLogin}
-                />
+                <Route exact path="/sign-up" component={EmployeeSignUp} />                
                 <Route
                   exact
                   path="/employees/sign-up"
                   component={EmployeeSignUp}
-                />
-                <Route
-                  exact
-                  path="/superadmin/sign-in"
-                  component={SuperAdminLogin}
                 />
                 <Route
                   exact

@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 export const employeeService = {
+  login,
+  validateOtp,
   registerEmployee,
   getEmployees,
   getEmployee,
@@ -10,6 +12,16 @@ export const employeeService = {
   setEmployeePassword,
 };
 
+function login(data) {
+  console.log("validate login employee >>>>>>>>>>>>>>>>>>>");
+  // process.env.REACT_APP_API_URL
+  return axios.post(process.env.REACT_APP_API_URL + "api/login/", data);
+}
+function validateOtp(data) {
+  console.log("validate otp employee >>>>>>>>>>>>>>>>>>>");
+  // process.env.REACT_APP_API_URL
+  return axios.post(process.env.REACT_APP_API_URL + "api/validate_otp/", data);
+}
 function getEmployees() {
   return axios.get(process.env.REACT_APP_API_URL + "api/employee_list");
 }

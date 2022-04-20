@@ -4,6 +4,7 @@ import OtpTimer from "otp-timer";
 import { userActions } from "../../actions";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Form } from "formik";
 
 const Otp = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -44,7 +45,7 @@ const Otp = () => {
         One time password has been sent to your email id ****2006@gmail.com.
         Please enter the same here to login.
       </p>
-      <form name="form" onSubmit={handleSubmit}>
+      <Form name="form" onSubmit={handleSubmit}>
         <div className="d-inline-block mb-4">
           <OtpInput
             value={code}
@@ -80,7 +81,7 @@ const Otp = () => {
             </button>
           </div>
         </div>
-      </form>
+      </Form>
       <div className="row text-center mt-4">
         <div className="col-md-12 resend">
           <OtpTimer

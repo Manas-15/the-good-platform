@@ -4,11 +4,80 @@ import { alertActions } from "./";
 import { history } from "../helpers";
 
 export const employeeActions = {
+  login,
+  validateOtp,
   registerEmployee,
   getEmployees,
   setEmployeePassword
 };
 
+function login(data, from) {
+  return (dispatch) => {
+    dispatch(request({ data }));
+
+    employeeService.login(data).then(
+      (data) => {
+        dispatch(success(data));
+        // localStorage.setItem("user", JSON.stringify(data.data));
+        // history.push("/dashboard");
+        history.push("/otp");
+        dispatch(alertActions.success("Loggedin successful"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(
+          alertActions.error(
+            error.toString() === "Error: Request failed with status code 404"
+              ? "Email or Password is not valid"
+              : error.toString()
+          )
+        );
+      }
+    );
+  };
+  function request(data) {
+    return { type: employeeConstants.EMPLOYEE_LOGIN_REQUEST, data };
+  }
+  function success(data) {
+    return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };
+  }
+  function failure(error) {
+    return { type: employeeConstants.EMPLOYEE_LOGIN_FAILURE, error };
+  }
+}
+function validateOtp(data, from) {
+  return (dispatch) => {
+    dispatch(request({ data }));
+
+    employeeService.login(data).then(
+      (data) => {
+        dispatch(success(data));
+        localStorage.setItem("user", JSON.stringify(data.data));
+        // history.push("/dashboard");
+        dispatch(alertActions.success("Loggedin successful"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(
+          alertActions.error(
+            error.toString() === "Error: Request failed with status code 404"
+              ? "Otp is not valid"
+              : error.toString()
+          )
+        );
+      }
+    );
+  };
+  function request(data) {
+    return { type: employeeConstants.VALIDATE_OTP_REQUEST, data };
+  }
+  function success(data) {
+    return { type: employeeConstants.VALIDATE_OTP_SUCCESS, data };
+  }
+  function failure(error) {
+    return { type: employeeConstants.VALIDATE_OTP_FAILURE, error };
+  }
+}
 function getEmployees() {
   return (dispatch) => {
     dispatch(request());

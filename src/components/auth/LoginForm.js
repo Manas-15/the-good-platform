@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { LoginSchema } from "./../Validations";
 import { Button } from "react-bootstrap";
 
-const LoginForm = ({ submit, disable, userType }) => {
+const LoginForm = ({ submit, disable }) => {
   return (
     <div style={{ width: "350px" }}>
       <Formik
@@ -12,7 +12,6 @@ const LoginForm = ({ submit, disable, userType }) => {
         initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
         onSubmit={(values, event) => {
-          // storeUser({ ...values });
           submit(values);
         }}
       >

@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 
 export const userActions = {
   login,
+  validateOtp,
   logout,
   register,
   getAll,
@@ -20,8 +21,9 @@ function login(data, from) {
     userService.login(data).then(
       (data) => {
         dispatch(success(data));
-        localStorage.setItem("user", JSON.stringify(data.data));
-        history.push("/dashboard");
+        // localStorage.setItem("user", JSON.stringify(data.data));
+        // history.push("/dashboard");
+        history.push("/otp");
         dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
@@ -36,7 +38,6 @@ function login(data, from) {
       }
     );
   };
-
   function request(data) {
     return { type: userConstants.LOGIN_REQUEST, data };
   }
@@ -47,6 +48,7 @@ function login(data, from) {
     return { type: userConstants.LOGIN_FAILURE, error };
   }
 }
+
 
 function logout() {
   userService.logout();
