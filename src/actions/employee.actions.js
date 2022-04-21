@@ -54,13 +54,11 @@ function validateOtp(data, from) {
     employeeService.validateOtp(data).then(
       (data) => {
         dispatch(success(data));
-        console.log("after validate success,", data)
+        console.log("after validate success,", data);
         localStorage.setItem("otpVerified", true);
-        // history.push("/dashboard");
         dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
-        console.log("after validate error,", error?.response?.data)
         dispatch(failure(error.toString()));
         dispatch(
           alertActions.error(
@@ -149,11 +147,6 @@ function registerEmployee(employee, type) {
       (employee) => {
         dispatch(success());
         history.push("/thank-you");
-        // dispatch(
-        //   alertActions.success(
-        //     "Employee registered successfully"
-        //   )
-        // );
       },
       (error) => {
         dispatch(failure(error.toString()));

@@ -18,58 +18,61 @@ const ForgotPassword = ({ submit, disable, type }) => {
         </div>
         <div class="col-md-5 formStyles">
           <div class="registrationContent forgotRightContent">
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={LoginSchema}
-        onSubmit={(values, event) => {
-          submit(values);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }) => (
-          <Form>
-            <h5 className="text-center cardHeading">Forgot Password</h5>
-            <p class="authForm text-inverse text-center registartionText">It happens to the best of us, we'll send you a link to reset your password</p>
-            <div className="form-group">
-              <label>Email address</label>
-              <input
-                type="email"
-                name="email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-                className="form-control"
-                placeholder="Enter email"
-              />
-              <span className="error">
-                {errors.email && touched.email && errors.email}
-              </span>
-            </div>
-            <div className="text-center m-3">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="btn forgotPasswordSubmitButton"
-              >
-                Reset My Password
-              </button>
-            </div>
-            <p className="forgot-password text-center">
-              Don't have an account? <Link to="/sign-up">Sign Up</Link>
-            </p>
-          </Form>
-        )}
-      </Formik>
-    </div>
-    </div>
-    </div>
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              validationSchema={LoginSchema}
+              onSubmit={(values, event) => {
+                submit(values);
+              }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+              }) => (
+                <Form>
+                  <h5 className="text-center cardHeading">Forgot Password</h5>
+                  <p class="authForm text-inverse text-center registartionText">
+                    It happens to the best of us, we'll send you a link to reset
+                    your password
+                  </p>
+                  <div className="form-group">
+                    <label>Email address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      className="form-control"
+                      placeholder="Enter email"
+                    />
+                    <span className="error">
+                      {errors.email && touched.email && errors.email}
+                    </span>
+                  </div>
+                  <div className="text-center m-3">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn forgotPasswordSubmitButton"
+                    >
+                      Reset My Password
+                    </button>
+                  </div>
+                  <p className="forgot-password text-center">
+                    Don't have an account? <Link to="/sign-up">Sign Up</Link>
+                  </p>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

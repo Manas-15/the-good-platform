@@ -79,22 +79,9 @@ const EmployeeForm = ({ type }) => {
   const [submitted, setSubmitted] = useState(false);
 
   const addingEmployee = useSelector((state) => state.employee.addingEmployee);
-  // if(type==='corporate'){
-  //   initialValues.userType = 2
-  // }else if(type==='corporate'){
-  //   initialValues.userType = 3
-  // }
   const dispatch = useDispatch();
   const employeeRegister = (values) => {
     setSubmitted(true);
-    // console.log("date format initialValues.organizationJoiningDate >>>>>>>>>>>>>>>>>>>", Date.parse(values.organizationJoiningDate))
-    // const selectedDate = moment(Date.parse(values.organizationJoiningDate)).format("YYYY-MM-DD");
-
-    // values["organizationJoiningDate"] = moment(values.organizationJoiningDate).format('YYYY-MM-DD')
-    console.log("date format >>>>>>>>>>>>>>>>>>>", values);
-    // values.organizationJoiningDate = selectedDate;
-    // values.organizationJoiningDate = moment(values.organizationJoiningDate).format('YYYY-MM-DD')
-
     if (values.employeeName && values.email && values.corporateProfileId) {
       dispatch(employeeActions.registerEmployee(values, type));
     }

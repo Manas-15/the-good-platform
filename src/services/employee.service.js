@@ -15,20 +15,20 @@ export const employeeService = {
 };
 
 async function login(data) {
-  console.log("validate login employee >>>>>>>>>>>>>>>>>>>");
-  // process.env.REACT_APP_API_URL
-  return await axios.post(process.env.REACT_APP_API_URL + "api/login/", data)
+  return await axios.post(process.env.REACT_APP_API_URL + "api/login/", data);
 }
 async function validateOtp(data) {
-  console.log("validate otp employee >>>>>>>>>>>>>>>>>>>");
-  // process.env.REACT_APP_API_URL
-  // let response = axios.post(process.env.REACT_APP_API_URL + "api/validate_otp/", data);
-  return await axios.post(process.env.REACT_APP_API_URL + "api/validate_otp/", data, { headers: authHeader()}) // promise;
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/validate_otp/",
+    data,
+    { headers: authHeader() }
+  );
 }
 async function resendOtp(data) {
-  console.log("validate otp employee >>>>>>>>>>>>>>>>>>>");
-  // process.env.REACT_APP_API_URL
-  return await axios.post(process.env.REACT_APP_API_URL + "api/resend_otp/", data);
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/resend_otp/",
+    data
+  );
 }
 function logout() {
   // remove user from local storage to log user out
@@ -51,10 +51,16 @@ async function getEmployee(id) {
   );
 }
 async function updateEmployee(id) {
-  return await axios.post(process.env.REACT_APP_API_URL + "api/employee_update/", id);
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_update/",
+    id
+  );
 }
 async function setEmployeePassword(data) {
-  return await axios.post(process.env.REACT_APP_API_URL + "api/employee_password_save/", data);
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_password_save/",
+    data
+  );
 }
 function handleResponse(response) {
   return response.text().then((text) => {

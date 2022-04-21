@@ -43,7 +43,7 @@ const CreateRoutes = () => {
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   return (
     <Router history={history}>
-      {user?.token && otpVerified? (
+      {user?.token && otpVerified ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message && (
@@ -84,29 +84,29 @@ const CreateRoutes = () => {
         </main>
       ) : (
         <>
-            <div className="container authForm">
-              {alert.message && (
-                <div
-                  className={`alert ${alert.type} alert-dismissible`}
-                  role="alert"
+          <div className="container authForm">
+            {alert.message && (
+              <div
+                className={`alert ${alert.type} alert-dismissible`}
+                role="alert"
+              >
+                {alert.message}
+                <button
+                  type="button"
+                  className="close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
                 >
-                  {alert.message}
-                  <button
-                    type="button"
-                    className="close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-              )}
-            </div>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            )}
+          </div>
           <div className="auth-wrapper">
             <div className="container authForm">
               <Switch>
                 <Route exact path="/" component={EmployeeLogin} />
-                <Route exact path="/sign-up" component={EmployeeSignUp} />                
+                <Route exact path="/sign-up" component={EmployeeSignUp} />
                 <Route
                   exact
                   path="/employees/sign-up"
@@ -117,16 +117,8 @@ const CreateRoutes = () => {
                   path="/forgot-password"
                   component={ForgotPassword}
                 />
-                <Route
-                  exact
-                  path="/thank-you"
-                  component={ThankYou}
-                />
-                <Route
-                  exact
-                  path="/set-password"
-                  component={SetPassword}
-                />
+                <Route exact path="/thank-you" component={ThankYou} />
+                <Route exact path="/set-password" component={SetPassword} />
                 <Route exact path="/otp" component={Otp} />
                 <Redirect from="*" to="/" />
               </Switch>
