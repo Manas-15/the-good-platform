@@ -10,6 +10,7 @@ export function employee(state = {}, action) {
       return {
         loggedIn: true,
         user: action?.data?.data,
+        otpVerified: false,
       };
     case employeeConstants.EMPLOYEE_LOGIN_FAILURE:
       return { loggingIn: false };
@@ -20,7 +21,7 @@ export function employee(state = {}, action) {
     case employeeConstants.VALIDATE_OTP_SUCCESS:
       return {
         validitedOtp: true,
-        user: action?.data?.data,
+        otpVerified: true,
       };
     case employeeConstants.VALIDATE_OTP_FAILURE:
       return { validitingOtp: false };
@@ -65,6 +66,12 @@ export function employee(state = {}, action) {
     case employeeConstants.UPDATE_EMPLOYEE_SUCCESS:
       return { item: action.employees?.data?.employee };
     case employeeConstants.UPDATE_EMPLOYEE_FAILURE:
+      return { error: action.error };
+    case employeeConstants.VALID_SET_PASSWORD_REQUEST:
+      return { validitingSetPassword: true };
+    case employeeConstants.VALID_SET_PASSWORD_SUCCESS:
+      return {validSetPassword: true};
+    case employeeConstants.VALID_SET_PASSWORD_FAILURE:
       return { error: action.error };
     case employeeConstants.SAVE_EMPLOYEE_PASSWORD_REQUEST:
       return { savingEmployeePassword: true };

@@ -89,18 +89,18 @@ const EmployeeForm = ({ type }) => {
 
   return (
     <>
-      <div class="row align-items-center authFormMargin">
-        <div class="col-md-6">
-          <div class="authForm registerLeftContent">
-            <h1 class="textHeading">Welcome to The Good Platform!</h1>
-            <p class="textParagraph">
+      <div className="row align-items-center authFormMargin">
+        <div className="col-md-6">
+          <div className="authForm registerLeftContent">
+            <h1 className="textHeading">Welcome to The Good Platform!</h1>
+            <p className="textParagraph">
               Before we get started, let's quickly set up your account
             </p>
             <img height="350" src="/assets/img/smartphone2.png" />
           </div>
         </div>
-        <div class="col-md-5 formStyles">
-          <div class="registrationContent ">
+        <div className="col-md-5 formStyles">
+          <div className="registrationContent ">
             <Formik
               initialValues={initialValues}
               validationSchema={EmployeeSchema}

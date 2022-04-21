@@ -10,6 +10,7 @@ export const employeeService = {
   getEmployees,
   getEmployee,
   updateEmployee,
+  setPasswordValid,
   setEmployeePassword,
   logout,
 };
@@ -58,7 +59,13 @@ async function updateEmployee(id) {
 }
 async function setEmployeePassword(data) {
   return await axios.post(
-    process.env.REACT_APP_API_URL + "api/employee_password_save/",
+    process.env.REACT_APP_API_URL + "api/set_password/",
+    data
+  );
+}
+async function setPasswordValid(data) {
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/set_password_valid/",
     data
   );
 }

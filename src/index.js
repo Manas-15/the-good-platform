@@ -6,8 +6,8 @@ import { store } from "./helpers";
 import App from "./App";
 import { Provider } from "react-redux";
 // setup fake backend
-import { configureFakeBackend } from "./helpers";
-configureFakeBackend();
+// import { configureFakeBackend } from "./helpers";
+// configureFakeBackend();
 // import reportWebVitals from './reportWebVitals';
 
 // ReactDOM.render(

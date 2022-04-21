@@ -8,18 +8,18 @@ import "./../../assets/css/loginForm.scss";
 const LoginForm = ({ submit, disable }) => {
   return (
     <>
-      <div class="row align-items-center authFormMargin">
-        <div class="col-md-6">
-          <div class="authForm">
-            <h1 class="textHeading">Welcome back to The Good Platform!</h1>
-            <p class="textParagraph">
+      <div className="row align-items-center authFormMargin">
+        <div className="col-md-6">
+          <div className="authForm">
+            <h1 className="textHeading">Welcome back to The Good Platform!</h1>
+            <p className="textParagraph">
               Enter your registered details here to get started
             </p>
             <img height="350" src="/assets/img/smartphone2.png" />
           </div>
         </div>
-        <div class="col-md-5 formStyles">
-          <div class="registrationContent ">
+        <div className="col-md-5 formStyles">
+          <div className="registrationContent ">
             <Formik
               enableReinitialize
               initialValues={{ email: "", password: "" }}

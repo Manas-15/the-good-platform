@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { SetPasswordSchema } from "./../Validations";
 import PasswordField from "./../Shared/PasswordField";
 import { employeeActions } from "./../../actions";
 import { useDispatch } from "react-redux";
+import "./../../assets/css/loginForm.scss";
 
-const SetPassword = ({ submit, disable, type }) => {
+const SetPassword = (props) => {
+  const userId = props?.match?.params?.id;
+  console.log("user idddddddddddddd", userId, props?.match?.params?.id, props.match.params.id)
   const dispatch = useDispatch();
   const [passwordValid, setIsPasswordValid] = useState(false);
   const [passwordConfirmationValid, setIsPasswordConfirmationValid] =
@@ -19,6 +22,9 @@ const SetPassword = ({ submit, disable, type }) => {
       ? setIsPasswordValid(true)
       : setIsPasswordConfirmationValid(true);
   };
+  useEffect(() => {
+    dispatch(employeeActions.setPasswordValid({userId: userId}));
+  }, []);
   const toggleShowPassword = (type) => {
     if (type === "password") {
       setPasswordShown(!passwordShown);
@@ -27,17 +33,25 @@ const SetPassword = ({ submit, disable, type }) => {
     }
   };
   const setPassword = (values) => {
-    console.log(
-      "<<<<<<<<<<< Setting employee password >>>>>>>>>>>>>>>",
-      values
-    );
-    if (values.password && values.passwordConfirmation) {
+    console.log("create coming corporate", values, userId);
+    if (userId && values.password) {
       console.log("create coming corporate", values);
-      dispatch(employeeActions.setEmployeePassword(values));
+      dispatch(employeeActions.setEmployeePassword({userId: userId, password: values.password}));
     }
   };
   return (
-    <div style={{ width: "350px" }}>
+    <div className="row align-items-center authFormMargin">
+        <div className="col-md-6">
+          <div className="authForm setPasswordLeftContent">
+            <h1 className="textHeading">Welcome back to The Good Platform!</h1>
+            <p className="textParagraph">
+              Enter your registered details here to get started
+            </p>
+            <img height="350" src="/assets/img/smartphone2.png" />
+          </div>
+        </div>
+        <div className="col-md-5 formStyles">
+          <div className="registrationContent">
       <Formik
         initialValues={{ password: "", passwordConfirmation: "" }}
         validationSchema={SetPasswordSchema}
@@ -118,14 +132,16 @@ const SetPassword = ({ submit, disable, type }) => {
                 disabled={
                   isSubmitting || errors.passwordConfirmation || errors.password
                 }
-                className="btn btn-primary btn-block"
+                className="btn forgotPasswordSubmitButton"
               >
-                Submit
+                Save Password
               </button>
             </div>
           </Form>
         )}
       </Formik>
+      </div>
+      </div>
     </div>
   );
 };

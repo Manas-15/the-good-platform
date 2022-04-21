@@ -10,7 +10,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 const DonationPreferences = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
-  const user = useSelector((state) => state.authentication.user);
+  const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
@@ -114,13 +114,6 @@ const DonationPreferences = () => {
               </li>
             </ul>
           </nav>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-12 text-right">
-          <Button variant="primary" onClick={""}>
-            Confirm Donation Preferences
-          </Button>
         </div>
       </div>
     </div>

@@ -8,7 +8,8 @@ import { Form } from "formik";
 
 const Otp = () => {
   const [submitted, setSubmitted] = useState(false);
-  const user = useSelector((state) => state.authentication.user);
+  // const user = useSelector((state) => state.employee.user);
+  const user = JSON.parse(localStorage.getItem("user"));
   const [code, setCode] = useState("");
   const handleChange = (code) => setCode(code);
   const dispatch = useDispatch();

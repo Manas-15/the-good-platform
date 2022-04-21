@@ -6,7 +6,7 @@ import employees from "./../../config/employees.json";
 const ListEmployees = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
-  const user = useSelector((state) => state.authentication.user);
+  const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
 
   // useEffect(() => {

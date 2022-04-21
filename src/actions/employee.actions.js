@@ -11,6 +11,7 @@ export const employeeActions = {
   registerEmployee,
   getEmployees,
   setEmployeePassword,
+  setPasswordValid,
 };
 
 function login(data, from) {
@@ -21,9 +22,9 @@ function login(data, from) {
       (data) => {
         dispatch(success(data));
         localStorage.setItem("user", JSON.stringify(data.data));
-        // history.push("/dashboard");
-        history.push("/otp");
-        dispatch(alertActions.success("Loggedin successful"));
+        history.push("/dashboard");
+        // dispatch(alertActions.success("Loggedin successful"));
+        // history.push("/otp");
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -54,9 +55,8 @@ function validateOtp(data, from) {
     employeeService.validateOtp(data).then(
       (data) => {
         dispatch(success(data));
-        console.log("after validate success,", data);
         localStorage.setItem("otpVerified", true);
-        dispatch(alertActions.success("Loggedin successful"));
+        // dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -165,6 +165,31 @@ function registerEmployee(employee, type) {
     return { type: employeeConstants.ADD_EMPLOYEE_FAILURE, error };
   }
 }
+function setPasswordValid(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+
+    employeeService.setPasswordValid(data).then(
+      (data) => {
+        dispatch(success());
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(data) {
+    return { type: employeeConstants.VALID_SET_PASSWORD_REQUEST, data };
+  }
+  function success() {
+    return { type: employeeConstants.VALID_SET_PASSWORD_SUCCESS };
+  }
+  function failure(error) {
+    return { type: employeeConstants.VALID_SET_PASSWORD_FAILURE, error };
+  }
+}
 function setEmployeePassword(data) {
   return (dispatch) => {
     dispatch(request(data));
@@ -173,6 +198,7 @@ function setEmployeePassword(data) {
       (data) => {
         dispatch(success());
         history.push("/");
+        dispatch(alertActions.success("Password was set successfully. Please login."));
       },
       (error) => {
         dispatch(failure(error.toString()));

@@ -1,7 +1,5 @@
 import {
   Route,
-  BrowserRouter,
-  Link,
   Router,
   Switch,
   Redirect,
@@ -26,6 +24,7 @@ import Profile from "../components/Profile/Profile";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
+  // const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   useEffect(() => {
     history.listen((location, action) => {
@@ -38,12 +37,12 @@ const CreateRoutes = () => {
       dispatch(alertActions.clear());
     }, 8000);
   }
-  // const user = useSelector((state) => state.authentication.user);
   const user = JSON.parse(localStorage.getItem("user"));
-  const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
+  console.log("222222222222222222", user)
+  const otpVerified = useSelector((state) => state.employee.otpVerified);
   return (
     <Router history={history}>
-      {user?.token && otpVerified ? (
+      {user?.token ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message && (
@@ -118,8 +117,8 @@ const CreateRoutes = () => {
                   component={ForgotPassword}
                 />
                 <Route exact path="/thank-you" component={ThankYou} />
-                <Route exact path="/set-password" component={SetPassword} />
-                <Route exact path="/otp" component={Otp} />
+                <Route exact path="/set-password/:id" component={SetPassword} />
+                {user && <Route exact path="/otp" component={Otp} />}
                 <Redirect from="*" to="/" />
               </Switch>
             </div>

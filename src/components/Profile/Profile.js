@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Profile = () => {
-  const user = useSelector((state) => state.authentication.user);
+  const user = useSelector((state) => state.employee.user);
   return (
     <>
       <section className="section profile">

@@ -10,7 +10,7 @@ import "./../../assets/css/charityProgramsList.scss";
 const ListCharityPrograms = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
-  const user = useSelector((state) => state.authentication.user);
+  const user = useSelector((state) => state.employee.user);
   const [activeFrequenctTab, setActiveFrequenctTab] = useState("once");
   const dispatch = useDispatch();
   const openNav = () => {
@@ -26,85 +26,113 @@ const ListCharityPrograms = () => {
           <h4>Charity Programs</h4>
         </div>
       </div>
-      {/* {corporates.loading && <em>Loading charity programs...</em>} */}
-      <table className="table table-striped">
-        <thead>
-          <tr className="table-active">
-            <th>Sl#</th>
-            <th>Charity Program Name</th>
-            <th>Social Organization</th>
-            <th>Category</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {charityPrograms ? (
-            charityPrograms.map((charityProgram, index) => (
-              <tr key={index + 1}>
-                <td>{index + 1}</td>
-                <td>{charityProgram.cause}</td>
-                <td>{charityProgram.socialOrganization}</td>
-                <td>{charityProgram.category}</td>
-                <td className="text-center">
-                  <button
-                    type="submit"
-                    className="btn btn-primary btn-sm"
-                    onClick={openNav}
-                  >
-                    Donate
-                  </button>
-                  <Link>
-                    <span className="bi-gear fs-5 ml-2 cursor-pointer"></span>
-                  </Link>
-                  <Link>
-                    <span className="bi-suit-heart fs-5 ml-2 cursor-pointer text-danger"></span>
-                  </Link>
-                </td>
+      <ul className="nav nav-tabs charity-programs-tab">
+        <li className="nav-item">
+          <button
+            className="nav-link active"
+            data-bs-toggle="tab"
+            data-bs-target="#sponsored"
+            // onClick={() => setActiveFrequenctTab("once")}
+          >
+            <span>Sponsored</span>
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className="nav-link"
+            data-bs-toggle="tab"
+            data-bs-target="#others"
+            // onClick={() => setActiveFrequenctTab("monthly")}
+          >
+            <span>Others</span>
+          </button>
+        </li>
+      </ul>
+      <div className="tab-content p-0">
+        <div className="tab-pane fade show active" id="sponsored">
+          {/* {corporates.loading && <em>Loading charity programs...</em>} */}
+          <table className="table table-striped">
+            <thead>
+              <tr className="table-active">
+                <th>Sl#</th>
+                <th>Charity Program Name</th>
+                <th>Social Organization</th>
+                <th>Category</th>
+                <th className="text-center">Unit Price</th>
+                <th className="text-center">Actions</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" className="text-center">
-                No corporates found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      <div className="row mb-4">
-        <div className="col-md-6">
-          <p>Showing 1 to 10 of 20 records</p>
+            </thead>
+            <tbody>
+              {charityPrograms ? (
+                charityPrograms.map((charityProgram, index) => (
+                  <tr key={index + 1}>
+                    <td>{index + 1}</td>
+                    <td>{charityProgram.cause}</td>
+                    <td>{charityProgram.socialOrganization}</td>
+                    <td>{charityProgram.category}</td>
+                    <td className="text-center">{charityProgram.unitPrice}</td>
+                    <td className="text-center">
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-sm"
+                        onClick={openNav}
+                      >
+                        Donate
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center">
+                    No corporates found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          <div className="row mb-4">
+            <div className="col-md-6">
+              <p>Showing 1 to 10 of 20 records</p>
+            </div>
+            <div className="col-md-6" style={{ textAlign: "right" }}>
+              <nav
+                aria-label="Page navigation example"
+                className="d-inline-block"
+              >
+                <ul className="pagination">
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      Previous
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      1
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      2
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      3
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      Next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
-        <div className="col-md-6" style={{ textAlign: "right" }}>
-          <nav aria-label="Page navigation example" className="d-inline-block">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
+        <div className="tab-pane fade show" id="others">
+          ddd
         </div>
       </div>
       {

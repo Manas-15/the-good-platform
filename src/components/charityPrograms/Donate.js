@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import charityPrograms from "../../config/charityPrograms.json";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
 
 const Donate = ({ type }) => {
@@ -10,7 +6,6 @@ const Donate = ({ type }) => {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const handleCheck = () => {
-    console.log("coming here ------------------", open, checked);
     setChecked(!checked);
     setOpen(!checked);
   };
@@ -104,7 +99,7 @@ const Donate = ({ type }) => {
             disabled={!checked}
           >
             <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-            <span className="fs-6 ml-2">Donate</span>
+            <span className="fs-6 ml-2">Save Preferences</span>
           </Button>{" "}
         </div>
       </div>

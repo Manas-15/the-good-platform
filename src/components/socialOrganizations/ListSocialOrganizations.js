@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 const ListCharityPrograms = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
-  const user = useSelector((state) => state.authentication.user);
+  const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
 
   return (
