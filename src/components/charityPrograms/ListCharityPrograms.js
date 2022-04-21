@@ -111,7 +111,7 @@ const ListCharityPrograms = () => {
         <div id="sidepanel" className="sidepanel">
           <div className="donate-header">
             <div className="row">
-              <div className="col-md-10 p-3">
+              <div className="col-md-10 p-2">
                 <span className="pl-3">
                   You can make a big difference to their lives?
                 </span>

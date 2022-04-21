@@ -8,6 +8,7 @@ import { Form } from "formik";
 
 const Otp = () => {
   const [submitted, setSubmitted] = useState(false);
+  const user = useSelector((state) => state.authentication.user);
   const [code, setCode] = useState("");
   const handleChange = (code) => setCode(code);
   const dispatch = useDispatch();
@@ -18,28 +19,14 @@ const Otp = () => {
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
-    // if (email && password) {
-    // get return url from location state or default to home page
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        firstName: "Ansuman",
-        lastName: "Ansuman",
-        username: "Ansuman",
-        password: "test1234",
-        token: "fake-jwt-token",
-      })
-    );
-    const { from } = location.state || { from: { pathname: "/" } };
-    // dispatch(employeeConstants.login("Ansuman", "test1234", from));
-    // }
+    if (code.length === 6) {
+      dispatch(
+        employeeActions.validateOtp({ userId: user.user_id, otp: code })
+      );
+    }
   }
-  // reset login status
-  // useEffect(() => {
-  //   dispatch(employeeConstants.logout());
-  // }, []);
   return (
-    <div className="text-center">
+    <div className="text-center card p-4">
       <h3 className="mb-4">Enter one time password (OTP)</h3>
       <p>
         One time password has been sent to your email id ****2006@gmail.com.

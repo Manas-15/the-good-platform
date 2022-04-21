@@ -40,9 +40,10 @@ const CreateRoutes = () => {
   }
   // const user = useSelector((state) => state.authentication.user);
   const user = JSON.parse(localStorage.getItem("user"));
+  const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   return (
     <Router history={history}>
-      {user?.token ? (
+      {user?.token && otpVerified? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message && (

@@ -20,7 +20,7 @@ function login(data, from) {
     employeeService.login(data).then(
       (data) => {
         dispatch(success(data));
-        // localStorage.setItem("user", JSON.stringify(data.data));
+        localStorage.setItem("user", JSON.stringify(data.data));
         // history.push("/dashboard");
         history.push("/otp");
         dispatch(alertActions.success("Loggedin successful"));
@@ -29,8 +29,8 @@ function login(data, from) {
         dispatch(failure(error.toString()));
         dispatch(
           alertActions.error(
-            error.toString() === "Error: Request failed with status code 404"
-              ? "Email or Password is not valid"
+            error?.response?.data?.errors?.non_field_errors
+              ? error?.response?.data?.errors?.non_field_errors[0]
               : error.toString()
           )
         );
@@ -54,16 +54,18 @@ function validateOtp(data, from) {
     employeeService.validateOtp(data).then(
       (data) => {
         dispatch(success(data));
-        localStorage.setItem("user", JSON.stringify(data.data));
+        console.log("after validate success,", data)
+        localStorage.setItem("otpVerified", true);
         // history.push("/dashboard");
         dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
+        console.log("after validate error,", error?.response?.data)
         dispatch(failure(error.toString()));
         dispatch(
           alertActions.error(
-            error.toString() === "Error: Request failed with status code 404"
-              ? "Otp is not valid"
+            error?.response?.data?.msg
+              ? error?.response?.data?.msg
               : error.toString()
           )
         );

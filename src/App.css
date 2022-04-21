@@ -29,7 +29,7 @@
 }
 .container .alert {
   position: absolute;
-  margin-top: 130px;
+  top: 0;
   width: 80%;
   text-align: center;
 }

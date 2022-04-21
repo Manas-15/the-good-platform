@@ -53,6 +53,9 @@ const Header = () => {
               <i className="bi bi-search"></i>
             </a>
           </li>
+          <li className="nav-item d-block mr-4">
+            <img src="/assets/img/help.png" alt="Help"/>
+          </li>
           <li className="nav-item dropdown pe-3">
             <a
               className="nav-link nav-profile d-flex align-items-center pe-0"
