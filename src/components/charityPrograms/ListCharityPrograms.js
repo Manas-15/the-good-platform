@@ -1,201 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import charityPrograms from "../../config/charityPrograms.json";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import Donate from "./Donate";
+import React from "react";
 import "./../../assets/css/charityProgramsList.scss";
-
-const ListCharityPrograms = () => {
-  let history = useHistory();
-  // const corporates = useSelector(state => state.corporates);
-  const user = useSelector((state) => state.employee.user);
-  const [activeFrequenctTab, setActiveFrequenctTab] = useState("once");
-  const dispatch = useDispatch();
-  const openNav = () => {
-    document.getElementById("sidepanel").classList.add("is-open");
-  };
-  const closeNav = () => {
-    document.getElementById("sidepanel").classList.remove("is-open");
-  };
+const openNav = () => {
+  document.getElementById("sidepanel").classList.add("is-open");
+};
+const ListCharityPrograms = ({ items }) => {
   return (
-    <div>
+    <>
+      <table class="table table-striped">
+        <thead>
+          <tr className="table-active">
+            <th>Sl#</th>
+            <th>Charity Program Name</th>
+            <th>Social Organization</th>
+            <th>Category</th>
+            <th className="text-center">Unit Price</th>
+            <th className="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items ? (
+            items.map((charityProgram, index) => (
+              <tr key={index + 1}>
+                <td>{index + 1}</td>
+                <td>{charityProgram.charityName}</td>
+                <td>{charityProgram.soicalName}</td>
+                <td>{charityProgram.category}</td>
+                <td className="text-center">{charityProgram.unitPrice}</td>
+                <td className="text-center">
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-sm"
+                    onClick={openNav}
+                  >
+                    Donate
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="text-center">
+                No corporates found
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Charity Programs</h4>
+          <p>Showing 1 to 10 of 20 records</p>
         </div>
-      </div>
-      <ul className="nav nav-tabs charity-programs-tab">
-        <li className="nav-item">
-          <button
-            className="nav-link active"
-            data-bs-toggle="tab"
-            data-bs-target="#sponsored"
-            // onClick={() => setActiveFrequenctTab("once")}
-          >
-            <span>Sponsored</span>
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className="nav-link"
-            data-bs-toggle="tab"
-            data-bs-target="#others"
-            // onClick={() => setActiveFrequenctTab("monthly")}
-          >
-            <span>Others</span>
-          </button>
-        </li>
-      </ul>
-      <div className="tab-content p-0">
-        <div className="tab-pane fade show active" id="sponsored">
-          {/* {corporates.loading && <em>Loading charity programs...</em>} */}
-          <table className="table table-striped">
-            <thead>
-              <tr className="table-active">
-                <th>Sl#</th>
-                <th>Charity Program Name</th>
-                <th>Social Organization</th>
-                <th>Category</th>
-                <th className="text-center">Unit Price</th>
-                <th className="text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {charityPrograms ? (
-                charityPrograms.map((charityProgram, index) => (
-                  <tr key={index + 1}>
-                    <td>{index + 1}</td>
-                    <td>{charityProgram.cause}</td>
-                    <td>{charityProgram.socialOrganization}</td>
-                    <td>{charityProgram.category}</td>
-                    <td className="text-center">{charityProgram.unitPrice}</td>
-                    <td className="text-center">
-                      <button
-                        type="submit"
-                        className="btn btn-primary btn-sm"
-                        onClick={openNav}
-                      >
-                        Donate
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center">
-                    No corporates found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-          <div className="row mb-4">
-            <div className="col-md-6">
-              <p>Showing 1 to 10 of 20 records</p>
-            </div>
-            <div className="col-md-6" style={{ textAlign: "right" }}>
-              <nav
-                aria-label="Page navigation example"
-                className="d-inline-block"
-              >
-                <ul className="pagination">
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      Previous
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      1
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      3
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      Next
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div className="tab-pane fade show" id="others">
-          ddd
-        </div>
-      </div>
-      {
-        <div id="sidepanel" className="sidepanel">
-          <div className="donate-header">
-            <div className="row">
-              <div className="col-md-10 p-2">
-                <span className="pl-3">
-                  You can make a big difference to their lives?
-                </span>
-              </div>
-              <div className="col-md-2">
-                <a
-                  href="javascript:void(0)"
-                  className="closebtn"
-                  onClick={closeNav}
-                >
-                  ×
+        <div className="col-md-6" style={{ textAlign: "right" }}>
+          <nav aria-label="Page navigation example" className="d-inline-block">
+            <ul className="pagination">
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  Previous
                 </a>
-              </div>
-            </div>
-
-            <ul className="nav nav-tabs nav-tabs-bordered">
-              <li className="nav-item">
-                <button
-                  className="nav-link active"
-                  data-bs-toggle="tab"
-                  data-bs-target="#give-once"
-                  onClick={() => setActiveFrequenctTab("once")}
-                >
-                  <span>Give Once</span>
-                  {activeFrequenctTab === "once" && (
-                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                  )}
-                </button>
               </li>
-              <li className="nav-item">
-                <button
-                  className="nav-link"
-                  data-bs-toggle="tab"
-                  data-bs-target="#give-monthly"
-                  onClick={() => setActiveFrequenctTab("monthly")}
-                >
-                  <span>Give Monthly</span>
-                  {activeFrequenctTab === "monthly" && (
-                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                  )}
-                </button>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  1
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  2
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  3
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  Next
+                </a>
               </li>
             </ul>
-          </div>
-
-          <div className="tab-content pt-2">
-            <div className="tab-pane fade show active give-once" id="give-once">
-              <Donate frequency="once" />
-            </div>
-            <div className="tab-pane fade show give-monthly" id="give-monthly">
-              <Donate frequency="monthly" />
-            </div>
-          </div>
+          </nav>
         </div>
-      }
-    </div>
+      </div>
+    </>
   );
 };
 export default ListCharityPrograms;

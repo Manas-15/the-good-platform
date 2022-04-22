@@ -1,13 +1,19 @@
 import React, { useState } from "react";
-import { Button, Modal, Table } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { donationConstants } from "./../../constants";
 
-const Donate = ({ type }) => {
+const Donate = ({ frequency }) => {
   const [selectedAmount, setSelectedAmount] = useState("amount1");
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const handleCheck = () => {
-    setChecked(!checked);
-    setOpen(!checked);
+    setChecked(true);
+    setOpen(false);
+  };
+  const closeCheck = () => {
+    setChecked(false);
+    setOpen(false);
   };
   return (
     <>
@@ -85,10 +91,12 @@ const Donate = ({ type }) => {
       <div className="row">
         <div className="col-md-12">
           <label className="m-2">
-            <input type="checkbox" checked={checked} onChange={handleCheck} />
-            <p className="ml-2 d-inline-block">
-              Please select the checkbox to your consent
-            </p>
+            <input type="checkbox" checked={checked} onChange={() => setOpen(true)} />
+            <Link className="text-dark d-inline pl-0" onClick={() => setOpen(true)}>
+              <p className="ml-2 d-inline-block text-decoration-underline">
+                Please select the checkbox to your consent
+              </p>
+            </Link>
           </label>
         </div>
       </div>
@@ -99,18 +107,18 @@ const Donate = ({ type }) => {
             disabled={!checked}
           >
             <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-            <span className="fs-6 ml-2">Save Preferences</span>
+            <span className="fs-6 ml-2">Donation Preference</span>
           </Button>{" "}
         </div>
       </div>
       {open && (
         <Modal
           show={open}
-          onHide={() => setOpen(false)}
+          onHide={closeCheck}
           size="lg"
           backdrop="static"
         >
-          <Modal.Header closeButton>
+          <Modal.Header closeButton className="fs-2">
             <Modal.Title>Donation Consent</Modal.Title>
           </Modal.Header>
           <Modal.Body className="p-4">
@@ -149,14 +157,14 @@ const Donate = ({ type }) => {
                   debited on or around my selected date of each month. I also
                   confirm that I am at least 18 years of age and that I look
                   forward to supporting this welfare association ongoing monthly
-                  donations for two years or longer. [Frequency: Monthly]
+                  donations for two years or longer. [Frequency: {frequency}]
                 </p>
               </div>
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="default" onClick={() => setOpen(false)}>
-              Cancel
+            <Button variant="default" className="btn btn-primary" onClick={handleCheck}>
+              Authorize
             </Button>
           </Modal.Footer>
         </Modal>
