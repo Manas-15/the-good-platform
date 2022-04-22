@@ -5,7 +5,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import Dashboard from "../components/Dashboard/Dashboard";
-import ListCharityPrograms from "../components/CharityPrograms/ListCharityPrograms";
+import CharityPrograms from "../components/CharityPrograms/CharityPrograms";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
 import DonationPreferences from "../components/DonationPreferences/DonationPreferences";
@@ -38,7 +38,6 @@ const CreateRoutes = () => {
     }, 8000);
   }
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("222222222222222222", user)
   const otpVerified = useSelector((state) => state.employee.otpVerified);
   return (
     <Router history={history}>
@@ -69,7 +68,7 @@ const CreateRoutes = () => {
               <Route
                 exact
                 path="/charity-programs"
-                component={ListCharityPrograms}
+                component={CharityPrograms}
               />
               <Route
                 exact

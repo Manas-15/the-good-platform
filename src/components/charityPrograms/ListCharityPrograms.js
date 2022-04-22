@@ -1,12 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import "./../../assets/css/charityProgramsList.scss";
-const openNav = () => {
-  document.getElementById("sidepanel").classList.add("is-open");
-};
-const ListCharityPrograms = ({ items }) => {
+
+const ListCharityPrograms = ({ items, setCharity }) => {
+  const openNav = (charity) => {
+    document.getElementById("sidepanel").classList.add("is-open");
+    setCharity(charity);
+  };
   return (
     <>
-      <table class="table table-striped">
+      <table className="table table-striped">
         <thead>
           <tr className="table-active">
             <th>Sl#</th>
@@ -22,15 +24,15 @@ const ListCharityPrograms = ({ items }) => {
             items.map((charityProgram, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
-                <td>{charityProgram.charityName}</td>
-                <td>{charityProgram.soicalName}</td>
-                <td>{charityProgram.category}</td>
-                <td className="text-center">{charityProgram.unitPrice}</td>
+                <td>{charityProgram?.charityName}</td>
+                <td>{charityProgram?.soicalName}</td>
+                <td>{charityProgram?.category}</td>
+                <td className="text-center">{charityProgram?.unitPrice}</td>
                 <td className="text-center">
                   <button
                     type="submit"
                     className="btn btn-primary btn-sm"
-                    onClick={openNav}
+                    onClick={() => openNav(charityProgram)}
                   >
                     Donate
                   </button>
@@ -40,7 +42,7 @@ const ListCharityPrograms = ({ items }) => {
           ) : (
             <tr>
               <td colSpan="6" className="text-center">
-                No corporates found
+                No charity programs found
               </td>
             </tr>
           )}
@@ -82,6 +84,7 @@ const ListCharityPrograms = ({ items }) => {
           </nav>
         </div>
       </div>
+      
     </>
   );
 };

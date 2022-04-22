@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { donationConstants } from "./../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { employeeActions } from "./../../actions";
 
-const Donate = ({ frequency }) => {
+const Donate = ({ frequency, selectedCharity }) => {
+  const employee = useSelector((state) => state.employee.user);
   const [selectedAmount, setSelectedAmount] = useState("amount1");
+  const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const handleCheck = () => {
@@ -30,7 +33,7 @@ const Donate = ({ frequency }) => {
             className={selectedAmount === "amount1" && "active"}
             onClick={() => setSelectedAmount("amount1")}
           >
-            &#8377;800
+            &#8377;{selectedCharity?.unitPrice * 1}
           </Button>{" "}
         </div>
         <div className="col-md-6 pr-0">
@@ -39,7 +42,7 @@ const Donate = ({ frequency }) => {
             className={selectedAmount === "amount2" && "active"}
             onClick={() => setSelectedAmount("amount2")}
           >
-            &#8377;1000
+            &#8377;{selectedCharity?.unitPrice * 2}
           </Button>{" "}
         </div>
       </div>
@@ -50,7 +53,7 @@ const Donate = ({ frequency }) => {
             className={selectedAmount === "amount3" && "active"}
             onClick={() => setSelectedAmount("amount3")}
           >
-            &#8377;1500
+            &#8377;{selectedCharity?.unitPrice * 3}
           </Button>{" "}
         </div>
         <div className="col-md-6 pr-0">
@@ -59,7 +62,7 @@ const Donate = ({ frequency }) => {
             className={selectedAmount === "amount4" && "active"}
             onClick={() => setSelectedAmount("amount4")}
           >
-            &#8377;2000
+            &#8377;{selectedCharity?.unitPrice * 4}
           </Button>{" "}
         </div>
       </div>
@@ -67,6 +70,12 @@ const Donate = ({ frequency }) => {
         <div className="col-md-10 offset-md-1">
           <input
             type="text"
+            pattern="[0-9]*"
+            maxLength={10}
+            value={val}
+            onChange={(e) =>
+              setVal((v) => (e.target.validity.valid ? e.target.value : v))
+            }
             className="form-control"
             placeholder="Other Amount"
           />
@@ -111,7 +120,7 @@ const Donate = ({ frequency }) => {
           </Button>{" "}
         </div>
       </div>
-      {open && (
+      {open && 
         <Modal
           show={open}
           onHide={closeCheck}
@@ -138,10 +147,10 @@ const Donate = ({ frequency }) => {
                 </th>
               </tr>
               <tr>
-                <td>Amit Gupta</td>
-                <td>Health & fight disease</td>
-                <td className="text-right">500</td>
-                <td className="text-center">Monthly</td>
+                <td>{employee?.name}</td>
+                <td>{selectedCharity?.charityName}</td>
+                <td className="text-right">{selectedCharity?.unitPrice}</td>
+                <td className="text-center">{frequency}</td>
               </tr>
             </table>
             <div className="row mt-5">
@@ -168,7 +177,7 @@ const Donate = ({ frequency }) => {
             </Button>
           </Modal.Footer>
         </Modal>
-      )}
+      }
     </>
   );
 };

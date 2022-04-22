@@ -1,6 +1,7 @@
 import { employeeConstants } from "../constants";
-
-export function employee(state = {}, action) {
+let user = JSON.parse(localStorage.getItem('user'));
+const initialState = user ? { loggedIn: true, user } : {};
+export function employee(state = initialState, action) {
   switch (action.type) {
     case employeeConstants.EMPLOYEE_LOGIN_REQUEST:
       return {
