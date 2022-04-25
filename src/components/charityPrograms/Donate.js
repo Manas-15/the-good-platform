@@ -2,11 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { employeeActions } from "./../../actions";
-
+import DonateAmount from "./DonateAmount";
+import { donationPreferenceConstants } from "./../../constants";
+const preferenceForm = {
+  corporateId: "",
+  employeeId: "",
+  charityProgramId: "",
+  social_organizationId: "",
+  donationAmount: "",
+  frequency: "",
+  isConsentCheck: ""
+}
 const Donate = ({ frequency, selectedCharity }) => {
   const employee = useSelector((state) => state.employee.user);
-  const [selectedAmount, setSelectedAmount] = useState("amount1");
+  const [selectedAmount, setSelectedAmount] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -18,6 +27,13 @@ const Donate = ({ frequency, selectedCharity }) => {
     setChecked(false);
     setOpen(false);
   };
+  const setAmount = (amount) => {
+    setSelectedAmount(amount);
+  };
+  const saveDonationPreference = () => {
+    preferenceForm.corporateId = 
+    console.log("coming to save donation preferences")
+  }
   return (
     <>
       <div className="row mb-4">
@@ -28,42 +44,34 @@ const Donate = ({ frequency, selectedCharity }) => {
       </div>
       <div className="row mb-4">
         <div className="col-md-6 text-right pl-0">
-          <Button
-            variant="outline-primary w-75 font-weight-bold"
-            className={selectedAmount === "amount1" && "active"}
-            onClick={() => setSelectedAmount("amount1")}
-          >
-            &#8377;{selectedCharity?.unitPrice * 1}
-          </Button>{" "}
+          <DonateAmount
+            isActive={selectedAmount === selectedCharity?.unitPrice * 1}
+            amount={selectedCharity?.unitPrice * 1}
+            setSelectedAmount={setAmount}
+          />
         </div>
         <div className="col-md-6 pr-0">
-          <Button
-            variant="outline-primary w-75 font-weight-bold"
-            className={selectedAmount === "amount2" && "active"}
-            onClick={() => setSelectedAmount("amount2")}
-          >
-            &#8377;{selectedCharity?.unitPrice * 2}
-          </Button>{" "}
+          <DonateAmount
+            isActive={selectedAmount === selectedCharity?.unitPrice * 2}
+            amount={selectedCharity?.unitPrice * 2}
+            setSelectedAmount={setAmount}
+          />
         </div>
       </div>
       <div className="row mb-4">
         <div className="col-md-6 text-right pl-0">
-          <Button
-            variant="outline-primary w-75 font-weight-bold"
-            className={selectedAmount === "amount3" && "active"}
-            onClick={() => setSelectedAmount("amount3")}
-          >
-            &#8377;{selectedCharity?.unitPrice * 3}
-          </Button>{" "}
+          <DonateAmount
+            isActive={selectedAmount === selectedCharity?.unitPrice * 3}
+            amount={selectedCharity?.unitPrice * 3}
+            setSelectedAmount={setAmount}
+          />
         </div>
         <div className="col-md-6 pr-0">
-          <Button
-            variant="outline-primary w-75 font-weight-bold"
-            className={selectedAmount === "amount4" && "active"}
-            onClick={() => setSelectedAmount("amount4")}
-          >
-            &#8377;{selectedCharity?.unitPrice * 4}
-          </Button>{" "}
+          <DonateAmount
+            isActive={selectedAmount === selectedCharity?.unitPrice * 4}
+            amount={selectedCharity?.unitPrice * 4}
+            setSelectedAmount={setAmount}
+          />
         </div>
       </div>
       <div className="row mb-3">
@@ -100,8 +108,15 @@ const Donate = ({ frequency, selectedCharity }) => {
       <div className="row">
         <div className="col-md-12">
           <label className="m-2">
-            <input type="checkbox" checked={checked} onChange={() => setOpen(true)} />
-            <Link className="text-dark d-inline pl-0" onClick={() => setOpen(true)}>
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={() => setOpen(true)}
+            />
+            <Link
+              className="text-dark d-inline pl-0"
+              onClick={() => setOpen(true)}
+            >
               <p className="ml-2 d-inline-block text-decoration-underline">
                 Please select the checkbox to your consent
               </p>
@@ -114,19 +129,15 @@ const Donate = ({ frequency, selectedCharity }) => {
           <Button
             className="btn btn-primary w-100 rounded-pill"
             disabled={!checked}
+            onClick={saveDonationPreference}
           >
             <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
             <span className="fs-6 ml-2">Donation Preference</span>
           </Button>{" "}
         </div>
       </div>
-      {open && 
-        <Modal
-          show={open}
-          onHide={closeCheck}
-          size="lg"
-          backdrop="static"
-        >
+      {open && (
+        <Modal show={open} onHide={closeCheck} size="lg" backdrop="static">
           <Modal.Header closeButton className="fs-2">
             <Modal.Title>Donation Consent</Modal.Title>
           </Modal.Header>
@@ -172,12 +183,16 @@ const Donate = ({ frequency, selectedCharity }) => {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="default" className="btn btn-primary" onClick={handleCheck}>
+            <Button
+              variant="default"
+              className="btn btn-primary"
+              onClick={handleCheck}
+            >
               Authorize
             </Button>
           </Modal.Footer>
         </Modal>
-      }
+      )}
     </>
   );
 };

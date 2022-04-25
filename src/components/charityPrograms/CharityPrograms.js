@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Donate from "./Donate";
 import "./../../assets/css/charityProgramsList.scss";
-import { donationConstants } from "./../../constants";
+import { donationPreferenceConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 
@@ -17,7 +17,7 @@ const CharityPrograms = () => {
   const [selectedCharity, setSelectedCharity] = useState();
   const user = useSelector((state) => state.employee.user);
   const [activeFrequenctTab, setActiveFrequenctTab] = useState(
-    donationConstants.ONCE
+    donationPreferenceConstants.ONCE
   );
   const dispatch = useDispatch();
   const openNav = () => {
@@ -100,10 +100,10 @@ const CharityPrograms = () => {
                   className="nav-link active"
                   data-bs-toggle="tab"
                   data-bs-target="#give-once"
-                  onClick={() => setActiveFrequenctTab(donationConstants.ONCE)}
+                  onClick={() => setActiveFrequenctTab(donationPreferenceConstants.ONCE)}
                 >
                   <span>Give Once</span>
-                  {activeFrequenctTab === donationConstants.ONCE && (
+                  {activeFrequenctTab === donationPreferenceConstants.ONCE && (
                     <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
                   )}
                 </button>
@@ -114,11 +114,11 @@ const CharityPrograms = () => {
                   data-bs-toggle="tab"
                   data-bs-target="#give-monthly"
                   onClick={() =>
-                    setActiveFrequenctTab(donationConstants.MONTHLY)
+                    setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
                   }
                 >
                   <span>Give Monthly</span>
-                  {activeFrequenctTab === donationConstants.MONTHLY && (
+                  {activeFrequenctTab === donationPreferenceConstants.MONTHLY && (
                     <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
                   )}
                 </button>
@@ -128,10 +128,10 @@ const CharityPrograms = () => {
 
           <div className="tab-content pt-2">
             <div className="tab-pane fade show active give-once" id="give-once">
-              <Donate frequency={donationConstants.ONCE} selectedCharity={selectedCharity} />
+              <Donate frequency={donationPreferenceConstants.ONCE} selectedCharity={selectedCharity} />
             </div>
             <div className="tab-pane fade show give-monthly" id="give-monthly">
-              <Donate frequency={donationConstants.MONTHLY} selectedCharity={selectedCharity}/>
+              <Donate frequency={donationPreferenceConstants.MONTHLY} selectedCharity={selectedCharity}/>
             </div>
           </div>
         </div>
