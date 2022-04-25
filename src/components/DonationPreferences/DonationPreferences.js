@@ -4,15 +4,32 @@ import {donationPreferenceActions} from "../../actions/donationPreference.action
 import { useDispatch, useSelector } from "react-redux";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { donationPreferenceConstants } from "../../constants";
+import DonationConsent from "./../Shared/DonationConsent";
 
 const DonationPreferences = () => {
   let history = useHistory();
   const preferences = useSelector(state => state.donationPreferences);
-  const user = useSelector((state) => state.employee.user);
+  const employee = useSelector((state) => state.employee.user);
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const [selectedPreference, setSelectedPreference] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(donationPreferenceActions.getDonationPreferences());
   }, []);
+  const handleCheck = () => {
+    setChecked(true);
+    setOpen(false);
+  };
+  const closeCheck = () => {
+    setChecked(false);
+    setOpen(false);
+  };
+  const showConsent = (preference) =>{
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@ preference", preference)
+    setOpen(true);
+    setSelectedPreference(preference);
+  }
   return (
     <div>
       <div className="row mb-4">
@@ -48,6 +65,7 @@ const DonationPreferences = () => {
                     maxLength={10}
                     defaultValue={preference.donationAmount}
                     className="form-control"
+                    onBlur={()=>showConsent(preference)}
                   />
                 </td>
                 <td className="text-center">
@@ -61,6 +79,7 @@ const DonationPreferences = () => {
                     size="sm"
                     onChange={(checked) => {
                       console.log("checked ............", checked);
+                      showConsent(preference)
                     }}
                   />
                 </td>
@@ -111,6 +130,9 @@ const DonationPreferences = () => {
           </nav>
         </div>
       </div>
+      {open && (
+        <DonationConsent open={open} selectedCharity={selectedPreference?.charityProgram} employee={employee} frequency={selectedPreference?.frequency} handleCheck={handleCheck} closeCheck={closeCheck}/>
+      )}
     </div>
   );
 };

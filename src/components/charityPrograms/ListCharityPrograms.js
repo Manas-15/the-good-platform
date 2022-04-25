@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./../../assets/css/charityProgramsList.scss";
 
 const ListCharityPrograms = ({ items, setCharity }) => {
@@ -84,7 +84,6 @@ const ListCharityPrograms = ({ items, setCharity }) => {
           </nav>
         </div>
       </div>
-      
     </>
   );
 };
