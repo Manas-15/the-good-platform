@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import charityPrograms from "../../config/charityPrograms.json";
+import {donationPreferenceActions} from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import { Field } from "formik";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import { donationPreferenceConstants } from "../../constants";
 
 const DonationPreferences = () => {
   let history = useHistory();
-  // const corporates = useSelector(state => state.corporates);
+  const preferences = useSelector(state => state.donationPreferences);
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
-  const openNav = () => {
-    document.getElementById("sidepanel").classList.add("is-open");
-  };
-  const closeNav = () => {
-    document.getElementById("sidepanel").classList.remove("is-open");
-  };
+  useEffect(() => {
+    dispatch(donationPreferenceActions.getDonationPreferences());
+  }, []);
   return (
     <div>
       <div className="row mb-4">
@@ -25,39 +20,39 @@ const DonationPreferences = () => {
           <h4>Donation Preferences</h4>
         </div>
       </div>
-      {/* {corporates.loading && <em>Loading charity programs...</em>} */}
+      {preferences.loading && <em>Loading donation preferences...</em>}
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
             <th>Sl#</th>
             <th>Charity Program Name</th>
             <th>Social Organization</th>
-            <th>Cause</th>
+            <th>Category</th>
             <th>Amount</th>
             <th className="text-center">Frequency</th>
           </tr>
         </thead>
         <tbody>
-          {charityPrograms ? (
-            charityPrograms.map((charityProgram, index) => (
+          {preferences?.items ? (
+            preferences?.items.map((preference, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
-                <td>{charityProgram.cause}</td>
-                <td>{charityProgram.socialOrganization}</td>
-                <td>{charityProgram.category}</td>
+                <td>{preference.charityProgram}</td>
+                <td>{preference.socialOrganization}</td>
+                <td>{preference.category}</td>
                 <td>
                   <input
                     name="amount"
                     type="text"
                     size="4"
                     maxLength={10}
-                    defaultValue={charityProgram.amount}
+                    defaultValue={preference.donationAmount}
                     className="form-control"
                   />
                 </td>
                 <td className="text-center">
                   <BootstrapSwitchButton
-                    checked={charityProgram.frequency}
+                    checked={preference.frequency === 1}
                     onlabel="Once"
                     onstyle="primary"
                     offlabel="Monthly"

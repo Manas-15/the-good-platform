@@ -7,12 +7,15 @@ export const donationPreferenceActions = {
   getDonationPreferences,
 };
 
-function saveDonationPreference() {
+function saveDonationPreference(data) {
   return (dispatch) => {
     dispatch(request());
-    donationPreferenceService.saveDonationPreference().then(
-      (preferences) => dispatch(success(preferences)),
-
+    donationPreferenceService.saveDonationPreference(data).then(
+      (data) => {
+        console.log("success saved donation preference")
+        dispatch(success());
+        dispatch(alertActions.success("Donation preferences saved successfully."));
+      },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
@@ -21,13 +24,21 @@ function saveDonationPreference() {
   };
 
   function request() {
-    return { type: donationPreferenceConstants.SAVE_DONATION_PREFERENCE_REQUEST };
+    return {
+      type: donationPreferenceConstants.SAVE_DONATION_PREFERENCE_REQUEST,
+    };
   }
   function success(preferences) {
-    return { type: donationPreferenceConstants.SAVE_DONATION_PREFERENCE_SUCCESS, preferences };
+    return {
+      type: donationPreferenceConstants.SAVE_DONATION_PREFERENCE_SUCCESS,
+      preferences,
+    };
   }
   function failure(error) {
-    return { type: donationPreferenceConstants.SAVE_DONATION_PREFERENCE_FAILURE, error };
+    return {
+      type: donationPreferenceConstants.SAVE_DONATION_PREFERENCE_FAILURE,
+      error,
+    };
   }
 }
 function getDonationPreferences() {
@@ -42,14 +53,21 @@ function getDonationPreferences() {
       }
     );
   };
-
   function request() {
-    return { type: donationPreferenceConstants.GET_DONATION_PREFERENCES_REQUEST };
+    return {
+      type: donationPreferenceConstants.GET_DONATION_PREFERENCES_REQUEST,
+    };
   }
   function success(preferences) {
-    return { type: donationPreferenceConstants.GET_DONATION_PREFERENCES_SUCCESS, preferences };
+    return {
+      type: donationPreferenceConstants.GET_DONATION_PREFERENCES_SUCCESS,
+      preferences,
+    };
   }
   function failure(error) {
-    return { type: donationPreferenceConstants.GET_DONATION_PREFERENCES_FAILURE, error };
+    return {
+      type: donationPreferenceConstants.GET_DONATION_PREFERENCES_FAILURE,
+      error,
+    };
   }
 }
