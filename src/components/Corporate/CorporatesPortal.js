@@ -33,7 +33,8 @@ const CorporatesPortal = () => {
     );
   };
   const logout = () => {
-    localStorage.removeItem("user");
+    // localStorage.removeItem("user");
+    localStorage.clear();
     history.push("/");
   };
   const confirm = () => {

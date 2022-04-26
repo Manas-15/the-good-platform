@@ -18,11 +18,11 @@ export function employee(state = initialState, action) {
     case employeeConstants.VALIDATE_OTP_REQUEST:
       return {
         validitingOtp: true,
+        user: state.user,
       };
     case employeeConstants.VALIDATE_OTP_SUCCESS:
       return {
-        validitedOtp: true,
-        otpVerified: true,
+        user: state.user,
       };
     case employeeConstants.VALIDATE_OTP_FAILURE:
       return { validitingOtp: false };

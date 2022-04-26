@@ -6,6 +6,9 @@ import DonateAmount from "./DonateAmount";
 import { donationPreferenceActions } from "./../../actions";
 import { donationPreferenceConstants } from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
+import { charityProgramConstants } from "./../../constants";
+import DonateSecondStep from "./DonateSecondStep";
+
 const preferenceForm = {
   corporateId: "",
   employeeId: "",
@@ -15,12 +18,13 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
 };
-const Donate = ({ frequency, selectedCharity }) => {
+const Donate = ({ frequency, selectedCharity, tabType }) => {
   const employee = useSelector((state) => state.employee.user);
   const [selectedAmount, setSelectedAmount] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [showNextStep, setShowNextStep] = useState(false);
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -45,8 +49,13 @@ const Donate = ({ frequency, selectedCharity }) => {
     dispatch(donationPreferenceActions.saveDonationPreference(preferenceForm));
     document.getElementById("sidepanel").classList.remove("is-open");
   };
+  const nextStep = () => {
+    setShowNextStep(!showNextStep)
+  }
   return (
     <>
+     {!showNextStep &&
+     <>
       <div className="row mb-4">
         <div className="col-md-12">
           <span className="bi-lock-fill fs-5 text-success"></span>Choose an
@@ -93,7 +102,7 @@ const Donate = ({ frequency, selectedCharity }) => {
             maxLength={10}
             value={val}
             onChange={(e) =>
-              setVal((v) => (e.target.validity.valid ? e.target.value : v))
+              setVal((v) => (e.target.validity.valid ? setSelectedAmount(e.target.value) : v))
             }
             className="form-control"
             placeholder="Other Amount"
@@ -140,16 +149,19 @@ const Donate = ({ frequency, selectedCharity }) => {
           <Button
             className="btn btn-primary w-100 rounded-pill"
             disabled={!checked}
-            onClick={saveDonationPreference}
+            onClick={tabType === charityProgramConstants.SPONSOR ? saveDonationPreference : nextStep}
           >
             <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-            <span className="fs-6 ml-2">Donation Preference</span>
+            <span className="fs-6 ml-2">{tabType === charityProgramConstants.SPONSOR ? 'Donation Preference' : 'Donate'}</span>
           </Button>{" "}
         </div>
       </div>
       {open && (
-        <DonationConsent open={open} selectedCharity={selectedCharity} employee={employee} frequency={frequency} handleCheck={handleCheck} closeCheck={closeCheck}/>
+        <DonationConsent open={open} amount={selectedAmount} selectedCharity={selectedCharity} employee={employee} frequency={frequency} handleCheck={handleCheck} closeCheck={closeCheck}/>
       )}
+      </>
+      }
+      {showNextStep && <DonateSecondStep />}
     </>
   );
 };

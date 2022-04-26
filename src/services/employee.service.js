@@ -23,7 +23,7 @@ async function validateOtp(data) {
   return await axios.post(
     process.env.REACT_APP_API_URL + "api/validate_otp/",
     data,
-    { headers: authHeader() }
+    // { headers: authHeader() }
   );
 }
 async function resendOtp(data) {

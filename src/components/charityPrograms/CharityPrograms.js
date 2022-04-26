@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import Donate from "./Donate";
 import "./../../assets/css/charityProgramsList.scss";
 import { donationPreferenceConstants } from "./../../constants";
+import { charityProgramConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 
@@ -15,6 +16,7 @@ const CharityPrograms = () => {
   const charityPrograms = useSelector((state) => state.charityPrograms);
   // let selectedCharity = useState({});
   const [selectedCharity, setSelectedCharity] = useState();
+  const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const user = useSelector((state) => state.employee.user);
   const [activeFrequenctTab, setActiveFrequenctTab] = useState(
     donationPreferenceConstants.ONCE
@@ -31,7 +33,11 @@ const CharityPrograms = () => {
   }, []);
   const setCharity = (charity) => {
     setSelectedCharity(charity);
-  }
+  };
+  const setType = (type) => {
+    setTabType(type);
+    closeNav();
+  };
   return (
     <div>
       <div className="row mb-4">
@@ -45,7 +51,7 @@ const CharityPrograms = () => {
             className="nav-link active"
             data-bs-toggle="tab"
             data-bs-target="#sponsored"
-            // onClick={() => setActiveFrequenctTab("once")}
+            onClick={() => setType(charityProgramConstants.SPONSOR)}
           >
             <span>Sponsored</span>
           </button>
@@ -55,7 +61,7 @@ const CharityPrograms = () => {
             className="nav-link"
             data-bs-toggle="tab"
             data-bs-target="#others"
-            // onClick={() => setActiveFrequenctTab("monthly")}
+            onClick={() => setType(charityProgramConstants.OTHER)}
           >
             <span>Others</span>
           </button>
@@ -65,12 +71,18 @@ const CharityPrograms = () => {
         {charityPrograms.loading && <em>Loading charity programs...</em>}
         <div className="tab-pane fade show active" id="sponsored">
           {charityPrograms.items && (
-            <ListCharityPrograms items={charityPrograms?.items?.sponser} setCharity={setCharity}/>
+            <ListCharityPrograms
+              items={charityPrograms?.items?.sponser}
+              setCharity={setCharity}
+            />
           )}
         </div>
         <div className="tab-pane fade show" id="others">
           {charityPrograms.items && (
-            <ListCharityPrograms items={charityPrograms?.items?.other} setCharity={setCharity} />
+            <ListCharityPrograms
+              items={charityPrograms?.items?.other}
+              setCharity={setCharity}
+            />
           )}
         </div>
       </div>
@@ -93,14 +105,15 @@ const CharityPrograms = () => {
                 </a>
               </div>
             </div>
-
             <ul className="nav nav-tabs nav-tabs-bordered">
               <li className="nav-item">
                 <button
                   className="nav-link active"
                   data-bs-toggle="tab"
                   data-bs-target="#give-once"
-                  onClick={() => setActiveFrequenctTab(donationPreferenceConstants.ONCE)}
+                  onClick={() =>
+                    setActiveFrequenctTab(donationPreferenceConstants.ONCE)
+                  }
                 >
                   <span>Give Once</span>
                   {activeFrequenctTab === donationPreferenceConstants.ONCE && (
@@ -118,20 +131,28 @@ const CharityPrograms = () => {
                   }
                 >
                   <span>Give Monthly</span>
-                  {activeFrequenctTab === donationPreferenceConstants.MONTHLY && (
+                  {activeFrequenctTab ===
+                    donationPreferenceConstants.MONTHLY && (
                     <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
                   )}
                 </button>
               </li>
             </ul>
           </div>
-
           <div className="tab-content pt-2">
             <div className="tab-pane fade show active give-once" id="give-once">
-              <Donate frequency={donationPreferenceConstants.ONCE} selectedCharity={selectedCharity} />
+              <Donate
+                frequency={donationPreferenceConstants.ONCE}
+                selectedCharity={selectedCharity}
+                tabType={tabType}
+              />
             </div>
             <div className="tab-pane fade show give-monthly" id="give-monthly">
-              <Donate frequency={donationPreferenceConstants.MONTHLY} selectedCharity={selectedCharity}/>
+              <Donate
+                frequency={donationPreferenceConstants.MONTHLY}
+                selectedCharity={selectedCharity}
+                tabType={tabType}
+              />
             </div>
           </div>
         </div>

@@ -49,11 +49,13 @@ const CreateRoutes = () => {
   if(isEmployeeView){
     document.body.classList.remove("toggle-sidebar");
   }
-  const user = JSON.parse(localStorage.getItem("user"));
-  const otpVerified = useSelector((state) => state.employee.otpVerified);
+  // const user = JSON.parse(localStorage.getItem("user"));
+  const user = useSelector((state) => state.employee.user);
+  const otpVerified =JSON.parse(localStorage.getItem("otpVerified"));
   return (
     <Router history={history}>
-      {user?.token ? (
+       {/* &&  otpVerified */}
+      {user?.token &&  otpVerified ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message && (
@@ -139,7 +141,7 @@ const CreateRoutes = () => {
                 />
                 <Route exact path="/thank-you" component={ThankYou} />
                 <Route exact path="/set-password/:id" component={SetPassword} />
-                {user && <Route exact path="/otp" component={Otp} />}
+                {user && !otpVerified && <Route exact path="/otp" component={Otp} />}
                 <Redirect from="*" to="/" />
               </Switch>
             </div>

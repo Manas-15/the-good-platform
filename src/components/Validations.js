@@ -53,3 +53,14 @@ export const EmployeeSchema = Yup.object().shape({
     .min(10, "Please enter valid phone number")
     .max(14, "Please enter valid phone number"),
 });
+
+export const PaymentSchema = Yup.object().shape({
+  titel: Yup.string().required("Title is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .required("Organization email is required")
+    .email("Invalid email address"),  
+  address: Yup.string().required("Address is required"),
+  country: Yup.string().required("Country is required"),
+});

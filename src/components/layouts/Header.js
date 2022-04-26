@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const location = useLocation();
   const logout = () => {
-    localStorage.removeItem("user");
+    // localStorage.removeItem("user");
+    localStorage.clear();
     history.push("/");
   };
   const user = useSelector((state) => state.employee.user);

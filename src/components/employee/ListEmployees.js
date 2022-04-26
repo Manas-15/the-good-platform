@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
@@ -45,7 +45,7 @@ const ListEmployees = (props) => {
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Employees</h4>
+          <h4><Link to="/corporates">Corporates</Link> / Employees</h4>
         </div>
         {/* <div className="col-md-6" style={{ textAlign: "right" }}>
           <button

@@ -2,6 +2,7 @@ import { Button, Modal } from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
 export default function DonationConsent({
   closeCheck,
+  amount,
   selectedCharity,
   employee,
   frequency,
@@ -32,7 +33,7 @@ export default function DonationConsent({
               <tr>
                 <td>{employee?.name}</td>
                 <td>{selectedCharity?.charityName}</td>
-                <td className="text-right">{selectedCharity?.unitPrice}</td>
+                <td className="text-right">{amount}</td>
                 <td className="text-center">{frequency}</td>
               </tr>
             </table>

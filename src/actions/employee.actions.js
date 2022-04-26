@@ -23,7 +23,7 @@ function login(data, from) {
         dispatch(success(data));
         localStorage.setItem("user", JSON.stringify(data.data));
         // history.push("/dashboard");
-        dispatch(alertActions.success("Loggedin successful"));
+        // dispatch(alertActions.success("Loggedin successful"));
         history.push("/otp");
       },
       (error) => {
@@ -55,15 +55,22 @@ function validateOtp(data, from) {
     employeeService.validateOtp(data).then(
       (data) => {
         dispatch(success(data));
-        localStorage.setItem("otpVerified", true);
+        if(data?.data?.msg === "Invalid OTP"){
+          history.push("/otp");
+          dispatch(alertActions.error(data?.data?.msg));
+        }else{
+          localStorage.setItem("otpVerified", true);
+          history.push("/");
+        }        
         // dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
         dispatch(failure(error.toString()));
+        localStorage.removeItem("user");
         dispatch(
           alertActions.error(
-            error?.response?.data?.msg
-              ? error?.response?.data?.msg
+            error?.response?.data?.errors?.detail
+              ? error?.response?.data?.errors?.detail
               : error.toString()
           )
         );
@@ -172,7 +179,10 @@ function setPasswordValid(data) {
     employeeService.setPasswordValid(data).then(
       (data) => {
         dispatch(success());
-        if (data?.data?.msg === employeeConstants.ALREADY_SET_PASSWORD_ERROR || data?.data?.msg === employeeConstants.INVALID_SET_PASSWORD_ERROR){
+        if (
+          data?.data?.msg === employeeConstants.ALREADY_SET_PASSWORD_ERROR ||
+          data?.data?.msg === employeeConstants.INVALID_SET_PASSWORD_ERROR
+        ) {
           history.push("/");
           dispatch(alertActions.error(data?.data?.msg));
         }
@@ -202,7 +212,9 @@ function setEmployeePassword(data) {
       (data) => {
         dispatch(success());
         history.push("/");
-        dispatch(alertActions.success("Password was set successfully. Please login."));
+        dispatch(
+          alertActions.success("Password was set successfully. Please login.")
+        );
       },
       (error) => {
         dispatch(failure(error.toString()));
