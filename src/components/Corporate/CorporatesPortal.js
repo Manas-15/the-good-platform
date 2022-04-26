@@ -2,7 +2,7 @@ import React, { useEffect, useState, createRef } from "react";
 import { useHistory } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
-import ConfirmationDialog from "./../Shared/ConfirmationDialog";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import Loader from "../Shared/Loader";
 import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ const actionInitialValues = {
   userId: "",
   requestType: "",
 };
-const CorporatesLunchpad = () => {
+const CorporatesPortal = () => {
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
   const user = useSelector((state) => state.employee.user);
@@ -67,7 +67,7 @@ const CorporatesLunchpad = () => {
       </div>
       <div className="row mb-4">
         <div className="col-md-4 text-center offset-md-4">
-          <h4>Corporates Lunchpad</h4>
+          <h4>Corporates Portal</h4>
         </div>
       </div>
       <div className="row mb-4">
@@ -79,16 +79,14 @@ const CorporatesLunchpad = () => {
                 {corporates?.items.map((corporate, index) => {
                   return (
                     <li key={index + 1}>
-                      <Link to="/corporates/employees">
+                      <Link to={`/corporates/${corporate.corporateId}/employees`}>
                         {corporate?.organizationName}
                       </Link>
                     </li>
                   );
                 })}
-                <li key={'logout'} className="logout">
-                  <Link onClick={logout}>
-                    Logout
-                  </Link>
+                <li key={"logout"} className="logout">
+                  <Link onClick={logout}>Logout</Link>
                 </li>
               </ul>
             </div>
@@ -97,7 +95,6 @@ const CorporatesLunchpad = () => {
           )}
         </div>
       </div>
-
       {/* <div className="row mb-4">
         <div className="col-md-6">
           <p>Showing 1 to 10 of 20 records</p>
@@ -150,4 +147,4 @@ const CorporatesLunchpad = () => {
     </div>
   );
 };
-export default CorporatesLunchpad;
+export default CorporatesPortal;

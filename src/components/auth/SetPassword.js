@@ -9,7 +9,6 @@ import "./../../assets/css/loginForm.scss";
 
 const SetPassword = (props) => {
   const userId = props?.match?.params?.id;
-  console.log("user idddddddddddddd", userId, props?.match?.params?.id, props.match.params.id)
   const dispatch = useDispatch();
   const [passwordValid, setIsPasswordValid] = useState(false);
   const [passwordConfirmationValid, setIsPasswordConfirmationValid] =

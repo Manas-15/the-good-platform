@@ -90,7 +90,7 @@ const Header = () => {
                   to="/corporates"
                 >
                   <i className="bi bi-bookshelf"></i>
-                  <span>Corporate Lunchpad</span>
+                  <span>Corporate Portal</span>
                 </Link>
               </li>
               <li>

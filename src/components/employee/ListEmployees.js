@@ -1,22 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import employees from "./../../config/employees.json";
+import { employeeActions } from "../../actions";
+// import employees from "./../../config/employees.json";
 
-const ListEmployees = () => {
+const ListEmployees = (props) => {
   let history = useHistory();
-  // const corporates = useSelector(state => state.corporates);
+  const corporateId = props?.match?.params?.corporateId;
+  const employees = useSelector(state => state.employee);
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //     dispatch(corporateActions.getCorporates());
-  // }, []);
+  useEffect(() => {
+      dispatch(employeeActions.getEmployees({corporateId: corporateId}));
+  }, []);
   return (
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Corporates</h4>
+          <h4>Employees</h4>
         </div>
         <div className="col-md-6" style={{ textAlign: "right" }}>
           <button
@@ -28,7 +30,7 @@ const ListEmployees = () => {
           </button>
         </div>
       </div>
-      {/* {corporates.loading && <em>Loading corporates...</em>} */}
+      {employees.loading && <em>Loading employees...</em>}
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
@@ -41,8 +43,8 @@ const ListEmployees = () => {
         </thead>
         <tbody>
           {
-            // corporates.items && corporates.items.length > 0
-            // ?
+            employees && employees.items.length > 0
+            ?
             employees.map((employee, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
@@ -64,10 +66,10 @@ const ListEmployees = () => {
                 </td>
               </tr>
             ))
-            // :
-            // <tr>
-            //   <td colSpan="6" className='text-center'>No corporates found</td>
-            // </tr>
+            :
+            <tr>
+              <td colSpan="6" className='text-center'>No employees found</td>
+            </tr>
           }
         </tbody>
       </table>

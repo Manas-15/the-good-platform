@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {donationPreferenceActions} from "../../actions/donationPreference.actions";
+import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { donationPreferenceConstants } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
-
+const preferenceForm = {
+  employeePreferenceId: "",
+  type: "",
+  donationAmount: "",
+  frequency: "",
+  isConsentCheck: "",
+};
 const DonationPreferences = () => {
   let history = useHistory();
-  const preferences = useSelector(state => state.donationPreferences);
+  const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
+  const [updateType, setUpdateType] = useState("");
+  const [updatedValue, setUpdatedValue] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(donationPreferenceActions.getDonationPreferences());
@@ -21,19 +29,37 @@ const DonationPreferences = () => {
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
+    updateDonationPreference();
   };
   const closeCheck = () => {
     setChecked(false);
     setOpen(false);
   };
-  const showConsent = (preference) =>{
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@ preference", preference)
+  const showConsent = (preference, type) => {
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@ preference", preference);
     setOpen(true);
     setSelectedPreference(preference);
-  }
-  if(preferences.loading){
+    setUpdateType(type);
+  };
+  const updateDonationPreference = () => {
+    preferenceForm.employeePreferenceId =
+      selectedPreference.employeePreferenceId;
+    preferenceForm.type = updateType;
+    if (updateType === donationPreferenceConstants.AMOUNT) {
+      preferenceForm.donationAmount = updatedValue;
+    }
+    if (updateType === donationPreferenceConstants.FREQUENCY) {
+      preferenceForm.frequency =
+        updatedValue === donationPreferenceConstants.MONTHLY ? 1 : 2;
+    }
+    preferenceForm.isConsentCheck = true;
+    dispatch(
+      donationPreferenceActions.updateDonationPreference(preferenceForm)
+    );
+  };
+  if (preferences.loading) {
     document.getElementById("root").classList.add("loading");
-  }else{
+  } else {
     document.getElementById("root").classList.remove("loading");
   }
   return (
@@ -71,12 +97,20 @@ const DonationPreferences = () => {
                     maxLength={10}
                     defaultValue={preference.donationAmount}
                     className="form-control"
-                    onBlur={()=>showConsent(preference)}
+                    onBlur={() =>
+                      showConsent(
+                        preference,
+                        donationPreferenceConstants.AMOUNT
+                      )
+                    }
+                    onInput={(e) => setUpdatedValue(e.target.value)}
                   />
                 </td>
                 <td className="text-center">
                   <BootstrapSwitchButton
-                    checked={preference.frequency === 1}
+                    checked={
+                      updatedValue ? updatedValue : preference.frequency === 2
+                    }
                     onlabel="Once"
                     onstyle="primary"
                     offlabel="Monthly"
@@ -85,7 +119,15 @@ const DonationPreferences = () => {
                     size="sm"
                     onChange={(checked) => {
                       console.log("checked ............", checked);
-                      showConsent(preference)
+                      showConsent(
+                        preference,
+                        donationPreferenceConstants.FREQUENCY
+                      );
+                      setUpdatedValue(
+                        checked
+                          ? donationPreferenceConstants.ONCE
+                          : donationPreferenceConstants.MONTHLY
+                      );
                     }}
                   />
                 </td>
@@ -137,7 +179,14 @@ const DonationPreferences = () => {
         </div>
       </div>
       {open && (
-        <DonationConsent open={open} selectedCharity={selectedPreference?.charityProgram} employee={employee} frequency={selectedPreference?.frequency} handleCheck={handleCheck} closeCheck={closeCheck}/>
+        <DonationConsent
+          open={open}
+          selectedCharity={selectedPreference?.charityProgram}
+          employee={employee}
+          frequency={selectedPreference?.frequency}
+          handleCheck={handleCheck}
+          closeCheck={closeCheck}
+        />
       )}
     </div>
   );
