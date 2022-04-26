@@ -64,9 +64,11 @@ async function setEmployeePassword(data) {
   );
 }
 async function setPasswordValid(data) {
-  return await axios.post(
-    process.env.REACT_APP_API_URL + "api/set_password_valid/",
-    data
+  return await axios.get(
+    process.env.REACT_APP_API_URL + "api/verify_set_password/",
+    {
+      params: data
+    }
   );
 }
 function handleResponse(response) {
