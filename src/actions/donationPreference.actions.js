@@ -3,8 +3,9 @@ import { donationPreferenceService } from "./../services";
 import { alertActions } from "./";
 
 export const donationPreferenceActions = {
-  saveDonationPreference,
   getDonationPreferences,
+  saveDonationPreference,
+  updateDonationPreference,  
 };
 
 function saveDonationPreference(data) {
@@ -37,6 +38,38 @@ function saveDonationPreference(data) {
   function failure(error) {
     return {
       type: donationPreferenceConstants.SAVE_DONATION_PREFERENCE_FAILURE,
+      error,
+    };
+  }
+}
+function updateDonationPreference(data) {
+  return (dispatch) => {
+    dispatch(request());
+    donationPreferenceService.updateDonationPreference(data).then(
+      (data) => {
+        dispatch(success());
+        dispatch(alertActions.success("Donation preference updated successfully."));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return {
+      type: donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_REQUEST,
+    };
+  }
+  function success() {
+    return {
+      type: donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_SUCCESS,
+    };
+  }
+  function failure(error) {
+    return {
+      type: donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_FAILURE,
       error,
     };
   }

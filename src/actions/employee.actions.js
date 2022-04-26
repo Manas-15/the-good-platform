@@ -115,11 +115,11 @@ function logout() {
   employeeService.logout();
   return { type: employeeConstants.LOGOUT };
 }
-function getEmployees() {
+function getEmployees(data) {
   return (dispatch) => {
     dispatch(request());
 
-    employeeService.getEmployees().then(
+    employeeService.getEmployees(data).then(
       (employees) => dispatch(success(employees)),
 
       (error) => {
@@ -172,6 +172,10 @@ function setPasswordValid(data) {
     employeeService.setPasswordValid(data).then(
       (data) => {
         dispatch(success());
+        if (data?.data?.msg === employeeConstants.ALREADY_SET_PASSWORD_ERROR || data?.data?.msg === employeeConstants.INVALID_SET_PASSWORD_ERROR){
+          history.push("/");
+          dispatch(alertActions.error(data?.data?.msg));
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
