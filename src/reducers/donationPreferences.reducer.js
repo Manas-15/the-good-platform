@@ -24,6 +24,19 @@ export function donationPreferences(state = {}, action) {
       return {
         error: action.error,
       };
+    case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_REQUEST:
+      return {
+        loading: true,
+        items: state.items
+      };
+    case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_SUCCESS:
+      return {
+        items: state.items
+      };
+    case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_FAILURE:
+      return {
+        error: action.error,
+      };
     default:
       return state;
   }

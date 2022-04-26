@@ -17,7 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
 // import ListCorporates from "../components/Corporate/ListCorporates";
-import CorporatesLunchpad from "../components/Corporate/CorporatesLunchpad";
+import CorporatesPortal from "../components/Corporate/CorporatesPortal";
+import ListEmployees from "../components/Employee/ListEmployees";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
@@ -84,7 +85,12 @@ const CreateRoutes = () => {
               <Route
                 exact
                 path="/corporates"
-                component={CorporatesLunchpad}
+                component={CorporatesPortal}
+              />
+              <Route
+                exact
+                path="/corporate/:corporateId/employees"
+                component={ListEmployees}
               />
               <Route exact path="/dashboard" component={Dashboard} />
               <Redirect from="*" to="/" />
