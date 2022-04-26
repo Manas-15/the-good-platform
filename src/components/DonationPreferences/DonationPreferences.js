@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { donationPreferenceConstants } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
+import Loader from "./../Shared/Loader";
 
 const DonationPreferences = () => {
   let history = useHistory();
@@ -30,6 +31,11 @@ const DonationPreferences = () => {
     setOpen(true);
     setSelectedPreference(preference);
   }
+  if(preferences.loading){
+    document.getElementById("root").classList.add("loading");
+  }else{
+    document.getElementById("root").classList.remove("loading");
+  }
   return (
     <div>
       <div className="row mb-4">
@@ -37,7 +43,7 @@ const DonationPreferences = () => {
           <h4>Donation Preferences</h4>
         </div>
       </div>
-      {preferences.loading && <em>Loading donation preferences...</em>}
+      {preferences.loading && <Loader />}
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
