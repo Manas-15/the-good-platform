@@ -1,0 +1,17 @@
+.corporates-lunchpad ul li {
+  padding: 15px;
+  list-style: none;
+  font-size: 20px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+.corporates-lunchpad ul li:hover {
+  text-decoration: underline;
+}
+
+.corporates-lunchpad ul li.logout{
+  font-size: 15px;
+  text-align: right;
+  border-bottom: none;
+  padding-bottom: 0;
+}

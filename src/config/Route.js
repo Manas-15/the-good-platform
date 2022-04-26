@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
+// import ListCorporates from "../components/Corporate/ListCorporates";
+import CorporatesLunchpad from "../components/Corporate/CorporatesLunchpad";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
@@ -36,6 +38,10 @@ const CreateRoutes = () => {
     setTimeout(() => {
       dispatch(alertActions.clear());
     }, 8000);
+  }
+  const isCorporateLunchpad = history.location.pathname.includes("/corporates")
+  if(isCorporateLunchpad){
+    document.body.classList.add("toggle-sidebar");
   }
   const user = JSON.parse(localStorage.getItem("user"));
   const otpVerified = useSelector((state) => state.employee.otpVerified);
@@ -60,8 +66,8 @@ const CreateRoutes = () => {
                 </button>
               </div>
             )}
-            <Header />
-            <Sidebar />
+            {!isCorporateLunchpad && <Header />}
+            {!isCorporateLunchpad && <Sidebar />}
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/profile" component={Profile} />
@@ -74,6 +80,11 @@ const CreateRoutes = () => {
                 exact
                 path="/donation-preferences"
                 component={DonationPreferences}
+              />
+              <Route
+                exact
+                path="/corporates"
+                component={CorporatesLunchpad}
               />
               <Route exact path="/dashboard" component={Dashboard} />
               <Redirect from="*" to="/" />

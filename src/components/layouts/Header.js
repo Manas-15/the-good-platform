@@ -13,7 +13,7 @@ const Header = () => {
   const user = useSelector((state) => state.employee.user);
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
-  };
+  };  
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -83,6 +83,15 @@ const Header = () => {
                   <i className="bi bi-gear"></i>
                   <span>Account Settings</span>
                 </a>
+              </li>
+              <li>
+                <Link
+                  className="dropdown-item d-flex align-items-center"
+                  to="/corporates"
+                >
+                  <i className="bi bi-bookshelf"></i>
+                  <span>Corporate Lunchpad</span>
+                </Link>
               </li>
               <li>
                 <hr className="dropdown-divider" />
