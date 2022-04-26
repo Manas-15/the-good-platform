@@ -91,7 +91,7 @@ const CorporatesPortal = () => {
               </ul>
             </div>
           ) : (
-            <strong>No corporates found</strong>
+            <div className="text-center"><strong>No corporates found</strong></div>
           )}
         </div>
       </div>

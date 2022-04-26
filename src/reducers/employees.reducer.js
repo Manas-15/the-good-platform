@@ -1,5 +1,5 @@
 import { employeeConstants } from "../constants";
-let user = JSON.parse(localStorage.getItem('user'));
+let user = JSON.parse(localStorage.getItem("user"));
 const initialState = user ? { loggedIn: true, user } : {};
 export function employee(state = initialState, action) {
   switch (action.type) {
@@ -41,13 +41,17 @@ export function employee(state = initialState, action) {
     case employeeConstants.GET_EMPLOYEES_REQUEST:
       return {
         loading: true,
+        user: state.user,
       };
     case employeeConstants.GET_EMPLOYEES_SUCCESS:
+      console.log("inside reducerssssssssssssssss", action.employees?.data?.employee);
       return {
-        items: action.employees?.data?.employees,
+        user: state.user,
+        items: action?.employees?.data?.employee,
       };
     case employeeConstants.GET_EMPLOYEES_FAILURE:
       return {
+        user: state.user,
         error: action.error,
       };
     case employeeConstants.ADD_EMPLOYEE_REQUEST:
@@ -71,7 +75,7 @@ export function employee(state = initialState, action) {
     case employeeConstants.VALID_SET_PASSWORD_REQUEST:
       return { validitingSetPassword: true };
     case employeeConstants.VALID_SET_PASSWORD_SUCCESS:
-      return {validSetPassword: true};
+      return { validSetPassword: true };
     case employeeConstants.VALID_SET_PASSWORD_FAILURE:
       return { error: action.error };
     case employeeConstants.SAVE_EMPLOYEE_PASSWORD_REQUEST:
@@ -80,6 +84,25 @@ export function employee(state = initialState, action) {
       return {};
     case employeeConstants.SAVE_EMPLOYEE_PASSWORD_FAILURE:
       return { error: action.error };
+    case employeeConstants.EMPLOYEE_ACTION_REQUEST:
+      return {
+        items: state.items,
+        actionRequest: true,
+        employeeId: action?.employee?.userId,
+        requestType: action?.employee?.requestType,
+      };
+    case employeeConstants.EMPLOYEE_ACTION_SUCCESS:
+      return {
+        items: state.items.map((item) => {
+          console.log("inside reducer --------------", item.id, state.employeeId)
+          if (item.id === state.employeeId) {
+            return { ...item, isApprove: state.requestType === "Approve" };
+          }
+          return item;
+        }),
+      };
+    case employeeConstants.EMPLOYEE_ACTION_FAILURE:
+      return { items: state.items, error: action.error };
     default:
       return state;
   }

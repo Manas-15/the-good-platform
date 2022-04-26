@@ -1,26 +1,53 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
+import ConfirmationDialog from "./../Shared/ConfirmationDialog";
 // import employees from "./../../config/employees.json";
-
+const actionInitialValues = {
+  userId: "",
+  requestType: "",
+};
 const ListEmployees = (props) => {
   let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector(state => state.employee);
-  const user = useSelector((state) => state.employee.user);
+  // const user = useSelector((state) => state.employee.user);
+  const [open, setOpen] = useState(false);
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionContent, setActionContent] = useState("");
+  const [actionType, setActionType] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const dispatch = useDispatch();
-
+  console.log("corporateId.................", corporateId, employees)
   useEffect(() => {
       dispatch(employeeActions.getEmployees({corporateId: corporateId}));
   }, []);
+  const handleOpen = (action, item) => {
+    setOpen(true);
+    setActionType(action);
+    setSelectedEmployee(item);
+    setActionTitle(`${action} Confirmation`);
+    setActionContent(
+      `Are you sure to ${action.toLowerCase()} <strong>"${
+        item.name
+      }"</strong>?`
+    );
+  };
+  const confirm = () => {
+    handleClose();
+    actionInitialValues.userId = selectedEmployee.id;
+    actionInitialValues.requestType = actionType;
+    dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
+  };
+  const handleClose = () => setOpen(false);
   return (
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
           <h4>Employees</h4>
         </div>
-        <div className="col-md-6" style={{ textAlign: "right" }}>
+        {/* <div className="col-md-6" style={{ textAlign: "right" }}>
           <button
             type="button"
             className="btn btn-primary"
@@ -28,7 +55,7 @@ const ListEmployees = (props) => {
           >
             Add Employee
           </button>
-        </div>
+        </div> */}
       </div>
       {employees.loading && <em>Loading employees...</em>}
       <table className="table table-striped">
@@ -37,32 +64,47 @@ const ListEmployees = (props) => {
             <th>Sl#</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Address</th>
+            <th>Phone</th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           {
-            employees && employees.items.length > 0
+            employees?.items?.length > 0
             ?
-            employees.map((employee, index) => (
+            employees?.items.map((employee, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
-                <td>{employee.name}</td>
-                <td>{employee.email}</td>
+                <td>{employee?.name}</td>
+                <td>{employee?.email}</td>
                 <td>
-                  {employee.address
+                  {employee?.contact_number}
+                  {/* {employee.address
                     .split(",")
-                    .reduce((all, cur) => [...all, <br />, cur])}
+                    .reduce((all, cur) => [...all, <br />, cur])} */}
                 </td>
                 <td className="text-center">
                   <a className="icon" href="#" data-bs-toggle="dropdown">
                     <span className="bi-three-dots"></span>
                   </a>
-                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li className="dropdown-header text-start">Activate</li>
-                    <li className="dropdown-header text-start">Deactivate</li>
-                  </ul>
+                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
+                      {!employee?.isApprove ? (
+                        <li
+                          className="dropdown-header text-start"
+                          onClick={() => handleOpen("Approve", employee)}
+                        >
+                          <span className="bi-check-circle"> Approve</span>
+                        </li>
+                      ) : null}
+                      {employee?.isApprove || employee?.isApprove === null ? (
+                        <li
+                          className="dropdown-header text-start"
+                          onClick={() => handleOpen("Reject", employee)}
+                        >
+                          <span className="bi-x-circle"> Reject</span>
+                        </li>
+                      ) : null}                      
+                    </ul>
                 </td>
               </tr>
             ))
@@ -109,44 +151,19 @@ const ListEmployees = (props) => {
           </nav>
         </div>
       </div>
-      <div id="myModal" className="modal fade">
-        <div className="modal-dialog modal-confirm">
-          <div className="modal-content">
-            <div className="modal-header flex-column">
-              <div className="icon-box">
-                <i className="material-icons">&#xE5CD;</i>
-              </div>
-              <h4 className="modal-title w-100">Are you sure?</h4>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-hidden="true"
-              >
-                &times;
-              </button>
-            </div>
-            <div className="modal-body">
-              <p>
-                Do you really want to delete these records? This process cannot
-                be undone.
-              </p>
-            </div>
-            <div className="modal-footer justify-content-center">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button type="button" className="btn btn-danger">
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {open && (
+        <ConfirmationDialog
+          open={true}
+          title={actionTitle}
+          content={actionContent}
+          handleConfirm={() => {
+            confirm();
+          }}
+          handleCancel={() => {
+            handleClose();
+          }}
+        />
+      )}
     </div>
   );
 };

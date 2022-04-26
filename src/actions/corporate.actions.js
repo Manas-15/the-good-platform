@@ -18,7 +18,6 @@ function getCorporates() {
       (corporates) => dispatch(success(corporates)),
 
       (error) => {
-        console.log("errorerrorerror", error);
         dispatch(failure(error.toString()));
         dispatch(
           alertActions.error(error.toString())

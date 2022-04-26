@@ -40,9 +40,14 @@ const CreateRoutes = () => {
       dispatch(alertActions.clear());
     }, 8000);
   }
-  const isCorporateLunchpad = history.location.pathname.includes("/corporates")
+  const isCorporateLunchpad = history.location.pathname == "/corporates"
+  const isEmployeeView = history.location.pathname.includes("/employees")
+  console.log("{!isEmployeeView && ", isEmployeeView)
   if(isCorporateLunchpad){
     document.body.classList.add("toggle-sidebar");
+  }
+  if(isEmployeeView){
+    document.body.classList.remove("toggle-sidebar");
   }
   const user = JSON.parse(localStorage.getItem("user"));
   const otpVerified = useSelector((state) => state.employee.otpVerified);
@@ -70,18 +75,18 @@ const CreateRoutes = () => {
             {!isCorporateLunchpad && <Header />}
             {!isCorporateLunchpad && <Sidebar />}
             <Switch>
-              <Route exact path="/" component={Dashboard} />
+              {!isEmployeeView && <Route exact path="/" component={Dashboard} />}
               <Route exact path="/profile" component={Profile} />
-              <Route
+              {!isEmployeeView && <Route
                 exact
                 path="/charity-programs"
                 component={CharityPrograms}
-              />
-              <Route
+              />}
+              {!isEmployeeView && <Route
                 exact
                 path="/donation-preferences"
                 component={DonationPreferences}
-              />
+              />}
               <Route
                 exact
                 path="/corporates"
@@ -89,7 +94,7 @@ const CreateRoutes = () => {
               />
               <Route
                 exact
-                path="/corporate/:corporateId/employees"
+                path="/corporates/:corporateId/employees"
                 component={ListEmployees}
               />
               <Route exact path="/dashboard" component={Dashboard} />

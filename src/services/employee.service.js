@@ -13,6 +13,7 @@ export const employeeService = {
   setPasswordValid,
   setEmployeePassword,
   logout,
+  employeeAccountRequest,
 };
 
 async function login(data) {
@@ -35,8 +36,8 @@ function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem("user");
 }
-async function getEmployees() {
-  return await axios.get(process.env.REACT_APP_API_URL + "api/employee_list");
+async function getEmployees(data) {
+  return await axios.get(process.env.REACT_APP_API_URL + "api/employee_list/", {params: data});
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
 async function registerEmployee(data) {
@@ -69,6 +70,12 @@ async function setPasswordValid(data) {
     {
       params: data
     }
+  );
+}
+function employeeAccountRequest(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_account_request/",
+    data
   );
 }
 function handleResponse(response) {

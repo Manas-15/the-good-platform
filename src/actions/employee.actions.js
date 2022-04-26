@@ -12,19 +12,19 @@ export const employeeActions = {
   getEmployees,
   setEmployeePassword,
   setPasswordValid,
+  employeeAccountRequest,
 };
 
 function login(data, from) {
   return (dispatch) => {
     dispatch(request({ data }));
-
     employeeService.login(data).then(
       (data) => {
         dispatch(success(data));
         localStorage.setItem("user", JSON.stringify(data.data));
-        history.push("/dashboard");
-        // dispatch(alertActions.success("Loggedin successful"));
-        // history.push("/otp");
+        // history.push("/dashboard");
+        dispatch(alertActions.success("Loggedin successful"));
+        history.push("/otp");
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -219,5 +219,40 @@ function setEmployeePassword(data) {
   }
   function failure(error) {
     return { type: employeeConstants.SAVE_EMPLOYEE_PASSWORD_FAILURE, error };
+  }
+}
+
+function employeeAccountRequest(actionValues) {
+  return (dispatch) => {
+    dispatch(request(actionValues));
+
+    employeeService.employeeAccountRequest(actionValues).then(
+      (msg) => {
+        dispatch(success(msg));
+        dispatch(
+          alertActions.success(
+            `Employee ${
+              actionValues.requestType === "Reject"
+                ? "rejected"
+                : actionValues.requestType.toLowerCase() + "d"
+            } successfully`
+          )
+        );
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(employee) {
+    return { type: employeeConstants.EMPLOYEE_ACTION_REQUEST, employee };
+  }
+  function success() {
+    return { type: employeeConstants.EMPLOYEE_ACTION_SUCCESS };
+  }
+  function failure(error) {
+    return { type: employeeConstants.EMPLOYEE_ACTION_FAILURE, error };
   }
 }

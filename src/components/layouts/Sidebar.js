@@ -1,11 +1,22 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { history } from "./../../helpers";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const isEmployeeView = history.location.pathname.includes("/employees")
   return <aside id="sidebar" className="sidebar">
     <ul className="sidebar-nav" id="sidebar-nav">
-      <li className="nav-item">
+        {isEmployeeView ? 
+          <li className="nav-item">
+          <NavLink className="nav-link " to="/dashboard" activeClassName="active">
+            <i className="bi bi-grid"></i>
+            <span>Employees</span>
+          </NavLink>
+        </li>
+        :
+        <>
+        <li className="nav-item">
         <NavLink className="nav-link " to="/dashboard" activeClassName="active">
           <i className="bi bi-grid"></i>
           <span>Dashboard</span>
@@ -23,6 +34,8 @@ const Sidebar = () => {
           <span>Donation Preferences</span>
         </NavLink>
       </li>
+      </>
+      }
       {/* {user?.user_type === 1 ? (
         <>
           <li className="nav-item">
