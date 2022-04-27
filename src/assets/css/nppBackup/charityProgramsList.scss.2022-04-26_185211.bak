@@ -55,8 +55,3 @@ $background-color_1: #fff;
   color: #fff;
   background-color: #4154f1;
 }
-#sidepanel .tab-content .second-step{
-  height: 500px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}

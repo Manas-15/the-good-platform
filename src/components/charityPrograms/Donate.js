@@ -21,6 +21,11 @@ const preferenceForm = {
 const Donate = ({ frequency, selectedCharity, tabType }) => {
   const employee = useSelector((state) => state.employee.user);
   const [selectedAmount, setSelectedAmount] = useState();
+  useEffect(() => {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>", selectedCharity?.unitPrice)
+    setSelectedAmount(selectedCharity?.unitPrice)
+    
+  }, [selectedCharity?.unitPrice]);
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);

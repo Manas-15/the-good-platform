@@ -55,12 +55,15 @@ export const EmployeeSchema = Yup.object().shape({
 });
 
 export const PaymentSchema = Yup.object().shape({
-  titel: Yup.string().required("Title is required"),
+  title: Yup.string().required("Title is required"),
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
   email: Yup.string()
     .required("Organization email is required")
-    .email("Invalid email address"),  
-  address: Yup.string().required("Address is required"),
-  country: Yup.string().required("Country is required"),
+    .email("Invalid email address"),
+  dob: Yup.date()
+    .nullable()
+    .required("Date of birth is required"),
+  // address: Yup.string().required("Address is required"),
+  // country: Yup.string().required("Country is required"),
 });

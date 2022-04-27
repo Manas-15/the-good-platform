@@ -42,7 +42,6 @@ const CreateRoutes = () => {
   }
   const isCorporateLunchpad = history.location.pathname == "/corporates"
   const isEmployeeView = history.location.pathname.includes("/employees")
-  console.log("{!isEmployeeView && ", isEmployeeView)
   if(isCorporateLunchpad){
     document.body.classList.add("toggle-sidebar");
   }
