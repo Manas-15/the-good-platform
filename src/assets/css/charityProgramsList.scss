@@ -55,8 +55,71 @@ $background-color_1: #fff;
   color: #fff;
   background-color: #4154f1;
 }
-#sidepanel .tab-content{
+#sidepanel .tab-content {
   height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+.donation-review-amount {
+  text-align: center;
+  background-color: rgb(53, 203, 67);
+  color: rgb(255, 255, 255);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(182, 243, 188);
+  border-image: initial;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+.selected-donation-frequency {
+  color: #fff;
+  font-size: 0.85rem;
+}
+.selected-donation-amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0;
+}
+.blink_text {
+  animation: blinker 10s infinite;
+  -webkit-animation: blinker 10s infinite;
+  -moz-animation: blinker 10s infinite;
+  color: red;
+  font-size: 12px;
+}
+@-moz-keyframes blinker {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes blinker {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes blinker {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

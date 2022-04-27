@@ -3,6 +3,7 @@ import { charityPrograms } from "./charityPrograms.reducer";
 import { donationPreferences } from "./donationPreferences.reducer";
 import { corporates } from "./corporates.reducer";
 import { employee } from "./employees.reducer";
+import { payment } from "./payment.reducer";
 import { alert } from "./alert.reducer";
 
 const rootReducer = combineReducers({
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   employee,
   charityPrograms,
   donationPreferences,
+  payment,
 });
 
 export default rootReducer;
