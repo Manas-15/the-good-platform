@@ -22,9 +22,8 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
   const employee = useSelector((state) => state.employee.user);
   const [selectedAmount, setSelectedAmount] = useState();
   useEffect(() => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>", selectedCharity?.unitPrice)
-    setSelectedAmount(selectedCharity?.unitPrice)
-    
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>", selectedCharity?.unitPrice);
+    setSelectedAmount(selectedCharity?.unitPrice);
   }, [selectedCharity?.unitPrice]);
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
@@ -55,118 +54,144 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
     document.getElementById("sidepanel").classList.remove("is-open");
   };
   const nextStep = () => {
-    setShowNextStep(!showNextStep)
-  }
+    setShowNextStep(!showNextStep);
+  };
   return (
     <>
-     {!showNextStep &&
-     <>
-      <div className="row mb-4">
-        <div className="col-md-12">
-          <span className="bi-lock-fill fs-5 text-success"></span>Choose an
-          amount to donate
-        </div>
-      </div>
-      <div className="row mb-4">
-        <div className="col-md-6 text-right pl-0">
-          <DonateAmount
-            isActive={selectedAmount === selectedCharity?.unitPrice * 1}
-            amount={selectedCharity?.unitPrice * 1}
-            setSelectedAmount={setAmount}
-          />
-        </div>
-        <div className="col-md-6 pr-0">
-          <DonateAmount
-            isActive={selectedAmount === selectedCharity?.unitPrice * 2}
-            amount={selectedCharity?.unitPrice * 2}
-            setSelectedAmount={setAmount}
-          />
-        </div>
-      </div>
-      <div className="row mb-4">
-        <div className="col-md-6 text-right pl-0">
-          <DonateAmount
-            isActive={selectedAmount === selectedCharity?.unitPrice * 3}
-            amount={selectedCharity?.unitPrice * 3}
-            setSelectedAmount={setAmount}
-          />
-        </div>
-        <div className="col-md-6 pr-0">
-          <DonateAmount
-            isActive={selectedAmount === selectedCharity?.unitPrice * 4}
-            amount={selectedCharity?.unitPrice * 4}
-            setSelectedAmount={setAmount}
-          />
-        </div>
-      </div>
-      <div className="row mb-3">
-        <div className="col-md-10 offset-md-1">
-          <input
-            type="text"
-            pattern="[0-9]*"
-            maxLength={10}
-            value={val}
-            onChange={(e) =>
-              setVal((v) => (e.target.validity.valid ? setSelectedAmount(e.target.value) : v))
-            }
-            className="form-control"
-            placeholder="Other Amount"
-          />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-10 text-center offset-md-1">
-          <p className="mb-2">
-            <span className="bi-heart-fill fs-6 ml-2 cursor-pointer text-danger"></span>{" "}
-            How will my donation help?
-          </p>
-          <p className="mb-2">
-            Your contribution will used towards giving India's underprevileged
-            children happier childhoods.
-          </p>
-          <p className="mb-0">
-            Your dontaions are tax excepted under 80G of the Indian Income Tax
-            Act.
-          </p>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-12">
-          <label className="m-2">
-            <input
-              type="checkbox"
-              checked={checked}
-              onChange={() => setOpen(true)}
-            />
-            <Link
-              className="text-dark d-inline pl-0"
-              onClick={() => setOpen(true)}
-            >
-              <p className="ml-2 d-inline-block text-decoration-underline">
-                Please select the checkbox to your consent
+      {!showNextStep && (
+        <>
+          <div className="row mb-4">
+            <div className="col-md-12">
+              <span className="bi-lock-fill fs-5 text-success"></span>Choose an
+              amount to donate
+            </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-md-6 text-right pl-0">
+              <DonateAmount
+                isActive={selectedAmount === selectedCharity?.unitPrice * 1}
+                amount={selectedCharity?.unitPrice * 1}
+                setSelectedAmount={setAmount}
+              />
+            </div>
+            <div className="col-md-6 pr-0">
+              <DonateAmount
+                isActive={selectedAmount === selectedCharity?.unitPrice * 2}
+                amount={selectedCharity?.unitPrice * 2}
+                setSelectedAmount={setAmount}
+              />
+            </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-md-6 text-right pl-0">
+              <DonateAmount
+                isActive={selectedAmount === selectedCharity?.unitPrice * 3}
+                amount={selectedCharity?.unitPrice * 3}
+                setSelectedAmount={setAmount}
+              />
+            </div>
+            <div className="col-md-6 pr-0">
+              <DonateAmount
+                isActive={selectedAmount === selectedCharity?.unitPrice * 4}
+                amount={selectedCharity?.unitPrice * 4}
+                setSelectedAmount={setAmount}
+              />
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col-md-10 offset-md-1">
+              <input
+                type="text"
+                pattern="[0-9]*"
+                maxLength={10}
+                value={val}
+                onChange={(e) =>
+                  setVal((v) =>
+                    e.target.validity.valid
+                      ? setSelectedAmount(e.target.value)
+                      : v
+                  )
+                }
+                className="form-control"
+                placeholder="Other Amount"
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-10 text-center offset-md-1">
+              <p className="mb-2">
+                <span className="bi-heart-fill fs-6 ml-2 cursor-pointer text-danger"></span>{" "}
+                How will my donation help?
               </p>
-            </Link>
-          </label>
-        </div>
-      </div>
-      <div className="row mb-4">
-        <div className="col-md-12 text-center">
-          <Button
-            className="btn btn-primary w-100 rounded-pill"
-            disabled={!checked}
-            onClick={tabType === charityProgramConstants.SPONSOR ? saveDonationPreference : nextStep}
-          >
-            <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-            <span className="fs-6 ml-2">{tabType === charityProgramConstants.SPONSOR ? 'Donation Preference' : 'Donate'}</span>
-          </Button>{" "}
-        </div>
-      </div>
-      {open && (
-        <DonationConsent open={open} amount={selectedAmount} selectedCharity={selectedCharity} employee={employee} frequency={frequency} handleCheck={handleCheck} closeCheck={closeCheck}/>
+              <p className="mb-2">
+                Your contribution will used towards giving India's
+                underprevileged children happier childhoods.
+              </p>
+              <p className="mb-0">
+                Your dontaions are tax excepted under 80G of the Indian Income
+                Tax Act.
+              </p>
+            </div>
+          </div>
+          {tabType === charityProgramConstants.SPONSOR && (
+            <div className="row">
+              <div className="col-md-12">
+                <label className="m-2">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => setOpen(true)}
+                  />
+                  <Link
+                    className="text-dark d-inline pl-0"
+                    onClick={() => setOpen(true)}
+                  >
+                    <p className="ml-2 d-inline-block text-decoration-underline">
+                      Please select the checkbox to your consent
+                    </p>
+                  </Link>
+                </label>
+              </div>
+            </div>
+          )}
+          <div className="row mb-4">
+            <div className="col-md-12 text-center">
+              <Button
+                className="btn btn-primary w-100 rounded-pill"
+                disabled={tabType === charityProgramConstants.SPONSOR ? !checked : false}
+                onClick={
+                  tabType === charityProgramConstants.SPONSOR
+                    ? saveDonationPreference
+                    : nextStep
+                }
+              >
+                <span className="fs-6 ml-2">
+                  {tabType === charityProgramConstants.SPONSOR ? (
+                    <>
+                      <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
+                      &nbsp;Donation Preference
+                    </>
+                  ) : (
+                    "Next"
+                  )}
+                </span>
+              </Button>{" "}
+            </div>
+          </div>
+          {open && (
+            <DonationConsent
+              open={open}
+              amount={selectedAmount}
+              selectedCharity={selectedCharity}
+              employee={employee}
+              frequency={frequency}
+              handleCheck={handleCheck}
+              closeCheck={closeCheck}
+            />
+          )}
+        </>
       )}
-      </>
-      }
-      {showNextStep && <DonateSecondStep />}
+      {showNextStep && <DonateSecondStep frequency={frequency} selectedCharity={selectedCharity} selectedAmount={selectedAmount} employee={employee} />}
     </>
   );
 };

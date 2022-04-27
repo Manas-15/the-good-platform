@@ -121,22 +121,24 @@ const CharityPrograms = () => {
                   )}
                 </button>
               </li>
-              <li className="nav-item">
-                <button
-                  className="nav-link"
-                  data-bs-toggle="tab"
-                  data-bs-target="#give-monthly"
-                  onClick={() =>
-                    setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
-                  }
-                >
-                  <span>Give Monthly</span>
-                  {activeFrequenctTab ===
-                    donationPreferenceConstants.MONTHLY && (
-                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                  )}
-                </button>
-              </li>
+              {tabType === charityProgramConstants.SPONSOR && 
+                <li className="nav-item">
+                  <button
+                    className="nav-link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#give-monthly"
+                    onClick={() =>
+                      setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
+                    }
+                  >
+                    <span>Give Monthly</span>
+                    {activeFrequenctTab ===
+                      donationPreferenceConstants.MONTHLY && (
+                      <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
+                    )}
+                  </button>
+                </li>
+              }
             </ul>
           </div>
           <div className="tab-content pt-2">
