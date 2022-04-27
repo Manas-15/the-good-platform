@@ -57,10 +57,14 @@ const FormDatePicker = ({ errors, touched }) => {
               }
               autoComplete="none"
               maxDate={new Date()}
+              showMonthDropdown={true}
+              showYearDropdown={true}
+              dropdownMode="select"
               selected={(field.value && new Date(field.value)) || null}
-              dateFormat="yyyy-MM-dd"
+              dateFormat="MM-dd-yyyy"
               onChange={(val) => {
-                setFieldValue(field.name, moment(val).format("YYYY-MM-DD"));
+                setFieldValue(field.name, val);
+                // setFieldValue(field.name, moment(val).format("YYYY-MM-DD"));
               }}
             />
           );
@@ -105,6 +109,7 @@ const EmployeeForm = ({ type }) => {
               initialValues={initialValues}
               validationSchema={EmployeeSchema}
               onSubmit={(values, { setSubmitting }) => {
+                values.organizationJoiningDate = moment(values.organizationJoiningDate).format("YYYY-MM-DD")
                 employeeRegister(values);
               }}
             >

@@ -20,15 +20,18 @@ const preferenceForm = {
 };
 const Donate = ({ frequency, selectedCharity, tabType }) => {
   const employee = useSelector((state) => state.employee.user);
-  const [selectedAmount, setSelectedAmount] = useState();
-  useEffect(() => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>", selectedCharity?.unitPrice);
-    setSelectedAmount(selectedCharity?.unitPrice);
-  }, [selectedCharity?.unitPrice]);
+  const [selectedAmount, setSelectedAmount] = useState();  
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [showNextStep, setShowNextStep] = useState(false);
+  useEffect(() => {
+    if(selectedCharity){
+      setSelectedAmount(selectedCharity?.unitPrice);
+    }else{
+      setShowNextStep(false);
+    }
+  }, [selectedCharity]);
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -154,7 +157,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
               </div>
             </div>
           )}
-          <div className="row mb-4">
+          <div className={"row mb-4 " + (tabType === charityProgramConstants.SPONSOR ? '' : 'mt-4')}>
             <div className="col-md-12 text-center">
               <Button
                 className="btn btn-primary w-100 rounded-pill"

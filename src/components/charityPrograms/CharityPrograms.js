@@ -10,6 +10,7 @@ import { donationPreferenceConstants } from "./../../constants";
 import { charityProgramConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
+import Loader from "../Shared/Loader";
 
 const CharityPrograms = () => {
   let history = useHistory();
@@ -27,6 +28,7 @@ const CharityPrograms = () => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
+    setSelectedCharity('');
   };
   useEffect(() => {
     dispatch(charityProgramActions.getCharityPrograms());
@@ -38,6 +40,11 @@ const CharityPrograms = () => {
     setTabType(type);
     closeNav();
   };
+  if (charityPrograms.loading) {
+    document.getElementById("root").classList.add("loading");
+  } else {
+    document.getElementById("root").classList.remove("loading");
+  }
   return (
     <div>
       <div className="row mb-4">
@@ -68,22 +75,22 @@ const CharityPrograms = () => {
         </li>
       </ul>
       <div className="tab-content p-0">
-        {charityPrograms.loading && <em>Loading charity programs...</em>}
+        {charityPrograms.loading && <Loader />}
         <div className="tab-pane fade show active" id="sponsored">
-          {charityPrograms.items && (
+          {/* {charityPrograms.items && ( */}
             <ListCharityPrograms
               items={charityPrograms?.items?.sponser}
               setCharity={setCharity}
             />
-          )}
+          {/* )} */}
         </div>
         <div className="tab-pane fade show" id="others">
-          {charityPrograms.items && (
+          {/* {charityPrograms.items && ( */}
             <ListCharityPrograms
               items={charityPrograms?.items?.other}
               setCharity={setCharity}
             />
-          )}
+          {/* )} */}
         </div>
       </div>
       {

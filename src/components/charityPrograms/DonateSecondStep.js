@@ -3,7 +3,6 @@ import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
-import { donationPreferenceActions } from "./../../actions";
 import { donationPreferenceConstants } from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
@@ -12,26 +11,14 @@ import { PaymentSchema } from "./../Validations";
 import DatePicker from "react-datepicker";
 import * as moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import Cashfree from "./../Cashfree/Cashfree"
+import Payment from "./../Payment/Payment";
+import ReviewAmountBox from "./../Shared/ReviewAmountBox";
 
-const initialValues = {
-  title: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  dob: "",
-  mobile: "",
-  address: "",
-  city: "",
-  state: "",
-  pin: "",
-  country: "",
-};
 const FormDatePicker = ({ errors, touched }) => {
   return (
     <>
       <Field
-        name="dob"
+        name="customerDob"
         placeholder="Date of Birth*"
         className="ml-3"
       >
@@ -41,24 +28,28 @@ const FormDatePicker = ({ errors, touched }) => {
               {...field}
               className={
                 "form-control" +
-                (errors.dob &&
-                touched.dob
+                (errors.customerDob &&
+                touched.customerDob
                   ? " is-invalid"
                   : "")
               }
               autoComplete="none"
               maxDate={new Date()}
+              showMonthDropdown={true}
+              showYearDropdown={true}
+              dropdownMode="select"
               selected={(field.value && new Date(field.value)) || null}
-              dateFormat="yyyy-MM-dd"
+              dateFormat="MM-dd-yyyy"
               onChange={(val) => {
-                setFieldValue(field.name, moment(val).format("YYYY-MM-DD"));
+                setFieldValue(field.name, val);
+                // setFieldValue(field.name, moment(val).format("YYYY-MM-DD"));
               }}
             />
           );
         }}
       </Field>
       <ErrorMessage
-        name="dob"
+        name="customerDob"
         component="div"
         className="invalid-feedback d-inline-block"
       />
@@ -66,10 +57,21 @@ const FormDatePicker = ({ errors, touched }) => {
   );
 };
 const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee }) => {
+  const initialValues = {
+    orderId: Math.random().toString(36).slice(2),
+    donationAmount: selectedAmount,
+    customerId: employee?.user_id.toString(),
+    customerName: employee?.name,
+    customerEmail: employee?.email,
+    customerPhone: employee?.phone,
+    customerDob: employee?.dob,
+    customerPan: employee?.pan,
+  };
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [paymentStep, setPaymentStep] = useState(false);
+  const [paymentValues, setPaymentValues] = useState();
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -78,24 +80,30 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
     setChecked(false);
     setOpen(false);
   };
+  const goToPayment = (data) => {
+    setPaymentValues(data);
+    setPaymentStep(true);
+  }
   const dispatch = useDispatch();
   return (
-    <div>      
-        {paymentStep ? <Cashfree /> : 
-        <div class="second-step">
+    <div>
+        {paymentStep ? <Payment selectedAmount={selectedAmount} paymentValues={paymentValues}/> : 
+        <div className="second-step">
+          <ReviewAmountBox selectedAmount={selectedAmount}/>
           <div className="row">
             <div className="col-md-12">
-              <span className="bi-lock-fill fs-5 text-success"></span>Enter Your
-              Details
+              <span className="bi-lock-fill fs-5 text-success"></span>
+              <strong>Enter Your Details</strong>
             </div>
           </div>
           <Formik
-            enableReinitialize
             initialValues={initialValues}
             validationSchema={PaymentSchema}
             onSubmit={(values, { setSubmitting }) => {
-              console.log("coming to submit here")
-              setPaymentStep(true);
+              console.log("coming to submit here");
+              values.customerDob = moment(values.customerDob).format("YYYY-MM-DD");
+              values.customerPan = values.customerPan.toUpperCase();
+              goToPayment(values);
             }}
           >
             {({
@@ -111,57 +119,19 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
               <Form>
                 <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1">Title</label>                
+                    <label className="mt-1">Name*</label>
                     <Field
-                      name="title"
+                      name="customerName"
                       type="text"
                       className={
                         "form-control" +
-                        (errors.title && touched.title
+                        (errors.customerName && touched.customerName
                           ? " is-invalid"
                           : "")
                       }
                     />
                     <ErrorMessage
-                      name="title"
-                      component="div"
-                      className="invalid-feedback"
-                    />
-                  </div>
-                </div>
-                <div className="row mb-2">
-                  <div className="col-md-6">
-                    <label className="mt-1">First Name</label>
-                    <Field
-                      name="firstName"
-                      type="text"
-                      className={
-                        "form-control" +
-                        (errors.firstName && touched.firstName
-                          ? " is-invalid"
-                          : "")
-                      }
-                    />
-                    <ErrorMessage
-                      name="firstName"
-                      component="div"
-                      className="invalid-feedback"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                  <label className="mt-1">Last Name</label>
-                    <Field
-                      name="lastName"
-                      type="text"
-                      className={
-                        "form-control" +
-                        (errors.lastName && touched.lastName
-                          ? " is-invalid"
-                          : "")
-                      }
-                    />
-                    <ErrorMessage
-                      name="lastName"
+                      name="customerName"
                       component="div"
                       className="invalid-feedback"
                     />
@@ -169,28 +139,66 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
                 </div>
                 <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1">Email</label>                
+                    <label className="mt-1">Email*</label>                
                     <Field
-                      name="email"
+                      name="customerEmail"
                       type="text"
                       className={
                         "form-control" +
-                        (errors.email && touched.email
+                        (errors.customerEmail && touched.customerEmail
                           ? " is-invalid"
                           : "")
                       }
                     />
                     <ErrorMessage
-                      name="email"
+                      name="customerEmail"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </div>                  
+                </div>                
+                <div className="row mb-2">
+                  <div className="col-md-12">
+                    <label className="mt-1">Phone*</label>                
+                    <Field
+                      name="customerPhone"
+                      type="text"
+                      className={
+                        "form-control" +
+                        (errors.customerPhone && touched.customerPhone
+                          ? " is-invalid"
+                          : "")
+                      }
+                    />
+                    <ErrorMessage
+                      name="customerPhone"
                       component="div"
                       className="invalid-feedback"
                     />
                   </div>
-                  <div className="row mb-2">
+                </div>
+                <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1 ml-1">Date of Birth</label>
+                    <label className="mt-1 ml-1">Date of Birth*</label>
                     <FormDatePicker errors={errors} touched={touched} />
                   </div>
+                </div>
+                <div className="row mb-2">
+                  <div className="col-md-12">
+                    <label className="mt-1">PAN</label>                
+                    <Field
+                      name="customerPan"
+                      type="text"
+                      className={
+                        "form-control text-uppercase" +
+                        (errors.customerPan && touched.customerPan
+                          ? " is-invalid"
+                          : "")
+                      }
+                    />
+                    <span class="blink_text">
+                      Please note that if you do not provide your PAN Number, you will not be able to claim 50% tax exemption u/s 80G in India
+                    </span>
                   </div>
                 </div>
                 <div className="row">
@@ -217,6 +225,7 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
                     <Button
                       className="btn btn-primary w-100 rounded-pill"
                       type="submit"
+                      disabled={!checked}
                     >
                       <span className="fs-6 ml-2">Continue to Payment</span>
                     </Button>{" "}

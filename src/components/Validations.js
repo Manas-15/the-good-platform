@@ -11,8 +11,13 @@ export const LoginSchema = Yup.object().shape({
 });
 
 export const SetPasswordSchema = Yup.object().shape({
-  password: Yup.string().required('Password is required'),
-  passwordConfirmation: Yup.string().required('Confirm password is required').oneOf([Yup.ref('password'), null], 'Password and confirm password must match')
+  password: Yup.string().required("Password is required"),
+  passwordConfirmation: Yup.string()
+    .required("Confirm password is required")
+    .oneOf(
+      [Yup.ref("password"), null],
+      "Password and confirm password must match"
+    ),
 });
 
 export const CorporateSchema = Yup.object().shape({
@@ -55,15 +60,14 @@ export const EmployeeSchema = Yup.object().shape({
 });
 
 export const PaymentSchema = Yup.object().shape({
-  title: Yup.string().required("Title is required"),
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  email: Yup.string()
-    .required("Organization email is required")
+  customerName: Yup.string().required("Name is required"),
+  customerEmail: Yup.string()
+    .required("Email is required")
     .email("Invalid email address"),
-  dob: Yup.date()
-    .nullable()
-    .required("Date of birth is required"),
-  // address: Yup.string().required("Address is required"),
-  // country: Yup.string().required("Country is required"),
+  customerPhone: Yup.string()
+  .required("Phone is required")
+  .matches(/^[0-9]+$/, "Must be number only")
+  .min(10, 'Please enter valid phone number')
+  .max(10, 'Please enter valid phone number'),
+  customerDob: Yup.date().nullable().required("Date of birth is required"),
 });
