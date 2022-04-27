@@ -11,6 +11,7 @@
     "axios": "0.25.0",
     "bootstrap": "4.6.0",
     "bootstrap-switch-button-react": "^1.2.0",
+    "cashfree-dropjs": "^1.1.4",
     "chart.js": "^3.7.1",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
