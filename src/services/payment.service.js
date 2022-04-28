@@ -13,7 +13,6 @@ function getOrderToken(data) {
 }
 function getPaymentStatus(orderId) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/get_order_token", { headers: authHeader() });
-  console.log("process.env.CASHFREE_API_URLddddddddd", process.env.REACT_APP_API_URL, process.env)
   return axios.get(`${process.env.REACT_APP_CASHFREE_API_URL}pg/orders/${orderId}`, 
   { headers: {
       "Content-Type": "application/json",

@@ -103,9 +103,7 @@ export function configureFakeBackend() {
         return ok();
       }
       function getCorporates() {
-        console.log("isLoggedIn fake backend-----------", isLoggedIn(), body);
         if (!isLoggedIn()) return unauthorized();
-        console.log("inside fake backend-----------", corporates);
         return ok(corporates);
       }
       // helper functions

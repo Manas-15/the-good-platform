@@ -14,7 +14,6 @@ export const userService = {
 };
 
 function login(data) {
-  console.log("login 0939 >>>>>>>>>>>>>>>>>>>");
   // process.env.REACT_APP_API_URL
   return axios.post(process.env.REACT_APP_API_URL + "api/login/", data);
 }

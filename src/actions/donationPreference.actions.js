@@ -13,7 +13,6 @@ function saveDonationPreference(data) {
     dispatch(request());
     donationPreferenceService.saveDonationPreference(data).then(
       (data) => {
-        console.log("success saved donation preference")
         dispatch(success());
         dispatch(alertActions.success("Donation preferences saved successfully."));
       },

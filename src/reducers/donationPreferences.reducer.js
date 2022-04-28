@@ -19,7 +19,9 @@ export function donationPreferences(state = {}, action) {
         loading: true,
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_SUCCESS:
-      return {};
+      return {
+        saved: true
+      };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_FAILURE:
       return {
         error: action.error,

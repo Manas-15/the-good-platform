@@ -6,10 +6,10 @@ export const charityProgramActions = {
   getCharityPrograms,
 };
 
-function getCharityPrograms() {
+function getCharityPrograms(data) {
   return (dispatch) => {
     dispatch(request());
-    charityProgramService.getCharityPrograms().then(
+    charityProgramService.getCharityPrograms(data).then(
       (charityPrograms) => dispatch(success(charityPrograms)),
 
       (error) => {

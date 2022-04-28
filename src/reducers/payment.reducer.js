@@ -7,7 +7,6 @@ export function payment(state = {}, action) {
         loading: true,
       };
     case paymentConstants.GET_ORDER_TOKEN_SUCCESS:
-      console.log("action.payment", action);
       return {
         orderDetails: action.data?.data,
       };
@@ -21,7 +20,6 @@ export function payment(state = {}, action) {
         paymentStatusloading: true,
       };
     case paymentConstants.GET_PAYMENT_STATUS_SUCCESS:
-      console.log("action.payment status", action);
       return {
         ...state,
         paymentStatusloading: false,

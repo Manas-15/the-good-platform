@@ -44,10 +44,6 @@ export function employee(state = initialState, action) {
         user: state.user,
       };
     case employeeConstants.GET_EMPLOYEES_SUCCESS:
-      console.log(
-        "inside reducerssssssssssssssss",
-        action.employees?.data?.employee
-      );
       return {
         user: state.user,
         items: action?.employees?.data?.employee,
@@ -99,11 +95,6 @@ export function employee(state = initialState, action) {
       return {
         ...state,
         items: state.items.map((item) => {
-          console.log(
-            "inside reducer --------------",
-            item.id,
-            state.employeeId
-          );
           if (item.id === state.employeeId) {
             return { ...item, isApprove: state.requestType === "Approve" };
           }

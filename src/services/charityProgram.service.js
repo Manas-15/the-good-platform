@@ -5,6 +5,8 @@ export const charityProgramService = {
   getCharityPrograms,
 };
 
-function getCharityPrograms() {
-  return axios.get(process.env.REACT_APP_API_URL + "api/charity_list");
+function getCharityPrograms(data) {
+  return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
+    params: data,
+  });
 }

@@ -8,7 +8,7 @@ export function charityPrograms(state = {}, action) {
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
       return {
-        items: action.charityPrograms.data.charity_list,
+        items: action?.charityPrograms?.data?.charity_list
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_FAILURE:
       return {
