@@ -145,7 +145,7 @@ const CreateRoutes = () => {
                   component={ForgotPassword}
                 />
                 <Route exact path="/thank-you" component={ThankYou} />
-                <Route exact path="/set-password/:id" component={SetPassword} />
+                <Route exact path="/set-password/:uuid" component={SetPassword} />
                 {user && !otpVerified && <Route exact path="/otp" component={Otp} />}
                 <Redirect from="*" to="/" />
               </Switch>

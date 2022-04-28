@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { employeeActions } from "../../actions";
+import { transactionsHistoryActions } from "../../actions";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
+import Loader from "../Shared/Loader";
 // import employees from "./../../config/employees.json";
 const actionInitialValues = {
   userId: "",
@@ -10,8 +11,7 @@ const actionInitialValues = {
 };
 const ListTransactionsHistory = (props) => {
   let history = useHistory();
-  const corporateId = props?.match?.params?.corporateId;
-  const employees = useSelector(state => state.employee);
+  const transactions = useSelector(state => state.transactionsHistory);
   // const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -19,9 +19,8 @@ const ListTransactionsHistory = (props) => {
   const [actionType, setActionType] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const dispatch = useDispatch();
-  console.log("corporateId.................", corporateId, employees)
   useEffect(() => {
-      dispatch(employeeActions.getEmployees({corporateId: corporateId}));
+      dispatch(transactionsHistoryActions.getTransactionsHistory());
   }, []);
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -38,7 +37,7 @@ const ListTransactionsHistory = (props) => {
     handleClose();
     actionInitialValues.userId = selectedEmployee.id;
     actionInitialValues.requestType = actionType;
-    dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
+    // dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
   };
   const handleClose = () => setOpen(false);
   return (
@@ -47,17 +46,8 @@ const ListTransactionsHistory = (props) => {
         <div className="col-md-6">
           <h4>Transactions History</h4>
         </div>
-        {/* <div className="col-md-6" style={{ textAlign: "right" }}>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => history.push("/employees/add")}
-          >
-            Add Employee
-          </button>
-        </div> */}
       </div>
-      {employees.loading && <em>Loading employees...</em>}
+      {transactions.loading && <Loader />}
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
@@ -70,18 +60,15 @@ const ListTransactionsHistory = (props) => {
         </thead>
         <tbody>
           {
-            employees?.items?.length > 0
+            transactions?.items?.length > 0
             ?
-            employees?.items.map((employee, index) => (
+            transactions?.items.map((employee, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
                 <td>{employee?.name}</td>
                 <td>{employee?.email}</td>
                 <td>
                   {employee?.contact_number}
-                  {/* {employee.address
-                    .split(",")
-                    .reduce((all, cur) => [...all, <br />, cur])} */}
                 </td>
                 <td className="text-center">
                   <a className="icon" href="#" data-bs-toggle="dropdown">

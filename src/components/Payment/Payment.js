@@ -4,6 +4,8 @@ import ReviewAmountBox from "./../Shared/ReviewAmountBox";
 import { paymentActions } from "./../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Shared/Loader";
+import PaymentSuccessError from "./PaymentSuccessError";
+import { paymentConstants } from "../../constants";
 
 const Payment = ({ paymentValues }) => {
   const dispatch = useDispatch();
@@ -11,6 +13,8 @@ const Payment = ({ paymentValues }) => {
   const [orderToken, setOrderToken] = useState("");
   const [style, setStyle] = useState({ color: "#2e66cd" });
   const [isProd, setIsProd] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [paymentSuccessErrorData, setPaymentSuccessErrorData] = useState();
   const [components, setComponents] = useState([
     // "order-details",
     "card",
@@ -21,36 +25,35 @@ const Payment = ({ paymentValues }) => {
     "credicardemi",
   ]);
   const cbs = (data) => {
-    if (data.order && data.order.status === "PAID") {
-      alert("order is paid. Call api to verify");
-      console.log("after paid received data >>>>>>>>>>>>>>>>", data)
+    if (data?.order && data?.order?.status === paymentConstants.PAID) {
+      // alert("order is paid. Call api to verify");
+      console.log("after paid received data >>>>>>>>>>>>>>>>", data);
+      setPaymentStatus(paymentConstants.PAID);
+      setPaymentSuccessErrorData(data);
     }
   };
   const cbf = (data) => {
-    alert("cbf: "+data.order.errorText);
+    // alert("cbf: " + data.order.errorText);
+    console.log("dddddd error payment ...........", data)
+    setPaymentStatus(paymentConstants.ERROR);
+    setPaymentSuccessErrorData(data);
   };
   useEffect(() => {
     dispatch(paymentActions.getOrderToken(paymentValues));
-    // renderDropin();
   }, []);
-  console.log("fetch and load >>>>>>>>>>>>>>>>", payment);
-  // if (payment?.orderDetails?.order_token) {
-  //   setOrderToken(payment?.orderDetails?.order_token);
-  //   renderDropin;
-  // }
   useEffect(() => {
-    if(payment?.orderDetails?.order_token){
-      alert(payment?.orderDetails?.order_token);
+    if (payment?.orderDetails?.order_token) {
+      // alert(payment?.orderDetails?.order_token);
       // setOrderToken(payment?.orderDetails?.order_token)
       renderDropin(payment?.orderDetails?.order_token);
-    }   
+    }
   }, [payment?.orderDetails?.order_token]);
   const renderDropin = (orderToken) => {
     if (orderToken === "") {
-      alert("Order Token is empty");
+      // alert("Order Token is empty");
       return;
     }
-    alert(orderToken)
+    // alert(orderToken);
     let parent = document.getElementById("drop_in_container");
     parent.innerHTML = "";
     let cashfree;
@@ -71,19 +74,29 @@ const Payment = ({ paymentValues }) => {
   };
   return (
     <>
-      <ReviewAmountBox selectedAmount={paymentValues?.donationAmount} />
-      {payment?.loading && (
-        <div className="pt-4">
-          <Loader />
-        </div>
+      {paymentStatus === "" && (
+        <>
+          <ReviewAmountBox selectedAmount={paymentValues?.donationAmount} />
+          {payment?.loading && (
+            <div className="pt-4">
+              <Loader />
+            </div>
+          )}
+          <div className="dropin-parent" id="drop_in_container">
+            {payment?.error && (
+              <strong>
+                Currently unable to process your request. Please try again
+                later.
+              </strong>
+            )}
+          </div>
+        </>
       )}
-      <div className="dropin-parent" id="drop_in_container">
-        {payment?.error && (
-          <strong>
-            Currently unable to process your request. Please try again later.
-          </strong>
-        )}
-      </div>
+      {paymentStatus && (
+        <>
+          <PaymentSuccessError paymentValues={paymentValues} paymentSuccessErrorData={paymentSuccessErrorData} />
+        </>
+      )}
     </>
   );
 };

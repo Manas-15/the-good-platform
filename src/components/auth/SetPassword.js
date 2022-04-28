@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import "./../../assets/css/loginForm.scss";
 
 const SetPassword = (props) => {
-  const userId = props?.match?.params?.id;
+  const userId = props?.match?.params?.uuid;
   const dispatch = useDispatch();
   const [passwordValid, setIsPasswordValid] = useState(false);
   const [passwordConfirmationValid, setIsPasswordConfirmationValid] =

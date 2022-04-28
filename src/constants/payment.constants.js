@@ -9,4 +9,7 @@ export const paymentConstants = {
 
   PAID: "PAID",
   ERROR: "ERROR",
+
+  SUCCESS: "SUCCESS",
+  FAILED: "FAILED",
 };
