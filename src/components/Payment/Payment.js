@@ -30,7 +30,6 @@ const Payment = ({ paymentValues }) => {
     alert("cbf: "+data.order.errorText);
   };
   useEffect(() => {
-    alert(2);
     dispatch(paymentActions.getOrderToken(paymentValues));
     // renderDropin();
   }, []);

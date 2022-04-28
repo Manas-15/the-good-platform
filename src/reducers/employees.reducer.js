@@ -44,7 +44,10 @@ export function employee(state = initialState, action) {
         user: state.user,
       };
     case employeeConstants.GET_EMPLOYEES_SUCCESS:
-      console.log("inside reducerssssssssssssssss", action.employees?.data?.employee);
+      console.log(
+        "inside reducerssssssssssssssss",
+        action.employees?.data?.employee
+      );
       return {
         user: state.user,
         items: action?.employees?.data?.employee,
@@ -86,6 +89,7 @@ export function employee(state = initialState, action) {
       return { error: action.error };
     case employeeConstants.EMPLOYEE_ACTION_REQUEST:
       return {
+        ...state,
         items: state.items,
         actionRequest: true,
         employeeId: action?.employee?.userId,
@@ -93,8 +97,13 @@ export function employee(state = initialState, action) {
       };
     case employeeConstants.EMPLOYEE_ACTION_SUCCESS:
       return {
+        ...state,
         items: state.items.map((item) => {
-          console.log("inside reducer --------------", item.id, state.employeeId)
+          console.log(
+            "inside reducer --------------",
+            item.id,
+            state.employeeId
+          );
           if (item.id === state.employeeId) {
             return { ...item, isApprove: state.requestType === "Approve" };
           }
@@ -102,7 +111,7 @@ export function employee(state = initialState, action) {
         }),
       };
     case employeeConstants.EMPLOYEE_ACTION_FAILURE:
-      return { items: state.items, error: action.error };
+      return { ...state, items: state.items, error: action.error };
     default:
       return state;
   }

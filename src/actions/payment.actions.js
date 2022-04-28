@@ -5,6 +5,7 @@ import { history } from "../helpers";
 
 export const paymentActions = {
   getOrderToken,
+  getPaymentStatus,
 };
 
 function getOrderToken(data) {
@@ -40,5 +41,33 @@ function getOrderToken(data) {
   }
   function failure(error) {
     return { type: paymentConstants.GET_ORDER_TOKEN_FAILURE, error };
+  }
+}
+
+function getPaymentStatus(data) {
+  return (dispatch) => {
+    dispatch(request());
+
+    paymentService.getPaymentStatus(data).then(
+      (response) => {
+        dispatch(success(response));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(
+          alertActions.error(error.toString())
+        );
+      }
+    );
+  };
+
+  function request() {
+    return { type: paymentConstants.GET_PAYMENT_STATUS_REQUEST };
+  }
+  function success(data) {
+    return { type: paymentConstants.GET_PAYMENT_STATUS_SUCCESS, data };
+  }
+  function failure(error) {
+    return { type: paymentConstants.GET_PAYMENT_STATUS_FAILURE, error };
   }
 }

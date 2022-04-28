@@ -95,6 +95,15 @@ const Header = () => {
                 </Link>
               </li>
               <li>
+                <Link
+                  className="dropdown-item d-flex align-items-center"
+                  to="/transactions-history"
+                >
+                  <i className="bi bi-person-circle"></i>
+                  <span>Superadmin Portal</span>
+                </Link>
+              </li>
+              <li>
                 <hr className="dropdown-divider" />
               </li>
               <li>

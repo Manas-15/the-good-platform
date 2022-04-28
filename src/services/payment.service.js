@@ -4,11 +4,24 @@ import axios from "axios";
 
 export const paymentService = {
   getOrderToken,
+  getPaymentStatus,
 };
 
 function getOrderToken(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/get_order_token", { headers: authHeader() });
   return axios.post(process.env.REACT_APP_API_URL + "api/get_order_token/", data);
+}
+function getPaymentStatus(orderId) {
+  // return axios.get(process.env.REACT_APP_API_URL + "api/get_order_token", { headers: authHeader() });
+  console.log("process.env.CASHFREE_API_URLddddddddd", process.env.REACT_APP_API_URL, process.env)
+  return axios.get(`${process.env.REACT_APP_CASHFREE_API_URL}pg/orders/${orderId}`, 
+  { headers: {
+      "Content-Type": "application/json",
+      "x-client-id": `${process.env.REACT_APP_CASHFREE_CLIENT_ID}`,
+      "x-client-secret": `${process.env.REACT_APP_CASHFREE_CLIENT_SECRET}`,
+      "x-api-version": "2022-01-01",
+    } 
+  });
 }
 function handleResponse(response) {
   return response.text().then((text) => {

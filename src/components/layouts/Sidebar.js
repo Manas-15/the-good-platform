@@ -4,39 +4,74 @@ import { history } from "./../../helpers";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const isEmployeeView = history.location.pathname.includes("/employees")
-  return <aside id="sidebar" className="sidebar">
-    <ul className="sidebar-nav" id="sidebar-nav">
-        {isEmployeeView ? 
+  const isEmployeeView = history.location.pathname.includes("/employees");
+  const isSuperadminView = history.location.pathname.includes(
+    "/transactions-history"
+  );
+  return (
+    <aside id="sidebar" className="sidebar">
+      <ul className="sidebar-nav" id="sidebar-nav">
+        {isEmployeeView ? (
           <li className="nav-item">
-          <NavLink className="nav-link " to="/dashboard" activeClassName="active">
-            <i className="bi bi-grid"></i>
-            <span>Employees</span>
-          </NavLink>
-        </li>
-        :
-        <>
-        <li className="nav-item">
-        <NavLink className="nav-link " to="/dashboard" activeClassName="active">
-          <i className="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </NavLink>
-      </li>
-      <li className="nav-item">
-        <NavLink className="nav-link " to="/charity-programs" activeClassName="active">
-          <i className="bi bi-heart"></i>
-          <span>Charity Programs</span>
-        </NavLink>
-      </li>
-      <li className="nav-item">
-        <NavLink className="nav-link " to="/donation-preferences" activeClassName="active">
-          <i className="bi bi-handbag"></i>
-          <span>Donation Preferences</span>
-        </NavLink>
-      </li>
-      </>
-      }
-      {/* {user?.user_type === 1 ? (
+            <NavLink
+              className="nav-link "
+              to="/dashboard"
+              activeClassName="active"
+            >
+              <i className="bi bi-grid"></i>
+              <span>Employees</span>
+            </NavLink>
+          </li>
+        ) : (
+          <>
+            {isSuperadminView ? (
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link "
+                  to="/transactions-history"
+                  activeClassName="active"
+                >
+                  <i className="bi bi-handbag"></i>
+                  <span>Transactions History</span>
+                </NavLink>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link "
+                    to="/dashboard"
+                    activeClassName="active"
+                  >
+                    <i className="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link "
+                    to="/charity-programs"
+                    activeClassName="active"
+                  >
+                    <i className="bi bi-heart"></i>
+                    <span>Charity Programs</span>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link "
+                    to="/donation-preferences"
+                    activeClassName="active"
+                  >
+                    <i className="bi bi-handbag"></i>
+                    <span>Donation Preferences</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+          </>
+        )}
+        {/* {user?.user_type === 1 ? (
         <>
           <li className="nav-item">
             <NavLink
@@ -82,7 +117,7 @@ const Sidebar = () => {
         </li>
       )} */}
 
-      {/* <li className="nav-item">
+        {/* <li className="nav-item">
         <a className="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i className="bi bi-menu-button-wide"></i><span>Others</span><i className="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -104,7 +139,8 @@ const Sidebar = () => {
           </li>
         </ul>
       </li> */}
-    </ul>
-  </aside>;
+      </ul>
+    </aside>
+  );
 };
 export default Sidebar;

@@ -13,6 +13,7 @@ import * as moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import Payment from "./../Payment/Payment";
 import ReviewAmountBox from "./../Shared/ReviewAmountBox";
+import { paymentActions } from "./../../actions";
 
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -60,7 +61,7 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
   const initialValues = {
     orderId: Math.random().toString(36).slice(2),
     donationAmount: selectedAmount,
-    customerId: employee?.user_id.toString(),
+    customerId: employee?.uuid.toString(),
     customerName: employee?.name,
     customerEmail: employee?.email,
     customerPhone: employee?.phone,

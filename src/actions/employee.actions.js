@@ -21,10 +21,15 @@ function login(data, from) {
     employeeService.login(data).then(
       (data) => {
         dispatch(success(data));
-        localStorage.setItem("user", JSON.stringify(data.data));
-        // history.push("/dashboard");
-        // dispatch(alertActions.success("Loggedin successful"));
-        history.push("/otp");
+        const res = JSON.stringify(data?.data)
+        if(res?.approve){
+          localStorage.setItem("user", JSON.stringify(data?.data));
+          // history.push("/dashboard");
+          // dispatch(alertActions.success("Loggedin successful"));
+          history.push("/otp");
+        }else{
+          dispatch(alertActions.error("Your account is currently in review. You will soon receive an email with a link to set your password."))
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
