@@ -16,6 +16,7 @@ export function donationPreferences(state = {}, action) {
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_REQUEST:
       return {
+        saved: false,
         loading: true,
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_SUCCESS:
@@ -24,6 +25,7 @@ export function donationPreferences(state = {}, action) {
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_FAILURE:
       return {
+        saved: false,
         error: action.error,
       };
     case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_REQUEST:
