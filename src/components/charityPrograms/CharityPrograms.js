@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-// import charityPrograms from "../../config/charityPrograms.json";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import Donate from "./Donate";
 import "./../../assets/css/charityProgramsList.scss";
 import { donationPreferenceConstants } from "./../../constants";
@@ -15,7 +12,6 @@ import Loader from "../Shared/Loader";
 const CharityPrograms = () => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
-  // let selectedCharity = useState({});
   const [selectedCharity, setSelectedCharity] = useState();
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const user = useSelector((state) => state.employee.user);
@@ -28,10 +24,10 @@ const CharityPrograms = () => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
-    setSelectedCharity('');
+    setSelectedCharity("");
   };
   useEffect(() => {
-    dispatch(charityProgramActions.getCharityPrograms());
+    dispatch(charityProgramActions.getCharityPrograms({ uuid: user?.uuid }));
   }, []);
   const setCharity = (charity) => {
     setSelectedCharity(charity);
@@ -77,20 +73,20 @@ const CharityPrograms = () => {
       <div className="tab-content p-0">
         {charityPrograms.loading && <Loader />}
         <div className="tab-pane fade show active" id="sponsored">
-          {/* {charityPrograms.items && ( */}
-            <ListCharityPrograms
-              items={charityPrograms?.items?.sponser}
-              setCharity={setCharity}
-            />
-          {/* )} */}
+          <ListCharityPrograms
+            items={charityPrograms?.items?.sponser.filter(
+              (charity) => charity.donated === false
+            )}
+            setCharity={setCharity}
+          />
         </div>
         <div className="tab-pane fade show" id="others">
-          {/* {charityPrograms.items && ( */}
-            <ListCharityPrograms
-              items={charityPrograms?.items?.other}
-              setCharity={setCharity}
-            />
-          {/* )} */}
+          <ListCharityPrograms
+            items={charityPrograms?.items?.other.filter(
+              (charity) => charity.donated === false
+            )}
+            setCharity={setCharity}
+          />
         </div>
       </div>
       {
@@ -128,7 +124,7 @@ const CharityPrograms = () => {
                   )}
                 </button>
               </li>
-              {tabType === charityProgramConstants.SPONSOR && 
+              {tabType === charityProgramConstants.SPONSOR && (
                 <li className="nav-item">
                   <button
                     className="nav-link"
@@ -145,7 +141,7 @@ const CharityPrograms = () => {
                     )}
                   </button>
                 </li>
-              }
+              )}
             </ul>
           </div>
           <div className="tab-content pt-2">

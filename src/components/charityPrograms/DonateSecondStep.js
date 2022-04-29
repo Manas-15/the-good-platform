@@ -101,7 +101,6 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
             initialValues={initialValues}
             validationSchema={PaymentSchema}
             onSubmit={(values, { setSubmitting }) => {
-              console.log("coming to submit here");
               values.customerDob = moment(values.customerDob).format("YYYY-MM-DD");
               values.customerPan = values.customerPan.toUpperCase();
               goToPayment(values);

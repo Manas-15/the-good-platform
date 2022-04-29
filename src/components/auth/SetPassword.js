@@ -32,9 +32,7 @@ const SetPassword = (props) => {
     }
   };
   const setPassword = (values) => {
-    console.log("create coming corporate", values, userId);
     if (userId && values.password) {
-      console.log("create coming corporate", values);
       dispatch(employeeActions.setEmployeePassword({userId: userId, password: values.password}));
     }
   };

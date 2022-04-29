@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
 import { donationPreferenceActions } from "./../../actions";
+import { charityProgramActions } from "./../../actions";
 import { donationPreferenceConstants } from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
@@ -20,15 +21,17 @@ const preferenceForm = {
 };
 const Donate = ({ frequency, selectedCharity, tabType }) => {
   const employee = useSelector((state) => state.employee.user);
-  const [selectedAmount, setSelectedAmount] = useState();  
+  const charityPrograms = useSelector((state) => state.charityPrograms);
+  const donationPreferences = useSelector((state) => state.donationPreferences);
+  const [selectedAmount, setSelectedAmount] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [showNextStep, setShowNextStep] = useState(false);
   useEffect(() => {
-    if(selectedCharity){
+    if (selectedCharity) {
       setSelectedAmount(selectedCharity?.unitPrice);
-    }else{
+    } else {
       setShowNextStep(false);
     }
   }, [selectedCharity]);
@@ -45,15 +48,15 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
-    preferenceForm.corporateId = 30;
-    preferenceForm.employeeId = 3;
+    preferenceForm.corporateId = 1;
+    preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = selectedCharity?.charityId;
     preferenceForm.socialOrganizationId = selectedCharity?.soicalId;
     preferenceForm.donationAmount = selectedAmount;
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 1 : 2;
     preferenceForm.isConsentCheck = true;
-    dispatch(donationPreferenceActions.saveDonationPreference(preferenceForm));
+    dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
     document.getElementById("sidepanel").classList.remove("is-open");
   };
   const nextStep = () => {
@@ -157,11 +160,18 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
               </div>
             </div>
           )}
-          <div className={"row mb-4 " + (tabType === charityProgramConstants.SPONSOR ? '' : 'mt-4')}>
+          <div
+            className={
+              "row mb-4 " +
+              (tabType === charityProgramConstants.SPONSOR ? "" : "mt-4")
+            }
+          >
             <div className="col-md-12 text-center">
               <Button
                 className="btn btn-primary w-100 rounded-pill"
-                disabled={tabType === charityProgramConstants.SPONSOR ? !checked : false}
+                disabled={
+                  tabType === charityProgramConstants.SPONSOR ? !checked : false
+                }
                 onClick={
                   tabType === charityProgramConstants.SPONSOR
                     ? saveDonationPreference
@@ -194,7 +204,14 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
           )}
         </>
       )}
-      {showNextStep && <DonateSecondStep frequency={frequency} selectedCharity={selectedCharity} selectedAmount={selectedAmount} employee={employee} />}
+      {showNextStep && (
+        <DonateSecondStep
+          frequency={frequency}
+          selectedCharity={selectedCharity}
+          selectedAmount={selectedAmount}
+          employee={employee}
+        />
+      )}
     </>
   );
 };
