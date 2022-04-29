@@ -8,8 +8,8 @@ import { Form } from "formik";
 
 const Otp = () => {
   const [submitted, setSubmitted] = useState(false);
-  // const user = useSelector((state) => state.employee.user);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = useSelector((state) => state.employee.user);
+  // const user = JSON.parse(localStorage.getItem("user"));
   const [code, setCode] = useState("");
   const handleChange = (code) => setCode(code);
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const Otp = () => {
     <div className="text-center card p-4">
       <h3 className="mb-4">Enter one time password (OTP)</h3>
       <p>
-        One time password has been sent to your email id ****2006@gmail.com.
+        One time password has been sent to your email id {user?.email}.
         Please enter the same here to login.
       </p>
       <form name="form">
@@ -71,7 +71,7 @@ const Otp = () => {
           </div>
         </div>
       </form>
-      <div className="row text-center mt-4">
+      {/* <div className="row text-center mt-4">
         <div className="col-md-12 resend">
           <OtpTimer
             seconds={30}
@@ -82,7 +82,7 @@ const Otp = () => {
             className="btn btn-primary"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

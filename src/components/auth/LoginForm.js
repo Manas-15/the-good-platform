@@ -6,6 +6,7 @@ import { Button } from "react-bootstrap";
 import "./../../assets/css/loginForm.scss";
 
 const LoginForm = ({ submit, disable }) => {
+  // localStorage.clear();
   return (
     <>
       <div className="row align-items-center authFormMargin">
@@ -98,6 +99,9 @@ const LoginForm = ({ submit, disable }) => {
                       disabled={disable}
                       className="btn loginButton"
                     >
+                      {disable && (
+                        <span className="spinner-border spinner-border-sm disable-login"></span>
+                      )}
                       Login
                     </Button>
                   </div>

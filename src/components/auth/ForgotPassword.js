@@ -36,7 +36,7 @@ const ForgotPassword = ({ submit, disable, type }) => {
               }) => (
                 <Form>
                   <h5 className="text-center cardHeading">Forgot Password</h5>
-                  <p class="authForm text-inverse text-center registartionText">
+                  <p className="authForm text-inverse text-center registartionText">
                     It happens to the best of us, we'll send you a link to reset
                     your password
                   </p>

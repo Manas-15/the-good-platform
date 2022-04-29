@@ -157,6 +157,7 @@ function registerEmployee(employee, type) {
 
     employeeService.registerEmployee(employee).then(
       (employee) => {
+        console.log(">>>>>>>>>>>>>>>>>> employee", employee)
         dispatch(success());
         history.push("/thank-you");
       },

@@ -57,9 +57,15 @@ const FormDatePicker = ({ errors, touched }) => {
     </>
   );
 };
-const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee }) => {
+const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee }) => {  
+  // Math.random().toString(36).slice(2)
+  let charityFirstTwoChar, employeeFirstTwoChar;
+  if(selectedCharity){
+    charityFirstTwoChar = selectedCharity?.charityName?.slice(0, 2)?.toLowerCase();
+    employeeFirstTwoChar = employee?.name?.slice(0, 2)?.toLowerCase();
+  }  
   const initialValues = {
-    orderId: Math.random().toString(36).slice(2),
+    orderId: selectedCharity ? charityFirstTwoChar+employeeFirstTwoChar+Date.now() : Math.random().toString(36).slice(2),
     donationAmount: selectedAmount,
     customerId: employee?.uuid.toString(),
     customerName: employee?.name,
