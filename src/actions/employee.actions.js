@@ -21,8 +21,8 @@ function login(data, from) {
     employeeService.login(data).then(
       (data) => {
         dispatch(success(data));
-        const res = JSON.stringify(data?.data)
-        if(res?.approve){
+        if(data?.data?.approve){
+          const res = JSON.stringify(data?.data)
           localStorage.setItem("user", JSON.stringify(data?.data));
           // history.push("/dashboard");
           // dispatch(alertActions.success("Loggedin successful"));

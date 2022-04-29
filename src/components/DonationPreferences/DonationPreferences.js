@@ -36,7 +36,6 @@ const DonationPreferences = () => {
     setOpen(false);
   };
   const showConsent = (preference, type) => {
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@ preference", preference);
     setOpen(true);
     setSelectedPreference(preference);
     setUpdateType(type);
@@ -118,7 +117,6 @@ const DonationPreferences = () => {
                     style="w-100 mx-1"
                     size="sm"
                     onChange={(checked) => {
-                      console.log("checked ............", checked);
                       showConsent(
                         preference,
                         donationPreferenceConstants.FREQUENCY
