@@ -21,8 +21,8 @@ const Payment = ({ paymentValues }) => {
     "upi",
     "app",
     "netbanking",
-    "paylater",
-    "credicardemi",
+    // "paylater",
+    // "credicardemi",
   ]);
   const cbs = (data) => {
     if (data?.order && data?.order?.status === paymentConstants.PAID) {
@@ -79,7 +79,7 @@ const Payment = ({ paymentValues }) => {
           <ReviewAmountBox selectedAmount={paymentValues?.donationAmount} />
           {payment?.loading && (
             <div className="pt-4">
-              <Loader />
+              <Loader style={{top: "60px"}}/>
             </div>
           )}
           <div className="dropin-parent" id="drop_in_container">

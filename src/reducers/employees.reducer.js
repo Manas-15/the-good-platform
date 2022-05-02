@@ -94,6 +94,7 @@ export function employee(state = initialState, action) {
     case employeeConstants.EMPLOYEE_ACTION_SUCCESS:
       return {
         ...state,
+        actionRequest: false,
         items: state.items.map((item) => {
           if (item.id === state.employeeId) {
             return { ...item, isApprove: state.requestType === "Approve" };
@@ -102,7 +103,7 @@ export function employee(state = initialState, action) {
         }),
       };
     case employeeConstants.EMPLOYEE_ACTION_FAILURE:
-      return { ...state, items: state.items, error: action.error };
+      return { ...state, actionRequest: false, items: state.items, error: action.error };
     default:
       return state;
   }

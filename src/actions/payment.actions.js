@@ -15,7 +15,7 @@ function getOrderToken(data) {
     paymentService.getOrderToken(data).then(
       (result) => {
         dispatch(success(result));
-        if(result?.data?.message){
+        if (result?.data?.message) {
           dispatch(alertActions.error(result?.data?.message));
         }
       },
@@ -54,9 +54,7 @@ function getPaymentStatus(data) {
       },
       (error) => {
         dispatch(failure(error.toString()));
-        dispatch(
-          alertActions.error(error.toString())
-        );
+        dispatch(alertActions.error(error.toString()));
       }
     );
   };
