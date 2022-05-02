@@ -52,7 +52,6 @@ const CorporatesPortal = () => {
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
-
   return (
     <div>
       <div className="row mb-4">
@@ -80,7 +79,9 @@ const CorporatesPortal = () => {
                 {corporates?.items.map((corporate, index) => {
                   return (
                     <li key={index + 1}>
-                      <Link to={`/corporates/${corporate.corporateId}/employees`}>
+                      <Link
+                        to={`/corporates/${corporate.corporateId}/employees`}
+                      >
                         {corporate?.organizationName}
                       </Link>
                     </li>
@@ -92,7 +93,9 @@ const CorporatesPortal = () => {
               </ul>
             </div>
           ) : (
-            <div className="text-center"><strong>No corporates found</strong></div>
+            <div className="text-center">
+              <strong>No corporates found</strong>
+            </div>
           )}
         </div>
       </div>

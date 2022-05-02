@@ -65,9 +65,9 @@ export const PaymentSchema = Yup.object().shape({
     .required("Email is required")
     .email("Invalid email address"),
   customerPhone: Yup.string()
-  .required("Phone is required")
-  .matches(/^[0-9]+$/, "Must be number only")
-  .min(10, 'Please enter valid phone number')
-  .max(10, 'Please enter valid phone number'),
-  customerDob: Yup.date().nullable().required("Date of birth is required"),
+    .required("Phone is required")
+    .matches(/^[0-9]+$/, "Must be number only")
+    .min(10, "Please enter valid phone number")
+    .max(10, "Please enter valid phone number"),
+  // customerDob: Yup.date().nullable().required("Date of birth is required"),
 });

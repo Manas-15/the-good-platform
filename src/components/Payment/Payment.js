@@ -34,7 +34,7 @@ const Payment = ({ paymentValues }) => {
   };
   const cbf = (data) => {
     // alert("cbf: " + data.order.errorText);
-    console.log("dddddd error payment ...........", data)
+    console.log("dddddd error payment ...........", data);
     setPaymentStatus(paymentConstants.ERROR);
     setPaymentSuccessErrorData(data);
   };
@@ -79,7 +79,7 @@ const Payment = ({ paymentValues }) => {
           <ReviewAmountBox selectedAmount={paymentValues?.donationAmount} />
           {payment?.loading && (
             <div className="pt-4">
-              <Loader style={{top: "60px"}}/>
+              <Loader style={{ top: "60px" }} />
             </div>
           )}
           <div className="dropin-parent" id="drop_in_container">
@@ -94,7 +94,10 @@ const Payment = ({ paymentValues }) => {
       )}
       {paymentStatus && (
         <>
-          <PaymentSuccessError paymentValues={paymentValues} paymentSuccessErrorData={paymentSuccessErrorData} />
+          <PaymentSuccessError
+            paymentValues={paymentValues}
+            paymentSuccessErrorData={paymentSuccessErrorData}
+          />
         </>
       )}
     </>

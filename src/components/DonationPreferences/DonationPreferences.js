@@ -24,7 +24,7 @@ const DonationPreferences = () => {
   const [updatedValue, setUpdatedValue] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(donationPreferenceActions.getDonationPreferences());
+    dispatch(donationPreferenceActions.getDonationPreferences({employeeId: employee?.emp_id}));
   }, []);
   const handleCheck = () => {
     setChecked(true);

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import transactions from "./../../config/transactions.json";
 import * as moment from "moment";
+import { paymentConstants } from "../../constants";
 
 const actionInitialValues = {
   userId: "",
@@ -12,8 +13,8 @@ const actionInitialValues = {
 };
 const ListTransactionsHistory = (props) => {
   let history = useHistory();
-  // const transactions = useSelector(state => state.transactionsHistory);
-  // const user = useSelector((state) => state.employee.user);
+  let transactions = useSelector(state => state.transactionsHistory);
+  const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -21,7 +22,7 @@ const ListTransactionsHistory = (props) => {
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(transactionsHistoryActions.getTransactionsHistory());
+    dispatch(transactionsHistoryActions.getTransactionsHistory({employeeId: user?.emp_id}));
   }, []);
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -39,11 +40,44 @@ const ListTransactionsHistory = (props) => {
     // dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
   };
   const handleClose = () => setOpen(false);
+  const filter = (type) => {
+    console.log("typeeeeeeeeeeeeeee", type, transactions?.items);
+    transactions?.items?.filter(      
+      transaction => 
+      {return transaction?.paymentStatus === "2"}
+    
+    );
+  };
   return (
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
           <h4>Transactions History</h4>
+        </div>
+        <div className="col-md-6 text-right">
+          <a className="icon" href="#" data-bs-toggle="dropdown" title="Filter">
+            <span className="bi-funnel-fill"></span>
+          </a>
+          <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
+            <li
+              className="dropdown-header text-start"
+              onClick={() => filter(paymentConstants?.SUCCESS)}
+            >
+              Payment Success
+            </li>
+            {/* <li
+              className="dropdown-header text-start"
+              onClick={() => filter(paymentConstants?.PENDING)}
+            >
+              Payment Pending
+            </li> */}
+            <li
+              className="dropdown-header text-start"
+              onClick={() => filter(paymentConstants?.FAILED)}
+            >
+              Payment Failed
+            </li>
+          </ul>
         </div>
       </div>
       {transactions.loading && <Loader />}
@@ -52,7 +86,9 @@ const ListTransactionsHistory = (props) => {
           <tr className="table-active">
             <th>Sl#</th>
             <th>Employee Name</th>
-            <th>Employee Email</th>
+            <th>Charity Name</th>
+            <th>Social Organization</th>
+            <th>Corporate</th>
             <th>Transaction ID</th>
             <th>Order Amount</th>
             <th>Payment Status</th>
@@ -60,17 +96,19 @@ const ListTransactionsHistory = (props) => {
           </tr>
         </thead>
         <tbody>
-          {transactions?.length > 0 ? (
-            transactions?.map((transaction, index) => (
+          {transactions?.items?.length > 0 ? (
+            transactions?.items?.map((transaction, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
-                <td>{transaction?.data?.customer_details?.customer_id}</td>
-                <td>{transaction?.data?.customer_details?.customer_name}</td>
-                <td>{transaction?.data?.order?.order_id}</td>
-                <td>{transaction?.data?.order?.order_amount}</td>
-                <td>{transaction?.data?.payment?.payment_status}</td>
+                <td>{transaction?.employeeName}</td>
+                <td>{transaction?.charityName}</td>
+                <td>{transaction?.socialOrg}</td>
+                <td>{transaction?.corporateName}</td>
+                <td>{transaction?.transactionId}</td>
+                <td>{transaction?.amount}</td>
+                <td>{transaction?.paymentStatus === 2 ? 'Success' : 'Failed'}</td>
                 <td>
-                  {moment(transaction?.data?.payment?.payment_time).format(
+                  {transaction?.paymentDate &&  moment(transaction?.paymentDate).format(
                     "DD/MM/YY, h:mm A"
                   )}
                 </td>
@@ -78,7 +116,7 @@ const ListTransactionsHistory = (props) => {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">
+              <td colSpan="9" className="text-center">
                 No transactions found
               </td>
             </tr>

@@ -30,8 +30,8 @@ const Otp = () => {
     <div className="text-center card p-4">
       <h3 className="mb-4">Enter one time password (OTP)</h3>
       <p>
-        One time password has been sent to your email id {user?.email}.
-        Please enter the same here to login.
+        One time password has been sent to your email id {user?.email}. Please
+        enter the same here to login.
       </p>
       <form name="form">
         <div className="d-inline-block mb-4">
