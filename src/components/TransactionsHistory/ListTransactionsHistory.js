@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
-import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import Loader from "../Shared/Loader";
-// import employees from "./../../config/employees.json";
+import transactions from "./../../config/transactions.json";
+import * as moment from "moment";
+
 const actionInitialValues = {
   userId: "",
   requestType: "",
 };
 const ListTransactionsHistory = (props) => {
   let history = useHistory();
-  const transactions = useSelector(state => state.transactionsHistory);
+  // const transactions = useSelector(state => state.transactionsHistory);
   // const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -20,7 +21,7 @@ const ListTransactionsHistory = (props) => {
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const dispatch = useDispatch();
   useEffect(() => {
-      dispatch(transactionsHistoryActions.getTransactionsHistory());
+    dispatch(transactionsHistoryActions.getTransactionsHistory());
   }, []);
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -28,9 +29,7 @@ const ListTransactionsHistory = (props) => {
     setSelectedEmployee(item);
     setActionTitle(`${action} Confirmation`);
     setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${
-        item.name
-      }"</strong>?`
+      `Are you sure to ${action.toLowerCase()} <strong>"${item.name}"</strong>?`
     );
   };
   const confirm = () => {
@@ -52,54 +51,38 @@ const ListTransactionsHistory = (props) => {
         <thead>
           <tr className="table-active">
             <th>Sl#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th className="text-center">Actions</th>
+            <th>Employee Name</th>
+            <th>Employee Email</th>
+            <th>Transaction ID</th>
+            <th>Order Amount</th>
+            <th>Payment Status</th>
+            <th>Payment Time</th>
           </tr>
         </thead>
         <tbody>
-          {
-            transactions?.items?.length > 0
-            ?
-            transactions?.items.map((employee, index) => (
+          {transactions?.length > 0 ? (
+            transactions?.map((transaction, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
-                <td>{employee?.name}</td>
-                <td>{employee?.email}</td>
+                <td>{transaction?.data?.customer_details?.customer_id}</td>
+                <td>{transaction?.data?.customer_details?.customer_name}</td>
+                <td>{transaction?.data?.order?.order_id}</td>
+                <td>{transaction?.data?.order?.order_amount}</td>
+                <td>{transaction?.data?.payment?.payment_status}</td>
                 <td>
-                  {employee?.contact_number}
-                </td>
-                <td className="text-center">
-                  <a className="icon" href="#" data-bs-toggle="dropdown">
-                    <span className="bi-three-dots"></span>
-                  </a>
-                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                      {!employee?.isApprove ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Approve", employee)}
-                        >
-                          <span className="bi-check-circle"> Approve</span>
-                        </li>
-                      ) : null}
-                      {employee?.isApprove || employee?.isApprove === null ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Reject", employee)}
-                        >
-                          <span className="bi-x-circle"> Reject</span>
-                        </li>
-                      ) : null}                      
-                    </ul>
+                  {moment(transaction?.data?.payment?.payment_time).format(
+                    "DD/MM/YY, h:mm A"
+                  )}
                 </td>
               </tr>
             ))
-            :
+          ) : (
             <tr>
-              <td colSpan="6" className='text-center'>No employees found</td>
+              <td colSpan="6" className="text-center">
+                No transactions found
+              </td>
             </tr>
-          }
+          )}
         </tbody>
       </table>
       <div className="row mb-4">
@@ -138,19 +121,6 @@ const ListTransactionsHistory = (props) => {
           </nav>
         </div>
       </div>
-      {open && (
-        <ConfirmationDialog
-          open={true}
-          title={actionTitle}
-          content={actionContent}
-          handleConfirm={() => {
-            confirm();
-          }}
-          handleCancel={() => {
-            handleClose();
-          }}
-        />
-      )}
     </div>
   );
 };

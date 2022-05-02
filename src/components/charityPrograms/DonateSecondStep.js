@@ -73,6 +73,8 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
     customerPhone: employee?.phone,
     customerDob: employee?.dob,
     customerPan: employee?.pan,
+    charity: selectedCharity,
+    employee: employee,
   };
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
@@ -195,6 +197,7 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
                     <Field
                       name="customerPan"
                       type="text"
+                      maxLength={10}
                       className={
                         "form-control text-uppercase" +
                         (errors.customerPan && touched.customerPan

@@ -126,7 +126,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
           <div className="row">
             <div className="col-md-10 text-center offset-md-1">
               <p className="mb-2">
-                <span className="bi-heart-fill fs-6 ml-2 cursor-pointer text-danger"></span>{" "}
+                <span className="bi-heart-fill fs-6 ml-2 cursor-pointer text-danger"></span>
                 How will my donation help?
               </p>
               <p className="mb-2">
@@ -182,13 +182,13 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
                   {tabType === charityProgramConstants.SPONSOR ? (
                     <>
                       <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-                      &nbsp;Donation Preference
+                      &nbsp;Add Donation Preference
                     </>
                   ) : (
                     "Next"
                   )}
                 </span>
-              </Button>{" "}
+              </Button>
             </div>
           </div>
           {open && (
