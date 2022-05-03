@@ -3,6 +3,7 @@ import { useHistory, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
+import Loader from "./../Shared/Loader";
 // import employees from "./../../config/employees.json";
 const actionInitialValues = {
   userId: "",
@@ -11,7 +12,7 @@ const actionInitialValues = {
 const ListEmployees = (props) => {
   let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
-  const employees = useSelector(state => state.employee);
+  const employees = useSelector((state) => state.employee);
   // const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -19,9 +20,8 @@ const ListEmployees = (props) => {
   const [actionType, setActionType] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const dispatch = useDispatch();
-  console.log("corporateId.................", corporateId, employees)
   useEffect(() => {
-      dispatch(employeeActions.getEmployees({corporateId: corporateId}));
+    dispatch(employeeActions.getEmployees({ corporateId: corporateId }));
   }, []);
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -29,9 +29,7 @@ const ListEmployees = (props) => {
     setSelectedEmployee(item);
     setActionTitle(`${action} Confirmation`);
     setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${
-        item.name
-      }"</strong>?`
+      `Are you sure to ${action.toLowerCase()} <strong>"${item.name}"</strong>?`
     );
   };
   const confirm = () => {
@@ -45,7 +43,9 @@ const ListEmployees = (props) => {
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4><Link to="/corporates">Corporates</Link> / Employees</h4>
+          <h4>
+            <Link to="/corporates">Corporates</Link> / Employees
+          </h4>
         </div>
         {/* <div className="col-md-6" style={{ textAlign: "right" }}>
           <button
@@ -57,7 +57,8 @@ const ListEmployees = (props) => {
           </button>
         </div> */}
       </div>
-      {employees.loading && <em>Loading employees...</em>}
+      {employees.actionRequest && <Loader />}
+
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
@@ -69,9 +70,7 @@ const ListEmployees = (props) => {
           </tr>
         </thead>
         <tbody>
-          {
-            employees?.items?.length > 0
-            ?
+          {employees?.items?.length > 0 ? (
             employees?.items.map((employee, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
@@ -88,31 +87,33 @@ const ListEmployees = (props) => {
                     <span className="bi-three-dots"></span>
                   </a>
                   <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                      {!employee?.isApprove ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Approve", employee)}
-                        >
-                          <span className="bi-check-circle"> Approve</span>
-                        </li>
-                      ) : null}
-                      {employee?.isApprove || employee?.isApprove === null ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Reject", employee)}
-                        >
-                          <span className="bi-x-circle"> Reject</span>
-                        </li>
-                      ) : null}                      
-                    </ul>
+                    {!employee?.isApprove ? (
+                      <li
+                        className="dropdown-header text-start"
+                        onClick={() => handleOpen("Approve", employee)}
+                      >
+                        <span className="bi-check-circle"> Approve</span>
+                      </li>
+                    ) : null}
+                    {employee?.isApprove || employee?.isApprove === null ? (
+                      <li
+                        className="dropdown-header text-start"
+                        onClick={() => handleOpen("Reject", employee)}
+                      >
+                        <span className="bi-x-circle"> Reject</span>
+                      </li>
+                    ) : null}
+                  </ul>
                 </td>
               </tr>
             ))
-            :
+          ) : (
             <tr>
-              <td colSpan="6" className='text-center'>No employees found</td>
+              <td colSpan="6" className="text-center">
+                No employees found
+              </td>
             </tr>
-          }
+          )}
         </tbody>
       </table>
       <div className="row mb-4">

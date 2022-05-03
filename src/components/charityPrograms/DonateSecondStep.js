@@ -18,21 +18,14 @@ import { paymentActions } from "./../../actions";
 const FormDatePicker = ({ errors, touched }) => {
   return (
     <>
-      <Field
-        name="customerDob"
-        placeholder="Date of Birth*"
-        className="ml-3"
-      >
+      <Field name="customerDob" placeholder="Date of Birth*" className="ml-3">
         {({ field, meta, form: { setFieldValue } }) => {
           return (
             <DatePicker
               {...field}
               className={
                 "form-control" +
-                (errors.customerDob &&
-                touched.customerDob
-                  ? " is-invalid"
-                  : "")
+                (errors.customerDob && touched.customerDob ? " is-invalid" : "")
               }
               autoComplete="none"
               maxDate={new Date()}
@@ -57,15 +50,25 @@ const FormDatePicker = ({ errors, touched }) => {
     </>
   );
 };
-const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee }) => {  
+const DonateSecondStep = ({
+  frequency,
+  selectedCharity,
+  selectedAmount,
+  employee,
+}) => {
   // Math.random().toString(36).slice(2)
   let charityFirstTwoChar, employeeFirstTwoChar;
-  if(selectedCharity){
-    charityFirstTwoChar = selectedCharity?.charityName?.slice(0, 2)?.toLowerCase();
+  if (selectedCharity) {
+    charityFirstTwoChar = selectedCharity?.charityName
+      ?.slice(0, 2)
+      ?.toLowerCase();
     employeeFirstTwoChar = employee?.name?.slice(0, 2)?.toLowerCase();
-  }  
+  }
   const initialValues = {
-    orderId: selectedCharity ? charityFirstTwoChar+employeeFirstTwoChar+Date.now() : Math.random().toString(36).slice(2),
+    orderId: selectedCharity
+      ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
+      : Math.random().toString(36).slice(2),
+    orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
     donationAmount: selectedAmount,
     customerId: employee?.uuid.toString(),
     customerName: employee?.name,
@@ -75,6 +78,9 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
     customerPan: employee?.pan,
     charity: selectedCharity,
     employee: employee,
+    corporateId: 1,
+    orderPaymentStatus: 1,
+    orderNote: `Donated to ${selectedCharity?.charityName}`
   };
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
@@ -92,13 +98,18 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
   const goToPayment = (data) => {
     setPaymentValues(data);
     setPaymentStep(true);
-  }
+  };
   const dispatch = useDispatch();
   return (
     <div>
-        {paymentStep ? <Payment selectedAmount={selectedAmount} paymentValues={paymentValues}/> : 
+      {paymentStep ? (
+        <Payment
+          selectedAmount={selectedAmount}
+          paymentValues={paymentValues}
+        />
+      ) : (
         <div className="second-step">
-          <ReviewAmountBox selectedAmount={selectedAmount}/>
+          <ReviewAmountBox selectedAmount={selectedAmount} />
           <div className="row">
             <div className="col-md-12">
               <span className="bi-lock-fill fs-5 text-success"></span>
@@ -109,7 +120,9 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
             initialValues={initialValues}
             validationSchema={PaymentSchema}
             onSubmit={(values, { setSubmitting }) => {
-              values.customerDob = moment(values.customerDob).format("YYYY-MM-DD");
+              values.customerDob = moment(values.customerDob).format(
+                "YYYY-MM-DD"
+              );
               values.customerPan = values.customerPan.toUpperCase();
               goToPayment(values);
             }}
@@ -147,7 +160,7 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
                 </div>
                 <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1">Email*</label>                
+                    <label className="mt-1">Email*</label>
                     <Field
                       name="customerEmail"
                       type="text"
@@ -163,11 +176,11 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
                       component="div"
                       className="invalid-feedback"
                     />
-                  </div>                  
-                </div>                
+                  </div>
+                </div>
                 <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1">Phone*</label>                
+                    <label className="mt-1">Phone*</label>
                     <Field
                       name="customerPhone"
                       type="text"
@@ -193,7 +206,7 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
                 </div>
                 <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1">PAN</label>                
+                    <label className="mt-1">PAN</label>
                     <Field
                       name="customerPan"
                       type="text"
@@ -206,7 +219,9 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
                       }
                     />
                     <span class="blink_text">
-                      Please note that if you do not provide your PAN Number, you will not be able to claim 50% tax exemption u/s 80G in India
+                      Please note that if you do not provide your PAN Number,
+                      you will not be able to claim 50% tax exemption u/s 80G in
+                      India
                     </span>
                   </div>
                 </div>
@@ -254,8 +269,8 @@ const DonateSecondStep = ({ frequency, selectedCharity, selectedAmount, employee
               closeCheck={closeCheck}
             />
           )}
-          </div>
-        }
+        </div>
+      )}
     </div>
   );
 };

@@ -19,7 +19,7 @@ const DonateAmount = ({ isActive, amount, setSelectedAmount }) => {
     <>
       <Button
         variant="outline-primary w-75 font-weight-bold"
-        className={isActive ? 'active' : ''}
+        className={isActive ? "active" : ""}
         onClick={() => setSelectedAmount(amount)}
       >
         &#8377;{amount}

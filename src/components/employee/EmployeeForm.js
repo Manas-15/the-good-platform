@@ -9,6 +9,11 @@ import DatePicker from "react-datepicker";
 import * as moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import "./../../assets/css/loginForm.scss";
+import {
+  CountryDropdown,
+  RegionDropdown,
+  CountryRegionData,
+} from "react-country-region-selector";
 
 const initialValues = {
   employeeName: "",
@@ -24,7 +29,7 @@ const initialValues = {
   state: "",
   country: "",
   userType: 3,
-  password: "test@123",
+  password: "test@%^@#1023",
 };
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
@@ -36,14 +41,10 @@ const genderOptions = [
   { value: "Female", label: "Female" },
   { value: "Transgender", label: "Transgender" },
 ];
-
 const FormDatePicker = ({ errors, touched }) => {
   return (
     <>
-      <Field
-        name="organizationJoiningDate"
-        placeholder="Organization Joining Date*"
-      >
+      <Field name="organizationJoiningDate">
         {({ field, meta, form: { setFieldValue } }) => {
           return (
             <DatePicker
@@ -56,6 +57,7 @@ const FormDatePicker = ({ errors, touched }) => {
                   : "")
               }
               autoComplete="none"
+              placeholderText="Organization Joining Date"
               maxDate={new Date()}
               showMonthDropdown={true}
               showYearDropdown={true}
@@ -81,7 +83,8 @@ const FormDatePicker = ({ errors, touched }) => {
 const EmployeeForm = ({ type }) => {
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
-
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState();
   const addingEmployee = useSelector((state) => state.employee.addingEmployee);
   const dispatch = useDispatch();
   const employeeRegister = (values) => {
@@ -90,7 +93,12 @@ const EmployeeForm = ({ type }) => {
       dispatch(employeeActions.registerEmployee(values, type));
     }
   };
-
+  const selectCountry = (country) => {
+    setCountry(country);
+  };
+  const selectState = (state) => {
+    setState(state);
+  };
   return (
     <>
       <div className="row align-items-center authFormMargin">
@@ -109,7 +117,9 @@ const EmployeeForm = ({ type }) => {
               initialValues={initialValues}
               validationSchema={EmployeeSchema}
               onSubmit={(values, { setSubmitting }) => {
-                values.organizationJoiningDate = moment(values.organizationJoiningDate).format("YYYY-MM-DD")
+                values.organizationJoiningDate = moment(
+                  values.organizationJoiningDate
+                ).format("YYYY-MM-DD");
                 employeeRegister(values);
               }}
             >
@@ -138,6 +148,7 @@ const EmployeeForm = ({ type }) => {
                         name="employeeName"
                         type="text"
                         placeholder="Employee Name*"
+                        maxLength={50}
                         className={
                           "form-control" +
                           (errors.employeeName && touched.employeeName
@@ -182,6 +193,7 @@ const EmployeeForm = ({ type }) => {
                         name="employeeId"
                         type="text"
                         placeholder="Employee ID*"
+                        maxLength={20}
                         className={
                           "form-control" +
                           (errors.employeeId && touched.employeeId
@@ -205,6 +217,8 @@ const EmployeeForm = ({ type }) => {
                         name="pan"
                         type="text"
                         placeholder="PAN*"
+                        style={{ textTransform: "uppercase" }}
+                        maxLength={10}
                         className={
                           "form-control" +
                           (errors.pan && touched.pan ? " is-invalid" : "")
@@ -263,6 +277,7 @@ const EmployeeForm = ({ type }) => {
                         name="contactNumber"
                         type="text"
                         placeholder="Contact Number"
+                        maxLength={10}
                         className={
                           "form-control" +
                           (errors.contactNumber && touched.contactNumber
@@ -286,6 +301,7 @@ const EmployeeForm = ({ type }) => {
                         name="address"
                         type="text"
                         placeholder="Address"
+                        maxLength={100}
                         className={
                           "form-control" +
                           (errors.address && touched.address
@@ -304,6 +320,7 @@ const EmployeeForm = ({ type }) => {
                         name="city"
                         type="text"
                         placeholder="City"
+                        maxLength={50}
                         className={
                           "form-control" +
                           (errors.city && touched.city ? " is-invalid" : "")
@@ -311,40 +328,31 @@ const EmployeeForm = ({ type }) => {
                       />
                     </div>
                   </div>
-                  <div className="row mb-4">
-                    {/* <div className="col-md-4">
-                <label className="mt-1">State</label>
-              </div> */}
-                    <div className="col-md-12">
-                      <Field
-                        name="state"
-                        type="text"
-                        placeholder="State"
-                        className={
-                          "form-control" +
-                          (errors.state && touched.state ? " is-invalid" : "")
-                        }
-                      />
-                    </div>
+                  <div className="row mb-4  pl-3 pr-3">
+                    <RegionDropdown
+                      name="state"
+                      country={country}
+                      value={state}
+                      placeholder="Select State"
+                      onChange={(val) => selectState(val)}
+                      className={
+                        "form-control" +
+                        (errors.country && touched.country ? " is-invalid" : "")
+                      }
+                    />
                   </div>
-                  <div className="row mb-4">
-                    {/* <div className="col-md-4">
-                <label className="mt-1">Country</label>
-              </div> */}
-                    <div className="col-md-12">
-                      <Field
-                        name="country"
-                        type="text"
-                        placeholder="Country"
-                        className={
-                          "form-control" +
-                          (errors.country && touched.country
-                            ? " is-invalid"
-                            : "")
-                        }
-                      />
-                    </div>
-                  </div>
+                  <div className="row mb-4 pl-3 pr-3">
+                    <CountryDropdown
+                      name="country"
+                      value={country}
+                      onChange={(val) => selectCountry(val)}
+                      className={
+                        "form-control" +
+                        (errors.country && touched.country ? " is-invalid" : "")
+                      }
+                    />
+                  </div>                  
+                  
                   <div className="text-center">
                     <button
                       type="submit"

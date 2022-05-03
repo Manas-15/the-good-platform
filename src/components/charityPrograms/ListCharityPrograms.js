@@ -20,7 +20,7 @@ const ListCharityPrograms = ({ items, setCharity }) => {
           </tr>
         </thead>
         <tbody>
-          {items ? (
+          {items?.length > 0 ? (
             items.map((charityProgram, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
