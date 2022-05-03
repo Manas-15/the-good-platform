@@ -124,7 +124,7 @@ const CharityPrograms = () => {
                   )}
                 </button>
               </li>
-              {tabType === charityProgramConstants.SPONSOR && (
+              {/* {tabType === charityProgramConstants.SPONSOR && ( */}
                 <li className="nav-item">
                   <button
                     className="nav-link"
@@ -141,7 +141,7 @@ const CharityPrograms = () => {
                     )}
                   </button>
                 </li>
-              )}
+              {/* )} */}
             </ul>
           </div>
           <div className="tab-content pt-2">

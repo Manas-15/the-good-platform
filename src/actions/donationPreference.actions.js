@@ -73,10 +73,10 @@ function updateDonationPreference(data) {
     };
   }
 }
-function getDonationPreferences() {
+function getDonationPreferences(data) {
   return (dispatch) => {
     dispatch(request());
-    donationPreferenceService.getDonationPreferences().then(
+    donationPreferenceService.getDonationPreferences(data).then(
       (preferences) => dispatch(success(preferences)),
 
       (error) => {
@@ -85,10 +85,9 @@ function getDonationPreferences() {
       }
     );
   };
-  function request() {
+  function request(data) {
     return {
-      type: donationPreferenceConstants.GET_DONATION_PREFERENCES_REQUEST,
-    };
+      type: donationPreferenceConstants.GET_DONATION_PREFERENCES_REQUEST };
   }
   function success(preferences) {
     return {

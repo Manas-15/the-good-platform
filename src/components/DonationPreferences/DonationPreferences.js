@@ -6,6 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { donationPreferenceConstants } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
 const preferenceForm = {
   employeePreferenceId: "",
   type: "",
@@ -18,13 +19,37 @@ const DonationPreferences = () => {
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [updateType, setUpdateType] = useState("");
   const [updatedValue, setUpdatedValue] = useState();
+  const [actionType, setActionType] = useState("");
   const dispatch = useDispatch();
+  const handleOpenDialog = (action, item) => {
+    setOpenDialog(true);
+    setActionType(action);
+    setSelectedPreference(item);
+    setActionTitle(`${action} Confirmation`);
+    setActionContent(
+      `Are you sure to ${action.toLowerCase()} <strong>"${
+        item?.charityProgram
+      }"</strong>?`
+    );
+  };
+  const handleCloseDialog = () => setOpenDialog(false);
+  const confirm = () => {
+    handleCloseDialog();
+    // actionInitialValues.userId = selectedCorporate.userId;
+    // actionInitialValues.requestType = actionType;
+    // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+  };
   useEffect(() => {
-    dispatch(donationPreferenceActions.getDonationPreferences({employeeId: employee?.emp_id}));
+    dispatch(
+      donationPreferenceActions.getDonationPreferences({
+        employeeId: employee?.emp_id,
+      })
+    );
   }, []);
   const handleCheck = () => {
     setChecked(true);
@@ -78,6 +103,7 @@ const DonationPreferences = () => {
             <th>Category</th>
             <th>Amount</th>
             <th className="text-center">Frequency</th>
+            <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -129,11 +155,30 @@ const DonationPreferences = () => {
                     }}
                   />
                 </td>
+                <td className="text-center">
+                  <a className="icon" href="#" data-bs-toggle="dropdown">
+                    <span className="bi-three-dots"></span>
+                  </a>
+                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
+                    <li
+                      className="dropdown-header text-start"
+                      onClick={() => handleOpenDialog("Suspend", preference)}
+                    >
+                      <span className="bi-check-circle"> Suspend</span>
+                    </li>
+                    <li
+                      className="dropdown-header text-start"
+                      onClick={() => handleOpenDialog("Delete", preference)}
+                    >
+                      <span className="bi-x-circle"> Delete</span>
+                    </li>
+                  </ul>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">
+              <td colSpan="7" className="text-center">
                 No preferences found
               </td>
             </tr>
@@ -176,6 +221,19 @@ const DonationPreferences = () => {
           </nav>
         </div>
       </div>
+      {openDialog && (
+        <ConfirmationDialog
+          open={true}
+          title={actionTitle}
+          content={actionContent}
+          handleConfirm={() => {
+            confirm();
+          }}
+          handleCancel={() => {
+            handleCloseDialog();
+          }}
+        />
+      )}
       {open && (
         <DonationConsent
           open={open}

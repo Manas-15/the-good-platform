@@ -26,7 +26,7 @@ const PaymentSuccessError = ({ paymentValues, paymentSuccessErrorData }) => {
         <div className="col-md-12 fs-6 lh-lg p-3">
           <div className="row">
             <div className="col-md-6">
-              <strong>Phone:</strong>
+              <strong>Name:</strong>
             </div>
             <div className="col-md-6 text-right">
               {paymentValues?.customerName}

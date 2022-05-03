@@ -13,16 +13,20 @@ const actionInitialValues = {
 };
 const ListTransactionsHistory = (props) => {
   let history = useHistory();
-  let transactions = useSelector(state => state.transactionsHistory);
+  const transactions = useSelector((state) => state.transactionsHistory);
   const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
+  const [records, setRecords] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(transactionsHistoryActions.getTransactionsHistory({employeeId: user?.emp_id}));
+    dispatch(
+      transactionsHistoryActions.getTransactionsHistory()
+    );
+    setRecords(transactions?.items)
   }, []);
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -39,14 +43,16 @@ const ListTransactionsHistory = (props) => {
     actionInitialValues.requestType = actionType;
     // dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
   };
+  
   const handleClose = () => setOpen(false);
   const filter = (type) => {
     console.log("typeeeeeeeeeeeeeee", type, transactions?.items);
-    transactions?.items?.filter(      
-      transaction => 
-      {return transaction?.paymentStatus === "2"}
+    let filterData = []
+    // filterData = transactions?.items?.map((transaction) =>
+    //   {return transaction?.paymentStatus = (type === paymentConstants.SUCCESS ? 2 : 3)}
     
-    );
+    // )
+    setRecords(filterData)
   };
   return (
     <div>
@@ -85,12 +91,12 @@ const ListTransactionsHistory = (props) => {
         <thead>
           <tr className="table-active">
             <th>Sl#</th>
-            <th>Employee Name</th>
-            <th>Charity Name</th>
-            <th>Social Organization</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Organization</th>
             <th>Corporate</th>
             <th>Transaction ID</th>
-            <th>Order Amount</th>
+            <th>Donation</th>
             <th>Payment Status</th>
             <th>Payment Time</th>
           </tr>
@@ -106,11 +112,12 @@ const ListTransactionsHistory = (props) => {
                 <td>{transaction?.corporateName}</td>
                 <td>{transaction?.transactionId}</td>
                 <td>{transaction?.amount}</td>
-                <td>{transaction?.paymentStatus === 2 ? 'Success' : 'Failed'}</td>
                 <td>
-                  {transaction?.paymentDate &&  moment(transaction?.paymentDate).format(
-                    "DD/MM/YY, h:mm A"
-                  )}
+                  {transaction?.paymentStatus === 2 ? "Success" : "Failed"}
+                </td>
+                <td>
+                  {transaction?.paymentDate &&
+                    moment(transaction?.paymentDate).format("DD/MM/YY, h:mm A")}
                 </td>
               </tr>
             ))

@@ -7,11 +7,11 @@ export const transactionsHistoryActions = {
   getTransactionsHistory,
 };
 
-function getTransactionsHistory(data) {
+function getTransactionsHistory() {
   return (dispatch) => {
     dispatch(request());
 
-    transactionsHistoryService.getTransactionsHistory(data).then(
+    transactionsHistoryService.getTransactionsHistory().then(
       (transactions) => dispatch(success(transactions)),
 
       (error) => {
