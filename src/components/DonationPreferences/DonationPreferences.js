@@ -242,13 +242,13 @@ const DonationPreferences = () => {
           )}
         </tbody>
       </table>
-      <Pagination
+      {/* <Pagination
         className="pagination-bar"
         currentPage={currentPage}
         totalCount={100}
         pageSize={PageSize}
         onPageChange={page => setCurrentPage(page)}
-      />
+      /> */}
       {openDialog && (
         <ConfirmationDialog
           open={true}

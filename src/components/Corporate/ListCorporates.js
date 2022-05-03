@@ -142,7 +142,7 @@ const ListCorporates = () => {
           )}
         </tbody>
       </table>
-      <div className="row mb-4">
+      {/* <div className="row mb-4">
         <div className="col-md-6">
           <p>Showing 1 to 10 of 20 records</p>
         </div>
@@ -177,7 +177,7 @@ const ListCorporates = () => {
             </ul>
           </nav>
         </div>
-      </div>
+      </div> */}
       {open && (
         <ConfirmationDialog
           open={true}

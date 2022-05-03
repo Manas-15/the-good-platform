@@ -236,7 +236,7 @@ const PayrollSetting = () => {
       )}
 
       <div className="text-right m-3">
-        <Button className="btn btn-primary">Process Create Batch</Button>
+        <Button className="btn btn-primary">Process Batch</Button>
       </div>
       {openDialog && (
         <ConfirmationDialog

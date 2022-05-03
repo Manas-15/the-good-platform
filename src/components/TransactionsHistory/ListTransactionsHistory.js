@@ -61,9 +61,9 @@ const ListTransactionsHistory = (props) => {
           <h4>Transactions History</h4>
         </div>
         <div className="col-md-6 text-right">
-          <a className="icon" href="#" data-bs-toggle="dropdown" title="Filter">
+          {/* <a className="icon" href="#" data-bs-toggle="dropdown" title="Filter">
             <span className="bi-funnel-fill"></span>
-          </a>
+          </a> */}
           <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
             <li
               className="dropdown-header text-start"
@@ -116,7 +116,7 @@ const ListTransactionsHistory = (props) => {
                   {transaction?.paymentStatus === 2 ? "Success" : "Failed"}
                 </td>
                 <td>
-                  {transaction?.paymentDate &&
+                  {transaction?.paymentDate && transaction?.paymentDate !== "None" &&
                     moment(transaction?.paymentDate).format("DD/MM/YY, h:mm A")}
                 </td>
               </tr>
@@ -130,7 +130,7 @@ const ListTransactionsHistory = (props) => {
           )}
         </tbody>
       </table>
-      <div className="row mb-4">
+      {/* <div className="row mb-4">
         <div className="col-md-6">
           <p>Showing 1 to 10 of 20 records</p>
         </div>
@@ -165,7 +165,7 @@ const ListTransactionsHistory = (props) => {
             </ul>
           </nav>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
