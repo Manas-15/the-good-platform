@@ -134,7 +134,7 @@ const PayrollSetting = () => {
     }, {});
   };
   const accordionData = groupBy(preferences?.items, "employeeName");
-  console.log("<>>>>>> accordionData", accordionData)
+  console.log("<>>>>>> accordionData", accordionData);
   return (
     <div>
       <div className="row mb-4">
@@ -143,80 +143,98 @@ const PayrollSetting = () => {
         </div>
       </div>
       {preferences.loading && <Loader />}
-      
-          {accordionData ? (
-            <>
-            {Object.keys(accordionData).map((employeeName,index) => (
-              <div className="row">
-                <Accordion defaultActiveKey={index} className="Payroll">
+
+      {accordionData ? (
+        <>
+          {Object.keys(accordionData).map((employeeName, index) => (
+            <div className="row">
+              <Accordion defaultActiveKey={index} className="Payroll">
                 <Accordion.Item eventKey={0}>
                   <Accordion.Header>{employeeName}</Accordion.Header>
                   <Accordion.Body>
-                  <table className="table table-striped">
-                    <thead>
-                      <tr className="table-active">
-                        <th>Sl#</th>
-                        <th>Employee Name</th>
-                        <th>Employee ID</th>
-                        <th>Program</th>
-                        <th>Social Organization</th>
-                        <th>
-                          Amount ({ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
-                        </th>
-                        <th className="text-center">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                  {accordionData[employeeName].map((preference, i) => (
-                  <tr>
-                    <td>{i + 1}</td>
-                    <td>{preference?.employeeName}</td>
-                    <td>{preference?.employeeName}</td>
-                    <td>{preference?.employeeUid}</td>
-                    <td>{preference.charityProgram}</td>
-                    <td>{preference.socialOrganization}</td>
-                    <td className="text-center">
-                    <Link
-                    onClick={() => handleOpenDialog("Delete", preference)}
-                    title="Delete"
-                  >
-                    <i className="bi bi-trash fs-5"></i>
-                  </Link>
-                  </td>
-                  </tr>                  
-                ))}
-                </tbody>
-                  </table>
+                    <table className="table table-striped">
+                      <thead>
+                        <tr className="table-active">
+                          <th>Sl#</th>
+                          <th>Employee Name</th>
+                          <th>Employee ID</th>
+                          <th>Program</th>
+                          <th>Social Organization</th>
+                          <th>
+                            Amount (
+                            {ReactHtmlParser(
+                              donationPreferenceConstants?.CURRENCY
+                            )}
+                            )
+                          </th>
+                          <th className="text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {accordionData[employeeName].map((preference, i) => (
+                          <tr>
+                            <td>{i + 1}</td>
+                            <td>{preference?.employeeName}</td>
+                            <td>{preference?.employeeUid}</td>
+                            <td>{preference?.charityProgram}</td>
+                            <td>{preference.socialOrganization}</td>
+                            <td>
+                              <input
+                                name="amount"
+                                type="text"
+                                size="4"
+                                maxLength={10}
+                                defaultValue={preference.donationAmount.toLocaleString()}
+                                className="form-control"
+                                disabled={true}
+                              />
+                            </td>
+                            <td className="text-center">
+                              <Link
+                                onClick={() =>
+                                  handleOpenDialog("Delete", preference)
+                                }
+                                title="Delete"
+                              >
+                                <i className="bi bi-trash fs-5"></i>
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
-              </div>
-              ))}
-              <div className="row mt-4">
-                <div className="col-md-12 text-right">
-                <h5>Total:&nbsp;
-                    <span className="fs-5">{preferences?.items
-                      ? preferences?.items
-                          ?.reduce(
-                            (total, currentValue) =>
-                              (total = total + currentValue.donationAmount),
-                            0
-                          )
-                          .toLocaleString()
-                      : 0}
-                      </span>
-                  </h5>
-              </div>
-              </div>
-            </>
-          ) : (
-            <tr>
-              <td colSpan="7" className="text-center">
-                No data found
-              </td>
-            </tr>
-          )}
-        
+            </div>
+          ))}
+          <div className="row mt-4">
+            <div className="col-md-12 text-right">
+              <h5>
+                Total:&nbsp;
+                <span className="fs-5">
+                  {preferences?.items
+                    ? preferences?.items
+                        ?.reduce(
+                          (total, currentValue) =>
+                            (total = total + currentValue.donationAmount),
+                          0
+                        )
+                        .toLocaleString()
+                    : 0}
+                </span>
+              </h5>
+            </div>
+          </div>
+        </>
+      ) : (
+        <tr>
+          <td colSpan="7" className="text-center">
+            No data found
+          </td>
+        </tr>
+      )}
+
       <div className="text-right m-3">
         <Button className="btn btn-primary">Process Create Batch</Button>
       </div>
