@@ -20,8 +20,8 @@ const ListCharityPrograms = () => {
       <table className="table table-striped">
         <thead>
           <tr className="table-active">
-            <th >Sl#</th>
-            <th >Name</th>
+            <th>Sl#</th>
+            <th>Name</th>
             <th>Date Added</th>
             <th className="text-center">Charity Programs</th>
             {/* <th className="text-center">Actions</th> */}
@@ -31,7 +31,7 @@ const ListCharityPrograms = () => {
           {socialOrganizations ? (
             socialOrganizations.map((socialOrganization, index) => (
               <tr key={index + 1}>
-                <td >{index + 1}</td>
+                <td>{index + 1}</td>
                 <td>{socialOrganization.name}</td>
                 <td>{socialOrganization.dateAdded}</td>
                 <td className="text-center">

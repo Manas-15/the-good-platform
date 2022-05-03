@@ -14,7 +14,7 @@ const Header = () => {
   const user = useSelector((state) => state.employee.user);
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
-  };  
+  };
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -38,7 +38,7 @@ const Header = () => {
             </a>
           </li>
           <li className="nav-item d-block mr-4">
-            <img src="/assets/img/help.png" alt="Help"/>
+            <img src="/assets/img/help.png" alt="Help" />
           </li>
           <li className="nav-item dropdown pe-3">
             <a

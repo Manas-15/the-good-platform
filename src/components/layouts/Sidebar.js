@@ -4,7 +4,8 @@ import { history } from "./../../helpers";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const isEmployeeView = history.location.pathname.includes("/employees");
+  console.log(">>>>>>>>>>>>>>>>>>>>>", history.location)
+  const isEmployeeView = history.location.pathname.includes("/employees") || history.location.pathname.includes("/employee-donation-preference") || history.location.pathname.includes("/payroll-setting");
   const isSuperadminView = history.location.pathname.includes(
     "/transactions-history"
   );
@@ -12,16 +13,38 @@ const Sidebar = () => {
     <aside id="sidebar" className="sidebar">
       <ul className="sidebar-nav" id="sidebar-nav">
         {isEmployeeView ? (
+          <>
           <li className="nav-item">
             <NavLink
               className="nav-link "
-              to="/dashboard"
+              to="/corporates/1/employees"
               activeClassName="active"
             >
               <i className="bi bi-grid"></i>
               <span>Employees</span>
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              className="nav-link "
+              to="/donation-preference"
+              activeClassName="active"
+            >
+              <i className="bi bi-grid"></i>
+              <span>Donation Preference</span>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              className="nav-link "
+              to="/payroll-setting"
+              activeClassName="active"
+            >
+              <i className="bi bi-grid"></i>
+              <span>Payroll Setting</span>
+            </NavLink>
+          </li>
+          </>
         ) : (
           <>
             {isSuperadminView ? (
