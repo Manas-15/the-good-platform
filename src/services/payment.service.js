@@ -5,6 +5,7 @@ import axios from "axios";
 export const paymentService = {
   getOrderToken,
   getPaymentStatus,
+  savePaymentFailureData,
 };
 
 function getOrderToken(data) {
@@ -21,6 +22,11 @@ function getPaymentStatus(orderId) {
       "x-api-version": "2022-01-01",
     } 
   });
+}
+function savePaymentFailureData(data) {
+  // return axios.get(process.env.REACT_APP_API_URL + "api/get_order_token", { headers: authHeader() });
+  return axios.post(`${process.env.REACT_APP_API_URL}api/payment_failure/`, 
+  data);
 }
 function handleResponse(response) {
   return response.text().then((text) => {

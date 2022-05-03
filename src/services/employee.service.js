@@ -14,6 +14,7 @@ export const employeeService = {
   setEmployeePassword,
   logout,
   employeeAccountRequest,
+  
 };
 
 async function login(data) {
