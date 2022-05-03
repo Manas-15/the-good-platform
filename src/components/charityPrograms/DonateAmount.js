@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { donationPreferenceConstants } from "../../constants";
+import ReactHtmlParser from "react-html-parser";
 
 const DonateAmount = ({ isActive, amount, setSelectedAmount }) => {
   const employee = useSelector((state) => state.employee.user);
@@ -22,7 +24,7 @@ const DonateAmount = ({ isActive, amount, setSelectedAmount }) => {
         className={isActive ? "active" : ""}
         onClick={() => setSelectedAmount(amount)}
       >
-        &#8377;{amount}
+        {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}{amount}
       </Button>{" "}
     </>
   );

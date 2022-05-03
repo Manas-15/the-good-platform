@@ -12,7 +12,7 @@ const ListCharityPrograms = ({ items, setCharity }) => {
         <thead>
           <tr className="table-active">
             <th>Sl#</th>
-            <th>Charity Program Name</th>
+            <th>Program</th>
             <th>Social Organization</th>
             <th>Category</th>
             <th className="text-center">Unit Price</th>

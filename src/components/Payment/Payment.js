@@ -34,9 +34,10 @@ const Payment = ({ paymentValues }) => {
   };
   const cbf = (data) => {
     // alert("cbf: " + data.order.errorText);
-    console.log("dddddd error payment ...........", data);
+    console.log("dddddd error payment ........... 1111111", {...data, ...paymentValues});
     setPaymentStatus(paymentConstants.ERROR);
     setPaymentSuccessErrorData(data);
+    dispatch(paymentActions.savePaymentFailureData({...data, ...paymentValues}));
   };
   useEffect(() => {
     dispatch(paymentActions.getOrderToken(paymentValues));

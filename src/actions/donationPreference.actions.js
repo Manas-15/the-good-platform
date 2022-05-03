@@ -6,6 +6,7 @@ export const donationPreferenceActions = {
   getDonationPreferences,
   saveDonationPreference,
   updateDonationPreference,  
+  operateActionRequest,
 };
 
 function saveDonationPreference(data) {
@@ -100,5 +101,34 @@ function getDonationPreferences(data) {
       type: donationPreferenceConstants.GET_DONATION_PREFERENCES_FAILURE,
       error,
     };
+  }
+}
+
+function operateActionRequest(actionValues) {
+  return (dispatch) => {
+    dispatch(request(actionValues));
+
+    donationPreferenceService.operateActionRequest(actionValues).then(
+      (data) => {
+        dispatch(success(data));
+        dispatch(
+          alertActions.success(data?.data?.msg)
+        );
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(donationPreferences) {
+    return { type: donationPreferenceConstants.PREFERENCE_ACTION_REQUEST, donationPreferences };
+  }
+  function success() {
+    return { type: donationPreferenceConstants.PREFERENCE_ACTION_SUCCESS };
+  }
+  function failure(error) {
+    return { type: donationPreferenceConstants.PREFERENCE_ACTION_FAILURE, error };
   }
 }

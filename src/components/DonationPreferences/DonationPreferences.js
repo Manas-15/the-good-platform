@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,10 @@ import { donationPreferenceConstants } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
+import { Link } from "react-router-dom";
+import Pagination from "./../Shared/Pagination";
+import * as moment from "moment";
+
 const preferenceForm = {
   employeePreferenceId: "",
   type: "",
@@ -14,6 +18,14 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
 };
+const actionInitialValues = {
+  isDeleted: false,
+  isSuspended: false,
+  suspendDuration: moment(new Date()).add(4, 'months'),
+  requestType: "",
+  preferenceId: "",
+};
+let PageSize = 10;
 const DonationPreferences = () => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
@@ -25,7 +37,35 @@ const DonationPreferences = () => {
   const [updateType, setUpdateType] = useState("");
   const [updatedValue, setUpdatedValue] = useState();
   const [actionType, setActionType] = useState("");
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionContent, setActionContent] = useState("");
+
+  // Pagination
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [offset, setOffset] = useState(10);
+
+  const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
+  const currentTableData = useMemo(async () => {
+    console.log("1111111111111111 currentPage", currentPage)
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    // return fetchData();
+    // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
+    // useEffect(() => {
+      // dispatch(
+        return await dispatch(donationPreferenceActions.getDonationPreferences({
+          employeeId: employee?.emp_id,
+          page: currentPage,
+          limit: PageSize,
+          offset: currentPage === 1 ? 0 : (currentPage * 10),
+        }))
+      // );
+    // }, []);
+  }, [currentPage]);
+
+  
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
     setActionType(action);
@@ -40,17 +80,13 @@ const DonationPreferences = () => {
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
     handleCloseDialog();
-    // actionInitialValues.userId = selectedCorporate.userId;
-    // actionInitialValues.requestType = actionType;
-    // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+    actionInitialValues.isDeleted = actionType === donationPreferenceConstants.DELETE;
+    actionInitialValues.isSuspended = actionType === donationPreferenceConstants.SUSPEND;
+    actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
+    actionInitialValues.requestType = actionType;
+    dispatch(donationPreferenceActions.operateActionRequest(actionInitialValues));
   };
-  useEffect(() => {
-    dispatch(
-      donationPreferenceActions.getDonationPreferences({
-        employeeId: employee?.emp_id,
-      })
-    );
-  }, []);
+ 
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -86,6 +122,7 @@ const DonationPreferences = () => {
   } else {
     document.getElementById("root").classList.remove("loading");
   }
+  console.log("currentTableData >>>>>>>>>>>>>>>>>>>>>>>>", currentTableData)
   return (
     <div>
       <div className="row mb-4">
@@ -98,17 +135,18 @@ const DonationPreferences = () => {
         <thead>
           <tr className="table-active">
             <th>Sl#</th>
-            <th>Charity Program Name</th>
+            <th>Program</th>
             <th>Social Organization</th>
             <th>Category</th>
             <th>Amount</th>
             <th className="text-center">Frequency</th>
+            <th className="text-center">Status</th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {preferences?.items ? (
-            preferences?.items.map((preference, index) => (
+          {preferences ? (
+            preferences?.items?.filter((preference) => preference?.isDeleted == false).map((preference, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
                 <td>{preference.charityProgram}</td>
@@ -156,23 +194,33 @@ const DonationPreferences = () => {
                   />
                 </td>
                 <td className="text-center">
-                  <a className="icon" href="#" data-bs-toggle="dropdown">
-                    <span className="bi-three-dots"></span>
-                  </a>
-                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                    <li
-                      className="dropdown-header text-start"
+                  {preference?.isSuspended ? "Suspended" : "Active"}
+                </td>
+                <td className="text-center">
+                  {preference?.is_suspended &&
+                    <Link
+                      onClick={() => handleOpenDialog("Resume", preference)}
+                      className="mr-2"
+                      title="Resume"
+                    >
+                      <i className="bi bi-play-circle-fill fs-5"></i>
+                    </Link>
+                  }
+                  {!preference?.is_suspended &&
+                    <Link
                       onClick={() => handleOpenDialog("Suspend", preference)}
+                      className="mr-2"
+                      title="Suspend"
                     >
-                      <span className="bi-check-circle"> Suspend</span>
-                    </li>
-                    <li
-                      className="dropdown-header text-start"
-                      onClick={() => handleOpenDialog("Delete", preference)}
-                    >
-                      <span className="bi-x-circle"> Delete</span>
-                    </li>
-                  </ul>
+                      <i className="bi bi-pause-circle-fill fs-5"></i>
+                    </Link>
+                  }
+                  <Link
+                    onClick={() => handleOpenDialog("Delete", preference)}
+                    title="Delete"
+                  >
+                    <i className="bi bi-trash fs-5"></i>
+                  </Link>
                 </td>
               </tr>
             ))
@@ -185,45 +233,17 @@ const DonationPreferences = () => {
           )}
         </tbody>
       </table>
-      <div className="row mb-4">
-        <div className="col-md-6">
-          <p>Showing 1 to 10 of 20 records</p>
-        </div>
-        <div className="col-md-6" style={{ textAlign: "right" }}>
-          <nav aria-label="Page navigation example" className="d-inline-block">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={100}
+        pageSize={PageSize}
+        onPageChange={page => setCurrentPage(page)}
+      />
       {openDialog && (
         <ConfirmationDialog
           open={true}
+          actionType={actionType}
           title={actionTitle}
           content={actionContent}
           handleConfirm={() => {
