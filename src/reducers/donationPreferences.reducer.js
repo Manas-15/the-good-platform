@@ -41,6 +41,36 @@ export function donationPreferences(state = {}, action) {
       return {
         error: action.error,
       };
+    case donationPreferenceConstants.PREFERENCE_ACTION_REQUEST:
+      return {
+        ...state,
+        items: state.items,
+        actionRequest: true,
+        preferenceId: action?.donationPreferences?.preferenceId,
+        requestType: action?.donationPreferences?.requestType,
+      };
+    case donationPreferenceConstants.PREFERENCE_ACTION_SUCCESS:
+      return {
+        ...state,
+        actionRequest: false,
+        items: state.items.map((item) => {
+          console.log("state?.requestType >>>>>>>>>>>>>>>>", item?.employeePreferenceId, state?.preferenceId)
+          if (item?.employeePreferenceId === state?.preferenceId) {
+            if(state?.requestType === donationPreferenceConstants?.DELETE){
+              return { ...item, isDeleted: state?.requestType === donationPreferenceConstants?.DELETE };
+            }
+            if(state?.requestType === donationPreferenceConstants?.SUSPEND){
+              return { ...item, status: donationPreferenceConstants?.SUSPENDED };
+            } 
+            if(state?.requestType === donationPreferenceConstants?.RESUME){
+              return { ...item, status: donationPreferenceConstants?.RESUMED };
+            } 
+          }
+          return item;
+        }),
+      };
+    case donationPreferenceConstants.PREFERENCE_ACTION_FAILURE:
+      return { ...state, actionRequest: false, items: state.items, error: action.error };
     default:
       return state;
   }

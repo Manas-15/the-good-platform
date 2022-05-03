@@ -256,3 +256,5 @@ ul.dropdown-menu.actions li:hover {
 .donate-header .nav-link span {font-size: .85rem;font-weight: 500;color: #fff;}
 .donate-header .nav-link.active span {color: #000;}
 .ant-spin-nested-loading {position: unset !important;}
+.Payroll .accordion-button {background: #0062cc; color: #fff;}
+.Payroll .accordion-button::after {color: #fff;}

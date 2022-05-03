@@ -7,9 +7,8 @@ export function transactionsHistory(state = {}, action) {
         loading: true,
       };
     case transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_SUCCESS:
-      console.log("dddddddddddddddddd transactions history", action?.data)
       return {
-        items: action?.data?.data?.corporates,
+        items: action?.data?.data?.transaction_history,
       };
     case transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_FAILURE:
       return {
