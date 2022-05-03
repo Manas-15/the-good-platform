@@ -17,7 +17,10 @@ const ListCharityPrograms = ({ items, setCharity }) => {
             <th>Program</th>
             <th>Social Organization</th>
             <th>Category</th>
-            <th className="text-center">Unit Price ({ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})</th>
+            <th className="text-center">
+              Unit Price (
+              {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
+            </th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
@@ -29,7 +32,9 @@ const ListCharityPrograms = ({ items, setCharity }) => {
                 <td>{charityProgram?.charityName}</td>
                 <td>{charityProgram?.soicalName}</td>
                 <td>{charityProgram?.category}</td>
-                <td className="text-center">{charityProgram?.unitPrice.toLocaleString()}</td>
+                <td className="text-center">
+                  {charityProgram?.unitPrice.toLocaleString()}
+                </td>
                 <td className="text-center">
                   <button
                     type="submit"

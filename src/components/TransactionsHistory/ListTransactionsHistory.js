@@ -23,10 +23,8 @@ const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      transactionsHistoryActions.getTransactionsHistory()
-    );
-    setRecords(transactions?.items)
+    dispatch(transactionsHistoryActions.getTransactionsHistory());
+    setRecords(transactions?.items);
   }, []);
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -43,16 +41,16 @@ const ListTransactionsHistory = (props) => {
     actionInitialValues.requestType = actionType;
     // dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
   };
-  
+
   const handleClose = () => setOpen(false);
   const filter = (type) => {
     console.log("typeeeeeeeeeeeeeee", type, transactions?.items);
-    let filterData = []
+    let filterData = [];
     // filterData = transactions?.items?.map((transaction) =>
     //   {return transaction?.paymentStatus = (type === paymentConstants.SUCCESS ? 2 : 3)}
-    
+
     // )
-    setRecords(filterData)
+    setRecords(filterData);
   };
   return (
     <div>
@@ -116,7 +114,8 @@ const ListTransactionsHistory = (props) => {
                   {transaction?.paymentStatus === 2 ? "Success" : "Failed"}
                 </td>
                 <td>
-                  {transaction?.paymentDate && transaction?.paymentDate !== "None" &&
+                  {transaction?.paymentDate &&
+                    transaction?.paymentDate !== "None" &&
                     moment(transaction?.paymentDate).format("DD/MM/YY, h:mm A")}
                 </td>
               </tr>

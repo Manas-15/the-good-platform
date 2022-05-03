@@ -197,7 +197,6 @@ ul.dropdown-menu.actions li:hover {
   padding: 15px;
 }
 
-
 .strength-meter {
   position: relative;
   height: 3px;
@@ -253,8 +252,21 @@ ul.dropdown-menu.actions li:hover {
   width: 100%;
   background: green;
 }
-.donate-header .nav-link span {font-size: .85rem;font-weight: 500;color: #fff;}
-.donate-header .nav-link.active span {color: #000;}
-.ant-spin-nested-loading {position: unset !important;}
-.Payroll .accordion-button {background: #0062cc; color: #fff;}
-.Payroll .accordion-button::after {color: #fff;}
+.donate-header .nav-link span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #fff;
+}
+.donate-header .nav-link.active span {
+  color: #000;
+}
+.ant-spin-nested-loading {
+  position: unset !important;
+}
+.Payroll .accordion-button {
+  background: #0062cc;
+  color: #fff;
+}
+.Payroll .accordion-button::after {
+  color: #fff;
+}

@@ -1,9 +1,4 @@
-import {
-  Route,
-  Router,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { Route, Router, Switch, Redirect } from "react-router-dom";
 import Dashboard from "../components/Dashboard/Dashboard";
 import CharityPrograms from "../components/CharityPrograms/CharityPrograms";
 import React, { useEffect } from "react";
@@ -43,21 +38,21 @@ const CreateRoutes = () => {
       dispatch(alertActions.clear());
     }, 8000);
   }
-  const isCorporateLunchpad = history.location.pathname == "/corporates"
-  const isEmployeeView = history.location.pathname.includes("/employees")
-  if(isCorporateLunchpad){
+  const isCorporateLunchpad = history.location.pathname == "/corporates";
+  const isEmployeeView = history.location.pathname.includes("/employees");
+  if (isCorporateLunchpad) {
     document.body.classList.add("toggle-sidebar");
   }
-  if(isEmployeeView){
+  if (isEmployeeView) {
     document.body.classList.remove("toggle-sidebar");
   }
   // const user = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.employee.user);
-  const otpVerified =JSON.parse(localStorage.getItem("otpVerified"));
+  const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   return (
     <Router history={history}>
-       {/* &&  otpVerified */}
-      {user?.token &&  otpVerified ? (
+      {/* &&  otpVerified */}
+      {user?.token && otpVerified ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message && (
@@ -79,23 +74,25 @@ const CreateRoutes = () => {
             {!isCorporateLunchpad && <Header />}
             {!isCorporateLunchpad && <Sidebar />}
             <Switch>
-              {!isEmployeeView && <Route exact path="/" component={Dashboard} />}
+              {!isEmployeeView && (
+                <Route exact path="/" component={Dashboard} />
+              )}
               <Route exact path="/profile" component={Profile} />
-              {!isEmployeeView && <Route
-                exact
-                path="/charity-programs"
-                component={CharityPrograms}
-              />}
-              {!isEmployeeView && <Route
-                exact
-                path="/donation-preferences"
-                component={DonationPreferences}
-              />}
-              <Route
-                exact
-                path="/corporates"
-                component={CorporatesPortal}
-              />
+              {!isEmployeeView && (
+                <Route
+                  exact
+                  path="/charity-programs"
+                  component={CharityPrograms}
+                />
+              )}
+              {!isEmployeeView && (
+                <Route
+                  exact
+                  path="/donation-preferences"
+                  component={DonationPreferences}
+                />
+              )}
+              <Route exact path="/corporates" component={CorporatesPortal} />
               <Route
                 exact
                 path="/corporates/:corporateId/employees"
@@ -106,11 +103,7 @@ const CreateRoutes = () => {
                 path="/employee-donation-preference"
                 component={EmployeeDonationPreferences}
               />
-              <Route
-                exact
-                path="/payroll-setting"
-                component={PayrollSetting}
-              />
+              <Route exact path="/payroll-setting" component={PayrollSetting} />
               <Route
                 exact
                 path="/transactions-history"
@@ -157,8 +150,14 @@ const CreateRoutes = () => {
                   component={ForgotPassword}
                 />
                 <Route exact path="/thank-you" component={ThankYou} />
-                <Route exact path="/set-password/:uuid" component={SetPassword} />
-                {user && !otpVerified && <Route exact path="/otp" component={Otp} />}
+                <Route
+                  exact
+                  path="/set-password/:uuid"
+                  component={SetPassword}
+                />
+                {user && !otpVerified && (
+                  <Route exact path="/otp" component={Otp} />
+                )}
                 <Redirect from="*" to="/" />
               </Switch>
             </div>
