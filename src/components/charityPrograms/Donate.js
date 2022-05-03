@@ -194,7 +194,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
           {open && (
             <DonationConsent
               open={open}
-              amount={selectedAmount}
+              amount={selectedAmount.toLocaleString()}
               selectedCharity={selectedCharity}
               employee={employee}
               frequency={frequency}
@@ -208,7 +208,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
         <DonateSecondStep
           frequency={frequency}
           selectedCharity={selectedCharity}
-          selectedAmount={selectedAmount}
+          selectedAmount={selectedAmount.toLocaleString()}
           employee={employee}
         />
       )}

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./../../assets/css/charityProgramsList.scss";
+import { donationPreferenceConstants } from "../../constants";
+import ReactHtmlParser from "react-html-parser";
 
 const ListCharityPrograms = ({ items, setCharity }) => {
   const openNav = (charity) => {
@@ -15,7 +17,7 @@ const ListCharityPrograms = ({ items, setCharity }) => {
             <th>Program</th>
             <th>Social Organization</th>
             <th>Category</th>
-            <th className="text-center">Unit Price</th>
+            <th className="text-center">Unit Price ({ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})</th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
@@ -27,7 +29,7 @@ const ListCharityPrograms = ({ items, setCharity }) => {
                 <td>{charityProgram?.charityName}</td>
                 <td>{charityProgram?.soicalName}</td>
                 <td>{charityProgram?.category}</td>
-                <td className="text-center">{charityProgram?.unitPrice}</td>
+                <td className="text-center">{charityProgram?.unitPrice.toLocaleString()}</td>
                 <td className="text-center">
                   <button
                     type="submit"

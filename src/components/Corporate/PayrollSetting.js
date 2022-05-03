@@ -8,9 +8,9 @@ import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
-import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
+import { Button, Accordion } from "react-bootstrap";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -22,7 +22,7 @@ const preferenceForm = {
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
-  suspendDuration: moment(new Date()).add(4, 'months'),
+  suspendDuration: moment(new Date()).add(4, "months"),
   requestType: "",
   preferenceId: "",
 };
@@ -49,23 +49,24 @@ const PayrollSetting = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const currentTableData = useMemo(async () => {
-    console.log("1111111111111111 currentPage", currentPage)
+    console.log("1111111111111111 currentPage", currentPage);
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     // return fetchData();
     // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
     // useEffect(() => {
-      // dispatch(
-        return await dispatch(donationPreferenceActions.getDonationPreferences({
-          page: currentPage,
-          limit: PageSize,
-          offset: currentPage === 1 ? 0 : (currentPage * 10),
-        }))
-      // );
+    // dispatch(
+    return await dispatch(
+      donationPreferenceActions.getDonationPreferences({
+        page: currentPage,
+        limit: PageSize,
+        offset: currentPage === 1 ? 0 : currentPage * 10,
+      })
+    );
+    // );
     // }, []);
   }, [currentPage]);
 
-  
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
     setActionType(action);
@@ -80,13 +81,17 @@ const PayrollSetting = () => {
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
     handleCloseDialog();
-    actionInitialValues.isDeleted = actionType === donationPreferenceConstants.DELETE;
-    actionInitialValues.isSuspended = actionType === donationPreferenceConstants.SUSPEND;
+    actionInitialValues.isDeleted =
+      actionType === donationPreferenceConstants.DELETE;
+    actionInitialValues.isSuspended =
+      actionType === donationPreferenceConstants.SUSPEND;
     actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
     actionInitialValues.requestType = actionType;
-    dispatch(donationPreferenceActions.operateActionRequest(actionInitialValues));
+    dispatch(
+      donationPreferenceActions.operateActionRequest(actionInitialValues)
+    );
   };
- 
+
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -122,59 +127,88 @@ const PayrollSetting = () => {
   } else {
     document.getElementById("root").classList.remove("loading");
   }
-  console.log("currentTableData >>>>>>>>>>>>>>>>>>>>>>>>", currentTableData)
+  const groupBy = (data, key) => {
+    return preferences?.items?.reduce(function (acc, item) {
+      (acc[item[key]] = acc[item[key]] || []).push(item);
+      return acc;
+    }, {});
+  };
+  const accordionData = groupBy(preferences?.items, "employeeName");
+  console.log("<>>>>>> accordionData", accordionData)
   return (
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Donation Preference</h4>
+          <h4>Payroll Setting - {moment().format("MMMM YYYY")}</h4>
         </div>
       </div>
       {preferences.loading && <Loader />}
-      <table className="table table-striped">
-        <thead>
-          <tr className="table-active">
-            <th>Sl#</th>
-            <th>Employee Name</th>
-            <th>Employee ID</th>
-            <th>Program</th>
-            <th>Social Organization</th>
-            <th>Amount ({ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {preferences ? (
-            preferences?.items?.filter((preference) => preference?.isDeleted == false).map((preference, index) => (
-              <tr key={index + 1}>
-                <td>{index + 1}</td>
-                <td>{preference.charityProgram}</td>
-                <td>{preference.socialOrganization}</td>
-                <td>{preference.category}</td>
-                <td>
-                  <input
-                    name="amount"
-                    type="text"
-                    size="4"
-                    maxLength={10}
-                    defaultValue={preference.donationAmount}
-                    className="form-control"
-                    disabled={true}                    
-                  />
-                </td>
-                <td className="text-center">
-                  
-                </td>
-                <td className="text-center">                  
-                  <Link
+      
+          {accordionData ? (
+            <>
+            {Object.keys(accordionData).map((employeeName,index) => (
+              <div className="row">
+                <Accordion defaultActiveKey={index} className="Payroll">
+                <Accordion.Item eventKey={0}>
+                  <Accordion.Header>{employeeName}</Accordion.Header>
+                  <Accordion.Body>
+                  <table className="table table-striped">
+                    <thead>
+                      <tr className="table-active">
+                        <th>Sl#</th>
+                        <th>Employee Name</th>
+                        <th>Employee ID</th>
+                        <th>Program</th>
+                        <th>Social Organization</th>
+                        <th>
+                          Amount ({ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
+                        </th>
+                        <th className="text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                  {accordionData[employeeName].map((preference, i) => (
+                  <tr>
+                    <td>{i + 1}</td>
+                    <td>{preference?.employeeName}</td>
+                    <td>{preference?.employeeName}</td>
+                    <td>{preference?.employeeUid}</td>
+                    <td>{preference.charityProgram}</td>
+                    <td>{preference.socialOrganization}</td>
+                    <td className="text-center">
+                    <Link
                     onClick={() => handleOpenDialog("Delete", preference)}
                     title="Delete"
                   >
                     <i className="bi bi-trash fs-5"></i>
                   </Link>
-                </td>
-              </tr>
-            ))
+                  </td>
+                  </tr>                  
+                ))}
+                </tbody>
+                  </table>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+              </div>
+              ))}
+              <div className="row mt-4">
+                <div className="col-md-12 text-right">
+                <h5>Total:&nbsp;
+                    <span className="fs-5">{preferences?.items
+                      ? preferences?.items
+                          ?.reduce(
+                            (total, currentValue) =>
+                              (total = total + currentValue.donationAmount),
+                            0
+                          )
+                          .toLocaleString()
+                      : 0}
+                      </span>
+                  </h5>
+              </div>
+              </div>
+            </>
           ) : (
             <tr>
               <td colSpan="7" className="text-center">
@@ -182,14 +216,9 @@ const PayrollSetting = () => {
               </td>
             </tr>
           )}
-        </tbody>
-      </table>
+        
       <div className="text-right m-3">
-        <Button
-          className="btn btn-primary"
-        >
-          Process Create Batch
-        </Button>
+        <Button className="btn btn-primary">Process Create Batch</Button>
       </div>
       {openDialog && (
         <ConfirmationDialog

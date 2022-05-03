@@ -13,8 +13,19 @@ export default function ConfirmationDialog({
   handleConfirm,
   open,
   handleCancel,
+  duration,
 }) {
   const [isDisabled, setIsDisabled] = useState(actionType === donationPreferenceConstants.SUSPEND);
+  // const [duration, setDuration] = useState(actionType === donationPreferenceConstants.SUSPEND);
+  const changeDuration = (value) => {
+    if(value === "Select Duration (Months)"){
+      setIsDisabled(true);
+    }else{
+      duration(value);
+      setIsDisabled(false);
+    }
+  }
+  
   return (
     <>     
       <Modal show={open} onHide={handleCancel} backdrop="static">
@@ -28,7 +39,7 @@ export default function ConfirmationDialog({
               <select
                 className="form-select col-md-6"
                 aria-label="Select Duration"
-                onChange={(e) => setIsDisabled(e.target.value === "Select Duration (Months)")}
+                onChange={(e) => changeDuration(e.target.value)}
               >
                 <option selected>Select Duration (Months)</option>
                 {durationOptions.map((duration, index) => (

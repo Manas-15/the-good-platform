@@ -22,7 +22,7 @@ const preferenceForm = {
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
-  suspendDuration: moment(new Date()).add(4, 'months'),
+  suspendDuration: "",
   requestType: "",
   preferenceId: "",
 };
@@ -77,13 +77,19 @@ const EmployeeDonationPreferences = () => {
       }"</strong>?`
     );
   };
+  const setDuration = (value) => {
+    console.log(">>>>>>>>>>>>>>>>>> duration", value)
+    if(actionType === donationPreferenceConstants.SUSPEND){
+      actionInitialValues.suspendDuration = moment(new Date()).add(value, 'months')
+    }
+  }
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
     handleCloseDialog();
     actionInitialValues.isDeleted = actionType === donationPreferenceConstants.DELETE;
     actionInitialValues.isSuspended = actionType === donationPreferenceConstants.SUSPEND;
     actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
-    actionInitialValues.requestType = actionType;
+    actionInitialValues.requestType = actionType;    
     dispatch(donationPreferenceActions.operateActionRequest(actionInitialValues));
   };
  
@@ -145,58 +151,26 @@ const EmployeeDonationPreferences = () => {
         </thead>
         <tbody>
           {preferences ? (
-            preferences?.items?.filter((preference) => preference?.isDeleted == false).map((preference, index) => (
+            preferences?.items?.filter((preference) => preference?.isDeleted === false).map((preference, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
+                <td>{preference?.employeeName}</td>
+                <td>{preference?.employeeUid}</td>
                 <td>{preference.charityProgram}</td>
                 <td>{preference.socialOrganization}</td>
-                <td>{preference.category}</td>
                 <td>
                   <input
                     name="amount"
                     type="text"
                     size="4"
                     maxLength={10}
-                    defaultValue={preference.donationAmount}
+                    defaultValue={preference.donationAmount.toLocaleString()}
                     className="form-control"
-                    onBlur={() =>
-                      showConsent(
-                        preference,
-                        donationPreferenceConstants.AMOUNT
-                      )
-                    }
-                    onInput={(e) => setUpdatedValue(e.target.value)}
+                    disabled={true}
                   />
                 </td>
                 <td className="text-center">
-                  <BootstrapSwitchButton
-                    checked={
-                      updatedValue ? updatedValue : preference.frequency === 2
-                    }
-                    onlabel="Once"
-                    onstyle="primary"
-                    offlabel="Monthly"
-                    offstyle="success"
-                    style="w-100 mx-1"
-                    size="sm"
-                    onChange={(checked) => {
-                      showConsent(
-                        preference,
-                        donationPreferenceConstants.FREQUENCY
-                      );
-                      setUpdatedValue(
-                        checked
-                          ? donationPreferenceConstants.ONCE
-                          : donationPreferenceConstants.MONTHLY
-                      );
-                    }}
-                  />
-                </td>
-                <td className="text-center">
-                  {preference?.isSuspended ? "Suspended" : "Active"}
-                </td>
-                <td className="text-center">
-                  {preference?.is_suspended &&
+                  {preference?.status === donationPreferenceConstants?.SUSPENDED &&
                     <Link
                       onClick={() => handleOpenDialog("Resume", preference)}
                       className="mr-2"
@@ -205,7 +179,7 @@ const EmployeeDonationPreferences = () => {
                       <i className="bi bi-play-circle-fill fs-5"></i>
                     </Link>
                   }
-                  {!preference?.is_suspended &&
+                  {(!preference?.status || preference?.status === donationPreferenceConstants?.RESUMED) &&
                     <Link
                       onClick={() => handleOpenDialog("Suspend", preference)}
                       className="mr-2"
@@ -241,17 +215,18 @@ const EmployeeDonationPreferences = () => {
       />
       {openDialog && (
         <ConfirmationDialog
-          open={true}
-          actionType={actionType}
-          title={actionTitle}
-          content={actionContent}
-          handleConfirm={() => {
-            confirm();
-          }}
-          handleCancel={() => {
-            handleCloseDialog();
-          }}
-        />
+        open={true}
+        actionType={actionType}
+        title={actionTitle}
+        content={actionContent}
+        duration={setDuration}
+        handleConfirm={() => {
+          confirm();
+        }}
+        handleCancel={() => {
+          handleCloseDialog();
+        }}
+      />
       )}
     </div>
   );

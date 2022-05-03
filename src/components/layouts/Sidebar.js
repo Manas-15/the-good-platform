@@ -27,7 +27,7 @@ const Sidebar = () => {
           <li className="nav-item">
             <NavLink
               className="nav-link "
-              to="/donation-preference"
+              to="/employee-donation-preference"
               activeClassName="active"
             >
               <i className="bi bi-grid"></i>

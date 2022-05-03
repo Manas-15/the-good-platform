@@ -21,7 +21,7 @@ const preferenceForm = {
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
-  suspendDuration: moment(new Date()).add(4, 'months'),
+  suspendDuration: "",
   requestType: "",
   preferenceId: "",
 };
@@ -70,6 +70,7 @@ const DonationPreferences = () => {
     setOpenDialog(true);
     setActionType(action);
     setSelectedPreference(item);
+    actionInitialValues.suspendDuration = "";
     setActionTitle(`${action} Confirmation`);
     setActionContent(
       `Are you sure to ${action.toLowerCase()} <strong>"${
@@ -77,13 +78,20 @@ const DonationPreferences = () => {
       }"</strong>?`
     );
   };
+  
+  const setDuration = (value) => {
+    console.log(">>>>>>>>>>>>>>>>>> duration", value)
+    if(actionType === donationPreferenceConstants.SUSPEND){
+      actionInitialValues.suspendDuration = moment(new Date()).add(value, 'months')
+    }
+  }
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
     handleCloseDialog();
     actionInitialValues.isDeleted = actionType === donationPreferenceConstants.DELETE;
     actionInitialValues.isSuspended = actionType === donationPreferenceConstants.SUSPEND;
     actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
-    actionInitialValues.requestType = actionType;
+    actionInitialValues.requestType = actionType;    
     dispatch(donationPreferenceActions.operateActionRequest(actionInitialValues));
   };
  
@@ -121,8 +129,7 @@ const DonationPreferences = () => {
     document.getElementById("root").classList.add("loading");
   } else {
     document.getElementById("root").classList.remove("loading");
-  }
-  console.log("currentTableData >>>>>>>>>>>>>>>>>>>>>>>>", currentTableData)
+  } 
   return (
     <div>
       <div className="row mb-4">
@@ -146,7 +153,7 @@ const DonationPreferences = () => {
         </thead>
         <tbody>
           {preferences ? (
-            preferences?.items?.filter((preference) => preference?.isDeleted == false).map((preference, index) => (
+            preferences?.items?.filter((preference) => preference?.isDeleted === false).map((preference, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
                 <td>{preference.charityProgram}</td>
@@ -158,7 +165,7 @@ const DonationPreferences = () => {
                     type="text"
                     size="4"
                     maxLength={10}
-                    defaultValue={preference.donationAmount}
+                    defaultValue={preference.donationAmount.toLocaleString()}
                     className="form-control"
                     onBlur={() =>
                       showConsent(
@@ -194,10 +201,12 @@ const DonationPreferences = () => {
                   />
                 </td>
                 <td className="text-center">
-                  {preference?.isSuspended ? "Suspended" : "Active"}
+                  {preference?.status ===  donationPreferenceConstants?.SUSPENDED && "Suspended"}
+                  {preference?.status ===  donationPreferenceConstants?.RESUMED && "Resumed"}
+                  {!preference?.status && "Active"}
                 </td>
                 <td className="text-center">
-                  {preference?.is_suspended &&
+                  {preference?.status === donationPreferenceConstants?.SUSPENDED &&
                     <Link
                       onClick={() => handleOpenDialog("Resume", preference)}
                       className="mr-2"
@@ -206,7 +215,7 @@ const DonationPreferences = () => {
                       <i className="bi bi-play-circle-fill fs-5"></i>
                     </Link>
                   }
-                  {!preference?.is_suspended &&
+                  {(!preference?.status || preference?.status === donationPreferenceConstants?.RESUMED) &&
                     <Link
                       onClick={() => handleOpenDialog("Suspend", preference)}
                       className="mr-2"
@@ -246,6 +255,7 @@ const DonationPreferences = () => {
           actionType={actionType}
           title={actionTitle}
           content={actionContent}
+          duration={setDuration}
           handleConfirm={() => {
             confirm();
           }}

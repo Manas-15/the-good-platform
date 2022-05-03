@@ -26,6 +26,7 @@ import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
 import ThankYou from "../components/Auth/ThankYou";
 import Profile from "../components/Profile/Profile";
+import PayrollSetting from "../components/Corporate/PayrollSetting";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -108,7 +109,7 @@ const CreateRoutes = () => {
               <Route
                 exact
                 path="/payroll-setting"
-                component={EmployeeDonationPreferences}
+                component={PayrollSetting}
               />
               <Route
                 exact
