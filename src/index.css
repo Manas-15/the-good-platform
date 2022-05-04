@@ -270,3 +270,4 @@ ul.dropdown-menu.actions li:hover {
 .Payroll .accordion-button::after {
   color: #fff;
 }
+.badge {font-size: 12px !important;}

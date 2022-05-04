@@ -95,6 +95,7 @@ const ListTransactionsHistory = (props) => {
             <th>Corporate</th>
             <th>Transaction ID</th>
             <th>Donation</th>
+            <th>Payment Mode</th>
             <th>Payment Status</th>
             <th>Payment Time</th>
           </tr>
@@ -110,6 +111,7 @@ const ListTransactionsHistory = (props) => {
                 <td>{transaction?.corporateName}</td>
                 <td>{transaction?.transactionId}</td>
                 <td>{transaction?.amount}</td>
+                <td>{transaction?.paymentMethod && transaction?.paymentMethod.replace(/_/g," ")}</td>
                 <td>
                   {transaction?.paymentStatus === 2 ? "Success" : "Failed"}
                 </td>
@@ -122,7 +124,7 @@ const ListTransactionsHistory = (props) => {
             ))
           ) : (
             <tr>
-              <td colSpan="9" className="text-center">
+              <td colSpan="10" className="text-center">
                 No transactions found
               </td>
             </tr>

@@ -66,6 +66,7 @@ const ListEmployees = (props) => {
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Status</th>
             <th className="text-center">Actions</th>
           </tr>
         </thead>
@@ -81,6 +82,19 @@ const ListEmployees = (props) => {
                   {/* {employee.address
                     .split(",")
                     .reduce((all, cur) => [...all, <br />, cur])} */}
+                </td>
+                <td>
+                  <span className="badge badge-success">
+                    {employee?.isApprove && "Approved"}
+                  </span>
+                  <span className="badge badge-info">
+                    {employee?.isApprove === null && "Pending"}
+                  </span>
+                  <span className="badge badge-danger">
+                    {!employee?.isApprove &&
+                      employee?.isApprove !== null &&
+                      "Rejected"}
+                  </span>
                 </td>
                 <td className="text-center">
                   <a className="icon" href="#" data-bs-toggle="dropdown">
