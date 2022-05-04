@@ -167,6 +167,7 @@ const PayrollSetting = () => {
                             )}
                             )
                           </th>
+                          <th className="text-center">Status</th>
                           <th className="text-center">Actions</th>
                         </tr>
                       </thead>
@@ -188,6 +189,19 @@ const PayrollSetting = () => {
                                 className="form-control"
                                 disabled={true}
                               />
+                            </td>
+                            <td className="text-center">
+                              <span className="badge badge-danger">
+                                {preference?.status ===
+                                  donationPreferenceConstants?.SUSPENDED &&
+                                  "Suspended"}
+                              </span>
+                              <span className="badge badge-success">
+                                {(!preference?.status ||
+                                  preference?.status ===
+                                    donationPreferenceConstants?.RESUMED) &&
+                                  "Active"}
+                              </span>
                             </td>
                             <td className="text-center">
                               <Link
@@ -213,6 +227,7 @@ const PayrollSetting = () => {
               <h5>
                 Total:&nbsp;
                 <span className="fs-5">
+                  {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                   {preferences?.items
                     ? preferences?.items
                         ?.reduce(

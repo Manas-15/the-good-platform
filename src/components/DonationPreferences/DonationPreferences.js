@@ -48,24 +48,25 @@ const DonationPreferences = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const currentTableData = useMemo(async () => {
-    console.log("1111111111111111 currentPage", currentPage)
+    console.log("1111111111111111 currentPage", currentPage);
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     // return fetchData();
     // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
     // useEffect(() => {
-      // dispatch(
-        return await dispatch(donationPreferenceActions.getDonationPreferences({
-          employeeId: employee?.emp_id,
-          page: currentPage,
-          limit: PageSize,
-          offset: currentPage === 1 ? 0 : (currentPage * 10),
-        }))
-      // );
+    // dispatch(
+    return await dispatch(
+      donationPreferenceActions.getDonationPreferences({
+        employeeId: employee?.emp_id,
+        page: currentPage,
+        limit: PageSize,
+        offset: currentPage === 1 ? 0 : currentPage * 10,
+      })
+    );
+    // );
     // }, []);
   }, [currentPage]);
 
-  
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
     setActionType(action);
@@ -78,23 +79,30 @@ const DonationPreferences = () => {
       }"</strong>?`
     );
   };
-  
+
   const setDuration = (value) => {
-    console.log(">>>>>>>>>>>>>>>>>> duration", value)
-    if(actionType === donationPreferenceConstants.SUSPEND){
-      actionInitialValues.suspendDuration = moment(new Date()).add(value, 'months')
+    console.log(">>>>>>>>>>>>>>>>>> duration", value);
+    if (actionType === donationPreferenceConstants.SUSPEND) {
+      actionInitialValues.suspendDuration = moment(new Date()).add(
+        value,
+        "months"
+      );
     }
-  }
+  };
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
     handleCloseDialog();
-    actionInitialValues.isDeleted = actionType === donationPreferenceConstants.DELETE;
-    actionInitialValues.isSuspended = actionType === donationPreferenceConstants.SUSPEND;
+    actionInitialValues.isDeleted =
+      actionType === donationPreferenceConstants.DELETE;
+    actionInitialValues.isSuspended =
+      actionType === donationPreferenceConstants.SUSPEND;
     actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
-    actionInitialValues.requestType = actionType;    
-    dispatch(donationPreferenceActions.operateActionRequest(actionInitialValues));
+    actionInitialValues.requestType = actionType;
+    dispatch(
+      donationPreferenceActions.operateActionRequest(actionInitialValues)
+    );
   };
- 
+
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -129,7 +137,7 @@ const DonationPreferences = () => {
     document.getElementById("root").classList.add("loading");
   } else {
     document.getElementById("root").classList.remove("loading");
-  } 
+  }
   return (
     <div>
       <div className="row mb-4">
@@ -153,86 +161,98 @@ const DonationPreferences = () => {
         </thead>
         <tbody>
           {preferences ? (
-            preferences?.items?.filter((preference) => preference?.isDeleted === false).map((preference, index) => (
-              <tr key={index + 1}>
-                <td>{index + 1}</td>
-                <td>{preference.charityProgram}</td>
-                <td>{preference.socialOrganization}</td>
-                <td>{preference.category}</td>
-                <td>
-                  <input
-                    name="amount"
-                    type="text"
-                    size="4"
-                    maxLength={10}
-                    defaultValue={preference.donationAmount.toLocaleString()}
-                    className="form-control"
-                    onBlur={() =>
-                      showConsent(
-                        preference,
-                        donationPreferenceConstants.AMOUNT
-                      )
-                    }
-                    onInput={(e) => setUpdatedValue(e.target.value)}
-                  />
-                </td>
-                <td className="text-center">
-                  <BootstrapSwitchButton
-                    checked={
-                      updatedValue ? updatedValue : preference.frequency === 2
-                    }
-                    onlabel="Once"
-                    onstyle="primary"
-                    offlabel="Monthly"
-                    offstyle="success"
-                    style="w-100 mx-1"
-                    size="sm"
-                    onChange={(checked) => {
-                      showConsent(
-                        preference,
-                        donationPreferenceConstants.FREQUENCY
-                      );
-                      setUpdatedValue(
-                        checked
-                          ? donationPreferenceConstants.ONCE
-                          : donationPreferenceConstants.MONTHLY
-                      );
-                    }}
-                  />
-                </td>
-                <td className="text-center">
-                  {preference?.status ===  donationPreferenceConstants?.SUSPENDED && "Suspended"}
-                  {preference?.status ===  donationPreferenceConstants?.RESUMED && "Resumed"}
-                  {!preference?.status && "Active"}
-                </td>
-                <td className="text-center">
-                  {preference?.status === donationPreferenceConstants?.SUSPENDED &&
+            preferences?.items
+              ?.filter((preference) => preference?.isDeleted === false)
+              .map((preference, index) => (
+                <tr key={index + 1}>
+                  <td>{index + 1}</td>
+                  <td>{preference.charityProgram}</td>
+                  <td>{preference.socialOrganization}</td>
+                  <td>{preference.category}</td>
+                  <td>
+                    <input
+                      name="amount"
+                      type="text"
+                      size="4"
+                      maxLength={10}
+                      defaultValue={preference.donationAmount.toLocaleString()}
+                      className="form-control"
+                      onBlur={() =>
+                        showConsent(
+                          preference,
+                          donationPreferenceConstants.AMOUNT
+                        )
+                      }
+                      onInput={(e) => setUpdatedValue(e.target.value)}
+                    />
+                  </td>
+                  <td className="text-center">
+                    <BootstrapSwitchButton
+                      checked={
+                        updatedValue ? updatedValue : preference.frequency === 2
+                      }
+                      onlabel="Once"
+                      onstyle="primary"
+                      offlabel="Monthly"
+                      offstyle="success"
+                      style="w-100 mx-1"
+                      size="sm"
+                      onChange={(checked) => {
+                        showConsent(
+                          preference,
+                          donationPreferenceConstants.FREQUENCY
+                        );
+                        setUpdatedValue(
+                          checked
+                            ? donationPreferenceConstants.ONCE
+                            : donationPreferenceConstants.MONTHLY
+                        );
+                      }}
+                    />
+                  </td>
+                  <td className="text-center">
+                    <span className="badge badge-danger">
+                      {preference?.status ===
+                        donationPreferenceConstants?.SUSPENDED && "Suspended"}
+                    </span>
+                    <span className="badge badge-success">
+                      {(!preference?.status ||
+                        preference?.status ===
+                          donationPreferenceConstants?.RESUMED) &&
+                        "Active"}
+                    </span>
+                  </td>
+                  <td className="text-center">
+                    {preference?.status ===
+                      donationPreferenceConstants?.SUSPENDED && (
+                      <Link
+                        onClick={() => handleOpenDialog("Resume", preference)}
+                        className="mr-2"
+                        title="Resume"
+                      >
+                        <i className="bi bi-play-circle-fill fs-5"></i>
+                      </Link>
+                    )}
+                    {(!preference?.status ||
+                      preference?.status ===
+                        donationPreferenceConstants?.RESUMED) && (
+                      <Link
+                        onClick={() => handleOpenDialog("Suspend", preference)}
+                        className="mr-2"
+                        title="Suspend"
+                      >
+                        <i className="bi bi-pause-circle-fill fs-5"></i>
+                      </Link>
+                    )}
                     <Link
-                      onClick={() => handleOpenDialog("Resume", preference)}
-                      className="mr-2"
-                      title="Resume"
+                      onClick={() => handleOpenDialog("Delete", preference)}
+                      title="Delete"
                     >
-                      <i className="bi bi-play-circle-fill fs-5"></i>
+                      <i className="bi bi-trash fs-5"></i>
                     </Link>
-                  }
-                  {(!preference?.status || preference?.status === donationPreferenceConstants?.RESUMED) &&
-                    <Link
-                      onClick={() => handleOpenDialog("Suspend", preference)}
-                      className="mr-2"
-                      title="Suspend"
-                    >
-                      <i className="bi bi-pause-circle-fill fs-5"></i>
-                    </Link>
-                  }
-                  <Link
-                    onClick={() => handleOpenDialog("Delete", preference)}
-                    title="Delete"
-                  >
-                    <i className="bi bi-trash fs-5"></i>
-                  </Link>
-                </td>
-              </tr>
-            ))
+                  </td>
+                </tr>
+              ))
           ) : (
             <tr>
               <td colSpan="7" className="text-center">
