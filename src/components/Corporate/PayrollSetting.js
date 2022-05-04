@@ -27,6 +27,7 @@ const actionInitialValues = {
   preferenceId: "",
 };
 let PageSize = 10;
+let accordionData;
 const PayrollSetting = () => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
@@ -40,6 +41,7 @@ const PayrollSetting = () => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [currentView, setCurrentView] = useState("Employee");
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -91,135 +93,136 @@ const PayrollSetting = () => {
       donationPreferenceActions.operateActionRequest(actionInitialValues)
     );
   };
-
-  const handleCheck = () => {
-    setChecked(true);
-    setOpen(false);
-    updateDonationPreference();
-  };
-  const closeCheck = () => {
-    setChecked(false);
-    setOpen(false);
-  };
-  const showConsent = (preference, type) => {
-    setOpen(true);
-    setSelectedPreference(preference);
-    setUpdateType(type);
-  };
-  const updateDonationPreference = () => {
-    preferenceForm.employeePreferenceId =
-      selectedPreference.employeePreferenceId;
-    preferenceForm.type = updateType;
-    if (updateType === donationPreferenceConstants.AMOUNT) {
-      preferenceForm.donationAmount = updatedValue;
-    }
-    if (updateType === donationPreferenceConstants.FREQUENCY) {
-      preferenceForm.frequency =
-        updatedValue === donationPreferenceConstants.MONTHLY ? 1 : 2;
-    }
-    preferenceForm.isConsentCheck = true;
-    dispatch(
-      donationPreferenceActions.updateDonationPreference(preferenceForm)
-    );
-  };
   if (preferences.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
     document.getElementById("root").classList.remove("loading");
   }
-  const groupBy = (data, key) => {
+  const groupBy = (key) => {
     return preferences?.items?.reduce(function (acc, item) {
       (acc[item[key]] = acc[item[key]] || []).push(item);
       return acc;
     }, {});
   };
-  const accordionData = groupBy(preferences?.items, "employeeName");
-  console.log("<>>>>>> accordionData", accordionData);
+  if (currentView === "Organization") {
+    accordionData = groupBy("socialOrganization");
+    console.log("<>>>>>> 11111111111111", accordionData);
+  } else {
+    accordionData = groupBy("employeeName");
+    console.log("<>>>>>> 222222222222", accordionData);
+  }
   return (
     <div>
-      <div className="row mb-4">
+      <div className="row mb-3">
         <div className="col-md-6">
           <h4>Payroll Setting - {moment().format("MMMM YYYY")}</h4>
         </div>
+        <div className="col-md-6 text-right">
+          {currentView === "Organization" && (
+            <Link
+              className="fs-6 text-decoration-underline"
+              onClick={() => setCurrentView("Employee")}
+            >
+              Employee View
+            </Link>
+          )}
+          {currentView === "Employee" && (
+            <Link
+              className="fs-6 text-decoration-underline"
+              onClick={() => setCurrentView("Organization")}
+            >
+              Social Organization View
+            </Link>
+          )}
+        </div>
       </div>
       {preferences.loading && <Loader />}
-
       {accordionData ? (
         <>
-          {Object.keys(accordionData).map((employeeName, index) => (
+          {Object.keys(accordionData).map((type, index) => (
             <div className="row">
-              <Accordion defaultActiveKey={index} className="Payroll">
-                <Accordion.Item eventKey={0}>
-                  <Accordion.Header>{employeeName}</Accordion.Header>
-                  <Accordion.Body>
-                    <table className="table table-striped">
-                      <thead>
-                        <tr className="table-active">
-                          <th>Sl#</th>
-                          <th>Employee Name</th>
-                          <th>Employee ID</th>
-                          <th>Program</th>
-                          <th>Social Organization</th>
-                          <th>
-                            Amount (
-                            {ReactHtmlParser(
-                              donationPreferenceConstants?.CURRENCY
-                            )}
-                            )
-                          </th>
-                          <th className="text-center">Status</th>
-                          <th className="text-center">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {accordionData[employeeName].map((preference, i) => (
-                          <tr>
-                            <td>{i + 1}</td>
-                            <td>{preference?.employeeName}</td>
-                            <td>{preference?.employeeUid}</td>
-                            <td>{preference?.charityProgram}</td>
-                            <td>{preference.socialOrganization}</td>
-                            <td>
-                              <input
-                                name="amount"
-                                type="text"
-                                size="4"
-                                maxLength={10}
-                                defaultValue={preference.donationAmount.toLocaleString()}
-                                className="form-control"
-                                disabled={true}
-                              />
-                            </td>
-                            <td className="text-center">
-                              <span className="badge badge-danger">
-                                {preference?.status ===
-                                  donationPreferenceConstants?.SUSPENDED &&
-                                  "Suspended"}
-                              </span>
-                              <span className="badge badge-success">
-                                {(!preference?.status ||
-                                  preference?.status ===
-                                    donationPreferenceConstants?.RESUMED) &&
-                                  "Active"}
-                              </span>
-                            </td>
-                            <td className="text-center">
-                              <Link
-                                onClick={() =>
-                                  handleOpenDialog("Delete", preference)
-                                }
-                                title="Delete"
-                              >
-                                <i className="bi bi-trash fs-5"></i>
-                              </Link>
-                            </td>
+              {accordionData[type].filter(
+                (preference) => preference?.isDeleted === false
+              ).length > 0 && (
+                <Accordion defaultActiveKey={index} className="Payroll">
+                  <Accordion.Item eventKey={0}>
+                    <Accordion.Header>{type}</Accordion.Header>
+                    <Accordion.Body>
+                      <table className="table table-striped">
+                        <thead>
+                          <tr className="table-active">
+                            <th>Sl#</th>
+                            <th>Employee Name</th>
+                            <th>Employee ID</th>
+                            <th>Program</th>
+                            <th>Social Organization</th>
+                            <th>
+                              Amount (
+                              {ReactHtmlParser(
+                                donationPreferenceConstants?.CURRENCY
+                              )}
+                              )
+                            </th>
+                            <th className="text-center">Status</th>
+                            <th className="text-center">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+                        </thead>
+                        <tbody>
+                          {accordionData[type]
+                            .filter(
+                              (preference) => preference?.isDeleted === false
+                            )
+                            .map((preference, i) => (
+                              <tr>
+                                <td>{i + 1}</td>
+                                <td>{preference?.employeeName}</td>
+                                <td>{preference?.employeeUid}</td>
+                                <td>{preference?.charityProgram}</td>
+                                <td>{preference.socialOrganization}</td>
+                                <td>
+                                  <input
+                                    name="amount"
+                                    type="text"
+                                    size="4"
+                                    maxLength={10}
+                                    defaultValue={preference.donationAmount.toLocaleString()}
+                                    className="form-control"
+                                    disabled={true}
+                                  />
+                                </td>
+                                <td className="text-center">
+                                  {preference?.status ===
+                                    donationPreferenceConstants?.SUSPENDED && (
+                                    <span className="badge badge-danger">
+                                      Suspended
+                                    </span>
+                                  )}
+                                  {(!preference?.status ||
+                                    preference?.status ===
+                                      donationPreferenceConstants?.RESUMED) && (
+                                    <span className="badge badge-success">
+                                      Active
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="text-center">
+                                  <Link
+                                    onClick={() =>
+                                      handleOpenDialog("Delete", preference)
+                                    }
+                                    title="Delete"
+                                  >
+                                    <i className="bi bi-trash fs-5"></i>
+                                  </Link>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              )}
             </div>
           ))}
           <div className="row mt-4">
@@ -249,7 +252,6 @@ const PayrollSetting = () => {
           </td>
         </tr>
       )}
-
       <div className="text-right m-3">
         <Button className="btn btn-primary">Process Batch</Button>
       </div>

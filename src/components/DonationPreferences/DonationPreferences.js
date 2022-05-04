@@ -211,16 +211,16 @@ const DonationPreferences = () => {
                     />
                   </td>
                   <td className="text-center">
-                    <span className="badge badge-danger">
-                      {preference?.status ===
-                        donationPreferenceConstants?.SUSPENDED && "Suspended"}
-                    </span>
-                    <span className="badge badge-success">
-                      {(!preference?.status ||
-                        preference?.status ===
-                          donationPreferenceConstants?.RESUMED) &&
-                        "Active"}
-                    </span>
+                    {preference?.status ===
+                      donationPreferenceConstants?.SUSPENDED && (
+                      <span className="badge badge-danger">Suspended"</span>
+                    )}
+
+                    {(!preference?.status ||
+                      preference?.status ===
+                        donationPreferenceConstants?.RESUMED) && (
+                      <span className="badge badge-success">Active</span>
+                    )}
                   </td>
                   <td className="text-center">
                     {preference?.status ===
