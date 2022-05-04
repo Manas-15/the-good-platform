@@ -11,20 +11,32 @@ const actionInitialValues = {
   userId: "",
   requestType: "",
 };
+let charityProgramsOption = [];
+const paymentStatusOption = [
+  { label: "Success", value: 2 },
+  { label: "Failed", value: 1 },
+];
 const ListTransactionsHistory = (props) => {
   let history = useHistory();
   const transactions = useSelector((state) => state.transactionsHistory);
+  const charityPrograms = useSelector((state) => state.charityPrograms);
   const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
-  const [records, setRecords] = useState();
+  const [records, setRecords] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(transactionsHistoryActions.getTransactionsHistory());
     setRecords(transactions?.items);
+    charityPrograms?.items?.sponser?.forEach((e) => {
+      charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
+    });
+    charityPrograms?.items?.other?.forEach((e) => {
+      charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
+    });
   }, []);
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -43,45 +55,55 @@ const ListTransactionsHistory = (props) => {
   };
 
   const handleClose = () => setOpen(false);
-  const filter = (type) => {
-    console.log("typeeeeeeeeeeeeeee", type, transactions?.items);
-    let filterData = [];
-    // filterData = transactions?.items?.map((transaction) =>
-    //   {return transaction?.paymentStatus = (type === paymentConstants.SUCCESS ? 2 : 3)}
-
-    // )
-    setRecords(filterData);
+  const filter = (type, value) => {
+    console.log("dddddddddddddddddd value", value);
+    if (value) {
+      setRecords(
+        transactions?.items?.filter(
+          (record) => record.paymentStatus.toString() === value
+        )
+      );
+    } else {
+      setRecords(transactions?.items);
+    }
   };
   return (
     <div>
-      <div className="row mb-4">
+      <div className="row mt-3">
         <div className="col-md-6">
           <h4>Transactions History</h4>
         </div>
         <div className="col-md-6 text-right">
-          {/* <a className="icon" href="#" data-bs-toggle="dropdown" title="Filter">
-            <span className="bi-funnel-fill"></span>
-          </a> */}
-          <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-            <li
-              className="dropdown-header text-start"
-              onClick={() => filter(paymentConstants?.SUCCESS)}
-            >
-              Payment Success
-            </li>
-            {/* <li
-              className="dropdown-header text-start"
-              onClick={() => filter(paymentConstants?.PENDING)}
-            >
-              Payment Pending
-            </li> */}
-            <li
-              className="dropdown-header text-start"
-              onClick={() => filter(paymentConstants?.FAILED)}
-            >
-              Payment Failed
-            </li>
-          </ul>
+          <div className="row mb-4">
+            <div className="col-md-6">
+              <h6 className="mt-2">Filter By</h6>
+            </div>
+            {/* <div className="col-md-4">
+              <select className="form-select" aria-label="Select Duration">
+                <option selected>Organization</option>
+                {charityProgramsOption.map((duration, index) => (
+                  <option value={duration.value} key={index}>
+                    {duration.label}
+                  </option>
+                ))}
+              </select>
+            </div> */}
+            <div className="col-md-6">
+              <select
+                className="form-select"
+                onChange={(e) => filter("status", e.target.value)}
+              >
+                <option value={""} key={"default"} selected>
+                  Payment Status
+                </option>
+                {paymentStatusOption.map((status, index) => (
+                  <option value={status.value} key={index}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
       </div>
       {transactions.loading && <Loader />}
@@ -101,8 +123,8 @@ const ListTransactionsHistory = (props) => {
           </tr>
         </thead>
         <tbody>
-          {transactions?.items?.length > 0 ? (
-            transactions?.items?.map((transaction, index) => (
+          {records?.length > 0 ? (
+            records?.map((transaction, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
                 <td>{transaction?.employeeName}</td>
