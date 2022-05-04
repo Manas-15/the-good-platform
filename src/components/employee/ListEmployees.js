@@ -84,17 +84,17 @@ const ListEmployees = (props) => {
                     .reduce((all, cur) => [...all, <br />, cur])} */}
                 </td>
                 <td>
-                  <span className="badge badge-success">
-                    {employee?.isApprove && "Approved"}
-                  </span>
-                  <span className="badge badge-info">
-                    {employee?.isApprove === null && "Pending"}
-                  </span>
-                  <span className="badge badge-danger">
-                    {!employee?.isApprove &&
-                      employee?.isApprove !== null &&
-                      "Rejected"}
-                  </span>
+                  {employee?.isApprove && (
+                    <span className="badge badge-success">Approved</span>
+                  )}
+
+                  {employee?.isApprove === null && (
+                    <span className="badge badge-info">Pending</span>
+                  )}
+
+                  {!employee?.isApprove && employee?.isApprove !== null && (
+                    <span className="badge badge-danger">Rejected</span>
+                  )}
                 </td>
                 <td className="text-center">
                   <a className="icon" href="#" data-bs-toggle="dropdown">

@@ -111,9 +111,16 @@ const ListTransactionsHistory = (props) => {
                 <td>{transaction?.corporateName}</td>
                 <td>{transaction?.transactionId}</td>
                 <td>{transaction?.amount}</td>
-                <td>{transaction?.paymentMethod && transaction?.paymentMethod.replace(/_/g," ")}</td>
                 <td>
-                  {transaction?.paymentStatus === 2 ? "Success" : "Failed"}
+                  {transaction?.paymentMethod &&
+                    transaction?.paymentMethod.replace(/_/g, " ")}
+                </td>
+                <td>
+                  {transaction?.paymentStatus === 2 ? (
+                    <span className="badge badge-success">Success</span>
+                  ) : (
+                    <span className="badge badge-danger">Failed</span>
+                  )}
                 </td>
                 <td>
                   {transaction?.paymentDate &&
