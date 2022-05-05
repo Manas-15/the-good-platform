@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { donationPreferenceConstants } from "../../constants";
-import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
 import { Button, Accordion } from "react-bootstrap";
+import { CSVLink } from "react-csv";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -106,11 +105,26 @@ const PayrollSetting = () => {
   };
   if (currentView === "Organization") {
     accordionData = groupBy("socialOrganization");
-    console.log("<>>>>>> 11111111111111", accordionData);
   } else {
     accordionData = groupBy("employeeName");
-    console.log("<>>>>>> 222222222222", accordionData);
   }
+  const camelCase = (str) => {
+    return str.substring(0, 1).toUpperCase() + str.substring(1);
+  };
+  console.log(
+    "export data ---------------",
+    preferences?.items?.map(
+      ({
+        employeePreferenceId,
+        isDeleted,
+        employeeId,
+        status,
+        isConsentCheck,
+        frequency,
+        ...rest
+      }) => ({ ...rest })
+    )
+  );
   return (
     <div>
       <div className="row mb-3">
@@ -118,6 +132,25 @@ const PayrollSetting = () => {
           <h4>Payroll Setting - {moment().format("MMMM YYYY")}</h4>
         </div>
         <div className="col-md-6 text-right">
+          {preferences?.items && (
+            <CSVLink
+              data={preferences?.items?.map(
+                ({
+                  employeePreferenceId,
+                  isDeleted,
+                  employeeId,
+                  status,
+                  isConsentCheck,
+                  frequency,
+                  ...rest
+                }) => ({ ...rest })
+              )}
+              filename={"Payroll"}
+              className="mr-4 fs-6 text-decoration-underline"
+            >
+              Export
+            </CSVLink>
+          )}
           {currentView === "Organization" && (
             <Link
               className="fs-6 text-decoration-underline"
@@ -146,16 +179,27 @@ const PayrollSetting = () => {
               ).length > 0 && (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
-                    <Accordion.Header>{type}</Accordion.Header>
+                    <Accordion.Header>
+                      {type}{" "}
+                      {currentView === "Employee" &&
+                        ` - ${accordionData[type][0]?.employeeUid}`}
+                    </Accordion.Header>
                     <Accordion.Body>
                       <table className="table table-striped">
                         <thead>
                           <tr className="table-active">
                             <th>Sl#</th>
-                            <th>Employee Name</th>
-                            <th>Employee ID</th>
+                            {currentView === "Organization" && (
+                              <th>Employee Name</th>
+                            )}
+                            {currentView === "Organization" && (
+                              <th>Employee ID</th>
+                            )}
                             <th>Program</th>
-                            <th>Social Organization</th>
+                            {currentView === "Employee" && (
+                              <th>Social Organization</th>
+                            )}
+                            <th className="text-center">Status</th>
                             <th>
                               Amount (
                               {ReactHtmlParser(
@@ -163,7 +207,6 @@ const PayrollSetting = () => {
                               )}
                               )
                             </th>
-                            <th className="text-center">Status</th>
                             <th className="text-center">Actions</th>
                           </tr>
                         </thead>
@@ -175,21 +218,16 @@ const PayrollSetting = () => {
                             .map((preference, i) => (
                               <tr>
                                 <td>{i + 1}</td>
-                                <td>{preference?.employeeName}</td>
-                                <td>{preference?.employeeUid}</td>
+                                {currentView === "Organization" && (
+                                  <td>{preference?.employeeName}</td>
+                                )}
+                                {currentView === "Organization" && (
+                                  <td>{preference?.employeeUid}</td>
+                                )}
                                 <td>{preference?.charityProgram}</td>
-                                <td>{preference.socialOrganization}</td>
-                                <td>
-                                  <input
-                                    name="amount"
-                                    type="text"
-                                    size="4"
-                                    maxLength={10}
-                                    defaultValue={preference.donationAmount.toLocaleString()}
-                                    className="form-control"
-                                    disabled={true}
-                                  />
-                                </td>
+                                {currentView === "Employee" && (
+                                  <td>{preference.socialOrganization}</td>
+                                )}
                                 <td className="text-center">
                                   {preference?.status ===
                                     donationPreferenceConstants?.SUSPENDED && (
@@ -204,6 +242,17 @@ const PayrollSetting = () => {
                                       Active
                                     </span>
                                   )}
+                                </td>
+                                <td>
+                                  <input
+                                    name="amount"
+                                    type="text"
+                                    size="4"
+                                    maxLength={10}
+                                    defaultValue={preference.donationAmount.toLocaleString()}
+                                    className="form-control"
+                                    disabled={true}
+                                  />
                                 </td>
                                 <td className="text-center">
                                   <Link

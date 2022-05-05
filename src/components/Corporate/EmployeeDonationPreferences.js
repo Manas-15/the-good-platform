@@ -185,7 +185,7 @@ const EmployeeDonationPreferences = () => {
                   <td className="text-center">
                     {preference?.status ===
                       donationPreferenceConstants?.SUSPENDED && (
-                      <span className="badge badge-danger">Suspended"</span>
+                      <span className="badge badge-danger">Suspended</span>
                     )}
 
                     {(!preference?.status ||

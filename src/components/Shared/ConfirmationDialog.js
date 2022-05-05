@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
 import { donationPreferenceConstants } from "../../constants";
@@ -15,24 +15,25 @@ export default function ConfirmationDialog({
   handleCancel,
   duration,
 }) {
-  const [isDisabled, setIsDisabled] = useState(actionType === donationPreferenceConstants.SUSPEND);
-  // const [duration, setDuration] = useState(actionType === donationPreferenceConstants.SUSPEND);
+  const [isDisabled, setIsDisabled] = useState(
+    actionType === donationPreferenceConstants.SUSPEND
+  );
   const changeDuration = (value) => {
-    if(value === "Select Duration (Months)"){
+    if (value === "Select Duration (Months)") {
       setIsDisabled(true);
-    }else{
+    } else {
       duration(value);
       setIsDisabled(false);
     }
-  }
-  
+  };
+
   return (
-    <>     
+    <>
       <Modal show={open} onHide={handleCancel} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{fontSize: "18"}}>
+        <Modal.Body style={{ fontSize: "18" }}>
           {ReactHtmlParser(content)}
           {actionType === donationPreferenceConstants.SUSPEND && (
             <div className="mt-3">
@@ -52,7 +53,11 @@ export default function ConfirmationDialog({
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleConfirm} disabled={isDisabled}>
+          <Button
+            variant="primary"
+            onClick={handleConfirm}
+            disabled={isDisabled}
+          >
             Confirm
           </Button>
           <Button variant="danger" onClick={handleCancel}>
