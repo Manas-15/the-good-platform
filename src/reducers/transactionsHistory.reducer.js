@@ -16,15 +16,17 @@ export function transactionsHistory(state = {}, action) {
       };
     case transactionsHistoryConstants.GET_80G_REQUEST:
       return {
+        ...state,
+        transaction: action?.data?.transaction,
         downloading: true,
       };
     case transactionsHistoryConstants.GET_80G_SUCCESS:
-      console.log("action?.data?.data download", action?.data?.data)
       return {
-        items: action?.data?.data?.file,
+        items: state.items,
       };
     case transactionsHistoryConstants.GET_80G_FAILURE:
       return {
+        ...state,
         error: action.error,
       };
     default:

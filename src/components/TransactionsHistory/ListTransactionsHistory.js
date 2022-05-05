@@ -29,15 +29,15 @@ const ListTransactionsHistory = (props) => {
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
-  console.log("eeeeeeeeeeeeeeeeeeeeeee", employeeId);
+  console.log("eeeeeeeeeeeeeeeeeeeeeee", records);
   useEffect(() => {
-    console.log("eeeeeeeeeee inside eeeeeeeeeeee", employeeId);
+    console.log("eeeeeeeeeee inside eeeeeeeeeeee", records);
     dispatch(
       transactionsHistoryActions.getTransactionsHistory({
         employeeId: employeeId ? employeeId : null,
       })
     );
-    setRecords(transactions?.items);
+
     charityPrograms?.items?.sponser?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
@@ -45,6 +45,10 @@ const ListTransactionsHistory = (props) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
   }, []);
+  useEffect(() => {
+    console.log("eeeeeeeeeee inside 3333 eeeeeeeeeeee", records);
+    setRecords(transactions?.items);
+  }, [transactions?.items]);
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
@@ -66,20 +70,20 @@ const ListTransactionsHistory = (props) => {
     if (value && value !== "0") {
       setRecords(
         transactions?.items?.filter(
-          (record) => record.paymentStatus.toString() === value
+          (record) => record?.paymentStatus?.toString() === value
         )
       );
     } else {
       setRecords(transactions?.items);
     }
   };
-  const downlad = () => {
+  const downlad = (transaction) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        employeeId: employeeId ? employeeId : null,
+        transaction: transaction,
       })
     );
-  }
+  };
   return (
     <div>
       <div className="row mt-3">
@@ -168,8 +172,13 @@ const ListTransactionsHistory = (props) => {
                 {employeeId && (
                   <td>
                     {transaction?.paymentStatus ===
-                      paymentConstants.PAYMENT_FAILURE && (
-                      <Link className="text-decoration-underline" onClick={downlad}>Get 80G</Link>
+                      paymentConstants.PAYMENT_SUCCESS && (
+                      <Link
+                        className="text-decoration-underline"
+                        onClick={() => downlad(transaction)}
+                      >
+                        Get 80G
+                      </Link>
                     )}
                   </td>
                 )}
