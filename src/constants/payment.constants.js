@@ -29,4 +29,8 @@ export const paymentConstants = {
   PAYMENT_METHOD_CARD: 2,
   PAYMENT_METHOD_UPI: 3,
   PAYMENT_METHOD_WALLET: 4,
+
+  // payment_response
+  PAYMENT_SUCCESS: 2,
+  PAYMENT_FAILURE: 1,
 };

@@ -16,6 +16,7 @@ import CorporatesPortal from "../components/Corporate/CorporatesPortal";
 import ListEmployees from "../components/Employee/ListEmployees";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
 import ListTransactionsHistory from "../components/TransactionsHistory/ListTransactionsHistory";
+import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
@@ -108,6 +109,16 @@ const CreateRoutes = () => {
                 exact
                 path="/transactions-history"
                 component={ListTransactionsHistory}
+              />
+              <Route
+                exact
+                path="/employee/:employeeId/transactions-history"
+                component={ListTransactionsHistory}
+              />
+              <Route
+                exact
+                path="/social-organizations"
+                component={ListSocialOrganizations}
               />
               <Route exact path="/dashboard" component={Dashboard} />
               <Redirect from="*" to="/" />
