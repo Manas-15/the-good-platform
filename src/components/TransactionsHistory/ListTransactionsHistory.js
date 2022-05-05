@@ -3,9 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
-import transactions from "./../../config/transactions.json";
 import * as moment from "moment";
-import { paymentConstants } from "../../constants";
 
 const actionInitialValues = {
   userId: "",
@@ -13,6 +11,7 @@ const actionInitialValues = {
 };
 let charityProgramsOption = [];
 const paymentStatusOption = [
+  { label: "All", value: 0 },
   { label: "Success", value: 2 },
   { label: "Failed", value: 1 },
 ];
@@ -56,8 +55,7 @@ const ListTransactionsHistory = (props) => {
 
   const handleClose = () => setOpen(false);
   const filter = (type, value) => {
-    console.log("dddddddddddddddddd value", value);
-    if (value) {
+    if (value && value !== "0") {
       setRecords(
         transactions?.items?.filter(
           (record) => record.paymentStatus.toString() === value
@@ -91,9 +89,10 @@ const ListTransactionsHistory = (props) => {
             <div className="col-md-6">
               <select
                 className="form-select"
+                defaultValue={""}
                 onChange={(e) => filter("status", e.target.value)}
               >
-                <option value={""} key={"default"} selected>
+                <option value={""} key={"default"} disabled>
                   Payment Status
                 </option>
                 {paymentStatusOption.map((status, index) => (

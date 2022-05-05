@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import DonateAmount from "./DonateAmount";
-import { donationPreferenceConstants } from "./../../constants";
+import { useDispatch } from "react-redux";
 import DonationConsent from "./../Shared/DonationConsent";
-import { charityProgramConstants } from "./../../constants";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { PaymentSchema } from "./../Validations";
 import DatePicker from "react-datepicker";
@@ -13,7 +10,6 @@ import * as moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import Payment from "./../Payment/Payment";
 import ReviewAmountBox from "./../Shared/ReviewAmountBox";
-import { paymentActions } from "./../../actions";
 
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -218,7 +214,7 @@ const DonateSecondStep = ({
                           : "")
                       }
                     />
-                    <span class="blink_text">
+                    <span className="blink_text">
                       Please note that if you do not provide your PAN Number,
                       you will not be able to claim 50% tax exemption u/s 80G in
                       India

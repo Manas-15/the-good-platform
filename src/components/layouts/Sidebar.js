@@ -4,8 +4,10 @@ import { history } from "./../../helpers";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(">>>>>>>>>>>>>>>>>>>>>", history.location)
-  const isEmployeeView = history.location.pathname.includes("/employees") || history.location.pathname.includes("/employee-donation-preference") || history.location.pathname.includes("/payroll-setting");
+  const isEmployeeView =
+    history.location.pathname.includes("/employees") ||
+    history.location.pathname.includes("/employee-donation-preference") ||
+    history.location.pathname.includes("/payroll-setting");
   const isSuperadminView = history.location.pathname.includes(
     "/transactions-history"
   );
@@ -14,36 +16,36 @@ const Sidebar = () => {
       <ul className="sidebar-nav" id="sidebar-nav">
         {isEmployeeView ? (
           <>
-          <li className="nav-item">
-            <NavLink
-              className="nav-link "
-              to="/corporates/1/employees"
-              activeClassName="active"
-            >
-              <i className="bi bi-grid"></i>
-              <span>Employees</span>
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className="nav-link "
-              to="/employee-donation-preference"
-              activeClassName="active"
-            >
-              <i className="bi bi-grid"></i>
-              <span>Donation Preference</span>
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className="nav-link "
-              to="/payroll-setting"
-              activeClassName="active"
-            >
-              <i className="bi bi-grid"></i>
-              <span>Payroll Setting</span>
-            </NavLink>
-          </li>
+            <li className="nav-item">
+              <NavLink
+                className="nav-link "
+                to="/corporates/1/employees"
+                activeClassName="active"
+              >
+                <i className="bi bi-people-fill"></i>
+                <span>Employees</span>
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                className="nav-link "
+                to="/employee-donation-preference"
+                activeClassName="active"
+              >
+                <i className="bi bi-sliders"></i>
+                <span>Donation Preference</span>
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                className="nav-link "
+                to="/payroll-setting"
+                activeClassName="active"
+              >
+                <i className="bi bi-gear"></i>
+                <span>Payroll Setting</span>
+              </NavLink>
+            </li>
           </>
         ) : (
           <>
@@ -54,7 +56,7 @@ const Sidebar = () => {
                   to="/transactions-history"
                   activeClassName="active"
                 >
-                  <i className="bi bi-handbag"></i>
+                  <i className="bi bi-clock-history"></i>
                   <span>Transactions History</span>
                 </NavLink>
               </li>
