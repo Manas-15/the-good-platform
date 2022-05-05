@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import * as moment from "moment";
+import { paymentConstants } from "../../constants";
 
 const actionInitialValues = {
   userId: "",
@@ -12,8 +13,8 @@ const actionInitialValues = {
 let charityProgramsOption = [];
 const paymentStatusOption = [
   { label: "All", value: 0 },
-  { label: "Success", value: 2 },
-  { label: "Failed", value: 1 },
+  { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
 ];
 const ListTransactionsHistory = (props) => {
   let history = useHistory();
@@ -27,8 +28,10 @@ const ListTransactionsHistory = (props) => {
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const [records, setRecords] = useState([]);
   const dispatch = useDispatch();
+  const employeeId = props?.match?.params?.employeeId;
+console.log("eeeeeeeeeeeeeeeeeeeeeee", employeeId)
   useEffect(() => {
-    dispatch(transactionsHistoryActions.getTransactionsHistory());
+    dispatch(transactionsHistoryActions.getTransactionsHistory({employeeId: employeeId ? employeeId : null}));
     setRecords(transactions?.items);
     charityPrograms?.items?.sponser?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
@@ -110,15 +113,16 @@ const ListTransactionsHistory = (props) => {
         <thead>
           <tr className="table-active">
             <th>Sl#</th>
-            <th>Name</th>
+            {!employeeId && <th>Name</th>}
             <th>Program</th>
             <th>Organization</th>
-            <th>Corporate</th>
+            {!employeeId && <th>Corporate</th>}
             <th>Transaction ID</th>
             <th>Donation</th>
             <th>Payment Mode</th>
             <th>Payment Status</th>
-            <th>Payment Time</th>
+            <th>Payment Date</th>
+            {employeeId && <th>Action</th>}
           </tr>
         </thead>
         <tbody>
@@ -126,10 +130,10 @@ const ListTransactionsHistory = (props) => {
             records?.map((transaction, index) => (
               <tr key={index + 1}>
                 <td>{index + 1}</td>
-                <td>{transaction?.employeeName}</td>
+                {!employeeId && <td>{transaction?.employeeName}</td>}
                 <td>{transaction?.charityName}</td>
                 <td>{transaction?.socialOrg}</td>
-                <td>{transaction?.corporateName}</td>
+                {!employeeId && <td>{transaction?.corporateName}</td>}
                 <td>{transaction?.transactionId}</td>
                 <td>{transaction?.amount}</td>
                 <td>
@@ -137,7 +141,7 @@ const ListTransactionsHistory = (props) => {
                     transaction?.paymentMethod.replace(/_/g, " ")}
                 </td>
                 <td>
-                  {transaction?.paymentStatus === 2 ? (
+                  {transaction?.paymentStatus === paymentConstants.PAYMENT_SUCCESS ? (
                     <span className="badge badge-success">Success</span>
                   ) : (
                     <span className="badge badge-danger">Failed</span>
@@ -148,6 +152,7 @@ const ListTransactionsHistory = (props) => {
                     transaction?.paymentDate !== "None" &&
                     moment(transaction?.paymentDate).format("DD/MM/YY, h:mm A")}
                 </td>
+                {employeeId && <td>{transaction?.paymentStatus === paymentConstants.PAYMENT_SUCCESS && <Link className="text-decoration-underline">Get 80G</Link>}</td>}
               </tr>
             ))
           ) : (

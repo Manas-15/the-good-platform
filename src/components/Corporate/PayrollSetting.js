@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { donationPreferenceConstants } from "../../constants";
+import { donationPreferenceConstants, payrollConstants } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
 import { Button, Accordion } from "react-bootstrap";
 import { CSVLink } from "react-csv";
+import "./../../assets/css/payroll.scss";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -103,9 +104,11 @@ const PayrollSetting = () => {
       return acc;
     }, {});
   };
-  if (currentView === "Organization") {
+  if (currentView === payrollConstants.ORGANIZATION_VIEW) {
     accordionData = groupBy("socialOrganization");
-  } else {
+  } else if (currentView === payrollConstants.PROGRAM_VIEW) {
+    accordionData = groupBy("charityProgram");
+  }else {
     accordionData = groupBy("employeeName");
   }
   const camelCase = (str) => {
@@ -127,11 +130,11 @@ const PayrollSetting = () => {
   );
   return (
     <div>
-      <div className="row mb-3">
-        <div className="col-md-6">
+      <div className="row mb-3 payroll">
+        <div className="col-md-4">
           <h4>Payroll Setting - {moment().format("MMMM YYYY")}</h4>
         </div>
-        <div className="col-md-6 text-right">
+        <div className="col-md-8 text-right">
           {preferences?.items && (
             <CSVLink
               data={preferences?.items?.map(
@@ -148,25 +151,31 @@ const PayrollSetting = () => {
               filename={"Payroll"}
               className="mr-4 fs-6 text-decoration-underline"
             >
-              Export
+              <span className="bi-file-earmark-arrow-up-fill fs-5" title="Export To CSV"></span>
             </CSVLink>
           )}
-          {currentView === "Organization" && (
+          <Link
+              className="fs-6 text-decoration-underline mr-3"
+              onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
+            >
+              <button type="button" className={`${currentView === payrollConstants.PROGRAM_VIEW ? 'active' : '' } btn btn-sm btn-outline-primary`}>Program View</button>
+          </Link>
+          {/* {currentView === "Organization" && ( */}
+            <Link
+              className="fs-6 text-decoration-underline mr-3"
+              onClick={() => setCurrentView(payrollConstants.EMPLOYEE_VIEW)}
+            >
+              <button type="button"  className={`${currentView === payrollConstants.EMPLOYEE_VIEW ? 'active' : '' } btn btn-sm  btn-outline-primary`}>Employee View</button>
+            </Link>
+          {/* )} */}
+          {/* {currentView === "Employee" && ( */}
             <Link
               className="fs-6 text-decoration-underline"
-              onClick={() => setCurrentView("Employee")}
+              onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
             >
-              Employee View
+              <button type="button"  className={`${currentView === payrollConstants.ORGANIZATION_VIEW ? 'active' : '' } btn btn-sm btn-outline-primary`}>Social Organization View</button>
             </Link>
-          )}
-          {currentView === "Employee" && (
-            <Link
-              className="fs-6 text-decoration-underline"
-              onClick={() => setCurrentView("Organization")}
-            >
-              Social Organization View
-            </Link>
-          )}
+          {/* )} */}
         </div>
       </div>
       {preferences.loading && <Loader />}
@@ -175,31 +184,34 @@ const PayrollSetting = () => {
           {Object.keys(accordionData).map((type, index) => (
             <div className="row">
               {accordionData[type].filter(
-                (preference) => preference?.isDeleted === false
+                (preference) => preference?.isDeleted === false && (preference?.status ===
+                  donationPreferenceConstants?.RESUMED || preference?.status === null)
               ).length > 0 && (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
                     <Accordion.Header>
                       {type}{" "}
-                      {currentView === "Employee" &&
+                      {currentView === payrollConstants.EMPLOYEE_VIEW &&
                         ` - ${accordionData[type][0]?.employeeUid}`}
+                      {currentView === payrollConstants.PROGRAM_VIEW &&
+                        ` - ${accordionData[type][0]?.socialOrganization}`}
                     </Accordion.Header>
                     <Accordion.Body>
                       <table className="table table-striped">
                         <thead>
                           <tr className="table-active">
                             <th>Sl#</th>
-                            {currentView === "Organization" && (
+                            {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
                               <th>Employee Name</th>
                             )}
-                            {currentView === "Organization" && (
+                            {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
                               <th>Employee ID</th>
                             )}
-                            <th>Program</th>
-                            {currentView === "Employee" && (
+                            {currentView !== payrollConstants.PROGRAM_VIEW && (<th>Program</th>)}
+                            {currentView === payrollConstants.EMPLOYEE_VIEW && (
                               <th>Social Organization</th>
                             )}
-                            <th className="text-center">Status</th>
+                            {/* <th className="text-center">Status</th> */}
                             <th>
                               Amount (
                               {ReactHtmlParser(
@@ -213,22 +225,23 @@ const PayrollSetting = () => {
                         <tbody>
                           {accordionData[type]
                             .filter(
-                              (preference) => preference?.isDeleted === false
+                              (preference) => preference?.isDeleted === false && (preference?.status ===
+                              donationPreferenceConstants?.RESUMED || preference?.status === null)
                             )
                             .map((preference, i) => (
                               <tr>
                                 <td>{i + 1}</td>
-                                {currentView === "Organization" && (
+                                {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
                                   <td>{preference?.employeeName}</td>
                                 )}
-                                {currentView === "Organization" && (
+                                {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
                                   <td>{preference?.employeeUid}</td>
                                 )}
-                                <td>{preference?.charityProgram}</td>
-                                {currentView === "Employee" && (
+                                {currentView !== payrollConstants.PROGRAM_VIEW && <td>{preference?.charityProgram}</td>}
+                                {currentView === payrollConstants.EMPLOYEE_VIEW && (
                                   <td>{preference.socialOrganization}</td>
                                 )}
-                                <td className="text-center">
+                                {/* <td className="text-center">
                                   {preference?.status ===
                                     donationPreferenceConstants?.SUSPENDED && (
                                     <span className="badge badge-danger">
@@ -242,7 +255,7 @@ const PayrollSetting = () => {
                                       Active
                                     </span>
                                   )}
-                                </td>
+                                </td> */}
                                 <td>
                                   <input
                                     name="amount"

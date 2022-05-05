@@ -103,6 +103,15 @@ const Header = () => {
                   <span>Superadmin Portal</span>
                 </Link>
               </li>
+              {/* <li>
+                <Link
+                  className="dropdown-item d-flex align-items-center"
+                  to="/social-organizations"
+                >
+                  <i className="bi bi-people"></i>
+                  <span>Social Organization View</span>
+                </Link>
+              </li> */}
               <li>
                 <hr className="dropdown-divider" />
               </li>
