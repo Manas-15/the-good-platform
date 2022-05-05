@@ -5,11 +5,16 @@ import axios from "axios";
 
 export const transactionsHistoryService = {
   getTransactionsHistory,
+  download80G,
 };
 
 function getTransactionsHistory(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
   return axios.get(process.env.REACT_APP_API_URL + "api/transaction_history/", {params: data});
+}
+function download80G(data) {
+  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
+  return axios.get(process.env.REACT_APP_API_URL + "api/download_file/", {params: data});
 }
 function handleResponse(response) {
   return response.text().then((text) => {

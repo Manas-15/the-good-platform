@@ -18,6 +18,7 @@ const paymentStatusOption = [
 ];
 const ListTransactionsHistory = (props) => {
   let history = useHistory();
+  const [records, setRecords] = useState([]);
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const user = useSelector((state) => state.employee.user);
@@ -26,12 +27,16 @@ const ListTransactionsHistory = (props) => {
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
-  const [records, setRecords] = useState([]);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
-console.log("eeeeeeeeeeeeeeeeeeeeeee", employeeId)
+  console.log("eeeeeeeeeeeeeeeeeeeeeee", employeeId);
   useEffect(() => {
-    dispatch(transactionsHistoryActions.getTransactionsHistory({employeeId: employeeId ? employeeId : null}));
+    console.log("eeeeeeeeeee inside eeeeeeeeeeee", employeeId);
+    dispatch(
+      transactionsHistoryActions.getTransactionsHistory({
+        employeeId: employeeId ? employeeId : null,
+      })
+    );
     setRecords(transactions?.items);
     charityPrograms?.items?.sponser?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
@@ -68,6 +73,13 @@ console.log("eeeeeeeeeeeeeeeeeeeeeee", employeeId)
       setRecords(transactions?.items);
     }
   };
+  const downlad = () => {
+    dispatch(
+      transactionsHistoryActions.download80G({
+        employeeId: employeeId ? employeeId : null,
+      })
+    );
+  }
   return (
     <div>
       <div className="row mt-3">
@@ -141,7 +153,8 @@ console.log("eeeeeeeeeeeeeeeeeeeeeee", employeeId)
                     transaction?.paymentMethod.replace(/_/g, " ")}
                 </td>
                 <td>
-                  {transaction?.paymentStatus === paymentConstants.PAYMENT_SUCCESS ? (
+                  {transaction?.paymentStatus ===
+                  paymentConstants.PAYMENT_SUCCESS ? (
                     <span className="badge badge-success">Success</span>
                   ) : (
                     <span className="badge badge-danger">Failed</span>
@@ -152,7 +165,14 @@ console.log("eeeeeeeeeeeeeeeeeeeeeee", employeeId)
                     transaction?.paymentDate !== "None" &&
                     moment(transaction?.paymentDate).format("DD/MM/YY, h:mm A")}
                 </td>
-                {employeeId && <td>{transaction?.paymentStatus === paymentConstants.PAYMENT_SUCCESS && <Link className="text-decoration-underline">Get 80G</Link>}</td>}
+                {employeeId && (
+                  <td>
+                    {transaction?.paymentStatus ===
+                      paymentConstants.PAYMENT_FAILURE && (
+                      <Link className="text-decoration-underline" onClick={downlad}>Get 80G</Link>
+                    )}
+                  </td>
+                )}
               </tr>
             ))
           ) : (
