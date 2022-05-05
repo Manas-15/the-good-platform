@@ -60,7 +60,7 @@ function download80G(data) {
         link.href = url;
         link.setAttribute(
           "download",
-          `${data?.transaction?.transactionId}_80G.pdf`
+          `80G_Certificate_${data?.transactionId}.pdf`
         );
         // Append to html link element page
         document.body.appendChild(link);

@@ -10,6 +10,8 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
 import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
+import { Table, Tag, Space } from 'antd';
+import "./../../assets/css/donationPreference.scss";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -145,31 +147,48 @@ const DonationPreferences = () => {
           <h4>Donation Preferences</h4>
         </div>
       </div>
+      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+        <div className="ant-col ant-col-24  searchContainer">
+          <div className="ant-col ant-col-8">
+            <div className="ant-input-affix-wrapper beneficieryFilterInput">
+              <span className="ant-input-prefix">
+                <i className="bi bi-search"></i>
+                <input placeholder="Search by Program" class="ant-input-search" type="text" value="" />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       {preferences.loading && <Loader />}
-      <table className="table table-striped">
-        <thead>
+      <div className="ant-row">
+        <div className="ant-col ant-col-24 mt-2">
+          <div className="ant-table-wrapper beneficieryTable">
+          
+          <div className="ant-table">
+      <table>
+        <thead className="ant-table-thead">
           <tr className="table-active">
-            <th>Sl#</th>
-            <th>Program</th>
-            <th>Social Organization</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th className="text-center">Frequency</th>
-            <th className="text-center">Status</th>
-            <th className="text-center">Actions</th>
+            <th className="ant-table-cell">SR No.</th>
+            <th className="ant-table-cell">Program</th>
+            <th className="ant-table-cell">Social Organization</th>
+            <th className="ant-table-cell">Category</th>
+            <th className="ant-table-cell">Amount</th>
+            <th className="ant-table-cell text-center">Frequency</th>
+            <th className="ant-table-cell text-center">Status</th>
+            <th className="ant-table-cell text-center">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="ant-table-tbody">
           {preferences ? (
             preferences?.items
               ?.filter((preference) => preference?.isDeleted === false)
               .map((preference, index) => (
-                <tr key={index + 1}>
-                  <td>{index + 1}</td>
-                  <td>{preference.charityProgram}</td>
-                  <td>{preference.socialOrganization}</td>
-                  <td>{preference.category}</td>
-                  <td>
+                <tr key={index + 1} className="ant-table-row ant-table-row-level-0">
+                  <td className="ant-table-cell">{index + 1}</td>
+                  <td className="ant-table-cell"><span className="ant-typography font-weight-bold">{preference.charityProgram}</span></td>
+                  <td className="ant-table-cell">{preference.socialOrganization}</td>
+                  <td className="ant-table-cell">{preference.category}</td>
+                  <td className="ant-table-cell">
                     <input
                       name="amount"
                       type="text"
@@ -186,7 +205,7 @@ const DonationPreferences = () => {
                       onInput={(e) => setUpdatedValue(e.target.value)}
                     />
                   </td>
-                  <td className="text-center">
+                  <td className="ant-table-cell text-center">
                     <BootstrapSwitchButton
                       checked={
                         updatedValue ? updatedValue : preference.frequency === 2
@@ -210,19 +229,19 @@ const DonationPreferences = () => {
                       }}
                     />
                   </td>
-                  <td className="text-center">
+                  <td className="ant-table-cell text-center text-uppercase">
                     {preference?.status ===
                       donationPreferenceConstants?.SUSPENDED && (
-                      <span className="badge badge-danger">Suspended</span>
+                      <span className="text-danger">Suspended</span>
                     )}
 
                     {(!preference?.status ||
                       preference?.status ===
                         donationPreferenceConstants?.RESUMED) && (
-                      <span className="badge badge-success">Active</span>
+                      <span className="text-success">Active</span>
                     )}
                   </td>
-                  <td className="text-center">
+                  <td className="ant-table-cell text-center">
                     {preference?.status ===
                       donationPreferenceConstants?.SUSPENDED && (
                       <Link
@@ -262,6 +281,10 @@ const DonationPreferences = () => {
           )}
         </tbody>
       </table>
+      </div>
+      </div>
+      </div>
+      </div>
       {/* <Pagination
         className="pagination-bar"
         currentPage={currentPage}

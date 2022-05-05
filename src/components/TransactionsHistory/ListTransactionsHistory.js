@@ -77,10 +77,10 @@ const ListTransactionsHistory = (props) => {
       setRecords(transactions?.items);
     }
   };
-  const downlad = (transaction) => {
+  const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transaction: transaction,
+        transactionId: transactionId,
       })
     );
   };
@@ -172,12 +172,12 @@ const ListTransactionsHistory = (props) => {
                 {employeeId && (
                   <td>
                     {transaction?.paymentStatus ===
-                      paymentConstants.PAYMENT_SUCCESS && (
+                      paymentConstants.PAYMENT_FAILURE && (
                       <Link
                         className="text-decoration-underline"
-                        onClick={() => downlad(transaction)}
+                        onClick={() => downlad(transaction?.transactionId)}
                       >
-                        Get 80G
+                        Download 80G
                       </Link>
                     )}
                   </td>
