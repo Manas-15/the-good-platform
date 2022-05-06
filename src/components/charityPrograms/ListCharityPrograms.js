@@ -15,7 +15,7 @@ const ListCharityPrograms = ({ items, setCharity }) => {
           <tr className="table-active">
             <th>Sl#</th>
             <th>Program</th>
-            <th>Social Organization</th>
+            <th>Organization</th>
             <th>Category</th>
             <th className="text-center">
               Unit Price (

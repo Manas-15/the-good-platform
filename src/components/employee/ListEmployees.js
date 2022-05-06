@@ -40,12 +40,12 @@ const ListEmployees = (props) => {
   };
   const handleClose = () => setOpen(false);
   return (
-    <div>
+    <div className="customContainer">
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>
-            <Link to="/corporates">Corporates</Link> / Employees
-          </h4>
+          <h1 className="ant-typography customHeading">
+            <Link to="/corporates" className="text-decoration-underline">Corporates</Link> / Employees
+          </h1>
         </div>
         {/* <div className="col-md-6" style={{ textAlign: "right" }}>
           <button
@@ -57,79 +57,119 @@ const ListEmployees = (props) => {
           </button>
         </div> */}
       </div>
+      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+        <div className="ant-col ant-col-24  searchContainer">
+          <div className="ant-col ant-col-8">
+            <div className="ant-input-affix-wrapper inputFilterInput">
+              <span className="ant-input-prefix">
+                <i className="bi bi-search"></i>
+                <input
+                  placeholder="Search by Name"
+                  class="ant-input-search"
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       {employees.actionRequest && <Loader />}
-
-      <table className="table table-striped">
-        <thead>
-          <tr className="table-active">
-            <th>Sl#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Status</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees?.items?.length > 0 ? (
-            employees?.items.map((employee, index) => (
-              <tr key={index + 1}>
-                <td>{index + 1}</td>
-                <td>{employee?.name}</td>
-                <td>{employee?.email}</td>
-                <td>
-                  {employee?.contact_number}
-                  {/* {employee.address
+      <div className="ant-row">
+        <div className="ant-col ant-col-24 mt-2">
+          <div className="ant-table-wrapper">
+            <div className="ant-table">
+              <table>
+                <thead className="ant-table-thead">
+                  <tr>
+                    <th className="ant-table-cell">Sr No.</th>
+                    <th className="ant-table-cell">Name</th>
+                    <th className="ant-table-cell">Email</th>
+                    <th className="ant-table-cell">Phone</th>
+                    <th className="ant-table-cell">Status</th>
+                    <th className="ant-table-cell">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="ant-table-tbody">
+                  {employees?.items?.length > 0 ? (
+                    employees?.items.map((employee, index) => (
+                      <tr
+                        key={index + 1}
+                        className="ant-table-row ant-table-row-level-0"
+                      >
+                        <td className="ant-table-cell">{index + 1}</td>
+                        <td className="ant-table-cell">
+                          <span className="ant-typography font-weight-bold">
+                            {employee?.name}
+                          </span>
+                        </td>
+                        <td className="ant-table-cell">{employee?.email}</td>
+                        <td className="ant-table-cell">
+                          {employee?.contact_number}
+                          {/* {employee.address
                     .split(",")
                     .reduce((all, cur) => [...all, <br />, cur])} */}
-                </td>
-                <td>
-                  {employee?.isApprove && (
-                    <span className="badge badge-success">Approved</span>
-                  )}
+                        </td>
+                        <td className="ant-table-cell text-uppercase">
+                          {employee?.isApprove && (
+                            <span className="text-success">Approved</span>
+                          )}
 
-                  {employee?.isApprove === null && (
-                    <span className="badge badge-info">Pending</span>
-                  )}
+                          {employee?.isApprove === null && (
+                            <span className="text-warning">Pending</span>
+                          )}
 
-                  {!employee?.isApprove && employee?.isApprove !== null && (
-                    <span className="badge badge-danger">Rejected</span>
+                          {!employee?.isApprove &&
+                            employee?.isApprove !== null && (
+                              <span className="text-danger">Rejected</span>
+                            )}
+                        </td>
+                        <td className="ant-table-cell">
+                          <a
+                            className="icon"
+                            href="#"
+                            data-bs-toggle="dropdown"
+                          >
+                            <span className="bi-three-dots"></span>
+                          </a>
+                          <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
+                            {!employee?.isApprove ? (
+                              <li
+                                className="dropdown-header text-start"
+                                onClick={() => handleOpen("Approve", employee)}
+                              >
+                                <span className="bi-check-circle">
+                                  {" "}
+                                  Approve
+                                </span>
+                              </li>
+                            ) : null}
+                            {employee?.isApprove ||
+                            employee?.isApprove === null ? (
+                              <li
+                                className="dropdown-header text-start"
+                                onClick={() => handleOpen("Reject", employee)}
+                              >
+                                <span className="bi-x-circle"> Reject</span>
+                              </li>
+                            ) : null}
+                          </ul>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        No employees found
+                      </td>
+                    </tr>
                   )}
-                </td>
-                <td className="text-center">
-                  <a className="icon" href="#" data-bs-toggle="dropdown">
-                    <span className="bi-three-dots"></span>
-                  </a>
-                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                    {!employee?.isApprove ? (
-                      <li
-                        className="dropdown-header text-start"
-                        onClick={() => handleOpen("Approve", employee)}
-                      >
-                        <span className="bi-check-circle"> Approve</span>
-                      </li>
-                    ) : null}
-                    {employee?.isApprove || employee?.isApprove === null ? (
-                      <li
-                        className="dropdown-header text-start"
-                        onClick={() => handleOpen("Reject", employee)}
-                      >
-                        <span className="bi-x-circle"> Reject</span>
-                      </li>
-                    ) : null}
-                  </ul>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" className="text-center">
-                No employees found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* <div className="row mb-4">
         <div className="col-md-6">
           <p>Showing 1 to 10 of 20 records</p>
