@@ -215,14 +215,14 @@ const EmployeeDashboard = () => {
                   </div>
                   <div className="card-body">
                     <h5 className="card-title">
-                      Recent Social Organizations <span>| Today</span>
+                      Recent Organizations <span>| Today</span>
                     </h5>
                     <table className="table table-borderless datatable">
                       <thead>
                         <tr>
                           <th>Sl#</th>
-                          <th>Charity Programs</th>
-                          <th>Social Organization</th>
+                          <th>Program</th>
+                          <th>Organization</th>
                           <th>Category</th>
                           <th>Donation</th>
                         </tr>

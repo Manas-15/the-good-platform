@@ -108,7 +108,7 @@ const PayrollSetting = () => {
     accordionData = groupBy("socialOrganization");
   } else if (currentView === payrollConstants.PROGRAM_VIEW) {
     accordionData = groupBy("charityProgram");
-  }else {
+  } else {
     accordionData = groupBy("employeeName");
   }
   const camelCase = (str) => {
@@ -129,12 +129,16 @@ const PayrollSetting = () => {
     )
   );
   return (
-    <div>
-      <div className="row mb-3 payroll">
-        <div className="col-md-4">
-          <h4>Payroll Setting - {moment().format("MMMM YYYY")}</h4>
+    <div className="customContainer">
+      <div className="row mb-3">
+        <div className="col-md-12">
+          <h1 className="ant-typography customHeading">
+            Payroll Setting - {moment().format("MMMM YYYY")}
+          </h1>
         </div>
-        <div className="col-md-8 text-right">
+      </div>
+      <div className="row mb-3 payroll text-right">
+        <div className="col-md-12 text-right">
           {preferences?.items && (
             <CSVLink
               data={preferences?.items?.map(
@@ -149,32 +153,55 @@ const PayrollSetting = () => {
                 }) => ({ ...rest })
               )}
               filename={"Payroll"}
-              className="mr-4 fs-6 text-decoration-underline"
+              className="mr-4 text-decoration-underline"
             >
-              <span className="bi-file-earmark-arrow-up-fill fs-5" title="Export To CSV"></span>
+              <span>Export to CSV</span>
             </CSVLink>
           )}
           <Link
-              className="fs-6 text-decoration-underline mr-3"
-              onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
+            className="fs-6 text-decoration-underline mr-3"
+            onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
+          >
+            <button
+              type="button"
+              className={`${
+                currentView === payrollConstants.PROGRAM_VIEW ? "active" : ""
+              } btn btn-sm btn-outline-primary`}
             >
-              <button type="button" className={`${currentView === payrollConstants.PROGRAM_VIEW ? 'active' : '' } btn btn-sm btn-outline-primary`}>Program View</button>
+              Program View
+            </button>
           </Link>
           {/* {currentView === "Organization" && ( */}
-            <Link
-              className="fs-6 text-decoration-underline mr-3"
-              onClick={() => setCurrentView(payrollConstants.EMPLOYEE_VIEW)}
+          <Link
+            className="fs-6 text-decoration-underline mr-3"
+            onClick={() => setCurrentView(payrollConstants.EMPLOYEE_VIEW)}
+          >
+            <button
+              type="button"
+              className={`${
+                currentView === payrollConstants.EMPLOYEE_VIEW ? "active" : ""
+              } btn btn-sm  btn-outline-primary`}
             >
-              <button type="button"  className={`${currentView === payrollConstants.EMPLOYEE_VIEW ? 'active' : '' } btn btn-sm  btn-outline-primary`}>Employee View</button>
-            </Link>
+              Employee View
+            </button>
+          </Link>
           {/* )} */}
           {/* {currentView === "Employee" && ( */}
-            <Link
-              className="fs-6 text-decoration-underline"
-              onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
+          <Link
+            className="fs-6 text-decoration-underline"
+            onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
+          >
+            <button
+              type="button"
+              className={`${
+                currentView === payrollConstants.ORGANIZATION_VIEW
+                  ? "active"
+                  : ""
+              } btn btn-sm btn-outline-primary`}
             >
-              <button type="button"  className={`${currentView === payrollConstants.ORGANIZATION_VIEW ? 'active' : '' } btn btn-sm btn-outline-primary`}>Social Organization View</button>
-            </Link>
+              Social Organization View
+            </button>
+          </Link>
           {/* )} */}
         </div>
       </div>
@@ -184,8 +211,11 @@ const PayrollSetting = () => {
           {Object.keys(accordionData).map((type, index) => (
             <div className="row">
               {accordionData[type].filter(
-                (preference) => preference?.isDeleted === false && (preference?.status ===
-                  donationPreferenceConstants?.RESUMED || preference?.status === null)
+                (preference) =>
+                  preference?.isDeleted === false &&
+                  (preference?.status ===
+                    donationPreferenceConstants?.RESUMED ||
+                    preference?.status === null)
               ).length > 0 && (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
@@ -197,51 +227,105 @@ const PayrollSetting = () => {
                         ` - ${accordionData[type][0]?.socialOrganization}`}
                     </Accordion.Header>
                     <Accordion.Body>
-                      <table className="table table-striped">
-                        <thead>
-                          <tr className="table-active">
-                            <th>Sl#</th>
-                            {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
-                              <th>Employee Name</th>
-                            )}
-                            {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
-                              <th>Employee ID</th>
-                            )}
-                            {currentView !== payrollConstants.PROGRAM_VIEW && (<th>Program</th>)}
-                            {currentView === payrollConstants.EMPLOYEE_VIEW && (
-                              <th>Social Organization</th>
-                            )}
-                            {/* <th className="text-center">Status</th> */}
-                            <th>
-                              Amount (
-                              {ReactHtmlParser(
-                                donationPreferenceConstants?.CURRENCY
-                              )}
-                              )
-                            </th>
-                            <th className="text-center">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {accordionData[type]
-                            .filter(
-                              (preference) => preference?.isDeleted === false && (preference?.status ===
-                              donationPreferenceConstants?.RESUMED || preference?.status === null)
-                            )
-                            .map((preference, i) => (
-                              <tr>
-                                <td>{i + 1}</td>
-                                {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
-                                  <td>{preference?.employeeName}</td>
-                                )}
-                                {(currentView === payrollConstants.ORGANIZATION_VIEW || currentView === payrollConstants.PROGRAM_VIEW) && (
-                                  <td>{preference?.employeeUid}</td>
-                                )}
-                                {currentView !== payrollConstants.PROGRAM_VIEW && <td>{preference?.charityProgram}</td>}
-                                {currentView === payrollConstants.EMPLOYEE_VIEW && (
-                                  <td>{preference.socialOrganization}</td>
-                                )}
-                                {/* <td className="text-center">
+                      <div className="ant-row">
+                        <div className="ant-col ant-col-24 mt-2">
+                          <div className="ant-table-wrapper">
+                            <div className="ant-table">
+                              <table>
+                                <thead className="ant-table-thead">
+                                  <tr>
+                                    <th className="ant-table-cell">Sr No.</th>
+                                    {(currentView ===
+                                      payrollConstants.ORGANIZATION_VIEW ||
+                                      currentView ===
+                                        payrollConstants.PROGRAM_VIEW) && (
+                                      <th className="ant-table-cell">
+                                        Employee Name
+                                      </th>
+                                    )}
+                                    {(currentView ===
+                                      payrollConstants.ORGANIZATION_VIEW ||
+                                      currentView ===
+                                        payrollConstants.PROGRAM_VIEW) && (
+                                      <th className="ant-table-cell">
+                                        Employee ID
+                                      </th>
+                                    )}
+                                    {currentView !==
+                                      payrollConstants.PROGRAM_VIEW && (
+                                      <th>Program</th>
+                                    )}
+                                    {currentView ===
+                                      payrollConstants.EMPLOYEE_VIEW && (
+                                      <th className="ant-table-cell">
+                                        Organization
+                                      </th>
+                                    )}
+                                    {/* <th className="text-center">Status</th> */}
+                                    <th className="ant-table-cell">
+                                      Amount (
+                                      {ReactHtmlParser(
+                                        donationPreferenceConstants?.CURRENCY
+                                      )}
+                                      )
+                                    </th>
+                                    <th className="ant-table-cell text-center">
+                                      Actions
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody className="ant-table-tbody">
+                                  {accordionData[type]
+                                    .filter(
+                                      (preference) =>
+                                        preference?.isDeleted === false &&
+                                        (preference?.status ===
+                                          donationPreferenceConstants?.RESUMED ||
+                                          preference?.status === null)
+                                    )
+                                    .map((preference, i) => (
+                                      <tr
+                                        key={index + 1}
+                                        className="ant-table-row ant-table-row-level-0"
+                                      >
+                                        <td className="ant-table-cell">
+                                          {i + 1}
+                                        </td>
+                                        {(currentView ===
+                                          payrollConstants.ORGANIZATION_VIEW ||
+                                          currentView ===
+                                            payrollConstants.PROGRAM_VIEW) && (
+                                          <td className="ant-table-cell">
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference?.employeeName}
+                                            </span>
+                                          </td>
+                                        )}
+                                        {(currentView ===
+                                          payrollConstants.ORGANIZATION_VIEW ||
+                                          currentView ===
+                                            payrollConstants.PROGRAM_VIEW) && (
+                                          <td className="ant-table-cell">
+                                            {preference?.employeeUid}
+                                          </td>
+                                        )}
+                                        {currentView !==
+                                          payrollConstants.PROGRAM_VIEW && (
+                                          <td className="ant-table-cell">
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference?.charityProgram}
+                                            </span>
+                                          </td>
+                                        )}
+                                        {currentView ===
+                                          payrollConstants.EMPLOYEE_VIEW && (
+                                          <td className="ant-table-cell">
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference.socialOrganization}
+                                            </span>
+                                          </td>
+                                        )}
+                                        {/* <td className="text-center">
                                   {preference?.status ===
                                     donationPreferenceConstants?.SUSPENDED && (
                                     <span className="badge badge-danger">
@@ -256,31 +340,38 @@ const PayrollSetting = () => {
                                     </span>
                                   )}
                                 </td> */}
-                                <td>
-                                  <input
-                                    name="amount"
-                                    type="text"
-                                    size="4"
-                                    maxLength={10}
-                                    defaultValue={preference.donationAmount.toLocaleString()}
-                                    className="form-control"
-                                    disabled={true}
-                                  />
-                                </td>
-                                <td className="text-center">
-                                  <Link
-                                    onClick={() =>
-                                      handleOpenDialog("Delete", preference)
-                                    }
-                                    title="Delete"
-                                  >
-                                    <i className="bi bi-trash fs-5"></i>
-                                  </Link>
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
+                                        <td className="ant-table-cell">
+                                          <input
+                                            name="amount"
+                                            type="text"
+                                            size="4"
+                                            maxLength={10}
+                                            defaultValue={preference.donationAmount.toLocaleString()}
+                                            className="form-control"
+                                            disabled={true}
+                                          />
+                                        </td>
+                                        <td className="ant-table-cell text-center">
+                                          <Link
+                                            onClick={() =>
+                                              handleOpenDialog(
+                                                "Delete",
+                                                preference
+                                              )
+                                            }
+                                            title="Delete"
+                                          >
+                                            <i className="bi bi-trash fs-5"></i>
+                                          </Link>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>
