@@ -23,6 +23,7 @@ import SetPassword from "../components/Auth/SetPassword";
 import ThankYou from "../components/Auth/ThankYou";
 import Profile from "../components/Profile/Profile";
 import PayrollSetting from "../components/Corporate/PayrollSetting";
+import PayrollBatch from "../components/Corporate/PayrollBatch";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -105,6 +106,7 @@ const CreateRoutes = () => {
                 component={EmployeeDonationPreferences}
               />
               <Route exact path="/payroll-setting" component={PayrollSetting} />
+              <Route exact path="/payroll-batch" component={PayrollBatch} />
               <Route
                 exact
                 path="/transactions-history"

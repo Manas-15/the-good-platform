@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
-import { donationPreferenceActions } from "../../actions/donationPreference.actions";
+import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { donationPreferenceConstants, payrollConstants } from "../../constants";
 import Loader from "./../Shared/Loader";
@@ -12,25 +12,14 @@ import { Button, Accordion } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 import "./../../assets/css/payroll.scss";
 
-const preferenceForm = {
-  employeePreferenceId: "",
-  type: "",
-  donationAmount: "",
-  frequency: "",
-  isConsentCheck: "",
-};
 const actionInitialValues = {
-  isDeleted: false,
-  isSuspended: false,
-  suspendDuration: moment(new Date()).add(4, "months"),
-  requestType: "",
   preferenceId: "",
 };
 let PageSize = 10;
 let accordionData;
 const PayrollSetting = () => {
   let history = useHistory();
-  const preferences = useSelector((state) => state.donationPreferences);
+  const preferences = useSelector((state) => state.payrollSetting);
   const employee = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -59,7 +48,7 @@ const PayrollSetting = () => {
     // useEffect(() => {
     // dispatch(
     return await dispatch(
-      donationPreferenceActions.getDonationPreferences({
+      payrollSettingActions.getDonationPreferences({
         page: currentPage,
         limit: PageSize,
         offset: currentPage === 1 ? 0 : currentPage * 10,
@@ -83,15 +72,8 @@ const PayrollSetting = () => {
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
     handleCloseDialog();
-    actionInitialValues.isDeleted =
-      actionType === donationPreferenceConstants.DELETE;
-    actionInitialValues.isSuspended =
-      actionType === donationPreferenceConstants.SUSPEND;
     actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
-    actionInitialValues.requestType = actionType;
-    dispatch(
-      donationPreferenceActions.operateActionRequest(actionInitialValues)
-    );
+    dispatch(payrollSettingActions.operateActionRequest(actionInitialValues));
   };
   if (preferences.loading) {
     document.getElementById("root").classList.add("loading");
@@ -100,6 +82,7 @@ const PayrollSetting = () => {
   }
   const groupBy = (key) => {
     return preferences?.items?.reduce(function (acc, item) {
+      console.log("iiiiiiiiiiiiiiiiiiii", item);
       (acc[item[key]] = acc[item[key]] || []).push(item);
       return acc;
     }, {});
@@ -111,23 +94,9 @@ const PayrollSetting = () => {
   } else {
     accordionData = groupBy("employeeName");
   }
-  const camelCase = (str) => {
-    return str.substring(0, 1).toUpperCase() + str.substring(1);
-  };
-  console.log(
-    "export data ---------------",
-    preferences?.items?.map(
-      ({
-        employeePreferenceId,
-        isDeleted,
-        employeeId,
-        status,
-        isConsentCheck,
-        frequency,
-        ...rest
-      }) => ({ ...rest })
-    )
-  );
+  // const camelCase = (str) => {
+  //   return str.substring(0, 1).toUpperCase() + str.substring(1);
+  // };
   return (
     <div className="customContainer">
       <div className="row mb-3">
@@ -406,7 +375,7 @@ const PayrollSetting = () => {
         </tr>
       )}
       <div className="text-right m-3">
-        <Button className="btn btn-primary">Process Batch</Button>
+        <Button className="btn btn-primary" onClick={processBatch}>Process Batch</Button>
       </div>
       {openDialog && (
         <ConfirmationDialog

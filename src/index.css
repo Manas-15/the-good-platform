@@ -13,8 +13,7 @@ h2,
 h3,
 h4,
 h5,
-h6,
-span {
+h6 {
   font-weight: 500;
   font-family: "Poppins", sans-serif;
 }
@@ -272,4 +271,39 @@ ul.dropdown-menu.actions li:hover {
 }
 .badge {
   font-size: 12px !important;
+}
+.customContainer .customHeading {
+  color: #39364f;
+  margin: 0;
+  font-size: 2rem;
+}
+.ant-table table tbody tr td {
+  background: #fff;
+  border-bottom: 5px solid #f4f8f8;
+  border-top: 5px solid #f4f8f8;
+}
+.ant-table table thead tr th {
+  color: #909090;
+  background: #f4f8f8;
+  position: relative;
+  font-weight: 500;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+  text-transform: uppercase;
+}
+.searchContainer {
+  background: #f4f8f8;
+  border-radius: 8px;
+  display: flex;
+}
+.searchContainer .inputFilterInput {
+  color: #524f65;
+  height: 2.5rem;
+  border-radius: 10px !important;
+  border: 2px solid #e6e8e8;
+}
+.ant-input-search {
+  padding: 0;
+  border: none;
+  outline: none;
 }
