@@ -97,6 +97,9 @@ const PayrollSetting = () => {
   // const camelCase = (str) => {
   //   return str.substring(0, 1).toUpperCase() + str.substring(1);
   // };
+  const processBatch = () => {
+    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", preferences?.items?.filter((item) => item.isDeleted === false))
+  }
   return (
     <div className="customContainer">
       <div className="row mb-3">
