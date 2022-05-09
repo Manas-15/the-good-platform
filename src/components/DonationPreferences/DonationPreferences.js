@@ -83,7 +83,6 @@ const DonationPreferences = () => {
   };
 
   const setDuration = (value) => {
-    console.log(">>>>>>>>>>>>>>>>>> duration", value);
     if (actionType === donationPreferenceConstants.SUSPEND) {
       actionInitialValues.suspendDuration = moment(new Date()).add(
         value,
@@ -256,7 +255,7 @@ const DonationPreferences = () => {
                           </td>
                           <td className="ant-table-cell text-center text-uppercase">
                             {preference?.status ===
-                              donationPreferenceConstants?.SUSPENDED && (
+                              donationPreferenceConstants?.SUSPENDED && (preference?.frequency === donationPreferenceConstants?.RESUMED || preference?.frequency === null) && (
                               <span className="text-danger">Suspended</span>
                             )}
 
@@ -345,6 +344,7 @@ const DonationPreferences = () => {
           employee={employee}
           frequency={selectedPreference?.frequency === 2 ? donationPreferenceConstants.ONCE
             : donationPreferenceConstants.MONTHLY}
+          amount={updatedValue}
           handleCheck={handleCheck}
           closeCheck={()=>closeCheck(selectedPreference)}
         />

@@ -42,7 +42,8 @@ export const CorporateSchema = Yup.object().shape({
 });
 
 export const EmployeeSchema = Yup.object().shape({
-  employeeName: Yup.string().required("Employee name is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
   email: Yup.string()
     .required("Employee email is required")
     .email("Invalid email address"),

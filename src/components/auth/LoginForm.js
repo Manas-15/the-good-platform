@@ -23,7 +23,7 @@ const LoginForm = ({ submit, disable }) => {
           <div className="registrationContent ">
             <Formik
               enableReinitialize
-              initialValues={{ email: "", password: "" }}
+              initialValues={{ email: "", password: "", loginType: "Employee" }}
               validationSchema={LoginSchema}
               onSubmit={(values, event) => {
                 submit(values);
@@ -40,9 +40,27 @@ const LoginForm = ({ submit, disable }) => {
                 /* and other goodies */
               }) => (
                 <Form>
-                  <h5 className="text-center cardHeading">
+                  <h5 className="text-center cardHeading mb-0">
                     Login to your account
                   </h5>
+                  <div
+                    className="text-center"
+                    role="group"
+                    aria-labelledby="my-radio-group"
+                  >
+                    <label className="mr-4">
+                      <Field type="radio" name="loginType" value="Employee" />
+                      <strong>
+                        <span className="ml-2">Employee</span>
+                      </strong>
+                    </label>
+                    <label>
+                      <Field type="radio" name="loginType" value="Others" />
+                      <strong>
+                        <span className="ml-2">Others</span>
+                      </strong>
+                    </label>
+                  </div>
                   <div className="form-group m-0">
                     <label>Registered Email ID</label>
                     <Field

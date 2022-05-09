@@ -41,6 +41,7 @@ const ListTransactionsHistory = (props) => {
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
+    setCurrentPage(1);
     charityPrograms?.items?.sponser?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
@@ -49,6 +50,10 @@ const ListTransactionsHistory = (props) => {
     });
   }, [props]);
   useEffect(() => {
+    // console.log("dddddddddddddddddddd", props?.history?.action === "PUSH")
+    // if(props?.history?.action === "PUSH"){
+    //   setCurrentPage(1)
+    // }
     dispatch(
       transactionsHistoryActions.getTransactionsHistory({
         employeeId: employeeId ? employeeId : null,
