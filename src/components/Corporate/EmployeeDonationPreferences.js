@@ -152,7 +152,7 @@ const EmployeeDonationPreferences = () => {
                 <i className="bi bi-search"></i>
                 <input
                   placeholder="Search by Program"
-                  class="ant-input-search"
+                  className="ant-input-search"
                   type="text"
                   value=""
                 />

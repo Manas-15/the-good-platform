@@ -186,8 +186,8 @@ const PayrollSetting = () => {
                 (preference) =>
                   preference?.isDeleted === false &&
                   (preference?.status ===
-                    donationPreferenceConstants?.RESUMED ||
-                    preference?.status === null)
+                    (donationPreferenceConstants?.RESUMED ||
+                    preference?.status === null))
               ).length > 0 && (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
@@ -252,8 +252,8 @@ const PayrollSetting = () => {
                                       (preference) =>
                                         preference?.isDeleted === false &&
                                         (preference?.status ===
-                                          donationPreferenceConstants?.RESUMED ||
-                                          preference?.status === null)
+                                          (donationPreferenceConstants?.RESUMED ||
+                                          preference?.status === null))
                                     )
                                     .map((preference, i) => (
                                       <tr
@@ -318,7 +318,7 @@ const PayrollSetting = () => {
                                             type="text"
                                             size="4"
                                             maxLength={10}
-                                            defaultValue={preference.donationAmount.toLocaleString()}
+                                            defaultValue={preference?.donationAmount.toLocaleString()}
                                             className="form-control"
                                             disabled={true}
                                           />
@@ -357,8 +357,13 @@ const PayrollSetting = () => {
                 <span className="fs-5">
                   {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                   {preferences?.items
-                    ? preferences?.items
-                        ?.reduce(
+                    ? preferences?.items.filter(
+                      (preference) =>
+                        preference?.isDeleted === false &&
+                        (preference?.status ===
+                          (donationPreferenceConstants?.RESUMED ||
+                          preference?.status === null))
+                    )?.reduce(
                           (total, currentValue) =>
                             (total = total + currentValue.donationAmount),
                           0

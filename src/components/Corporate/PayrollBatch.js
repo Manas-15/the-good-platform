@@ -8,9 +8,10 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
-import { Button, Accordion } from "react-bootstrap";
+import { Popover, OverlayTrigger } from "react-bootstrap";
 import payrollBatch from "./../../config/payrollBatch.json";
 import "./../../assets/css/payroll.scss";
+import { Button, Modal } from "react-bootstrap";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -33,6 +34,8 @@ const PayrollBatch = () => {
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
+  const [referenceNote, setReferenceNote] = useState();
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
@@ -85,6 +88,30 @@ const PayrollBatch = () => {
   } else {
     document.getElementById("root").classList.remove("loading");
   }
+  const showReferenceNote = (referenceNote) => {
+    setShow(true);
+    setReferenceNote(referenceNote);
+  };
+  const handleOpen = (action, item) => {
+    setOpen(true);
+    setActionType(action);
+    setActionTitle(`${action} Confirmation`);
+    setActionContent(
+      `Are you sure to delete this batch <strong>"${
+        item?.batchId
+      }"</strong>?`
+    );
+  };
+  const handleCancel = () => {
+    setShow(false);
+  };
+  const confirm = () => {
+    handleClose();
+    // actionInitialValues.userId = selectedCorporate.userId;
+    // actionInitialValues.requestType = actionType;
+    // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+  };
+  const handleClose = () => setOpen(false);
   return (
     <div className="customContainer">
       <div className="row mb-3 payroll">
@@ -108,7 +135,9 @@ const PayrollBatch = () => {
                         Total Amount
                       </th>
                       <th className="ant-table-cell">Corporate</th>
+                      <th className="ant-table-cell">Reference ID</th>
                       <th className="ant-table-cell">Status</th>
+                      <th className="ant-table-cell">Action</th>
                     </tr>
                   </thead>
                   <tbody className="ant-table-tbody">
@@ -129,7 +158,16 @@ const PayrollBatch = () => {
                             )}
                             {batch.totalAmout}
                           </td>
-                          <td className="ant-table-cell">{batch.corporate}</td>
+                          <td className="ant-table-cell">{batch?.corporate}</td>
+                          <td className="ant-table-cell">
+                            <Link
+                              onClick={() =>
+                                showReferenceNote(batch?.referenceNote)
+                              }
+                            >
+                              {batch?.referenceId}
+                            </Link>
+                          </td>
                           <td className="ant-table-cell text-uppercase">
                             {batch?.status === "Completed" && (
                               <span className="text-success">
@@ -142,11 +180,23 @@ const PayrollBatch = () => {
                               </span>
                             )}
                           </td>
+                          <td className="ant-table-cell text-center">
+                            {batch?.status === "Pending" && (
+                              <Link
+                              onClick={() => handleOpen("Delete", batch)}
+                              >
+                                <span
+                                  className="bi-check-circle fs-5"
+                                  title="Complete"
+                                ></span>
+                              </Link>
+                            )}
+                          </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="6" className="text-center">
+                        <td colSpan="8" className="text-center">
                           No batch data found
                         </td>
                       </tr>
@@ -158,6 +208,23 @@ const PayrollBatch = () => {
           </div>
         </div>
       )}
+      {open && (
+        <ConfirmationDialog
+          open={true}
+          title={actionTitle}
+          content={actionContent}
+          handleConfirm={() => {
+            confirm();
+          }}
+          handleCancel={() => {
+            handleClose();
+          }}
+        />
+      )}
+      <Modal show={show} onHide={handleCancel} backdrop="static">
+        <Modal.Header closeButton className="fs-5 p-2"><Modal.Title>Reference Note</Modal.Title></Modal.Header>
+        <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
+      </Modal>
     </div>
   );
 };

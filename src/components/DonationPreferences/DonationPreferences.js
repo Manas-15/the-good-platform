@@ -110,9 +110,16 @@ const DonationPreferences = () => {
     setOpen(false);
     updateDonationPreference();
   };
-  const closeCheck = () => {
+  const closeCheck = (selectedPreference) => {
     setChecked(false);
     setOpen(false);
+    // document.getElementById("#amount"+selectedPreference?.employeePreferenceId).val(selectedPreference?.donationAmount);
+    preferences?.items?.map((item) => {
+      console.log("selectedPreference?.amount", item?.employeePreferenceId, selectedPreference?.employeePreferenceId)
+      if (item?.employeePreferenceId === selectedPreference?.employeePreferenceId) {
+        console.log("dddd?.amount", selectedPreference?.donationAmount)
+        return { ...item, donationAmount: selectedPreference?.donationAmount };
+      }})
   };
   const showConsent = (preference, type) => {
     setOpen(true);
@@ -155,7 +162,7 @@ const DonationPreferences = () => {
                 <i className="bi bi-search"></i>
                 <input
                   placeholder="Search by Program"
-                  class="ant-input-search"
+                  className="ant-input-search"
                   type="text"
                   value=""
                 />
@@ -209,7 +216,7 @@ const DonationPreferences = () => {
                               type="text"
                               size="4"
                               maxLength={10}
-                              defaultValue={preference.donationAmount.toLocaleString()}
+                              defaultValue={preference?.donationAmount.toLocaleString()}
                               className="form-control"
                               onBlur={() =>
                                 showConsent(
@@ -218,6 +225,7 @@ const DonationPreferences = () => {
                                 )
                               }
                               onInput={(e) => setUpdatedValue(e.target.value)}
+                              id={`amount${preference?.employeePreferenceId}`}
                             />
                           </td>
                           <td className="ant-table-cell text-center">
@@ -225,7 +233,7 @@ const DonationPreferences = () => {
                               checked={
                                 updatedValue
                                   ? updatedValue
-                                  : preference.frequency === 2
+                                  : preference?.frequency === 2
                               }
                               onlabel="Once"
                               onstyle="primary"
@@ -335,9 +343,10 @@ const DonationPreferences = () => {
           open={open}
           selectedCharity={selectedPreference?.charityProgram}
           employee={employee}
-          frequency={selectedPreference?.frequency}
+          frequency={selectedPreference?.frequency === 2 ? donationPreferenceConstants.ONCE
+            : donationPreferenceConstants.MONTHLY}
           handleCheck={handleCheck}
-          closeCheck={closeCheck}
+          closeCheck={()=>closeCheck(selectedPreference)}
         />
       )}
     </div>
