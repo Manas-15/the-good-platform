@@ -1,4 +1,5 @@
-import { authHeader } from "../helpers";
+// import { authHeader } from "../helpers";
+import { jwtInterceptor } from "../helpers";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -14,16 +15,26 @@ export const employeeService = {
   setEmployeePassword,
   logout,
   employeeAccountRequest,
-  
 };
 
 async function login(data) {
-  return await axios.post(process.env.REACT_APP_API_URL + "api/login/", data);
+  if (data?.loginType === "Employee") {
+    return await axios.post(`${process.env.REACT_APP_API_URL}api/login/`, data);
+  } else {
+    return await axios.post(
+      `${process.env.REACT_APP_TGP_API_URL}auth/v1/auth/login/`,
+      JSON.stringify({ username: data?.email, password: data?.password }),
+      {
+        withCredentials: true,
+        headers: jwtInterceptor()
+      }
+    );
+  }
 }
 async function validateOtp(data) {
   return await axios.post(
     process.env.REACT_APP_API_URL + "api/validate_otp/",
-    data,
+    data
     // { headers: authHeader() }
   );
 }
@@ -38,7 +49,9 @@ function logout() {
   localStorage.removeItem("user");
 }
 async function getEmployees(data) {
-  return await axios.get(process.env.REACT_APP_API_URL + "api/employee_list/", {params: data});
+  return await axios.get(process.env.REACT_APP_API_URL + "api/employee_list/", {
+    params: data,
+  });
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
 async function registerEmployee(data) {
@@ -69,7 +82,7 @@ async function setPasswordValid(data) {
   return await axios.get(
     process.env.REACT_APP_API_URL + "api/verify_set_password/",
     {
-      params: data
+      params: data,
     }
   );
 }

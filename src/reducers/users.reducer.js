@@ -5,12 +5,12 @@ export function users(state = {}, action) {
     case userConstants.LOGIN_REQUEST:
       return {
         loggingIn: true,
-        user: action.user,
+        user: action?.user,
       };
     case userConstants.LOGIN_SUCCESS:
       return {
         loggedIn: true,
-        user: action.data.data,
+        user: action?.data?.data,
       };
     case userConstants.LOGIN_FAILURE:
       return { loggingIn: false };
