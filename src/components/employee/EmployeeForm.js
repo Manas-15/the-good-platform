@@ -16,7 +16,8 @@ import {
 } from "react-country-region-selector";
 
 const initialValues = {
-  employeeName: "",
+  firstName: "",
+  lastName: "",
   email: "",
   employeeId: "",
   pan: "",
@@ -87,9 +88,10 @@ const EmployeeForm = ({ type }) => {
   const [state, setState] = useState();
   const addingEmployee = useSelector((state) => state.employee.addingEmployee);
   const dispatch = useDispatch();
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
   const employeeRegister = (values) => {
     setSubmitted(true);
-    if (values.employeeName && values.email && values.corporateProfileId) {
+    if (values.firstName && values.email && values.corporateProfileId) {
       dispatch(employeeActions.registerEmployee(values, type));
     }
   };
@@ -143,21 +145,40 @@ const EmployeeForm = ({ type }) => {
                     {/* <div className="col-md-4">
                 <label className="mt-1">Employee Name</label>
               </div> */}
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <Field
-                        name="employeeName"
+                        name="firstName"
                         type="text"
-                        placeholder="Employee Name*"
+                        placeholder="First Name*"
                         maxLength={50}
                         className={
                           "form-control" +
-                          (errors.employeeName && touched.employeeName
+                          (errors.firstName && touched.firstName
                             ? " is-invalid"
                             : "")
                         }
                       />
                       <ErrorMessage
-                        name="employeeName"
+                        name="firstName"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <Field
+                        name="lastName"
+                        type="text"
+                        placeholder="Last Name*"
+                        maxLength={50}
+                        className={
+                          "form-control" +
+                          (errors.lastName && touched.lastName
+                            ? " is-invalid"
+                            : "")
+                        }
+                      />
+                      <ErrorMessage
+                        name="lastName"
                         component="div"
                         className="invalid-feedback"
                       />
@@ -352,12 +373,27 @@ const EmployeeForm = ({ type }) => {
                       }
                     />
                   </div>                  
-                  
+                  <div className="form-group">
+                    <div className="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        className="custom-control-input"
+                        id="termsCheck"
+                        onClick={()=>setIsTermsChecked(!isTermsChecked)}
+                      />
+                      <label
+                        className="custom-control-label"
+                        htmlFor="termsCheck"
+                      >
+                        &nbsp;By signing up, I agree to the The Good Platform Privacy Policy and Terms of Service.
+                      </label>
+                    </div>
+                  </div>
                   <div className="text-center">
                     <button
                       type="submit"
                       className="btn registrationButton"
-                      disabled={addingEmployee}
+                      disabled={addingEmployee || !isTermsChecked}
                     >
                       {addingEmployee && (
                         <span className="spinner-border spinner-border-sm mr-1"></span>

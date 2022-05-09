@@ -65,7 +65,7 @@ const ListEmployees = (props) => {
                 <i className="bi bi-search"></i>
                 <input
                   placeholder="Search by Name"
-                  class="ant-input-search"
+                  className="ant-input-search"
                   type="text"
                   value=""
                 />

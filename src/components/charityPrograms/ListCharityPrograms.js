@@ -10,51 +10,70 @@ const ListCharityPrograms = ({ items, setCharity }) => {
   };
   return (
     <>
-      <table className="table table-striped">
-        <thead>
-          <tr className="table-active">
-            <th>Sl#</th>
-            <th>Program</th>
-            <th>Organization</th>
-            <th>Category</th>
-            <th className="text-center">
-              Unit Price (
-              {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
-            </th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items?.length > 0 ? (
-            items.map((charityProgram, index) => (
-              <tr key={index + 1}>
-                <td>{index + 1}</td>
-                <td>{charityProgram?.charityName}</td>
-                <td>{charityProgram?.soicalName}</td>
-                <td>{charityProgram?.category}</td>
-                <td className="text-center">
-                  {charityProgram?.unitPrice.toLocaleString()}
-                </td>
-                <td className="text-center">
-                  <button
-                    type="submit"
-                    className="btn btn-primary btn-sm"
-                    onClick={() => openNav(charityProgram)}
-                  >
-                    Donate
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" className="text-center">
-                No charity programs found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <div className="ant-row">
+        <div className="ant-col ant-col-24 mt-2">
+          <div className="ant-table-wrapper">
+            <div className="ant-table">
+              <table>
+                <thead className="ant-table-thead">
+                  <tr>
+                    <th className="ant-table-cell">Sr No.</th>
+                    <th className="ant-table-cell">Program</th>
+                    <th className="ant-table-cell">Organization</th>
+                    <th className="ant-table-cell">Category</th>
+                    <th className="ant-table-cell text-center">
+                      Unit Price (
+                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
+                    </th>
+                    <th className="ant-table-cell text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="ant-table-tbody">
+                  {items?.length > 0 ? (
+                    items.map((charityProgram, index) => (
+                      <tr
+                        key={index + 1}
+                        className="ant-table-row ant-table-row-level-0"
+                      >
+                        <td className="ant-table-cell">{index + 1}</td>
+                        <td className="ant-table-cell">
+                          <span className="ant-typography font-weight-bold">
+                            {charityProgram?.charityName}
+                          </span>
+                        </td>
+                        <td className="ant-table-cell">
+                          {charityProgram?.soicalName}
+                        </td>
+                        <td className="ant-table-cell">
+                          {charityProgram?.category}
+                        </td>
+                        <td className="ant-table-cell text-center">
+                          {charityProgram?.unitPrice.toLocaleString()}
+                        </td>
+                        <td className="ant-table-cell text-center">
+                          <button
+                            type="submit"
+                            className="btn btn-primary btn-sm"
+                            onClick={() => openNav(charityProgram)}
+                          >
+                            Donate
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        No charity programs found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* <div className="row mb-4">
         <div className="col-md-6">
           <p>Showing 1 to 10 of 20 records</p>

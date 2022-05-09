@@ -42,13 +42,30 @@ const CharityPrograms = () => {
     document.getElementById("root").classList.remove("loading");
   }
   return (
-    <div>
+    <div className="customContainer">
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Charity Programs</h4>
+        <h1 className="ant-typography customHeading">Charity Programs</h1>
         </div>
       </div>
-      <ul className="nav nav-tabs charity-programs-tab">
+      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+        <div className="ant-col ant-col-24  searchContainer">
+          <div className="ant-col ant-col-8">
+            <div className="ant-input-affix-wrapper inputFilterInput">
+              <span className="ant-input-prefix">
+                <i className="bi bi-search"></i>
+                <input
+                  placeholder="Search by Program"
+                  className="ant-input-search"
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul className="nav nav-tabs charity-programs-tab mt-3">
         <li className="nav-item">
           <button
             className="nav-link active"
