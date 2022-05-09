@@ -6,6 +6,8 @@ import Loader from "../Shared/Loader";
 import * as moment from "moment";
 import { paymentConstants } from "../../constants";
 import { history } from "./../../helpers";
+import Pagination from "./../Shared/Pagination";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
 
 const actionInitialValues = {
   userId: "",
@@ -17,6 +19,7 @@ const paymentStatusOption = [
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
   { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
 ];
+let pageSize = 10;
 const ListTransactionsHistory = (props) => {
   // let history = useHistory();
   const [records, setRecords] = useState([]);
@@ -31,12 +34,13 @@ const ListTransactionsHistory = (props) => {
   const [currentPath, setCurrentPath] = useState(history.location.pathname);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [offset, setOffset] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+
   useEffect(() => {
-    dispatch(
-      transactionsHistoryActions.getTransactionsHistory({
-        employeeId: employeeId ? employeeId : null,
-      })
-    );
     charityPrograms?.items?.sponser?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
@@ -45,8 +49,19 @@ const ListTransactionsHistory = (props) => {
     });
   }, [props]);
   useEffect(() => {
+    dispatch(
+      transactionsHistoryActions.getTransactionsHistory({
+        employeeId: employeeId ? employeeId : null,
+        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
+      })
+    );
+  }, [currentPage]);
+  useEffect(() => {
     setRecords(transactions?.items);
   }, [transactions?.items]);
+  useEffect(() => {
+    setTotalCount(transactions?.totalCount);
+  }, [transactions?.totalCount]);
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
@@ -58,8 +73,8 @@ const ListTransactionsHistory = (props) => {
   };
   const confirm = () => {
     handleClose();
-    actionInitialValues.userId = selectedEmployee.id;
-    actionInitialValues.requestType = actionType;
+    // actionInitialValues.userId = selectedEmployee.id;
+    // actionInitialValues.requestType = actionType;
     // dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
   };
 
@@ -81,6 +96,20 @@ const ListTransactionsHistory = (props) => {
         transactionId: transactionId,
       })
     );
+  };
+  const setPage = (page) => {
+    console.log(
+      ">>>>>>>>>>>>>>>>>>>>> before setPage",
+      typeof (currentPage * 10)
+    );
+    setCurrentPage(page);
+    // dispatch(
+    //   transactionsHistoryActions.getTransactionsHistory({
+    //     employeeId: employeeId ? employeeId : null,
+    //     offset: (currentPage * 10)
+    //   })
+    // );
+    console.log(">>>>>>>>>>>>>>>>>>>>> after setPage", page);
   };
   return (
     <div className="customContainer">
@@ -130,7 +159,7 @@ const ListTransactionsHistory = (props) => {
                 <i className="bi bi-search"></i>
                 <input
                   placeholder="Search by Program"
-                  class="ant-input-search"
+                  className="ant-input-search"
                   type="text"
                   value=""
                 />
@@ -169,17 +198,27 @@ const ListTransactionsHistory = (props) => {
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"
                       >
-                        <td className="ant-table-cell">{index + 1}</td>
+                        <td className="ant-table-cell">
+                          {currentPage >= 2
+                            ? currentPage * 10 - 10 + index + 1
+                            : index + 1}
+                        </td>
                         {!employeeId && (
                           <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">{transaction?.employeeName}</span>
+                            <span className="ant-typography font-weight-bold">
+                              {transaction?.employeeName}
+                            </span>
                           </td>
                         )}
                         <td className="ant-table-cell">
-                        <span className="ant-typography font-weight-bold">{transaction?.charityName}</span>
+                          <span className="ant-typography font-weight-bold">
+                            {transaction?.charityName}
+                          </span>
                         </td>
                         <td className="ant-table-cell">
-                        <span className="ant-typography font-weight-bold">{transaction?.socialOrg}</span>
+                          <span className="ant-typography font-weight-bold">
+                            {transaction?.socialOrg}
+                          </span>
                         </td>
                         {!employeeId && (
                           <td className="ant-table-cell">
@@ -241,42 +280,13 @@ const ListTransactionsHistory = (props) => {
           </div>
         </div>
       </div>
-      {/* <div className="row mb-4">
-        <div className="col-md-6">
-          <p>Showing 1 to 10 of 20 records</p>
-        </div>
-        <div className="col-md-6" style={{ textAlign: "right" }}>
-          <nav aria-label="Page navigation example" className="d-inline-block">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div> */}
+      <Pagination
+        className="pagination-bar mt-4"
+        currentPage={currentPage}
+        totalCount={totalCount ? totalCount : 0}
+        pageSize={pageSize}
+        onPageChange={(page) => setPage(page)}
+      />
     </div>
   );
 };
