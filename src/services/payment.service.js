@@ -10,23 +10,31 @@ export const paymentService = {
 
 function getOrderToken(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/get_order_token", { headers: authHeader() });
-  return axios.post(process.env.REACT_APP_API_URL + "api/get_order_token/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/get_order_token/",
+    data
+  );
 }
 function getPaymentStatus(orderId) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/get_order_token", { headers: authHeader() });
-  return axios.get(`${process.env.REACT_APP_CASHFREE_API_URL}pg/orders/${orderId}`, 
-  { headers: {
-      "Content-Type": "application/json",
-      "x-client-id": `${process.env.REACT_APP_CASHFREE_CLIENT_ID}`,
-      "x-client-secret": `${process.env.REACT_APP_CASHFREE_CLIENT_SECRET}`,
-      "x-api-version": "2022-01-01",
-    } 
-  });
+  return axios.get(
+    `${process.env.REACT_APP_CASHFREE_API_URL}pg/orders/${orderId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-client-id": `${process.env.REACT_APP_CASHFREE_CLIENT_ID}`,
+        "x-client-secret": `${process.env.REACT_APP_CASHFREE_CLIENT_SECRET}`,
+        "x-api-version": "2022-01-01",
+      },
+    }
+  );
 }
 function savePaymentFailureData(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/get_order_token", { headers: authHeader() });
-  return axios.post(`${process.env.REACT_APP_API_URL}api/payment_failure/`, 
-  data);
+  return axios.post(
+    `${process.env.REACT_APP_API_URL}api/payment_failure/`,
+    data
+  );
 }
 function handleResponse(response) {
   return response.text().then((text) => {

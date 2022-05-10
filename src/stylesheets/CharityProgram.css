@@ -36,10 +36,13 @@
 }
 .donate-header {
   background: #2e66cd;
-    margin-top: -54px;
-    color: #fff;
+  margin-top: -54px;
+  color: #fff;
 }
 .sidepanel p {
   font-size: 14px;
 }
-.donate-btn {border: 1px solid #ccc; background: #ccc;}
+.donate-btn {
+  border: 1px solid #ccc;
+  background: #ccc;
+}
