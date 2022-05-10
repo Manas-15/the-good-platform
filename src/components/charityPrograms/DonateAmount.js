@@ -24,7 +24,8 @@ const DonateAmount = ({ isActive, amount, setSelectedAmount }) => {
         className={isActive ? "active" : ""}
         onClick={() => setSelectedAmount(amount)}
       >
-        {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}{amount}
+        {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+        {amount}
       </Button>{" "}
     </>
   );

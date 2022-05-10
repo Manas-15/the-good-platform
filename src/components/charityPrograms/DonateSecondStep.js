@@ -77,7 +77,7 @@ const DonateSecondStep = ({
     employee: employee,
     corporateId: 1,
     orderPaymentStatus: 1,
-    orderNote: `Donated to ${selectedCharity?.charityName}`
+    orderNote: `Donated to ${selectedCharity?.charityName}`,
   };
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
@@ -93,7 +93,7 @@ const DonateSecondStep = ({
     setOpen(false);
   };
   const goToPayment = (data) => {
-    data.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`
+    data.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
     setPaymentValues(data);
     setPaymentStep(true);
   };

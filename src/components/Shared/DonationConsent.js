@@ -39,7 +39,8 @@ export default function DonationConsent({
               <td>{employee?.name}</td>
               <td>
                 {selectedCharity?.charityName && selectedCharity?.charityName}
-                {selectedCharity?.charityProgram && selectedCharity?.charityProgram}
+                {selectedCharity?.charityProgram &&
+                  selectedCharity?.charityProgram}
               </td>
               <td className="text-right">
                 {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}

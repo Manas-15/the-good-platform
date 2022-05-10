@@ -55,7 +55,7 @@ const ListTransactionsHistory = (props) => {
     // if(props?.history?.action === "PUSH"){
     //   setCurrentPage(1)
     // }
-    if(!isFilter){
+    if (!isFilter) {
       dispatch(
         transactionsHistoryActions.getTransactionsHistory({
           employeeId: employeeId ? employeeId : null,
@@ -63,7 +63,6 @@ const ListTransactionsHistory = (props) => {
         })
       );
     }
-    
   }, [currentPage]);
   useEffect(() => {
     setRecords(transactions?.items);

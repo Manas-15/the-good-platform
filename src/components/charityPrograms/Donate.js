@@ -58,7 +58,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 1 : 2;
     preferenceForm.isConsentCheck = true;
-    preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`
+    preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
     dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
     document.getElementById("sidepanel").classList.remove("is-open");
   };

@@ -45,7 +45,7 @@ const CharityPrograms = () => {
     <div className="customContainer">
       <div className="row mb-4">
         <div className="col-md-6">
-        <h1 className="ant-typography customHeading">Charity Programs</h1>
+          <h1 className="ant-typography customHeading">Charity Programs</h1>
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
@@ -142,22 +142,22 @@ const CharityPrograms = () => {
                 </button>
               </li>
               {/* {tabType === charityProgramConstants.SPONSOR && ( */}
-                <li className="nav-item">
-                  <button
-                    className="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#give-monthly"
-                    onClick={() =>
-                      setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
-                    }
-                  >
-                    <span>Give Monthly</span>
-                    {activeFrequenctTab ===
-                      donationPreferenceConstants.MONTHLY && (
-                      <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                    )}
-                  </button>
-                </li>
+              <li className="nav-item">
+                <button
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#give-monthly"
+                  onClick={() =>
+                    setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
+                  }
+                >
+                  <span>Give Monthly</span>
+                  {activeFrequenctTab ===
+                    donationPreferenceConstants.MONTHLY && (
+                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
+                  )}
+                </button>
+              </li>
               {/* )} */}
             </ul>
           </div>
