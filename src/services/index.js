@@ -5,3 +5,4 @@ export * from './charityProgram.service';
 export * from './donationPreference.service';
 export * from './payment.service';
 export * from './transactionsHistory.service';
+export * from './payroll.service';

@@ -24,6 +24,18 @@ export function payrollSetting(state = {}, action) {
           return item;
         }),
       };
+    case payrollConstants.PROCESS_BATCH_REQUEST:
+      return {
+        loading: true,
+      };
+    case payrollConstants.PROCESS_BATCH_SUCCESS:
+      return {
+        items: action?.data?.data,
+      };
+    case payrollConstants.PROCESS_BATCH_FAILURE:
+      return {
+        error: action.error,
+      };
     default:
       return state;
   }
