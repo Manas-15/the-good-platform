@@ -181,7 +181,7 @@ const PayrollBatch = () => {
                           <td className="ant-table-cell text-center">
                             {batch?.status === "Pending" && (
                               <Link
-                                onClick={() => handleOpen("Complete", batch)}
+                                onClick={() => handleOpen("Complete Batch", batch)}
                               >
                                 <span
                                   className="bi-check-circle fs-5"
@@ -210,6 +210,7 @@ const PayrollBatch = () => {
         <ConfirmationDialog
           open={true}
           title={actionTitle}
+          actionType={actionType}
           content={actionContent}
           handleConfirm={() => {
             confirm();

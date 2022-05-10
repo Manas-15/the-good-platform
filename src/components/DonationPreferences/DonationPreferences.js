@@ -281,9 +281,19 @@ const DonationPreferences = () => {
                           <td className="ant-table-cell text-center text-uppercase">
                             {preference?.status ===
                               donationPreferenceConstants?.SUSPENDED && (
-                              <span className="text-danger">Suspended</span>
+                              <>
+                                {preference?.frequency ===
+                                  donationPreferenceConstants?.MONTHLY_FREQUENCY && (
+                                  <span className="text-danger">Suspended</span>
+                                )}
+                                {preference?.frequency ===
+                                  donationPreferenceConstants?.ONCE_FREQUENCY && (
+                                  <span className="text-primary">
+                                    Completed
+                                  </span>
+                                )}
+                              </>
                             )}
-
                             {(!preference?.status ||
                               preference?.status ===
                                 donationPreferenceConstants?.RESUMED) && (

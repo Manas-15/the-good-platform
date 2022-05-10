@@ -26,7 +26,6 @@ export default function ConfirmationDialog({
       setIsDisabled(false);
     }
   };
-
   return (
     <>
       <Modal show={open} onHide={handleCancel} backdrop="static">
@@ -49,6 +48,14 @@ export default function ConfirmationDialog({
                   </option>
                 ))}
               </select>
+            </div>
+          )}
+          {actionType === donationPreferenceConstants.COMPLETE_BATCH && (
+            <div>
+              <label>
+                <strong>Notes:</strong>
+              </label>
+              <textarea type="textarea" rows="3" className="form-control" />
             </div>
           )}
         </Modal.Body>

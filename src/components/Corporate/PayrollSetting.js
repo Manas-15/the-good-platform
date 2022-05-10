@@ -39,24 +39,6 @@ const PayrollSetting = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
-  // const currentTableData = useMemo(async () => {
-  //   console.log("1111111111111111 currentPage", currentPage);
-  //   const firstPageIndex = (currentPage - 1) * PageSize;
-  //   const lastPageIndex = firstPageIndex + PageSize;
-  //   // return fetchData();
-  //   // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
-  //   // useEffect(() => {
-  //   // dispatch(
-  //   return await dispatch(
-  //     payrollSettingActions.getDonationPreferences({
-  //       page: currentPage,
-  //       limit: PageSize,
-  //       offset: currentPage === 1 ? 0 : currentPage * 10,
-  //     })
-  //   );
-  //   // );
-  //   // }, []);
-  // }, [currentPage]);
   useEffect(() => {
     dispatch(
       payrollSettingActions.getDonationPreferences({
@@ -118,15 +100,16 @@ const PayrollSetting = () => {
         (item?.status === donationPreferenceConstants?.RESUMED ||
           item?.status === null)
     );
-    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", {
+    const finalData = {
       corporateId: 1,
       totalAmount: data.reduce(
         (total, currentValue) => (total = total + currentValue.donationAmount),
         0
       ),
       items: data,
-    });
-    // dispatch(payrollSettingActions.processBatch(data));
+    };
+    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", finalData);
+    // dispatch(payrollSettingActions.processBatch(finalData));
   };
   return (
     <div className="customContainer">
