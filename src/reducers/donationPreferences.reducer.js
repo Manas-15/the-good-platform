@@ -21,7 +21,7 @@ export function donationPreferences(state = {}, action) {
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_SUCCESS:
       return {
-        saved: true
+        saved: true,
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_FAILURE:
       return {
@@ -31,11 +31,11 @@ export function donationPreferences(state = {}, action) {
     case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_REQUEST:
       return {
         loading: true,
-        items: state.items
+        items: state.items,
       };
     case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_SUCCESS:
       return {
-        items: state.items
+        items: state.items,
       };
     case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_FAILURE:
       return {
@@ -54,23 +54,34 @@ export function donationPreferences(state = {}, action) {
         ...state,
         actionRequest: false,
         items: state.items.map((item) => {
-          console.log("state?.requestType >>>>>>>>>>>>>>>>", item?.employeePreferenceId, state?.preferenceId)
           if (item?.employeePreferenceId === state?.preferenceId) {
-            if(state?.requestType === donationPreferenceConstants?.DELETE){
-              return { ...item, isDeleted: state?.requestType === donationPreferenceConstants?.DELETE };
+            if (state?.requestType === donationPreferenceConstants?.DELETE) {
+              return {
+                ...item,
+                isDeleted:
+                  state?.requestType === donationPreferenceConstants?.DELETE,
+              };
             }
-            if(state?.requestType === donationPreferenceConstants?.SUSPEND){
-              return { ...item, status: donationPreferenceConstants?.SUSPENDED };
-            } 
-            if(state?.requestType === donationPreferenceConstants?.RESUME){
+            if (state?.requestType === donationPreferenceConstants?.SUSPEND) {
+              return {
+                ...item,
+                status: donationPreferenceConstants?.SUSPENDED,
+              };
+            }
+            if (state?.requestType === donationPreferenceConstants?.RESUME) {
               return { ...item, status: donationPreferenceConstants?.RESUMED };
-            } 
+            }
           }
           return item;
         }),
       };
     case donationPreferenceConstants.PREFERENCE_ACTION_FAILURE:
-      return { ...state, actionRequest: false, items: state.items, error: action.error };
+      return {
+        ...state,
+        actionRequest: false,
+        items: state.items,
+        error: action.error,
+      };
     default:
       return state;
   }

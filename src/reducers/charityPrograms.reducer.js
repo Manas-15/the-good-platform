@@ -25,12 +25,12 @@ export function charityPrograms(state = {}, action) {
         ...state,
         items: {
           sponser: state.items["sponser"].map((charity) =>
-          charity.charityId === state.charityId
+            charity.charityId === state.charityId
               ? { ...charity, donated: true }
               : charity
           ),
           other: state.items["other"].map((charity) =>
-          charity.charityId === state.charityId
+            charity.charityId === state.charityId
               ? { ...charity, donated: true }
               : charity
           ),
