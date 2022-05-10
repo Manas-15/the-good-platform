@@ -10,7 +10,7 @@ const ListSocialOrganizations = () => {
   // const corporates = useSelector(state => state.corporates);
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
-  
+
   return (
     <div className="social-organization">
       <div className="row mb-4">

@@ -9,7 +9,8 @@ const Sidebar = () => {
     history.location.pathname.includes("/employee-donation-preference") ||
     history.location.pathname.includes("/payroll-setting") ||
     history.location.pathname.includes("/payroll-batch");
-  const isSuperadminView = history.location.pathname === "/transactions-history";
+  const isSuperadminView =
+    history.location.pathname === "/transactions-history";
   return (
     <aside id="sidebar" className="sidebar">
       <ul className="sidebar-nav" id="sidebar-nav">
@@ -102,15 +103,15 @@ const Sidebar = () => {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                <NavLink
-                  className="nav-link "
-                  to={`/employee/${user?.uuid}/transactions-history`}
-                  activeClassName="active"
-                >
-                  <i className="bi bi-clock-history"></i>
-                  <span>Transactions History</span>
-                </NavLink>
-              </li>
+                  <NavLink
+                    className="nav-link "
+                    to={`/employee/${user?.uuid}/transactions-history`}
+                    activeClassName="active"
+                  >
+                    <i className="bi bi-clock-history"></i>
+                    <span>Transactions History</span>
+                  </NavLink>
+                </li>
               </>
             )}
           </>

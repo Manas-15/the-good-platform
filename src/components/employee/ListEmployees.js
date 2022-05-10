@@ -44,7 +44,10 @@ const ListEmployees = (props) => {
       <div className="row mb-4">
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">
-            <Link to="/corporates" className="text-decoration-underline">Corporates</Link> / Employees
+            <Link to="/corporates" className="text-decoration-underline">
+              Corporates
+            </Link>{" "}
+            / Employees
           </h1>
         </div>
         {/* <div className="col-md-6" style={{ textAlign: "right" }}>

@@ -372,20 +372,21 @@ const EmployeeForm = ({ type }) => {
                         (errors.country && touched.country ? " is-invalid" : "")
                       }
                     />
-                  </div>                  
+                  </div>
                   <div className="form-group">
                     <div className="custom-control custom-checkbox">
                       <input
                         type="checkbox"
                         className="custom-control-input"
                         id="termsCheck"
-                        onClick={()=>setIsTermsChecked(!isTermsChecked)}
+                        onClick={() => setIsTermsChecked(!isTermsChecked)}
                       />
                       <label
                         className="custom-control-label"
                         htmlFor="termsCheck"
                       >
-                        &nbsp;By signing up, I agree to the The Good Platform Privacy Policy and Terms of Service.
+                        &nbsp;By signing up, I agree to the The Good Platform
+                        Privacy Policy and Terms of Service.
                       </label>
                     </div>
                   </div>
