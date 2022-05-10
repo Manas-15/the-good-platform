@@ -115,8 +115,7 @@ const PayrollSetting = () => {
     const data = preferences?.items?.filter(
       (item) =>
         item.isDeleted === false &&
-        (item?.status ===
-          donationPreferenceConstants?.RESUMED ||
+        (item?.status === donationPreferenceConstants?.RESUMED ||
           item?.status === null)
     );
     console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", {
@@ -425,19 +424,18 @@ const PayrollSetting = () => {
           </div>
         </>
       ) : (
-        <div className="text-center m-4">
-          No data found
+        <div className="text-center m-4">No data found</div>
+      )}
+      {accordionData && (
+        <div className="text-right m-3">
+          <Button
+            className="btn btn-primary"
+            onClick={() => handleOpenDialog("Process batch", "")}
+          >
+            Process Batch
+          </Button>
         </div>
       )}
-      {accordionData &&
-      <div className="text-right m-3">
-        <Button
-          className="btn btn-primary"
-          onClick={() => handleOpenDialog("Process batch", "")}
-        >
-          Process Batch
-        </Button>
-      </div>}
       {openDialog && (
         <ConfirmationDialog
           open={true}

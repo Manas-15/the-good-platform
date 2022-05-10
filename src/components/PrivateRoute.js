@@ -17,7 +17,6 @@ function PrivateRoute({ component: Component, roles, ...rest }) {
             />
           );
         }
-
         // logged in so return component
         return <Component {...props} />;
       }}
