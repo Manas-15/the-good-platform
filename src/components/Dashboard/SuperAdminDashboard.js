@@ -219,16 +219,16 @@ const SuperAdminDashboard = () => {
                     <table className="table table-borderless datatable">
                       <thead>
                         <tr>
-                          <th >Sl#</th>
-                          <th >Corporates</th>
-                          <th >Type</th>
-                          <th >Size</th>
-                          <th >Status</th>
+                          <th>Sl#</th>
+                          <th>Corporates</th>
+                          <th>Type</th>
+                          <th>Size</th>
+                          <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <th >
+                          <th>
                             <a href="#">1</a>
                           </th>
                           <td>Donarium</td>
@@ -243,7 +243,7 @@ const SuperAdminDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th >
+                          <th>
                             <a href="#">2</a>
                           </th>
                           <td>Indicom Pvt. Ltd.</td>
@@ -260,7 +260,7 @@ const SuperAdminDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th >
+                          <th>
                             <a href="#">3</a>
                           </th>
                           <td>Birla Group</td>
@@ -275,7 +275,7 @@ const SuperAdminDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th >
+                          <th>
                             <a href="#">4</a>
                           </th>
                           <td>Universe Donar</td>
@@ -290,7 +290,7 @@ const SuperAdminDashboard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <th >
+                          <th>
                             <a href="#">5</a>
                           </th>
                           <td>Bengal Infra</td>

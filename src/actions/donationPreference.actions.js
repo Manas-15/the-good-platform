@@ -5,7 +5,7 @@ import { alertActions } from "./";
 export const donationPreferenceActions = {
   getDonationPreferences,
   saveDonationPreference,
-  updateDonationPreference,  
+  updateDonationPreference,
   operateActionRequest,
 };
 
@@ -15,7 +15,9 @@ function saveDonationPreference(data) {
     donationPreferenceService.saveDonationPreference(data).then(
       (data) => {
         dispatch(success());
-        dispatch(alertActions.success("Donation preferences saved successfully."));
+        dispatch(
+          alertActions.success("Donation preferences saved successfully.")
+        );
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -48,7 +50,9 @@ function updateDonationPreference(data) {
     donationPreferenceService.updateDonationPreference(data).then(
       (data) => {
         dispatch(success());
-        dispatch(alertActions.success("Donation preference updated successfully."));
+        dispatch(
+          alertActions.success("Donation preference updated successfully.")
+        );
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -88,7 +92,8 @@ function getDonationPreferences(data) {
   };
   function request(data) {
     return {
-      type: donationPreferenceConstants.GET_DONATION_PREFERENCES_REQUEST };
+      type: donationPreferenceConstants.GET_DONATION_PREFERENCES_REQUEST,
+    };
   }
   function success(preferences) {
     return {
@@ -111,9 +116,7 @@ function operateActionRequest(actionValues) {
     donationPreferenceService.operateActionRequest(actionValues).then(
       (data) => {
         dispatch(success(data));
-        dispatch(
-          alertActions.success(data?.data?.msg)
-        );
+        dispatch(alertActions.success(data?.data?.msg));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -123,12 +126,18 @@ function operateActionRequest(actionValues) {
   };
 
   function request(donationPreferences) {
-    return { type: donationPreferenceConstants.PREFERENCE_ACTION_REQUEST, donationPreferences };
+    return {
+      type: donationPreferenceConstants.PREFERENCE_ACTION_REQUEST,
+      donationPreferences,
+    };
   }
   function success() {
     return { type: donationPreferenceConstants.PREFERENCE_ACTION_SUCCESS };
   }
   function failure(error) {
-    return { type: donationPreferenceConstants.PREFERENCE_ACTION_FAILURE, error };
+    return {
+      type: donationPreferenceConstants.PREFERENCE_ACTION_FAILURE,
+      error,
+    };
   }
 }

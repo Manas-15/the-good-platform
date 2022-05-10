@@ -57,7 +57,6 @@ function processBatch(data) {
     dispatch(request(data));
     payrollService.processBatch(data).then(
       (batch) => dispatch(success(batch)),
-
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
@@ -66,7 +65,8 @@ function processBatch(data) {
   };
   function request(data) {
     return {
-      type: payrollConstants.PROCESS_BATCH_REQUEST, data
+      type: payrollConstants.PROCESS_BATCH_REQUEST,
+      data,
     };
   }
   function success(preferences) {

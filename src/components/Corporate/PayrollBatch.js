@@ -97,9 +97,7 @@ const PayrollBatch = () => {
     setActionType(action);
     setActionTitle(`${action} Confirmation`);
     setActionContent(
-      `Are you sure to complete this batch <strong>"${
-        item?.batchId
-      }"</strong>?`
+      `Are you sure to complete this batch <strong>"${item?.batchId}"</strong>?`
     );
   };
   const handleCancel = () => {
@@ -183,7 +181,7 @@ const PayrollBatch = () => {
                           <td className="ant-table-cell text-center">
                             {batch?.status === "Pending" && (
                               <Link
-                              onClick={() => handleOpen("Complete", batch)}
+                                onClick={() => handleOpen("Complete", batch)}
                               >
                                 <span
                                   className="bi-check-circle fs-5"
@@ -222,7 +220,9 @@ const PayrollBatch = () => {
         />
       )}
       <Modal show={show} onHide={handleCancel} backdrop="static">
-        <Modal.Header closeButton className="fs-5 p-2"><Modal.Title>Reference Note</Modal.Title></Modal.Header>
+        <Modal.Header closeButton className="fs-5 p-2">
+          <Modal.Title>Reference Note</Modal.Title>
+        </Modal.Header>
         <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
       </Modal>
     </div>

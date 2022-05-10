@@ -21,14 +21,18 @@ function login(data, from) {
     employeeService.login(data).then(
       (data) => {
         dispatch(success(data));
-        if(data?.data?.approve){
-          const res = JSON.stringify(data?.data)
+        if (data?.data?.approve) {
+          const res = JSON.stringify(data?.data);
           localStorage.setItem("user", JSON.stringify(data?.data));
           // history.push("/dashboard");
           // dispatch(alertActions.success("Loggedin successful"));
           history.push("/otp");
-        }else{
-          dispatch(alertActions.error("Your account is currently in review. You will soon receive an email with a link to set your password."))
+        } else {
+          dispatch(
+            alertActions.error(
+              "Your account is currently in review. You will soon receive an email with a link to set your password."
+            )
+          );
         }
       },
       (error) => {
@@ -60,13 +64,13 @@ function validateOtp(data, from) {
     employeeService.validateOtp(data).then(
       (data) => {
         dispatch(success(data));
-        if(data?.data?.msg === "Invalid OTP"){
+        if (data?.data?.msg === "Invalid OTP") {
           history.push("/otp");
           dispatch(alertActions.error(data?.data?.msg));
-        }else{
+        } else {
           localStorage.setItem("otpVerified", true);
           history.push("/");
-        }        
+        }
         // dispatch(alertActions.success("Loggedin successful"));
       },
       (error) => {
@@ -157,7 +161,6 @@ function registerEmployee(employee, type) {
 
     employeeService.registerEmployee(employee).then(
       (employee) => {
-        console.log(">>>>>>>>>>>>>>>>>> employee", employee)
         dispatch(success());
         history.push("/thank-you");
       },

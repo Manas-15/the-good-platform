@@ -138,14 +138,20 @@ const DonationPreferences = () => {
       selectedPreference.employeePreferenceId;
     preferenceForm.type = updateType;
     if (updateType === donationPreferenceConstants.AMOUNT) {
-      preferenceForm.donationAmount = updatedValue.replace(/,/g, '');;
-      preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${selectedPreference?.frequency === 2 ? donationPreferenceConstants.MONTHLY : donationPreferenceConstants.ONCE}]`
+      preferenceForm.donationAmount = updatedValue.replace(/,/g, "");
+      preferenceForm.donationConsent = `${
+        donationsConsent?.consent
+      } [Frequency: ${
+        selectedPreference?.frequency === 2
+          ? donationPreferenceConstants.MONTHLY
+          : donationPreferenceConstants.ONCE
+      }]`;
       // preferenceForm.frequency = selectedPreference?.frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     }
     if (updateType === donationPreferenceConstants.FREQUENCY) {
       preferenceForm.frequency =
         updatedValue === donationPreferenceConstants.MONTHLY ? 2 : 1;
-      preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`
+      preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`;
     }
     preferenceForm.isConsentCheck = true;
     dispatch(
@@ -275,8 +281,8 @@ const DonationPreferences = () => {
                           <td className="ant-table-cell text-center text-uppercase">
                             {preference?.status ===
                               donationPreferenceConstants?.SUSPENDED && (
-                                <span className="text-danger">Suspended</span>
-                              )}
+                              <span className="text-danger">Suspended</span>
+                            )}
 
                             {(!preference?.status ||
                               preference?.status ===
