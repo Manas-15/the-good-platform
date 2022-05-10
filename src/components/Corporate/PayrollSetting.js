@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,41 +39,56 @@ const PayrollSetting = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
-  const currentTableData = useMemo(async () => {
-    console.log("1111111111111111 currentPage", currentPage);
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    // return fetchData();
-    // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
-    // useEffect(() => {
-    // dispatch(
-    return await dispatch(
+  // const currentTableData = useMemo(async () => {
+  //   console.log("1111111111111111 currentPage", currentPage);
+  //   const firstPageIndex = (currentPage - 1) * PageSize;
+  //   const lastPageIndex = firstPageIndex + PageSize;
+  //   // return fetchData();
+  //   // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
+  //   // useEffect(() => {
+  //   // dispatch(
+  //   return await dispatch(
+  //     payrollSettingActions.getDonationPreferences({
+  //       page: currentPage,
+  //       limit: PageSize,
+  //       offset: currentPage === 1 ? 0 : currentPage * 10,
+  //     })
+  //   );
+  //   // );
+  //   // }, []);
+  // }, [currentPage]);
+  useEffect(() => {
+    dispatch(
       payrollSettingActions.getDonationPreferences({
-        page: currentPage,
-        limit: PageSize,
-        offset: currentPage === 1 ? 0 : currentPage * 10,
+        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })
     );
-    // );
-    // }, []);
   }, [currentPage]);
-
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
     setActionType(action);
-    setSelectedPreference(item);
     setActionTitle(`${action} Confirmation`);
-    setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${
-        item?.charityProgram
-      }"</strong>?`
-    );
+    if (item) {
+      setSelectedPreference(item);
+      setActionContent(
+        `Are you sure to ${action.toLowerCase()} <strong>"${
+          item?.charityProgram
+        }"</strong>?`
+      );
+    } else {
+      setActionContent(`Are you sure to process this batch?`);
+    }
   };
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
     handleCloseDialog();
-    actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
-    dispatch(payrollSettingActions.operateActionRequest(actionInitialValues));
+    if (selectedPreference) {
+      actionInitialValues.preferenceId =
+        selectedPreference?.employeePreferenceId;
+      dispatch(payrollSettingActions.operateActionRequest(actionInitialValues));
+    } else {
+      processBatch();
+    }
   };
   if (preferences.loading) {
     document.getElementById("root").classList.add("loading");
@@ -82,7 +97,6 @@ const PayrollSetting = () => {
   }
   const groupBy = (key) => {
     return preferences?.items?.reduce(function (acc, item) {
-      console.log("iiiiiiiiiiiiiiiiiiii", item);
       (acc[item[key]] = acc[item[key]] || []).push(item);
       return acc;
     }, {});
@@ -98,8 +112,21 @@ const PayrollSetting = () => {
   //   return str.substring(0, 1).toUpperCase() + str.substring(1);
   // };
   const processBatch = () => {
-    const data = preferences?.items?.filter((item) => item.isDeleted === false);
-    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", data);
+    const data = preferences?.items?.filter(
+      (item) =>
+        item.isDeleted === false &&
+        (item?.status ===
+          donationPreferenceConstants?.RESUMED ||
+          item?.status === null)
+    );
+    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", {
+      corporateId: 1,
+      totalAmount: data.reduce(
+        (total, currentValue) => (total = total + currentValue.donationAmount),
+        0
+      ),
+      items: data,
+    });
     // dispatch(payrollSettingActions.processBatch(data));
   };
   return (
@@ -187,9 +214,9 @@ const PayrollSetting = () => {
               {accordionData[type].filter(
                 (preference) =>
                   preference?.isDeleted === false &&
-                  preference?.status ===
-                    (donationPreferenceConstants?.RESUMED ||
-                      preference?.status === null)
+                  (preference?.status ===
+                    donationPreferenceConstants?.RESUMED ||
+                    preference?.status === null)
               ).length > 0 && (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
@@ -206,9 +233,9 @@ const PayrollSetting = () => {
                             .filter(
                               (preference) =>
                                 preference?.isDeleted === false &&
-                                preference?.status ===
-                                  (donationPreferenceConstants?.RESUMED ||
-                                    preference?.status === null)
+                                (preference?.status ===
+                                  donationPreferenceConstants?.RESUMED ||
+                                  preference?.status === null)
                             )
                             ?.reduce(
                               (total, currentValue) =>
@@ -271,9 +298,9 @@ const PayrollSetting = () => {
                                     .filter(
                                       (preference) =>
                                         preference?.isDeleted === false &&
-                                        preference?.status ===
-                                          (donationPreferenceConstants?.RESUMED ||
-                                            preference?.status === null)
+                                        (preference?.status ===
+                                          donationPreferenceConstants?.RESUMED ||
+                                          preference?.status === null)
                                     )
                                     .map((preference, i) => (
                                       <tr
@@ -381,9 +408,9 @@ const PayrollSetting = () => {
                         .filter(
                           (preference) =>
                             preference?.isDeleted === false &&
-                            preference?.status ===
-                              (donationPreferenceConstants?.RESUMED ||
-                                preference?.status === null)
+                            (preference?.status ===
+                              donationPreferenceConstants?.RESUMED ||
+                              preference?.status === null)
                         )
                         ?.reduce(
                           (total, currentValue) =>
@@ -398,17 +425,19 @@ const PayrollSetting = () => {
           </div>
         </>
       ) : (
-        <tr>
-          <td colSpan="7" className="text-center">
-            No data found
-          </td>
-        </tr>
+        <div className="text-center m-4">
+          No data found
+        </div>
       )}
+      {accordionData &&
       <div className="text-right m-3">
-        <Button className="btn btn-primary" onClick={processBatch}>
+        <Button
+          className="btn btn-primary"
+          onClick={() => handleOpenDialog("Process batch", "")}
+        >
           Process Batch
         </Button>
-      </div>
+      </div>}
       {openDialog && (
         <ConfirmationDialog
           open={true}

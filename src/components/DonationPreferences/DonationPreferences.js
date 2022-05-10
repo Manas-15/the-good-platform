@@ -206,7 +206,7 @@ const DonationPreferences = () => {
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {preferences ? (
+                  {preferences?.items?.length > 0 ? (
                     preferences?.items
                       ?.filter((preference) => preference?.isDeleted === false)
                       .map((preference, index) => (
@@ -329,7 +329,7 @@ const DonationPreferences = () => {
                       ))
                   ) : (
                     <tr>
-                      <td colSpan="7" className="text-center">
+                      <td colSpan="8" className="text-center">
                         No preferences found
                       </td>
                     </tr>
