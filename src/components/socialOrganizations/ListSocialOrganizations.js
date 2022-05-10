@@ -2,122 +2,92 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import socialOrganizations from "./../../config/socialOrganizations.json";
 import { useDispatch, useSelector } from "react-redux";
-import "./../../assets/css/socialOrganizations.scss";
-import * as moment from "moment";
+import { Link } from "react-router-dom";
 
-const ListSocialOrganizations = () => {
+const ListCharityPrograms = () => {
   let history = useHistory();
   // const corporates = useSelector(state => state.corporates);
-  const user = useSelector((state) => state.employee.user);
+  // const user = useSelector((state) => state.authentication.user);
   const dispatch = useDispatch();
 
   return (
-    <div className="social-organization">
+    <div className="customContainer">
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Social Organizations</h4>
+          <h1 className="ant-typography customHeading">Social Organizations</h1>
+        </div>
+      </div>
+      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+        <div className="ant-col ant-col-24  searchContainer">
+          <div className="ant-col ant-col-8">
+            <div className="ant-input-affix-wrapper inputFilterInput">
+              <span className="ant-input-prefix">
+                <i className="bi bi-search"></i>
+                <input
+                  placeholder="Search by Name"
+                  className="ant-input-search"
+                  type="text"
+                  value=""
+                />
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       {/* {corporates.loading && <em>Loading charity programs...</em>} */}
-      {/* <table className="table table-striped">
-        <thead>
-          <tr className="table-active">
-            <th>Sl#</th>
-            <th>Name</th>
-            <th>Date Added</th>
-            <th className="text-center">Charity Programs</th>
-            {/* <th className="text-center">Actions</th> 
-          </tr>
-        </thead>
-        <tbody> */}
-      {socialOrganizations ? (
-        <div className="row">
-          {socialOrganizations.map((socialOrganization, index) => (
-            <div className="col-xl-4">
-              <div className="card">
-                <div className="card-body card pt-3 d-flex flex-column align-items-center">
-                  <img
-                    src="assets/img/profile-img.jpg"
-                    alt="Image"
-                    className="rounded-circle"
-                  />
-                  <h2>{socialOrganization.name}</h2>
-                  <div className="info">
-                    <strong>Established:&nbsp;</strong>
-                    {moment(socialOrganization.dateAdded).format("LL")}
-                  </div>
-                  <div className="info mb-4">
-                    <strong>Programs:&nbsp;</strong>
-                    {socialOrganization.charityPrograms}
-                  </div>
-                  <div className="social-links mt-2">
-                    <a href="#" className="twitter">
-                      <i className="bi bi-twitter"></i>
-                    </a>
-                    <a href="#" className="facebook">
-                      <i className="bi bi-facebook"></i>
-                    </a>
-                    <a href="#" className="instagram">
-                      <i className="bi bi-instagram"></i>
-                    </a>
-                    <a href="#" className="linkedin">
-                      <i className="bi bi-linkedin"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
+      <div className="ant-row">
+        <div className="ant-col ant-col-24 mt-2">
+          <div className="ant-table-wrapper">
+            <div className="ant-table">
+              <table>
+                <thead className="ant-table-thead">
+                  <tr>
+                    <th className="ant-table-cell">Sl#</th>
+                    <th className="ant-table-cell">Name</th>
+                    <th className="ant-table-cell">Date Added</th>
+                    <th className="ant-table-cell text-center">Programs</th>
+                    <th className="ant-table-cell text-center">Actions</th>
+                    {/* <th className="text-center">Actions</th> */}
+                  </tr>
+                </thead>
+                <tbody className="ant-table-tbody">
+                  {socialOrganizations ? (
+                    socialOrganizations.map((socialOrganization, index) => (
+                      <tr
+                        key={index + 1}
+                        className="ant-table-row ant-table-row-level-0"
+                      >
+                        <td className="ant-table-cell">{index + 1}</td>
+                        <td className="ant-table-cell">
+                          <span className="ant-typography font-weight-bold">
+                            {socialOrganization.name}
+                          </span>
+                        </td>
+                        <td className="ant-table-cell">
+                          {socialOrganization.dateAdded}
+                        </td>
+                        <td className="ant-table-cell text-center">
+                          {socialOrganization.charityPrograms}
+                        </td>
+                        <td className="ant-table-cell text-center">
+                          {/* <Link><span className="bi-check-circle fs-5" title="Confirm"></span></Link> */}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4" className="text-center">
+                        No organizations found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-          ))}
+          </div>
         </div>
-      ) : (
-        <span>No organization found</span>
-      )}
-      {/* //     ) : (
-      //       <tr>
-      //         <td colSpan="4" className="text-center">
-      //           No corporates found
-      //         </td>
-      //       </tr>
-      //     )}
-      //   </tbody> 
-      // </table>*/}
-      {/* <div className="row mb-4">
-        <div className="col-md-6">
-          <p>Showing 1 to 10 of 20 records</p>
-        </div>
-        <div className="col-md-6" style={{ textAlign: "right" }}>
-          <nav aria-label="Page navigation example" className="d-inline-block">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div> */}
+      </div>
     </div>
   );
 };
-export default ListSocialOrganizations;
+export default ListCharityPrograms;
