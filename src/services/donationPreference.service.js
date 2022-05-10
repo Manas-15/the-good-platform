@@ -9,15 +9,24 @@ export const donationPreferenceService = {
 };
 
 function getDonationPreferences(data) {
-  return axios.get(process.env.REACT_APP_API_URL + "api/employee_preference_list/",{
-    params: data,
-  });
+  return axios.get(
+    process.env.REACT_APP_API_URL + "api/employee_preference_list/",
+    {
+      params: data,
+    }
+  );
 }
 function saveDonationPreference(data) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/save_employee_donation_preference/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/save_employee_donation_preference/",
+    data
+  );
 }
 function updateDonationPreference(data) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/employee_preference_edit/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_preference_edit/",
+    data
+  );
 }
 function operateActionRequest(data) {
   return axios.post(

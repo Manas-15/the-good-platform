@@ -26,7 +26,7 @@ async function login(data) {
       JSON.stringify({ username: data?.email, password: data?.password }),
       {
         withCredentials: true,
-        headers: jwtInterceptor()
+        headers: jwtInterceptor(),
       }
     );
   }

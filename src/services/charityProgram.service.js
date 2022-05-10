@@ -12,5 +12,8 @@ function getCharityPrograms(data) {
   });
 }
 function saveDonationPreference(data) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/save_employee_donation_preference/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/save_employee_donation_preference/",
+    data
+  );
 }
