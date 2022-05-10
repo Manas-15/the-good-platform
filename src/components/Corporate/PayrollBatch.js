@@ -97,7 +97,7 @@ const PayrollBatch = () => {
     setActionType(action);
     setActionTitle(`${action} Confirmation`);
     setActionContent(
-      `Are you sure to delete this batch <strong>"${
+      `Are you sure to complete this batch <strong>"${
         item?.batchId
       }"</strong>?`
     );
@@ -183,7 +183,7 @@ const PayrollBatch = () => {
                           <td className="ant-table-cell text-center">
                             {batch?.status === "Pending" && (
                               <Link
-                              onClick={() => handleOpen("Delete", batch)}
+                              onClick={() => handleOpen("Complete", batch)}
                               >
                                 <span
                                   className="bi-check-circle fs-5"

@@ -98,8 +98,10 @@ const PayrollSetting = () => {
   //   return str.substring(0, 1).toUpperCase() + str.substring(1);
   // };
   const processBatch = () => {
-    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", preferences?.items?.filter((item) => item.isDeleted === false))
-  }
+    const data = preferences?.items?.filter((item) => item.isDeleted === false);
+    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", data);
+    // dispatch(payrollSettingActions.processBatch(data));
+  };
   return (
     <div className="customContainer">
       <div className="row mb-3">
@@ -185,9 +187,9 @@ const PayrollSetting = () => {
               {accordionData[type].filter(
                 (preference) =>
                   preference?.isDeleted === false &&
-                  (preference?.status ===
+                  preference?.status ===
                     (donationPreferenceConstants?.RESUMED ||
-                    preference?.status === null))
+                      preference?.status === null)
               ).length > 0 && (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
@@ -197,6 +199,24 @@ const PayrollSetting = () => {
                         ` - ${accordionData[type][0]?.employeeUid}`}
                       {currentView === payrollConstants.PROGRAM_VIEW &&
                         ` - ${accordionData[type][0]?.socialOrganization}`}
+                      &nbsp;&#45;&nbsp;
+                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                      {accordionData[type]
+                        ? accordionData[type]
+                            .filter(
+                              (preference) =>
+                                preference?.isDeleted === false &&
+                                preference?.status ===
+                                  (donationPreferenceConstants?.RESUMED ||
+                                    preference?.status === null)
+                            )
+                            ?.reduce(
+                              (total, currentValue) =>
+                                (total = total + currentValue.donationAmount),
+                              0
+                            )
+                            .toLocaleString()
+                        : 0}
                     </Accordion.Header>
                     <Accordion.Body>
                       <div className="ant-row">
@@ -251,9 +271,9 @@ const PayrollSetting = () => {
                                     .filter(
                                       (preference) =>
                                         preference?.isDeleted === false &&
-                                        (preference?.status ===
+                                        preference?.status ===
                                           (donationPreferenceConstants?.RESUMED ||
-                                          preference?.status === null))
+                                            preference?.status === null)
                                     )
                                     .map((preference, i) => (
                                       <tr
@@ -357,13 +377,15 @@ const PayrollSetting = () => {
                 <span className="fs-5">
                   {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                   {preferences?.items
-                    ? preferences?.items.filter(
-                      (preference) =>
-                        preference?.isDeleted === false &&
-                        (preference?.status ===
-                          (donationPreferenceConstants?.RESUMED ||
-                          preference?.status === null))
-                    )?.reduce(
+                    ? preferences?.items
+                        .filter(
+                          (preference) =>
+                            preference?.isDeleted === false &&
+                            preference?.status ===
+                              (donationPreferenceConstants?.RESUMED ||
+                                preference?.status === null)
+                        )
+                        ?.reduce(
                           (total, currentValue) =>
                             (total = total + currentValue.donationAmount),
                           0
@@ -383,7 +405,9 @@ const PayrollSetting = () => {
         </tr>
       )}
       <div className="text-right m-3">
-        <Button className="btn btn-primary" onClick={processBatch}>Process Batch</Button>
+        <Button className="btn btn-primary" onClick={processBatch}>
+          Process Batch
+        </Button>
       </div>
       {openDialog && (
         <ConfirmationDialog

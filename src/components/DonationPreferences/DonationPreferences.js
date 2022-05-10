@@ -10,8 +10,8 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
 import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
-import { Table, Tag, Space } from "antd";
 import "./../../assets/css/donationPreference.scss";
+import donationsConsent from "./../../config/donationsConsent.json";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -19,6 +19,7 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
+  donationConsent: "",
 };
 const actionInitialValues = {
   isDeleted: false,
@@ -110,15 +111,22 @@ const DonationPreferences = () => {
     updateDonationPreference();
   };
   const closeCheck = (selectedPreference) => {
+    console.log("selectedPreference", selectedPreference);
     setChecked(false);
     setOpen(false);
-    // document.getElementById("#amount"+selectedPreference?.employeePreferenceId).val(selectedPreference?.donationAmount);
-    preferences?.items?.map((item) => {
-      console.log("selectedPreference?.amount", item?.employeePreferenceId, selectedPreference?.employeePreferenceId)
-      if (item?.employeePreferenceId === selectedPreference?.employeePreferenceId) {
-        console.log("dddd?.amount", selectedPreference?.donationAmount)
-        return { ...item, donationAmount: selectedPreference?.donationAmount };
-      }})
+    setUpdatedValue();
+    document
+      .getElementById("amount" + selectedPreference?.employeePreferenceId)
+      .reset();
+    document
+      .getElementById("frequency" + selectedPreference?.employeePreferenceId)
+      .reset();
+    // preferences?.items?.map((item) => {
+    //   console.log("selectedPreference?.amount", item?.employeePreferenceId, selectedPreference?.employeePreferenceId)
+    //   if (item?.employeePreferenceId === selectedPreference?.employeePreferenceId) {
+    //     console.log("dddd?.amount", selectedPreference?.donationAmount)
+    //     return { ...item, donationAmount: selectedPreference?.donationAmount };
+    //   }})
   };
   const showConsent = (preference, type) => {
     setOpen(true);
@@ -130,11 +138,14 @@ const DonationPreferences = () => {
       selectedPreference.employeePreferenceId;
     preferenceForm.type = updateType;
     if (updateType === donationPreferenceConstants.AMOUNT) {
-      preferenceForm.donationAmount = updatedValue;
+      preferenceForm.donationAmount = updatedValue.replace(/,/g, '');;
+      preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${selectedPreference?.frequency === 2 ? donationPreferenceConstants.MONTHLY : donationPreferenceConstants.ONCE}]`
+      // preferenceForm.frequency = selectedPreference?.frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     }
     if (updateType === donationPreferenceConstants.FREQUENCY) {
       preferenceForm.frequency =
-        updatedValue === donationPreferenceConstants.MONTHLY ? 1 : 2;
+        updatedValue === donationPreferenceConstants.MONTHLY ? 2 : 1;
+      preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`
     }
     preferenceForm.isConsentCheck = true;
     dispatch(
@@ -210,54 +221,62 @@ const DonationPreferences = () => {
                             {preference.category}
                           </td>
                           <td className="ant-table-cell">
-                            <input
-                              name="amount"
-                              type="text"
-                              size="4"
-                              maxLength={10}
-                              defaultValue={preference?.donationAmount.toLocaleString()}
-                              className="form-control"
-                              onBlur={() =>
-                                showConsent(
-                                  preference,
-                                  donationPreferenceConstants.AMOUNT
-                                )
-                              }
-                              onInput={(e) => setUpdatedValue(e.target.value)}
+                            <form
                               id={`amount${preference?.employeePreferenceId}`}
-                            />
+                            >
+                              <input
+                                name="amount"
+                                type="text"
+                                size="4"
+                                maxLength={10}
+                                defaultValue={preference?.donationAmount.toLocaleString()}
+                                className="form-control"
+                                onBlur={() =>
+                                  showConsent(
+                                    preference,
+                                    donationPreferenceConstants.AMOUNT
+                                  )
+                                }
+                                onInput={(e) => setUpdatedValue(e.target.value)}
+                                id={`amount${preference?.employeePreferenceId}`}
+                              />
+                            </form>
                           </td>
                           <td className="ant-table-cell text-center">
-                            <BootstrapSwitchButton
-                              checked={
-                                updatedValue
-                                  ? updatedValue
-                                  : preference?.frequency === 2
-                              }
-                              onlabel="Once"
-                              onstyle="primary"
-                              offlabel="Monthly"
-                              offstyle="success"
-                              style="w-100 mx-1"
-                              size="sm"
-                              onChange={(checked) => {
-                                showConsent(
-                                  preference,
-                                  donationPreferenceConstants.FREQUENCY
-                                );
-                                setUpdatedValue(
-                                  checked
-                                    ? donationPreferenceConstants.ONCE
-                                    : donationPreferenceConstants.MONTHLY
-                                );
-                              }}
-                            />
+                            <form
+                              id={`frequency${preference?.employeePreferenceId}`}
+                            >
+                              <BootstrapSwitchButton
+                                checked={
+                                  updatedValue
+                                    ? updatedValue
+                                    : preference?.frequency === 1
+                                }
+                                onlabel="Once"
+                                onstyle="primary"
+                                offlabel="Monthly"
+                                offstyle="success"
+                                style="w-100 mx-1"
+                                size="sm"
+                                onChange={(checked) => {
+                                  showConsent(
+                                    preference,
+                                    donationPreferenceConstants.FREQUENCY
+                                  );
+                                  setUpdatedValue(
+                                    checked
+                                      ? donationPreferenceConstants.ONCE
+                                      : donationPreferenceConstants.MONTHLY
+                                  );
+                                }}
+                              />
+                            </form>
                           </td>
                           <td className="ant-table-cell text-center text-uppercase">
                             {preference?.status ===
-                              donationPreferenceConstants?.SUSPENDED && (preference?.frequency === donationPreferenceConstants?.RESUMED || preference?.frequency === null) && (
-                              <span className="text-danger">Suspended</span>
-                            )}
+                              donationPreferenceConstants?.SUSPENDED && (
+                                <span className="text-danger">Suspended</span>
+                              )}
 
                             {(!preference?.status ||
                               preference?.status ===
@@ -340,13 +359,30 @@ const DonationPreferences = () => {
       {open && (
         <DonationConsent
           open={open}
-          selectedCharity={selectedPreference?.charityProgram}
+          selectedCharity={selectedPreference}
           employee={employee}
-          frequency={selectedPreference?.frequency === 2 ? donationPreferenceConstants.ONCE
-            : donationPreferenceConstants.MONTHLY}
-          amount={updatedValue}
+          frequency={
+            updateType === donationPreferenceConstants.FREQUENCY
+              ? updatedValue
+                ? updatedValue === donationPreferenceConstants.MONTHLY
+                  ? donationPreferenceConstants.MONTHLY
+                  : donationPreferenceConstants.ONCE
+                : selectedPreference?.frequency === 2
+                ? donationPreferenceConstants.MONTHLY
+                : donationPreferenceConstants.ONCE
+              : selectedPreference?.frequency === 2
+              ? donationPreferenceConstants.MONTHLY
+              : donationPreferenceConstants.ONCE
+          }
+          amount={
+            updateType === donationPreferenceConstants.AMOUNT
+              ? updatedValue
+                ? updatedValue
+                : selectedPreference?.donationAmount
+              : selectedPreference?.donationAmount
+          }
           handleCheck={handleCheck}
-          closeCheck={()=>closeCheck(selectedPreference)}
+          closeCheck={() => closeCheck(selectedPreference)}
         />
       )}
     </div>

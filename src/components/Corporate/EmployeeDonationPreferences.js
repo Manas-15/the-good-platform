@@ -4,7 +4,6 @@ import { donationPreferenceActions } from "../../actions/donationPreference.acti
 import { useDispatch, useSelector } from "react-redux";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { donationPreferenceConstants } from "../../constants";
-import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
