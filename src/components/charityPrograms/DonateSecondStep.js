@@ -10,6 +10,7 @@ import * as moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import Payment from "./../Payment/Payment";
 import ReviewAmountBox from "./../Shared/ReviewAmountBox";
+import donationsConsent from "./../../config/donationsConsent.json";
 
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -92,6 +93,7 @@ const DonateSecondStep = ({
     setOpen(false);
   };
   const goToPayment = (data) => {
+    data.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`
     setPaymentValues(data);
     setPaymentStep(true);
   };

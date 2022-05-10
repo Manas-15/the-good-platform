@@ -9,6 +9,7 @@ import { donationPreferenceConstants } from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
 import DonateSecondStep from "./DonateSecondStep";
+import donationsConsent from "./../../config/donationsConsent.json";
 
 const preferenceForm = {
   corporateId: "",
@@ -18,6 +19,7 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
+  donationConsent: "",
 };
 const Donate = ({ frequency, selectedCharity, tabType }) => {
   const employee = useSelector((state) => state.employee.user);
@@ -56,6 +58,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 1 : 2;
     preferenceForm.isConsentCheck = true;
+    preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`
     dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
     document.getElementById("sidepanel").classList.remove("is-open");
   };
@@ -153,7 +156,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
                     onClick={() => setOpen(true)}
                   >
                     <p className="ml-2 d-inline-block text-decoration-underline">
-                      Please select the checkbox to your consent
+                      Please select the checkbox to your consents
                     </p>
                   </Link>
                 </label>

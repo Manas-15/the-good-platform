@@ -39,6 +39,7 @@ const ListTransactionsHistory = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [isFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -54,12 +55,15 @@ const ListTransactionsHistory = (props) => {
     // if(props?.history?.action === "PUSH"){
     //   setCurrentPage(1)
     // }
-    dispatch(
-      transactionsHistoryActions.getTransactionsHistory({
-        employeeId: employeeId ? employeeId : null,
-        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
-      })
-    );
+    if(!isFilter){
+      dispatch(
+        transactionsHistoryActions.getTransactionsHistory({
+          employeeId: employeeId ? employeeId : null,
+          offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
+        })
+      );
+    }
+    
   }, [currentPage]);
   useEffect(() => {
     setRecords(transactions?.items);
@@ -85,6 +89,7 @@ const ListTransactionsHistory = (props) => {
 
   const handleClose = () => setOpen(false);
   const filter = (type, value) => {
+    setIsFilter(true);
     if (value && value !== "0") {
       setRecords(
         transactions?.items?.filter(
