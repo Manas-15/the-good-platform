@@ -1,27 +1,32 @@
 [
   {
-    "name": "PM Cares Fund",
+    "corporateName": "Creatives Inc",
     "dateAdded": "03/15/2022",
-    "charityPrograms": "20"
+    "programName": "Early childhood care",
+    "amount": "12,000"
   },
   {
-    "name": "The Smile Foundation",
+    "corporateName": "The Smile Foundation",
     "dateAdded": "03/25/2022",
-    "charityPrograms": "10"
+    "programName": "Cancer treatment",
+    "amount": "24,000"
   },
   {
-    "name": "Hope Charity Organization",
+    "corporateName": "Hope Charity Organization",
     "dateAdded": "03/22/2022",
-    "charityPrograms": "15"
+    "programName": "Mid day meals",
+    "amount": "30,000"
   },
   {
-    "name": "Sisters of Charity",
+    "corporateName": "Sisters of Charity",
     "dateAdded": "03/21/2022",
-    "charityPrograms": "35"
+    "programName": "Flood disater",
+    "amount": "15,000"
   },
   {
-    "name": "Life-Changing Foundation",
+    "corporateName": "Life-Changing Foundation",
     "dateAdded": "03/10/2022",
-    "charityPrograms": "40"
+    "programName": "Old age care",
+    "amount": "24,000"
   }
 ]

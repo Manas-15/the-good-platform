@@ -8,7 +8,8 @@ export function donationPreferences(state = {}, action) {
       };
     case donationPreferenceConstants.GET_DONATION_PREFERENCES_SUCCESS:
       return {
-        items: action.preferences.data.preference,
+        items: action?.preferences?.data?.preference,
+        totalCount: action?.preferences?.data?.count,
       };
     case donationPreferenceConstants.GET_DONATION_PREFERENCES_FAILURE:
       return {

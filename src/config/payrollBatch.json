@@ -2,17 +2,35 @@
   {
     "batchId": "4535345534",
     "cratedDate": "May 21, 2022",
-    "totalAmout": "20, 000",
-    "corporate": "Andolasoft Inc",
+    "totalAmount": 20000,
+    "corporateName": "Andolasoft Inc",
+    "corporateId": "CRP1234",
+    "socialOrganization": "Sampark",
+    "charityProgram": "Cancer treatment",
     "status": "Pending",
     "referenceId": "REF4534",
     "referenceNote": "This is a test reference"
   },
   {
+    "batchId": "23564567",
+    "cratedDate": "May 15, 2022",
+    "totalAmount": 25000,
+    "corporateName": "Andolasoft Inc",
+    "corporateId": "CRP1234",
+    "socialOrganization": "The Smile Foundation",
+    "charityProgram": "Kids care",
+    "status": "Completed",
+    "referenceId": "REF2323",
+    "referenceNote": "This is another test reference"
+  },
+  {
     "batchId": "867867888",
     "cratedDate": "July 18, 2022",
-    "totalAmout": "45, 000",
-    "corporate": "Creatives Inc",
+    "totalAmount": 45000,
+    "corporateName": "Creatives Inc",
+    "corporateId": "CRP6445",
+    "socialOrganization": "The Smile Foundation",
+    "charityProgram": "Early childhood care",
     "status": "Completed",
     "referenceId": "REF5653",
     "referenceNote": "This is a another test reference"
@@ -20,8 +38,11 @@
   {
     "batchId": "249804564",
     "cratedDate": "May 10, 2022",
-    "totalAmout": "67, 000",
-    "corporate": "Academic Inc",
+    "totalAmount": 67000,
+    "corporateName": "Academic Inc",
+    "corporateId": "CRP8745",
+    "socialOrganization": "Hope Charity Organization",
+    "charityProgram": "Mid day meals",
     "status": "Pending",
     "referenceId": "REF3234",
     "referenceNote": "This is a third test reference"
@@ -29,8 +50,11 @@
   {
     "batchId": "675765757",
     "cratedDate": "April 05, 2022",
-    "totalAmout": "1, 45, 000",
-    "corporate": "Infra Pvt. Ltd",
+    "totalAmount": 145000,
+    "corporateName": "Infra Pvt. Ltd",
+    "corporateId": "CRP8976",
+    "socialOrganization": "Life-Changing Foundation",
+    "charityProgram": "Flood disater",
     "status": "Completed",
     "referenceId": "REF5634",
     "referenceNote": "This is a forth test reference"

@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
-// import ListCorporates from "../components/Corporate/ListCorporates";
 import CorporatesPortal from "../components/Corporate/CorporatesPortal";
 import ListEmployees from "../components/Employee/ListEmployees";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
@@ -23,7 +22,7 @@ import SetPassword from "../components/Auth/SetPassword";
 import ThankYou from "../components/Auth/ThankYou";
 import Profile from "../components/Profile/Profile";
 import PayrollSetting from "../components/Corporate/PayrollSetting";
-import PayrollBatch from "../components/Corporate/PayrollBatch";
+import PayrollBatch from "../components/PayrollBatch/PayrollBatch";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -107,6 +106,11 @@ const CreateRoutes = () => {
               />
               <Route exact path="/payroll-setting" component={PayrollSetting} />
               <Route exact path="/payroll-batch" component={PayrollBatch} />
+              <Route
+                exact
+                path="/corporates/:corporateId/payroll-batch"
+                component={PayrollBatch}
+              />
               <Route
                 exact
                 path="/transactions-history"
