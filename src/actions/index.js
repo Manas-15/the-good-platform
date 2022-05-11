@@ -6,3 +6,4 @@ export * from "./donationPreference.actions";
 export * from "./payment.actions";
 export * from "./transactionsHistory.actions";
 export * from "./payrollSetting.actions";
+export * from "./payrollBatch.actions";
