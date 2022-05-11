@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { donationPreferenceConstants, payrollConstants } from "../../constants";
+import { donationPreferenceConstants, payrollConstants, paginationConstants } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ import "./../../assets/css/payroll.scss";
 const actionInitialValues = {
   preferenceId: "",
 };
-let PageSize = 10;
+let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData;
 const PayrollSetting = () => {
   let history = useHistory();
@@ -42,6 +42,7 @@ const PayrollSetting = () => {
   useEffect(() => {
     dispatch(
       payrollSettingActions.getDonationPreferences({
+        pageSize: 1000,
         offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })
     );

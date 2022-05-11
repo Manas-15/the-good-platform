@@ -48,17 +48,17 @@ const DonationPreferences = () => {
 
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
-
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
       donationPreferenceActions.getDonationPreferences({
         employeeId: employee?.emp_id,
+        pageSize: pageSize,
         offset:
           currentPage >= 2
-            ? currentPage * paginationConstants?.PAGE_SIZE -
-              paginationConstants?.PAGE_SIZE
+            ? currentPage * pageSize -
+            pageSize
             : 0,
       })
     );
@@ -158,7 +158,6 @@ const DonationPreferences = () => {
   }
   const setPage = (page) => {
     setCurrentPage(page);
-    console.log(">>>>>>>>>>>>>>>>>>>>> after setPage", page);
   };
   useEffect(() => {
     setTotalCount(preferences?.totalCount);

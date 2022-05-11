@@ -18,12 +18,9 @@ const PasswordField = ({
   touched,
 }) => {
   const [passwordFocused, setPasswordFocused] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [password, setPasswordField] = useState("");
   const [passwordValidity, setPasswordValidity] = useState(validateRegx);
-  const [passwordConfirmationFocused, setPasswordConfirmationFocused] =
-    useState(false);
   const onChangePassword = (password, type) => {
     setPasswordField(password);
     setPasswordValidity({

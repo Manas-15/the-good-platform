@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { donationPreferenceConstants, payrollConstants } from "../../constants";
+import { donationPreferenceConstants, payrollConstants, paginationConstants } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ import { Popover, OverlayTrigger } from "react-bootstrap";
 import payrollBatch from "./../../config/payrollBatch.json";
 import "./../../assets/css/payroll.scss";
 import { Button, Modal } from "react-bootstrap";
+import Pagination from "./../Shared/Pagination";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -27,7 +28,7 @@ const actionInitialValues = {
   requestType: "",
   preferenceId: "",
 };
-let PageSize = 10;
+let pageSize = paginationConstants?.PAGE_SIZE;
 let accordionData;
 const PayrollBatch = () => {
   let history = useHistory();
@@ -47,31 +48,27 @@ const PayrollBatch = () => {
   const [currentView, setCurrentView] = useState("Employee");
 
   // Pagination
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [offset, setOffset] = useState(10);
-
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
-  const currentTableData = useMemo(async () => {
-    console.log("1111111111111111 currentPage", currentPage);
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    // return fetchData();
-    // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
-    // useEffect(() => {
-    // dispatch(
-    return await dispatch(
+  useEffect(() => {
+    dispatch(
       donationPreferenceActions.getDonationPreferences({
-        page: currentPage,
-        limit: PageSize,
-        offset: currentPage === 1 ? 0 : currentPage * 10,
+        pageSize: pageSize,
+        offset:
+          currentPage >= 2
+            ? currentPage * pageSize -
+            pageSize
+            : 0,
       })
     );
-    // );
-    // }, []);
   }, [currentPage]);
-
+  const setPage = (page) => {
+    setCurrentPage(page);
+  };
+  useEffect(() => {
+    setTotalCount(preferences?.totalCount);
+  }, [preferences?.totalCount]);
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
     setActionType(action);
@@ -206,6 +203,13 @@ const PayrollBatch = () => {
           </div>
         </div>
       )}
+      <Pagination
+        className="pagination-bar mt-4"
+        currentPage={currentPage}
+        totalCount={totalCount ? totalCount : 0}
+        pageSize={pageSize}
+        onPageChange={(page) => setPage(page)}
+      />
       {open && (
         <ConfirmationDialog
           open={true}
