@@ -47,7 +47,6 @@ const ListCharityPrograms = () => {
                     <th className="ant-table-cell">Date Added</th>
                     <th className="ant-table-cell text-center">Programs</th>
                     <th className="ant-table-cell text-center">Actions</th>
-                    {/* <th className="text-center">Actions</th> */}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -70,7 +69,7 @@ const ListCharityPrograms = () => {
                           {socialOrganization.charityPrograms}
                         </td>
                         <td className="ant-table-cell text-center">
-                          {/* <Link><span className="bi-check-circle fs-5" title="Confirm"></span></Link> */}
+                          <Link><span className="bi-check-circle fs-5" title="Confirm"></span></Link>
                         </td>
                       </tr>
                     ))

@@ -308,3 +308,6 @@ ul.dropdown-menu.actions li:hover {
   border: none;
   outline: none;
 }
+.switch-group .btn-sm {
+  font-size: 13px;
+}
