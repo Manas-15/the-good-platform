@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import * as moment from "moment";
 import { paymentConstants, paginationConstants } from "../../constants";
-import { history } from "./../../helpers";
 import Pagination from "./../Shared/Pagination";
-import ConfirmationDialog from "../Shared/ConfirmationDialog";
 
-const actionInitialValues = {
-  userId: "",
-  requestType: "",
-};
 let charityProgramsOption = [];
 const paymentStatusOption = [
   { label: "All", value: 0 },
@@ -21,17 +15,10 @@ const paymentStatusOption = [
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListTransactionsHistory = (props) => {
-  // let history = useHistory();
   const [records, setRecords] = useState([]);
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const user = useSelector((state) => state.employee.user);
-  const [open, setOpen] = useState(false);
-  const [actionTitle, setActionTitle] = useState("");
-  const [actionContent, setActionContent] = useState("");
-  const [actionType, setActionType] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState(Object);
-  const [currentPath, setCurrentPath] = useState(history.location.pathname);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
 
@@ -54,11 +41,8 @@ const ListTransactionsHistory = (props) => {
       dispatch(
         transactionsHistoryActions.getTransactionsHistory({
           employeeId: employeeId ? employeeId : null,
-          offset:
-            currentPage >= 2
-              ? currentPage * paginationConstants?.PAGE_SIZE -
-                paginationConstants?.PAGE_SIZE
-              : 0,
+          pageSize: pageSize,
+          offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         })
       );
     }
@@ -69,23 +53,6 @@ const ListTransactionsHistory = (props) => {
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
   }, [transactions?.totalCount]);
-  const handleOpen = (action, item) => {
-    setOpen(true);
-    setActionType(action);
-    setSelectedEmployee(item);
-    setActionTitle(`${action} Confirmation`);
-    setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${item.name}"</strong>?`
-    );
-  };
-  const confirm = () => {
-    handleClose();
-    // actionInitialValues.userId = selectedEmployee.id;
-    // actionInitialValues.requestType = actionType;
-    // dispatch(employeeActions.employeeAccountRequest(actionInitialValues));
-  };
-
-  const handleClose = () => setOpen(false);
   const filter = (type, value) => {
     setIsFilter(true);
     if (value && value !== "0") {

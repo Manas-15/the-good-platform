@@ -1,8 +1,12 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { donationPreferenceConstants, payrollConstants, paginationConstants } from "../../constants";
+import {
+  donationPreferenceConstants,
+  payrollConstants,
+  paginationConstants,
+} from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";

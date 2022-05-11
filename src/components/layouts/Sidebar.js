@@ -10,7 +10,8 @@ const Sidebar = () => {
     history.location.pathname.includes("/payroll-setting") ||
     history.location.pathname.includes("/payroll-batch");
   const isSuperadminView =
-    history.location.pathname === "/transactions-history";
+    history.location.pathname === "/transactions-history" ||
+    history.location.pathname === "/payroll-batch";
   const isOrganizationView =
     history.location.pathname === "/social-organizations";
   return (
@@ -51,7 +52,7 @@ const Sidebar = () => {
             <li className="nav-item">
               <NavLink
                 className="nav-link "
-                to="/payroll-batch"
+                to={`/corporates/${'1'}/payroll-batch`}
                 activeClassName="active"
               >
                 <i className="bi bi-hdd-stack"></i>
@@ -62,6 +63,7 @@ const Sidebar = () => {
         ) : (
           <>
             {isSuperadminView ? (
+              <>
               <li className="nav-item">
                 <NavLink
                   className="nav-link "
@@ -72,6 +74,17 @@ const Sidebar = () => {
                   <span>Transactions History</span>
                 </NavLink>
               </li>
+              <li className="nav-item">
+              <NavLink
+                className="nav-link "
+                to={`/payroll-batch`}
+                activeClassName="active"
+              >
+                <i className="bi bi-hdd-stack"></i>
+                <span>Payroll Batch</span>
+              </NavLink>
+            </li>
+            </>
             ) : (
               <>
                 {isOrganizationView && (
