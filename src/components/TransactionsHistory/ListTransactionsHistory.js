@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import * as moment from "moment";
-import { paymentConstants } from "../../constants";
+import { paymentConstants, paginationConstants } from "../../constants";
 import { history } from "./../../helpers";
 import Pagination from "./../Shared/Pagination";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -19,7 +19,7 @@ const paymentStatusOption = [
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
   { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
 ];
-let pageSize = 10;
+let pageSize = paginationConstants?.PAGE_SIZE;
 const ListTransactionsHistory = (props) => {
   // let history = useHistory();
   const [records, setRecords] = useState([]);
@@ -37,7 +37,6 @@ const ListTransactionsHistory = (props) => {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [offset, setOffset] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [isFilter, setIsFilter] = useState(false);
 
@@ -51,15 +50,15 @@ const ListTransactionsHistory = (props) => {
     });
   }, [props]);
   useEffect(() => {
-    // console.log("dddddddddddddddddddd", props?.history?.action === "PUSH")
-    // if(props?.history?.action === "PUSH"){
-    //   setCurrentPage(1)
-    // }
     if (!isFilter) {
       dispatch(
         transactionsHistoryActions.getTransactionsHistory({
           employeeId: employeeId ? employeeId : null,
-          offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
+          offset:
+            currentPage >= 2
+              ? currentPage * paginationConstants?.PAGE_SIZE -
+                paginationConstants?.PAGE_SIZE
+              : 0,
         })
       );
     }
@@ -107,17 +106,7 @@ const ListTransactionsHistory = (props) => {
     );
   };
   const setPage = (page) => {
-    console.log(
-      ">>>>>>>>>>>>>>>>>>>>> before setPage",
-      typeof (currentPage * 10)
-    );
     setCurrentPage(page);
-    // dispatch(
-    //   transactionsHistoryActions.getTransactionsHistory({
-    //     employeeId: employeeId ? employeeId : null,
-    //     offset: (currentPage * 10)
-    //   })
-    // );
     console.log(">>>>>>>>>>>>>>>>>>>>> after setPage", page);
   };
   return (

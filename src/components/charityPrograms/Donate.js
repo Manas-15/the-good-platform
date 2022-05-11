@@ -56,7 +56,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
     preferenceForm.socialOrganizationId = selectedCharity?.soicalId;
     preferenceForm.donationAmount = selectedAmount;
     preferenceForm.frequency =
-      frequency === donationPreferenceConstants.MONTHLY ? 1 : 2;
+      frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     preferenceForm.isConsentCheck = true;
     preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
     dispatch(charityProgramActions.saveDonationPreference(preferenceForm));

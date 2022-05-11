@@ -3,7 +3,10 @@ import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import { donationPreferenceConstants } from "../../constants";
+import {
+  donationPreferenceConstants,
+  paginationConstants,
+} from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -28,7 +31,7 @@ const actionInitialValues = {
   requestType: "",
   preferenceId: "",
 };
-let PageSize = 10;
+let pageSize = paginationConstants?.PAGE_SIZE;
 const DonationPreferences = () => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
@@ -44,32 +47,22 @@ const DonationPreferences = () => {
   const [actionContent, setActionContent] = useState("");
 
   // Pagination
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [offset, setOffset] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
-  const currentTableData = useMemo(async () => {
-    console.log("1111111111111111 currentPage", currentPage);
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    // return fetchData();
-    // return preferences?.items?.slice(firstPageIndex, lastPageIndex);
-    // useEffect(() => {
-    // dispatch(
-    return await dispatch(
+  useEffect(() => {
+    dispatch(
       donationPreferenceActions.getDonationPreferences({
         employeeId: employee?.emp_id,
-        page: currentPage,
-        limit: PageSize,
-        offset: currentPage === 1 ? 0 : currentPage * 10,
+        offset:
+          currentPage >= 2
+            ? currentPage * paginationConstants?.PAGE_SIZE -
+              paginationConstants?.PAGE_SIZE
+            : 0,
       })
     );
-    // );
-    // }, []);
   }, [currentPage]);
-
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
     setActionType(action);
@@ -163,6 +156,13 @@ const DonationPreferences = () => {
   } else {
     document.getElementById("root").classList.remove("loading");
   }
+  const setPage = (page) => {
+    setCurrentPage(page);
+    console.log(">>>>>>>>>>>>>>>>>>>>> after setPage", page);
+  };
+  useEffect(() => {
+    setTotalCount(preferences?.totalCount);
+  }, [preferences?.totalCount]);
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -350,13 +350,13 @@ const DonationPreferences = () => {
           </div>
         </div>
       </div>
-      {/* <Pagination
-        className="pagination-bar"
+      <Pagination
+        className="pagination-bar mt-4"
         currentPage={currentPage}
-        totalCount={100}
-        pageSize={PageSize}
-        onPageChange={page => setCurrentPage(page)}
-      /> */}
+        totalCount={totalCount ? totalCount : 0}
+        pageSize={pageSize}
+        onPageChange={(page) => setPage(page)}
+      />
       {openDialog && (
         <ConfirmationDialog
           open={true}
