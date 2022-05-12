@@ -105,7 +105,7 @@ const CreateRoutes = () => {
                 component={EmployeeDonationPreferences}
               />
               <Route exact path="/payroll-setting" component={PayrollSetting} />
-              <Route exact path="/payroll-batch" component={PayrollBatch} />
+              <Route exact path="/admin-payroll-batch" component={PayrollBatch} />
               <Route
                 exact
                 path="/corporates/:corporateId/payroll-batch"

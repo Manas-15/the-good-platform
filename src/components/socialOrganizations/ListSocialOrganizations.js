@@ -14,7 +14,7 @@ const ListCharityPrograms = () => {
     <div className="customContainer">
       <div className="row mb-4">
         <div className="col-md-6">
-          <h1 className="ant-typography customHeading">Social Organizations</h1>
+          <h1 className="ant-typography customHeading">Social Organization</h1>
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
@@ -43,9 +43,10 @@ const ListCharityPrograms = () => {
                 <thead className="ant-table-thead">
                   <tr>
                     <th className="ant-table-cell">Sl#</th>
-                    <th className="ant-table-cell">Name</th>
-                    <th className="ant-table-cell">Date Added</th>
-                    <th className="ant-table-cell text-center">Programs</th>
+                    <th className="ant-table-cell">Program</th>
+                    <th className="ant-table-cell">Corporate</th>
+                    <th className="ant-table-cell text-center">Amount</th>
+                    <th className="ant-table-cell text-center">Date</th>
                     <th className="ant-table-cell text-center">Actions</th>
                   </tr>
                 </thead>
@@ -59,17 +60,25 @@ const ListCharityPrograms = () => {
                         <td className="ant-table-cell">{index + 1}</td>
                         <td className="ant-table-cell">
                           <span className="ant-typography font-weight-bold">
-                            {socialOrganization.name}
+                            {socialOrganization?.programName}
                           </span>
                         </td>
                         <td className="ant-table-cell">
-                          {socialOrganization.dateAdded}
+                          {socialOrganization?.corporateName}
                         </td>
                         <td className="ant-table-cell text-center">
-                          {socialOrganization.charityPrograms}
+                          {socialOrganization?.amount}
                         </td>
                         <td className="ant-table-cell text-center">
-                          <Link><span className="bi-check-circle fs-5" title="Confirm"></span></Link>
+                          {socialOrganization?.dateAdded}
+                        </td>
+                        <td className="ant-table-cell text-center">
+                          <Link>
+                            <span
+                              className="bi-check-circle fs-5"
+                              title="Confirm"
+                            ></span>
+                          </Link>
                         </td>
                       </tr>
                     ))

@@ -11,7 +11,7 @@ const Sidebar = () => {
     history.location.pathname.includes("/payroll-batch");
   const isSuperadminView =
     history.location.pathname === "/transactions-history" ||
-    history.location.pathname === "/payroll-batch";
+    history.location.pathname === "/admin-payroll-batch";
   const isOrganizationView =
     history.location.pathname === "/social-organizations";
   return (
@@ -77,7 +77,7 @@ const Sidebar = () => {
               <li className="nav-item">
               <NavLink
                 className="nav-link "
-                to={`/payroll-batch`}
+                to={`/admin-payroll-batch`}
                 activeClassName="active"
               >
                 <i className="bi bi-hdd-stack"></i>
