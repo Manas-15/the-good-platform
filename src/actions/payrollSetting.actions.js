@@ -6,6 +6,7 @@ export const payrollSettingActions = {
   getDonationPreferences,
   operateActionRequest,
   processBatch,
+  getBatchDetail,
 };
 
 function getDonationPreferences(data) {
@@ -78,6 +79,37 @@ function processBatch(data) {
   function failure(error) {
     return {
       type: payrollConstants.PROCESS_BATCH_FAILURE,
+      error,
+    };
+  }
+}
+
+function getBatchDetail(data) {
+  return (dispatch) => {
+    dispatch(request());
+    payrollService.getBatchDetail(data).then(
+      (data) => dispatch(success(data)),
+
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+  function request() {
+    return {
+      type: payrollConstants.GET_BATCH_DETAILS_REQUEST,
+    };
+  }
+  function success(batches) {
+    return {
+      type: payrollConstants.GET_BATCH_DETAILS_SUCCESS,
+      batches,
+    };
+  }
+  function failure(error) {
+    return {
+      type: payrollConstants.GET_BATCH_DETAILS_FAILURE,
       error,
     };
   }

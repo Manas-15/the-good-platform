@@ -1,18 +1,19 @@
+import React, { useState, useEffect } from "react";
 import { payrollConstants } from "./../constants";
-import { donationPreferenceService, payrollService } from "./../services";
+import { payrollService } from "./../services";
 import { alertActions } from "./";
 
-export const payrollSettingActions = {
-  getDonationPreferences,
+export const payrollBatchActions = {
+  getPayrollBatch,
   operateActionRequest,
   processBatch,
 };
 
-function getDonationPreferences(data) {
+function getPayrollBatch(data) {
   return (dispatch) => {
     dispatch(request());
-    donationPreferenceService.getDonationPreferences(data).then(
-      (preferences) => dispatch(success(preferences)),
+    payrollService.getPayrollBatch(data).then(
+      (batches) => dispatch(success(batches)),
 
       (error) => {
         dispatch(failure(error.toString()));
@@ -22,18 +23,18 @@ function getDonationPreferences(data) {
   };
   function request(data) {
     return {
-      type: payrollConstants.GET_PAYROLL_SETTING_REQUEST,
+      type: payrollConstants.GET_PAYROLL_BATCH_REQUEST,
     };
   }
-  function success(preferences) {
+  function success(batches) {
     return {
-      type: payrollConstants.GET_PAYROLL_SETTING_SUCCESS,
-      preferences,
+      type: payrollConstants.GET_PAYROLL_BATCH_SUCCESS,
+      batches,
     };
   }
   function failure(error) {
     return {
-      type: payrollConstants.GET_PAYROLL_SETTING_FAILURE,
+      type: payrollConstants.GET_PAYROLL_BATCH_FAILURE,
       error,
     };
   }

@@ -17,6 +17,7 @@ import { CSVLink } from "react-csv";
 import "./../../assets/css/payroll.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { ProcessHelper } from "./../../helpers";
 
 const actionInitialValues = {
   preferenceId: "",
@@ -36,7 +37,9 @@ const PayrollSetting = (props) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
-  const [currentView, setCurrentView] = useState("Employee");
+  const [currentView, setCurrentView] = useState(
+    payrollConstants.EMPLOYEE_VIEW
+  );
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -106,12 +109,7 @@ const PayrollSetting = (props) => {
   //   return str.substring(0, 1).toUpperCase() + str.substring(1);
   // };
   const processBatch = () => {
-    const data = preferences?.items?.filter(
-      (item) =>
-        item.isDeleted === false &&
-        (item?.status === donationPreferenceConstants?.RESUMED ||
-          item?.status === null)
-    );
+    const data = ProcessHelper(preferences?.items);
     const finalData = {
       corporateId: 1,
       totalAmount: data.reduce(
@@ -120,16 +118,16 @@ const PayrollSetting = (props) => {
       ),
       items: data,
     };
-    console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", finalData);
     dispatch(payrollSettingActions.processBatch(finalData));
   };
   useEffect(() => {
-    console.log(
-      "ccccccccccccccc coming props",
-      props?.history?.action === "PUSH"
-    );
-    // const batch = batch;
-    batch = props?.location?.query?.batch;
+      batch = props?.location?.query?.batchId;
+      console.log("ddddddddddddddddddd from", batch)
+    if(batch){
+      dispatch(
+        payrollSettingActions.getBatchDetail({batchId: batch})
+      );
+    }
   }, [props?.history?.action === "PUSH"]);
   const generatePayroll = () => {
     setIsGenerating(true);
@@ -156,8 +154,8 @@ const PayrollSetting = (props) => {
           <h1 className="ant-typography customHeading">
             Payroll Setting -{" "}
             {isGenerating
-              ? moment(generateMonthYear).format("MMMM YYYY")
-              : moment().format("MMMM YYYY")}
+              ? moment(generateMonthYear).format("MMM YYYY")
+              : moment().format("MMM YYYY")}
           </h1>
         </div>
       </div>
@@ -174,9 +172,8 @@ const PayrollSetting = (props) => {
                   showYearDropdown={true}
                   dropdownMode="select"
                   selected={generateMonthYear}
-                  dateFormat="MMMM-yyyy"
+                  dateFormat="MMM-yyyy"
                   showMonthYearPicker
-                  showFullMonthYearPicker
                   onChange={(val) => {
                     setGenerateMonthYear(val);
                   }}
@@ -266,13 +263,7 @@ const PayrollSetting = (props) => {
         <>
           {Object.keys(accordionData).map((type, index) => (
             <div className="row mt-4">
-              {accordionData[type].filter(
-                (preference) =>
-                  preference?.isDeleted === false &&
-                  (preference?.status ===
-                    donationPreferenceConstants?.RESUMED ||
-                    !preference?.status)
-              ).length > 0 ? (
+              {ProcessHelper(accordionData[type])?.length > 0 ? (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
                     <Accordion.Header>
@@ -284,14 +275,7 @@ const PayrollSetting = (props) => {
                       &nbsp;&#45;&nbsp;
                       {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                       {accordionData[type]
-                        ? accordionData[type]
-                            .filter(
-                              (preference) =>
-                                preference?.isDeleted === false &&
-                                (preference?.status ===
-                                  donationPreferenceConstants?.RESUMED ||
-                                  preference?.status === null)
-                            )
+                        ? ProcessHelper(accordionData[type])
                             ?.reduce(
                               (total, currentValue) =>
                                 (total = total + currentValue.donationAmount),
@@ -355,6 +339,7 @@ const PayrollSetting = (props) => {
                                     .filter(
                                       (preference) =>
                                         preference?.isDeleted === false &&
+                                        !preference?.batchId &&
                                         (preference?.status ===
                                           donationPreferenceConstants?.RESUMED ||
                                           preference?.status === null)
@@ -458,37 +443,40 @@ const PayrollSetting = (props) => {
               )}
             </div>
           ))}
-          <div className="row mt-4">
-            <div className="col-md-12 text-right">
-              <h5>
-                Total:&nbsp;
-                <span className="fs-5">
-                  {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
-                  {preferences?.items
-                    ? preferences?.items
-                        .filter(
-                          (preference) =>
-                            preference?.isDeleted === false &&
-                            (preference?.status ===
-                              donationPreferenceConstants?.RESUMED ||
-                              preference?.status === null)
-                        )
-                        ?.reduce(
-                          (total, currentValue) =>
-                            (total = total + currentValue.donationAmount),
-                          0
-                        )
-                        .toLocaleString()
-                    : 0}
-                </span>
-              </h5>
+          {ProcessHelper(preferences?.items)?.length > 0 && (
+            <div className="row mt-4">
+              <div className="col-md-12 text-right">
+                <h5>
+                  Total:&nbsp;
+                  <span className="fs-5">
+                    {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                    {preferences?.items
+                      ? preferences?.items
+                          .filter(
+                            (preference) =>
+                              preference?.isDeleted === false &&
+                              !preference?.batchId &&
+                              (preference?.status ===
+                                donationPreferenceConstants?.RESUMED ||
+                                preference?.status === null)
+                          )
+                          ?.reduce(
+                            (total, currentValue) =>
+                              (total = total + currentValue.donationAmount),
+                            0
+                          )
+                          .toLocaleString()
+                      : 0}
+                  </span>
+                </h5>
+              </div>
             </div>
-          </div>
+          )}
         </>
       ) : (
         <div className="text-center m-4">No data found</div>
       )}
-      {accordionData && !batch && (
+      {ProcessHelper(preferences?.items)?.length > 0 && !batch && (
         <div className="text-right m-3">
           <Button
             className="btn btn-primary"

@@ -6,12 +6,13 @@ import {
   payrollConstants,
   paginationConstants,
 } from "../../constants";
+import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
-import payrollBatch from "./../../config/payrollBatch.json";
+// import payrollBatch from "./../../config/payrollBatch.json";
 import { Modal, Accordion } from "react-bootstrap";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
@@ -35,7 +36,7 @@ let accordionData;
 const PayrollBatch = (props) => {
   let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
-  // const payrollBatch = useSelector((state) => state.payrollBatch);
+  const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
@@ -72,7 +73,17 @@ const PayrollBatch = (props) => {
       }"</strong>?`
     );
   };
-  if (payrollBatch.loading) {
+  useEffect(() => {
+    console.log("coming to fetch batch");
+    dispatch(
+      payrollBatchActions.getPayrollBatch({
+        corporateId: corporateId ? corporateId : null,
+        pageSize: 10,
+        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
+      })
+    );
+  }, [currentPage]);
+  if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
     document.getElementById("root").classList.remove("loading");
@@ -108,19 +119,6 @@ const PayrollBatch = (props) => {
     // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
   };
   const handleClose = () => setOpen(false);
-  const groupBy = (key) => {
-    return payrollBatch?.reduce(function (acc, item) {
-      (acc[item[key]] = acc[item[key]] || []).push(item);
-      return acc;
-    }, {});
-  };
-  if (currentView === payrollConstants.ORGANIZATION_VIEW) {
-    accordionData = groupBy("socialOrganization");
-  } else if (currentView === payrollConstants.PROGRAM_VIEW) {
-    accordionData = groupBy("charityProgram");
-  } else {
-    accordionData = groupBy("corporateName");
-  }
   return (
     <div className="customContainer">
       <div className="row mb-3 payroll">
@@ -128,8 +126,8 @@ const PayrollBatch = (props) => {
           <h1 className="ant-typography customHeading">Payroll Batch</h1>
         </div>
       </div>
-      {payrollBatch.loading && <Loader />}
-      {payrollBatch && (
+      {payrollBatches.loading && <Loader />}
+      {payrollBatches && (
         <>
           <div className="ant-row">
             <div className="ant-col ant-col-24 mt-2">
@@ -141,7 +139,7 @@ const PayrollBatch = (props) => {
                         <th className="ant-table-cell">Sr No.</th>
                         <th className="ant-table-cell">Batch id</th>
                         {!corporateId && (
-                          <th className="ant-table-cell">Corporate id</th>
+                          <th className="ant-table-cell">Corporate ID</th>
                         )}
                         {!corporateId && (
                           <th className="ant-table-cell">Corporate Name</th>
@@ -154,13 +152,13 @@ const PayrollBatch = (props) => {
                           )}
                           )
                         </th>
-                        <th className="ant-table-cell">Reference ID</th>
+                        <th className="ant-table-cell">REF ID</th>
                         <th className="ant-table-cell">Status</th>
                         <th className="ant-table-cell text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="ant-table-tbody">
-                      {payrollBatch
+                      {payrollBatches?.items
                         ?.filter((pr) =>
                           corporateId
                             ? pr
@@ -175,8 +173,12 @@ const PayrollBatch = (props) => {
                             <td className="ant-table-cell">
                               <Link
                                 to={{
-                                  pathname: "/payroll-setting",
-                                  query: { batch: batch },
+                                  pathname: `${
+                                    corporateId
+                                      ? "/payroll-setting"
+                                      : "/admin-payroll-setting"
+                                  }`,
+                                  query: { batchId: batch?.batchId },
                                 }}
                               >
                                 {batch?.batchId}
@@ -193,10 +195,10 @@ const PayrollBatch = (props) => {
                               </td>
                             )}
                             <td className="ant-table-cell">
-                              {batch?.cratedDate}
+                              {moment(batch?.createdDate).format("MMM, YYYY")}
                             </td>
                             <td className="ant-table-cell">
-                              {batch?.totalAmount.toLocaleString()}
+                              {batch?.amount?.toLocaleString()}
                             </td>
                             <td className="ant-table-cell">
                               <Link
@@ -208,21 +210,24 @@ const PayrollBatch = (props) => {
                               </Link>
                             </td>
                             <td className="ant-table-cell text-uppercase">
-                              {batch?.status === payrollConstants.COMPLETED && (
+                              {batch?.status ===
+                                payrollConstants.COMPLETED_STATUS && (
                                 <span className="text-success">
-                                  {batch?.status}
+                                  {payrollConstants.COMPLETED}
                                 </span>
                               )}
-                              {batch?.status === payrollConstants.PENDING && (
+                              {batch?.status ===
+                                payrollConstants.PENDING_STATUS && (
                                 <span className="text-warning">
-                                  {batch?.status}
+                                  {payrollConstants.PENDING}
                                 </span>
                               )}
                             </td>
 
                             <td className="ant-table-cell text-center">
                               {corporateId &&
-                                batch?.status === payrollConstants.PENDING && (
+                                batch?.status ===
+                                  payrollConstants.PENDING_STATUS && (
                                   <Link
                                     onClick={() =>
                                       handleOpen("Complete Batch", batch)
