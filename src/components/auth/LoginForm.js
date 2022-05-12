@@ -6,7 +6,6 @@ import { Button } from "react-bootstrap";
 import "./../../assets/css/loginForm.scss";
 
 const LoginForm = ({ submit, disable }) => {
-  // localStorage.clear();
   return (
     <>
       <div className="row align-items-center authFormMargin">

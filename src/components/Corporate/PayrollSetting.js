@@ -65,14 +65,22 @@ const PayrollSetting = (props) => {
       setActionContent(`Are you sure to process this batch?`);
     }
   };
-  const handleCloseDialog = () => setOpenDialog(false);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedPreference(null);
+  };
   const confirm = () => {
     handleCloseDialog();
+    console.log("////// fffffffffffff ////////////// processBatch");
     if (selectedPreference) {
+      console.log(
+        "////// fddddddddddddddddddddddf ////////////// processBatch"
+      );
       actionInitialValues.preferenceId =
         selectedPreference?.employeePreferenceId;
       dispatch(payrollSettingActions.operateActionRequest(actionInitialValues));
     } else {
+      console.log("//////////////////// processBatch");
       processBatch();
     }
   };
@@ -113,7 +121,7 @@ const PayrollSetting = (props) => {
       items: data,
     };
     console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", finalData);
-    // dispatch(payrollSettingActions.processBatch(finalData));
+    dispatch(payrollSettingActions.processBatch(finalData));
   };
   useEffect(() => {
     console.log(
@@ -263,8 +271,8 @@ const PayrollSetting = (props) => {
                   preference?.isDeleted === false &&
                   (preference?.status ===
                     donationPreferenceConstants?.RESUMED ||
-                    preference?.status === null)
-              ).length > 0 && (
+                    !preference?.status)
+              ).length > 0 ? (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
                     <Accordion.Header>
@@ -445,6 +453,8 @@ const PayrollSetting = (props) => {
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>
+              ) : (
+                <div className="text-center m-4">No data found</div>
               )}
             </div>
           ))}
