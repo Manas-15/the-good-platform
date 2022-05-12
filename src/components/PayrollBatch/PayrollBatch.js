@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -81,12 +81,21 @@ const PayrollBatch = (props) => {
     setShow(true);
     setReferenceNote(referenceNote);
   };
+  // useEffect(() => {
+  //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>")
+  //   if(!corporateId){
+  //     payrollBatch.filter((pr)=>pr.status !== "Pending")
+  //   }
+  // }, [payrollBatch]);
+
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
-    setActionTitle(`${action} Confirmation`);
+    setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
     setActionContent(
-      `Are you sure to complete this batch <strong>"${item?.batchId}"</strong>?`
+      `Are you sure to ${
+        corporateId ? "complete" : "confirm"
+      } this batch <strong>"${item?.batchId}"</strong>?`
     );
   };
   const handleCancel = () => {
@@ -118,250 +127,134 @@ const PayrollBatch = (props) => {
         <div className="col-md-5">
           <h1 className="ant-typography customHeading">Payroll Batch</h1>
         </div>
-        <div className="col-md-7 text-right">
-          <Link
-            className="fs-6 text-decoration-underline mr-3"
-            onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
-          >
-            <button
-              type="button"
-              className={`${
-                currentView === payrollConstants.PROGRAM_VIEW ? "active" : ""
-              } btn btn-sm btn-outline-primary`}
-            >
-              Program View
-            </button>
-          </Link>
-          {!corporateId && (
-            <Link
-              className="fs-6 text-decoration-underline mr-3"
-              onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}
-            >
-              <button
-                type="button"
-                className={`${
-                  currentView === payrollConstants.CORPORATE_VIEW
-                    ? "active"
-                    : ""
-                } btn btn-sm  btn-outline-primary`}
-              >
-                Corporate View
-              </button>
-            </Link>
-          )}
-          <Link
-            className="fs-6 text-decoration-underline"
-            onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
-          >
-            <button
-              type="button"
-              className={`${
-                currentView === payrollConstants.ORGANIZATION_VIEW
-                  ? "active"
-                  : ""
-              } btn btn-sm btn-outline-primary`}
-            >
-              Social Organization View
-            </button>
-          </Link>
-        </div>
       </div>
       {payrollBatch.loading && <Loader />}
-      {accordionData && (
+      {payrollBatch && (
         <>
-          {Object.keys(accordionData).map((type, index) => (
-            <div className="row">
-              {accordionData[type].length > 0 && (
-                <Accordion defaultActiveKey={index} className="Payroll">
-                  <Accordion.Item eventKey={0}>
-                    <Accordion.Header>
-                      {type}{" "}
-                      {currentView === payrollConstants.CORPORATE_VIEW &&
-                        ` - ${accordionData[type][0]?.corporateId}`}
-                      {currentView === payrollConstants.PROGRAM_VIEW &&
-                        ` - ${accordionData[type][0]?.socialOrganization}`}
-                      &nbsp;&#45;&nbsp;
-                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
-                      {accordionData[type]
-                        ? accordionData[type]
-                            ?.reduce(
-                              (total, currentValue) =>
-                                (total = total + currentValue.totalAmount),
-                              0
-                            )
-                            .toLocaleString()
-                        : 0}
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <div className="ant-row">
-                        <div className="ant-col ant-col-24 mt-2">
-                          <div className="ant-table-wrapper">
-                            <div className="ant-table">
-                              <table>
-                                <thead className="ant-table-thead">
-                                  <tr>
-                                    <th className="ant-table-cell">Sr No.</th>
-                                    <th className="ant-table-cell">Batch id</th>
-                                    <th className="ant-table-cell">
-                                      Crated Date
-                                    </th>
-                                    {(currentView ===
-                                      payrollConstants.ORGANIZATION_VIEW ||
-                                      currentView ===
-                                        payrollConstants.PROGRAM_VIEW) && (
-                                      <th className="ant-table-cell">
-                                        Corporate
-                                      </th>
-                                    )}
-                                    {(currentView ===
-                                      payrollConstants.PROGRAM_VIEW ||
-                                      currentView ===
-                                        payrollConstants.ORGANIZATION_VIEW) && (
-                                      <th className="ant-table-cell">
-                                        Corporate ID
-                                      </th>
-                                    )}
-                                    {currentView ===
-                                      payrollConstants.ORGANIZATION_VIEW && (
-                                      <th>Program</th>
-                                    )}
-                                    {currentView ===
-                                      payrollConstants.CORPORATE_VIEW && (
-                                      <th className="ant-table-cell">
-                                        Organization
-                                      </th>
-                                    )}
-                                    {currentView ===
-                                      payrollConstants.CORPORATE_VIEW && (
-                                      <th className="ant-table-cell">
-                                        Program
-                                      </th>
-                                    )}
-                                    {/* <th className="text-center">Status</th> */}
-                                    <th className="ant-table-cell">
-                                      Amount (
-                                      {ReactHtmlParser(
-                                        donationPreferenceConstants?.CURRENCY
-                                      )}
-                                      )
-                                    </th>
-                                    <th className="ant-table-cell">
-                                      Reference ID
-                                    </th>
-                                    <th className="ant-table-cell">Status</th>
-                                    <th className="ant-table-cell text-center">
-                                      Actions
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody className="ant-table-tbody">
-                                  {accordionData[type]?.map((batch, i) => (
-                                    <tr
-                                      key={index + 1}
-                                      className="ant-table-row ant-table-row-level-0"
-                                    >
-                                      <td className="ant-table-cell">
-                                        {i + 1}
-                                      </td>
-                                      <td className="ant-table-cell">
-                                        {batch?.batchId}
-                                      </td>
-                                      <td className="ant-table-cell">
-                                        {batch?.cratedDate}
-                                      </td>
-                                      {(currentView ===
-                                        payrollConstants.ORGANIZATION_VIEW ||
-                                        currentView ===
-                                          payrollConstants.PROGRAM_VIEW) && (
-                                        <td className="ant-table-cell">
-                                          <span className="ant-typography font-weight-bold">
-                                            {batch?.corporateName}
-                                          </span>
-                                        </td>
-                                      )}
-                                      {(currentView ===
-                                        payrollConstants.ORGANIZATION_VIEW ||
-                                        currentView ===
-                                          payrollConstants.PROGRAM_VIEW) && (
-                                        <td className="ant-table-cell">
-                                          {batch?.corporateId}
-                                        </td>
-                                      )}
-                                      {currentView ===
-                                        payrollConstants.CORPORATE_VIEW && (
-                                        <td className="ant-table-cell">
-                                          <span className="ant-typography font-weight-bold">
-                                            {batch?.socialOrganization}
-                                          </span>
-                                        </td>
-                                      )}
-                                      {currentView !==
-                                        payrollConstants.PROGRAM_VIEW && (
-                                        <td className="ant-table-cell">
-                                          <span className="ant-typography font-weight-bold">
-                                            {batch?.charityProgram}
-                                          </span>
-                                        </td>
-                                      )}
-                                      <td className="ant-table-cell">
-                                        {batch?.totalAmount.toLocaleString()}
-                                      </td>
-                                      <td className="ant-table-cell">
-                                        <Link
-                                          onClick={() =>
-                                            showReferenceNote(
-                                              batch?.referenceNote
-                                            )
-                                          }
-                                        >
-                                          {batch?.referenceId}
-                                        </Link>
-                                      </td>
-                                      <td className="ant-table-cell text-uppercase">
-                                        {batch?.status === "Completed" && (
-                                          <span className="text-success">
-                                            {batch?.status}
-                                          </span>
-                                        )}
-                                        {batch?.status === "Pending" && (
-                                          <span className="text-warning">
-                                            {batch?.status}
-                                          </span>
-                                        )}
-                                      </td>
-                                      {corporateId && (
-                                        <td className="ant-table-cell text-center">
-                                          {batch?.status === "Pending" && (
-                                            <Link
-                                              onClick={() =>
-                                                handleOpen(
-                                                  "Complete Batch",
-                                                  batch
-                                                )
-                                              }
-                                            >
-                                              <span
-                                                className="bi-check-circle fs-5"
-                                                title="Complete"
-                                              ></span>
-                                            </Link>
-                                          )}
-                                        </td>
-                                      )}
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              )}
+          <div className="ant-row">
+            <div className="ant-col ant-col-24 mt-2">
+              <div className="ant-table-wrapper">
+                <div className="ant-table">
+                  <table>
+                    <thead className="ant-table-thead">
+                      <tr>
+                        <th className="ant-table-cell">Sr No.</th>
+                        <th className="ant-table-cell">Batch id</th>
+                        {!corporateId && (
+                          <th className="ant-table-cell">Corporate id</th>
+                        )}
+                        {!corporateId && (
+                          <th className="ant-table-cell">Corporate Name</th>
+                        )}
+                        <th className="ant-table-cell">Crated Date</th>
+                        <th className="ant-table-cell">
+                          Amount (
+                          {ReactHtmlParser(
+                            donationPreferenceConstants?.CURRENCY
+                          )}
+                          )
+                        </th>
+                        <th className="ant-table-cell">Reference ID</th>
+                        <th className="ant-table-cell">Status</th>
+                        <th className="ant-table-cell text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="ant-table-tbody">
+                      {payrollBatch
+                        ?.filter((pr) =>
+                          corporateId
+                            ? pr
+                            : pr.status !== payrollConstants.PENDING
+                        )
+                        .map((batch, index) => (
+                          <tr
+                            key={index + 1}
+                            className="ant-table-row ant-table-row-level-0"
+                          >
+                            <td className="ant-table-cell">{index + 1}</td>
+                            <td className="ant-table-cell">
+                              <Link
+                                to={{
+                                  pathname: "/payroll-setting",
+                                  query: { batch: batch },
+                                }}
+                              >
+                                {batch?.batchId}
+                              </Link>
+                            </td>
+                            {!corporateId && (
+                              <td className="ant-table-cell">
+                                {batch?.corporateId}
+                              </td>
+                            )}
+                            {!corporateId && (
+                              <td className="ant-table-cell">
+                                {batch?.corporateName}
+                              </td>
+                            )}
+                            <td className="ant-table-cell">
+                              {batch?.cratedDate}
+                            </td>
+                            <td className="ant-table-cell">
+                              {batch?.totalAmount.toLocaleString()}
+                            </td>
+                            <td className="ant-table-cell">
+                              <Link
+                                onClick={() =>
+                                  showReferenceNote(batch?.referenceNote)
+                                }
+                              >
+                                {batch?.referenceId}
+                              </Link>
+                            </td>
+                            <td className="ant-table-cell text-uppercase">
+                              {batch?.status === payrollConstants.COMPLETED && (
+                                <span className="text-success">
+                                  {batch?.status}
+                                </span>
+                              )}
+                              {batch?.status === payrollConstants.PENDING && (
+                                <span className="text-warning">
+                                  {batch?.status}
+                                </span>
+                              )}
+                            </td>
+
+                            <td className="ant-table-cell text-center">
+                              {corporateId &&
+                                batch?.status === payrollConstants.PENDING && (
+                                  <Link
+                                    onClick={() =>
+                                      handleOpen("Complete Batch", batch)
+                                    }
+                                  >
+                                    <span
+                                      className="bi-check-circle fs-5"
+                                      title="Complete"
+                                    ></span>
+                                  </Link>
+                                )}
+                              {!corporateId && (
+                                <Link
+                                  onClick={() =>
+                                    handleOpen("Confirm Batch", batch)
+                                  }
+                                >
+                                  <span
+                                    className="bi-check-circle fs-5"
+                                    title="Confirm"
+                                  ></span>
+                                </Link>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-          ))}
+          </div>
         </>
       )}
       <Pagination

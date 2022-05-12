@@ -15,13 +15,15 @@ import ReactHtmlParser from "react-html-parser";
 import { Button, Accordion } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 import "./../../assets/css/payroll.scss";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const actionInitialValues = {
   preferenceId: "",
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
-let accordionData;
-const PayrollSetting = () => {
+let accordionData, batch;
+const PayrollSetting = (props) => {
   let history = useHistory();
   const preferences = useSelector((state) => state.payrollSetting);
   const employee = useSelector((state) => state.employee.user);
@@ -35,6 +37,8 @@ const PayrollSetting = () => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [currentView, setCurrentView] = useState("Employee");
+  const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -44,12 +48,7 @@ const PayrollSetting = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      payrollSettingActions.getDonationPreferences({
-        pageSize: 1000,
-        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
-      })
-    );
+    getData();
   }, [currentPage]);
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
@@ -116,17 +115,78 @@ const PayrollSetting = () => {
     console.log("<<<<<<<<<<< coming to process batch >>>>>>>>", finalData);
     // dispatch(payrollSettingActions.processBatch(finalData));
   };
+  useEffect(() => {
+    console.log(
+      "ccccccccccccccc coming props",
+      props?.history?.action === "PUSH"
+    );
+    // const batch = batch;
+    batch = props?.location?.query?.batch;
+  }, [props?.history?.action === "PUSH"]);
+  const generatePayroll = () => {
+    setIsGenerating(true);
+    console.log(
+      "generate payroll >>>>>>>>>",
+      moment(generateMonthYear).format("MM-YYYY")
+    );
+    getData();
+  };
+  const getData = () => {
+    console.log("ddddddddddddddddddddd get data");
+    dispatch(
+      payrollSettingActions.getDonationPreferences({
+        monthYear: moment(generateMonthYear).format("MM-YYYY"),
+        pageSize: 1000,
+        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
+      })
+    );
+  };
   return (
     <div className="customContainer">
-      <div className="row mb-3">
-        <div className="col-md-12">
+      <div className="row mb-4">
+        <div className="col-md-7">
           <h1 className="ant-typography customHeading">
-            Payroll Setting - {moment().format("MMMM YYYY")}
+            Payroll Setting -{" "}
+            {isGenerating
+              ? moment(generateMonthYear).format("MMMM YYYY")
+              : moment().format("MMMM YYYY")}
           </h1>
         </div>
       </div>
-      <div className="row mb-3 payroll text-right">
-        <div className="col-md-12 text-right">
+      <div className="row mb-b payroll text-right">
+        <div className="col-md-4">
+          {!batch && (
+            <div className="row">
+              <div className="col-md-8">
+                <DatePicker
+                  className={"form-control"}
+                  autoComplete="none"
+                  maxDate={new Date(moment().add(1, "months"))}
+                  showMonthDropdown={true}
+                  showYearDropdown={true}
+                  dropdownMode="select"
+                  selected={generateMonthYear}
+                  dateFormat="MMMM-yyyy"
+                  showMonthYearPicker
+                  showFullMonthYearPicker
+                  onChange={(val) => {
+                    setGenerateMonthYear(val);
+                  }}
+                />
+              </div>
+              <div className="col-md-4 pl-0">
+                <button
+                  type="button"
+                  className={"btn btn-primary"}
+                  onClick={generatePayroll}
+                >
+                  Generate
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="col-md-8 text-right">
           {preferences?.items && (
             <CSVLink
               data={preferences?.items?.map(
@@ -197,7 +257,7 @@ const PayrollSetting = () => {
       {accordionData ? (
         <>
           {Object.keys(accordionData).map((type, index) => (
-            <div className="row">
+            <div className="row mt-4">
               {accordionData[type].filter(
                 (preference) =>
                   preference?.isDeleted === false &&
@@ -275,9 +335,11 @@ const PayrollSetting = () => {
                                       )}
                                       )
                                     </th>
-                                    <th className="ant-table-cell text-center">
-                                      Actions
-                                    </th>
+                                    {!batch && (
+                                      <th className="ant-table-cell text-center">
+                                        Actions
+                                      </th>
+                                    )}
                                   </tr>
                                 </thead>
                                 <tbody className="ant-table-tbody">
@@ -357,19 +419,21 @@ const PayrollSetting = () => {
                                             disabled={true}
                                           />
                                         </td>
-                                        <td className="ant-table-cell text-center">
-                                          <Link
-                                            onClick={() =>
-                                              handleOpenDialog(
-                                                "Delete",
-                                                preference
-                                              )
-                                            }
-                                            title="Delete"
-                                          >
-                                            <i className="bi bi-trash fs-5"></i>
-                                          </Link>
-                                        </td>
+                                        {!batch && (
+                                          <td className="ant-table-cell text-center">
+                                            <Link
+                                              onClick={() =>
+                                                handleOpenDialog(
+                                                  "Delete",
+                                                  preference
+                                                )
+                                              }
+                                              title="Delete"
+                                            >
+                                              <i className="bi bi-trash fs-5"></i>
+                                            </Link>
+                                          </td>
+                                        )}
                                       </tr>
                                     ))}
                                 </tbody>
@@ -414,7 +478,7 @@ const PayrollSetting = () => {
       ) : (
         <div className="text-center m-4">No data found</div>
       )}
-      {accordionData && (
+      {accordionData && !batch && (
         <div className="text-right m-3">
           <Button
             className="btn btn-primary"

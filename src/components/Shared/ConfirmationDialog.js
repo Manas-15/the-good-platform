@@ -51,12 +51,20 @@ export default function ConfirmationDialog({
             </div>
           )}
           {actionType === donationPreferenceConstants.COMPLETE_BATCH && (
-            <div>
-              <label>
-                <strong>Notes:</strong>
-              </label>
-              <textarea type="textarea" rows="3" className="form-control" />
-            </div>
+            <>
+              <div>
+                <label>
+                  <strong>Reference ID:</strong>
+                </label>
+                <input type="text" className="form-control" />
+              </div>
+              <div>
+                <label>
+                  <strong>Reference Notes:</strong>
+                </label>
+                <textarea rows="3" className="form-control" />
+              </div>
+            </>
           )}
         </Modal.Body>
         <Modal.Footer>
