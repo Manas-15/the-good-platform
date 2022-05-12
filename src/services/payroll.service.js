@@ -2,12 +2,36 @@ import { authHeader } from "../helpers";
 import axios from "axios";
 
 export const payrollService = {
+  getPayrollBatch,
   processBatch,
   actionBatch,
+  getBatchDetail,
 };
 function processBatch(data) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/process_batch/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/save_batch_process_data/",
+    data
+  );
 }
 function actionBatch(data) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/complete_batch/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/complete_batch/",
+    data
+  );
+}
+function getPayrollBatch(data) {
+  return axios.get(
+    process.env.REACT_APP_API_URL + "api/fetch_batch_process_data/",
+    {
+      params: data,
+    }
+  );
+}
+function getBatchDetail(data) {
+  return axios.get(
+    process.env.REACT_APP_API_URL + "api/fetch_batch_detail/",
+    {
+      params: data,
+    }
+  );
 }
