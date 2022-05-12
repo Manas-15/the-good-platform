@@ -121,12 +121,10 @@ const PayrollSetting = (props) => {
     dispatch(payrollSettingActions.processBatch(finalData));
   };
   useEffect(() => {
-      batch = props?.location?.query?.batchId;
-      console.log("ddddddddddddddddddd from", batch)
-    if(batch){
-      dispatch(
-        payrollSettingActions.getBatchDetail({batchId: batch})
-      );
+    batch = props?.location?.query?.batchId;
+    console.log("ddddddddddddddddddd from", batch);
+    if (batch) {
+      dispatch(payrollSettingActions.getBatchDetail({ batchId: batch }));
     }
   }, [props?.history?.action === "PUSH"]);
   const generatePayroll = () => {

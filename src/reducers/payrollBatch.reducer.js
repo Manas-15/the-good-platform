@@ -35,22 +35,7 @@ export function payrollBatch(state = {}, action) {
         ...state,
         loading: false,
         error: action.error,
-      };
-    case payrollConstants.GET_BATCH_DETAILS_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case payrollConstants.GET_BATCH_DETAILS_SUCCESS:
-      console.log("ddddddddd reducer", action)
-      console.log("ddddddddd reducer state", state)
-      return {
-        items: action?.batches?.data?.batch,
-      };
-    case payrollConstants.GET_BATCH_DETAILS_FAILURE:
-      return {
-        error: action.error,
-      };
+      };    
     default:
       return state;
   }
