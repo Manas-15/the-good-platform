@@ -17,8 +17,6 @@ export const donationPreferenceConstants = {
   SUSPEND: "Suspend",
   RESUME: "Resume",
 
-  COMPLETE_BATCH: "Complete Batch",
-
   SUSPENDED: 1,
   RESUMED: 2,
 

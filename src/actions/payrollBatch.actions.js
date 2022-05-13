@@ -61,9 +61,7 @@ function processBatch(data) {
       // (batch) => dispatch(success(batch)),
       (batch) => {
         dispatch(success(batch));
-        dispatch(
-          alertActions.success("Batch processed successfully.")
-        );
+        dispatch(alertActions.success("Batch processed successfully."));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -96,9 +94,7 @@ function updateBatchStatus(data) {
     payrollService.updateBatchStatus(data).then(
       (data) => {
         dispatch(success());
-        dispatch(
-          alertActions.success("Batch status updated successfully.")
-        );
+        dispatch(alertActions.success("Batch status updated successfully."));
       },
       (error) => {
         dispatch(failure(error.toString()));

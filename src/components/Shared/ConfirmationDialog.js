@@ -49,7 +49,7 @@ export default function ConfirmationDialog({
                 ))}
               </select>
             </div>
-          )}          
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button

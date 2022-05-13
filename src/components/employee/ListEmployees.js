@@ -79,7 +79,7 @@ const ListEmployees = (props) => {
     } else {
       const reader = new FileReader();
       reader.readAsText(file);
-      let finalData = []; 
+      let finalData = [];
       reader.onload = () => {
         const allTextLines = reader?.result?.split(/\n/);
         setImportHeader(allTextLines[0].split(","));
@@ -98,7 +98,7 @@ const ListEmployees = (props) => {
             ];
           }
         }
-        setSelectedFieldTypes(fieldType);        
+        setSelectedFieldTypes(fieldType);
         for (let i = 1; i < allTextLines.length; i++) {
           const data = allTextLines[i].split(",");
           if (data.length === allTextLines[0].split(",")?.length) {
@@ -109,7 +109,7 @@ const ListEmployees = (props) => {
             finalData.push(tarr);
           }
         }
-        
+
         setFinalData(finalData);
         console.log(">>> finalData >>>>>>", finalData);
         // this.uploadedRecords = this.csvData.length;
