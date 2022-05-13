@@ -55,11 +55,7 @@ const DonationPreferences = () => {
       donationPreferenceActions.getDonationPreferences({
         employeeId: employee?.emp_id,
         pageSize: pageSize,
-        offset:
-          currentPage >= 2
-            ? currentPage * pageSize -
-            pageSize
-            : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
   }, [currentPage]);
@@ -143,7 +139,9 @@ const DonationPreferences = () => {
     }
     if (updateType === donationPreferenceConstants.FREQUENCY) {
       preferenceForm.frequency =
-        updatedValue === donationPreferenceConstants.MONTHLY ? 2 : 1;
+        updatedValue === donationPreferenceConstants.MONTHLY
+          ? donationPreferenceConstants.MONTHLY_FREQUENCY
+          : donationPreferenceConstants.ONCE_FREQUENCY;
       preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`;
     }
     preferenceForm.isConsentCheck = true;
@@ -255,7 +253,8 @@ const DonationPreferences = () => {
                                 checked={
                                   updatedValue
                                     ? updatedValue
-                                    : preference?.frequency === 1
+                                    : preference?.frequency ===
+                                      donationPreferenceConstants.ONCE_FREQUENCY
                                 }
                                 onlabel="Once"
                                 onstyle="primary"

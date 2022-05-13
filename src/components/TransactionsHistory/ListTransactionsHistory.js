@@ -165,7 +165,7 @@ const ListTransactionsHistory = (props) => {
                       >
                         <td className="ant-table-cell">
                           {currentPage >= 2
-                            ? currentPage * 10 - 10 + index + 1
+                            ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td>
                         {!employeeId && (

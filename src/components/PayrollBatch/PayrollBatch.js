@@ -10,7 +10,6 @@ import {
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
-import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
@@ -30,7 +29,6 @@ const confirmInitialValues = {
   action: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
-let accordionData;
 const PayrollBatch = (props) => {
   let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
@@ -77,8 +75,8 @@ const PayrollBatch = (props) => {
     dispatch(
       payrollBatchActions.getPayrollBatch({
         corporateId: corporateId ? corporateId : null,
-        pageSize: 10,
-        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
+        pageSize: pageSize,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
   }, [currentPage]);
@@ -183,7 +181,11 @@ const PayrollBatch = (props) => {
                             key={index + 1}
                             className="ant-table-row ant-table-row-level-0"
                           >
-                            <td className="ant-table-cell">{index + 1}</td>
+                            <td className="ant-table-cell">
+                              {currentPage >= 2
+                                ? currentPage * pageSize - pageSize + index + 1
+                                : index + 1}
+                            </td>
                             <td className="ant-table-cell">
                               <Link
                                 to={{

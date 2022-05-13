@@ -5,6 +5,8 @@ import { employeeActions } from "../../actions";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
 import Loader from "./../Shared/Loader";
 import { alertActions } from "./../../actions";
+import Pagination from "./../Shared/Pagination";
+import { paginationConstants } from "../../constants";
 // import employees from "./../../config/employees.json";
 const actionInitialValues = {
   userId: "",
@@ -22,12 +24,16 @@ let goodplatformFields = [
   { label: "Country", value: "country" },
   { label: "Status", value: "status" },
 ];
+let pageSize = paginationConstants?.PAGE_SIZE;
 const ListEmployees = (props) => {
   let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
   const hiddenFileInput = useRef(null);
   // const user = useSelector((state) => state.employee.user);
+  // Pagination
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [isBulkUpload, setIsBulkUpload] = useState(false);
   const [isImportNextStep, setIsImportNextStep] = useState(false);
@@ -43,8 +49,18 @@ const ListEmployees = (props) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(employeeActions.getEmployees({ corporateId: corporateId }));
-  }, []);
+    console.log("coming to fetch batch");
+    dispatch(
+      employeeActions.getEmployees({
+        corporateId: corporateId,
+        pageSize: pageSize,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+      })
+    );
+  }, [currentPage]);
+  const setPage = (page) => {
+    setCurrentPage(page);
+  };
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
@@ -211,7 +227,11 @@ const ListEmployees = (props) => {
                             key={index + 1}
                             className="ant-table-row ant-table-row-level-0"
                           >
-                            <td className="ant-table-cell">{index + 1}</td>
+                            <td className="ant-table-cell">
+                              {currentPage >= 2
+                                ? currentPage * pageSize - pageSize + index + 1
+                                : index + 1}
+                            </td>
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
                                 {employee?.name}
@@ -290,6 +310,13 @@ const ListEmployees = (props) => {
               </div>
             </div>
           </div>
+          <Pagination
+            className="pagination-bar mt-4"
+            currentPage={currentPage}
+            totalCount={totalCount ? totalCount : 0}
+            pageSize={pageSize}
+            onPageChange={(page) => setPage(page)}
+          />
           {open && (
             <ConfirmationDialog
               open={true}
