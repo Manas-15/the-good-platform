@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Formik, Form } from "formik";
+import { CompleteBatchSchema } from "./../Validations";
 import {
   donationPreferenceConstants,
   payrollConstants,
@@ -13,23 +15,19 @@ import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
 // import payrollBatch from "./../../config/payrollBatch.json";
-import { Modal, Accordion } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 
-const preferenceForm = {
-  employeePreferenceId: "",
-  type: "",
-  donationAmount: "",
-  frequency: "",
-  isConsentCheck: "",
+const completeInitialValues = {
+  batchId: "",
+  action: "",
+  referenceId: "",
+  referenceNote: "",
 };
-const actionInitialValues = {
-  isDeleted: false,
-  isSuspended: false,
-  suspendDuration: moment(new Date()).add(4, "months"),
-  requestType: "",
-  preferenceId: "",
+const confirmInitialValues = {
+  batchId: "",
+  action: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 let accordionData;
@@ -44,6 +42,7 @@ const PayrollBatch = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
+  const [selectedBatch, setSelectedBatch] = useState();
   const [updateType, setUpdateType] = useState("");
   const [updatedValue, setUpdatedValue] = useState();
   const [actionType, setActionType] = useState("");
@@ -102,23 +101,34 @@ const PayrollBatch = (props) => {
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
+    setSelectedBatch(item);
     setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
     setActionContent(
       `Are you sure to ${
         corporateId ? "complete" : "confirm"
       } this batch <strong>"${item?.batchId}"</strong>?`
     );
+    actionInitialValues.batchId = item?.batchId;
+    actionInitialValues.action =
+      action === "Complete Batch" ? "Complete" : "Confirm";
   };
   const handleCancel = () => {
     setShow(false);
   };
-  const confirm = () => {
+  const confirm = (values) => {
+    console.log(">>>>>>>>>>>>>>>>> confirm", values);
     handleClose();
-    // actionInitialValues.userId = selectedCorporate.userId;
-    // actionInitialValues.requestType = actionType;
-    // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+    // if (values) {
+    //   values.batchId = selectedBatch?.batchId;
+    //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
+    // }
+    dispatch(payrollBatchActions.updateBatchStatus(values));
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedBatch(null);
+    setActionType(null);
+  };
   return (
     <div className="customContainer">
       <div className="row mb-3 payroll">
@@ -162,7 +172,7 @@ const PayrollBatch = (props) => {
                         ?.filter((pr) =>
                           corporateId
                             ? pr
-                            : pr.status !== payrollConstants.PENDING
+                            : pr.status !== payrollConstants.PENDING_STATUS
                         )
                         .map((batch, index) => (
                           <tr
@@ -270,18 +280,119 @@ const PayrollBatch = (props) => {
         onPageChange={(page) => setPage(page)}
       />
       {open && (
-        <ConfirmationDialog
-          open={true}
-          title={actionTitle}
-          actionType={actionType}
-          content={actionContent}
-          handleConfirm={() => {
-            confirm();
-          }}
-          handleCancel={() => {
-            handleClose();
-          }}
-        />
+        <Modal show={open} onHide={handleClose} backdrop="static">
+          <Modal.Header closeButton>
+            <Modal.Title>{actionTitle}</Modal.Title>
+          </Modal.Header>
+
+          <Formik
+            initialValues={
+              corporateId ? completeInitialValues : confirmInitialValues
+            }
+            validationSchema={corporateId ? CompleteBatchSchema : null}
+            onSubmit={(values) => {
+              confirm(values);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <Form>
+                <Modal.Body style={{ fontSize: "18" }}>
+                  {ReactHtmlParser(actionContent)}
+                  {actionType === payrollConstants.COMPLETE_BATCH && (
+                    <>
+                      <div className="form-group">
+                        <label>
+                          <strong>Reference ID</strong>
+                        </label>
+                        <input
+                          type="text"
+                          name="referenceId"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder="Enter reference ID"
+                          className="form-control"
+                        />
+                        <span className="error">
+                          {errors.referenceId &&
+                            touched.referenceId &&
+                            errors.referenceId}
+                        </span>
+                      </div>
+                      <div className="form-group">
+                        <label>
+                          <strong>Reference Note</strong>
+                        </label>
+                        <textarea
+                          rows="3"
+                          name="referenceNote"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder="Enter reference note"
+                          className="form-control"
+                        />
+                        <span className="error">
+                          {errors.referenceNote &&
+                            touched.referenceNote &&
+                            errors.referenceNote}
+                        </span>
+                      </div>
+                      <input
+                        type="hidden"
+                        name="batchId"
+                        value={selectedBatch?.batchId}
+                      />
+                      <input
+                        type="hidden"
+                        name="action"
+                        value={
+                          actionType === "Complete Batch"
+                            ? "Complete"
+                            : "Confirm"
+                        }
+                      />
+                    </>
+                  )}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={
+                      isSubmitting ||
+                      (corporateId &&
+                        (!values.referenceId || !values.referenceNote))
+                    }
+                  >
+                    Confirm
+                  </Button>
+                  <Button variant="danger" onClick={handleClose}>
+                    Cancel
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
+        </Modal>
+        // <ConfirmationDialog
+        //   open={true}
+        //   title={actionTitle}
+        //   actionType={actionType}
+        //   content={actionContent}
+        //   handleConfirm={() => {
+        //     confirm();
+        //   }}
+        //   handleCancel={() => {
+        //     handleClose();
+        //   }}
+        // />
       )}
       <Modal show={show} onHide={handleCancel} backdrop="static">
         <Modal.Header closeButton className="fs-5 p-2">

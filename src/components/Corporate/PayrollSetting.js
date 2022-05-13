@@ -23,7 +23,7 @@ const actionInitialValues = {
   preferenceId: "",
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
-let accordionData, batch;
+let accordionData, batchId;
 const PayrollSetting = (props) => {
   let history = useHistory();
   const preferences = useSelector((state) => state.payrollSetting);
@@ -31,6 +31,7 @@ const PayrollSetting = (props) => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [isBatchView, setIsBatchView] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [updateType, setUpdateType] = useState("");
   const [updatedValue, setUpdatedValue] = useState();
@@ -74,7 +75,6 @@ const PayrollSetting = (props) => {
   };
   const confirm = () => {
     handleCloseDialog();
-    console.log("////// fffffffffffff ////////////// processBatch");
     if (selectedPreference) {
       console.log(
         "////// fddddddddddddddddddddddf ////////////// processBatch"
@@ -121,10 +121,10 @@ const PayrollSetting = (props) => {
     dispatch(payrollSettingActions.processBatch(finalData));
   };
   useEffect(() => {
-    batch = props?.location?.query?.batchId;
-    console.log("ddddddddddddddddddd from", batch);
-    if (batch) {
-      dispatch(payrollSettingActions.getBatchDetail({ batchId: batch }));
+    batchId = props?.location?.query?.batchId;
+    if (batchId) {
+      setIsBatchView(true);
+      dispatch(payrollSettingActions.getBatchDetail({ batchId: batchId }));
     }
   }, [props?.history?.action === "PUSH"]);
   const generatePayroll = () => {
@@ -136,7 +136,6 @@ const PayrollSetting = (props) => {
     getData();
   };
   const getData = () => {
-    console.log("ddddddddddddddddddddd get data");
     dispatch(
       payrollSettingActions.getDonationPreferences({
         monthYear: moment(generateMonthYear).format("MM-YYYY"),
@@ -159,7 +158,7 @@ const PayrollSetting = (props) => {
       </div>
       <div className="row mb-b payroll text-right">
         <div className="col-md-4">
-          {!batch && (
+          {!batchId && (
             <div className="row">
               <div className="col-md-8">
                 <DatePicker
@@ -261,7 +260,7 @@ const PayrollSetting = (props) => {
         <>
           {Object.keys(accordionData).map((type, index) => (
             <div className="row mt-4">
-              {ProcessHelper(accordionData[type])?.length > 0 ? (
+              {ProcessHelper(accordionData[type], batchId)?.length > 0 ? (
                 <Accordion defaultActiveKey={index} className="Payroll">
                   <Accordion.Item eventKey={0}>
                     <Accordion.Header>
@@ -273,7 +272,7 @@ const PayrollSetting = (props) => {
                       &nbsp;&#45;&nbsp;
                       {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                       {accordionData[type]
-                        ? ProcessHelper(accordionData[type])
+                        ? ProcessHelper(accordionData[type], batchId)
                             ?.reduce(
                               (total, currentValue) =>
                                 (total = total + currentValue.donationAmount),
@@ -325,7 +324,7 @@ const PayrollSetting = (props) => {
                                       )}
                                       )
                                     </th>
-                                    {!batch && (
+                                    {!batchId && (
                                       <th className="ant-table-cell text-center">
                                         Actions
                                       </th>
@@ -334,13 +333,13 @@ const PayrollSetting = (props) => {
                                 </thead>
                                 <tbody className="ant-table-tbody">
                                   {accordionData[type]
-                                    .filter(
-                                      (preference) =>
-                                        preference?.isDeleted === false &&
-                                        !preference?.batchId &&
-                                        (preference?.status ===
-                                          donationPreferenceConstants?.RESUMED ||
-                                          preference?.status === null)
+                                    .filter((preference) =>
+                                      batchId
+                                        ? preference
+                                        : !preference?.batchId &&
+                                          (preference?.status ===
+                                            donationPreferenceConstants?.RESUMED ||
+                                            preference?.status === null)
                                     )
                                     .map((preference, i) => (
                                       <tr
@@ -410,7 +409,7 @@ const PayrollSetting = (props) => {
                                             disabled={true}
                                           />
                                         </td>
-                                        {!batch && (
+                                        {!batchId && (
                                           <td className="ant-table-cell text-center">
                                             <Link
                                               onClick={() =>
@@ -441,7 +440,7 @@ const PayrollSetting = (props) => {
               )}
             </div>
           ))}
-          {ProcessHelper(preferences?.items)?.length > 0 && (
+          {ProcessHelper(preferences?.items, batchId)?.length > 0 && (
             <div className="row mt-4">
               <div className="col-md-12 text-right">
                 <h5>
@@ -450,13 +449,14 @@ const PayrollSetting = (props) => {
                     {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                     {preferences?.items
                       ? preferences?.items
-                          .filter(
-                            (preference) =>
-                              preference?.isDeleted === false &&
-                              !preference?.batchId &&
-                              (preference?.status ===
-                                donationPreferenceConstants?.RESUMED ||
-                                preference?.status === null)
+                          .filter((preference) =>
+                            batchId
+                              ? preference
+                              : preference?.isDeleted === false &&
+                                !preference?.batchId &&
+                                (preference?.status ===
+                                  donationPreferenceConstants?.RESUMED ||
+                                  preference?.status === null)
                           )
                           ?.reduce(
                             (total, currentValue) =>
@@ -474,7 +474,7 @@ const PayrollSetting = (props) => {
       ) : (
         <div className="text-center m-4">No data found</div>
       )}
-      {ProcessHelper(preferences?.items)?.length > 0 && !batch && (
+      {ProcessHelper(preferences?.items, batchId)?.length > 0 && !batchId && (
         <div className="text-right m-3">
           <Button
             className="btn btn-primary"
