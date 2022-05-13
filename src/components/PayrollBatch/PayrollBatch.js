@@ -20,13 +20,13 @@ import Pagination from "./../Shared/Pagination";
 
 const completeInitialValues = {
   batchId: "",
-  action: "",
+  requestType: "",
   referenceId: "",
   referenceNote: "",
 };
 const confirmInitialValues = {
   batchId: "",
-  action: "",
+  requestType: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const PayrollBatch = (props) => {
@@ -103,15 +103,23 @@ const PayrollBatch = (props) => {
     setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
     setActionContent(
       `Are you sure to ${
-        corporateId ? "complete" : "confirm"
+        corporateId
+          ? "complete"
+          : action == "Confirm Batch"
+          ? "confirm"
+          : "unconfirm"
       } this batch <strong>"${item?.batchId}"</strong>?`
     );
     if (action === "Complete Batch") {
       completeInitialValues.batchId = item?.batchId;
-      completeInitialValues.action = payrollConstants.COMPLETE;
+      completeInitialValues.requestType = payrollConstants.COMPLETE;
     } else {
       confirmInitialValues.batchId = item?.batchId;
-      confirmInitialValues.action = payrollConstants.CONFIRM;
+      if (action === "Confirm Batch") {
+        confirmInitialValues.requestType = payrollConstants.CONFIRM;
+      } else {
+        confirmInitialValues.requestType = payrollConstants.UNCONFIRM;
+      }
     }
   };
   const handleCancel = () => {
@@ -256,16 +264,32 @@ const PayrollBatch = (props) => {
                                   </Link>
                                 )}
                               {!corporateId && (
-                                <Link
-                                  onClick={() =>
-                                    handleOpen("Confirm Batch", batch)
-                                  }
-                                >
-                                  <span
-                                    className="bi-check-circle fs-5"
-                                    title="Confirm"
-                                  ></span>
-                                </Link>
+                                <>
+                                  {batch?.status ===
+                                  payrollConstants.CONFIRMED_STATUS ? (
+                                    <Link
+                                      onClick={() =>
+                                        handleOpen("Unconfirm Batch", batch)
+                                      }
+                                    >
+                                      <span
+                                        className="bi-x-circle fs-5"
+                                        title="Unonfirm"
+                                      ></span>
+                                    </Link>
+                                  ) : (
+                                    <Link
+                                      onClick={() =>
+                                        handleOpen("Confirm Batch", batch)
+                                      }
+                                    >
+                                      <span
+                                        className="bi-check-circle fs-5"
+                                        title="Confirm"
+                                      ></span>
+                                    </Link>
+                                  )}
+                                </>
                               )}
                             </td>
                           </tr>
@@ -290,7 +314,6 @@ const PayrollBatch = (props) => {
           <Modal.Header closeButton>
             <Modal.Title>{actionTitle}</Modal.Title>
           </Modal.Header>
-
           <Formik
             initialValues={
               corporateId ? completeInitialValues : confirmInitialValues
@@ -352,20 +375,6 @@ const PayrollBatch = (props) => {
                             errors.referenceNote}
                         </span>
                       </div>
-                      <input
-                        type="hidden"
-                        name="batchId"
-                        value={selectedBatch?.batchId}
-                      />
-                      <input
-                        type="hidden"
-                        name="action"
-                        value={
-                          actionType === "Complete Batch"
-                            ? payrollConstants.COMPLETE
-                            : payrollConstants.CONFIRM
-                        }
-                      />
                     </>
                   )}
                 </Modal.Body>

@@ -12,6 +12,7 @@ export const payrollConstants = {
   COMPLETE: "Complete",
   CONFIRM: "Confirm",
   RECEIVE: "Receive",
+  UNCONFIRM: "Unconfirm",
 
   COMPLETE_BATCH: "Complete Batch",
   CONFIRM_BATCH: "Confirm Batch",

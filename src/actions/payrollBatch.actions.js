@@ -90,10 +90,10 @@ function processBatch(data) {
 }
 function updateBatchStatus(data) {
   return (dispatch) => {
-    dispatch(request());
+    dispatch(request(data));
     payrollService.updateBatchStatus(data).then(
       (data) => {
-        dispatch(success());
+        dispatch(success(data));
         dispatch(alertActions.success("Batch status updated successfully."));
       },
       (error) => {
@@ -103,14 +103,16 @@ function updateBatchStatus(data) {
     );
   };
 
-  function request() {
+  function request(data) {
     return {
       type: payrollConstants.UPDATE_BATCH_STATUS_REQUEST,
+      data,
     };
   }
   function success() {
     return {
       type: payrollConstants.UPDATE_BATCH_STATUS_SUCCESS,
+      data,
     };
   }
   function failure(error) {

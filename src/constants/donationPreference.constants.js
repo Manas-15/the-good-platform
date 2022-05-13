@@ -8,11 +8,6 @@ export const donationPreferenceConstants = {
   ONCE_FREQUENCY: 1,
   MONTHLY_FREQUENCY: 2,
 
-  FIRST_AMOUNT: 1,
-  SECOND_AMOUNT: 2,
-  THIRD_AMOUNT: 3,
-  FORTH_AMOUNT: 4,
-
   DELETE: "Delete",
   SUSPEND: "Suspend",
   RESUME: "Resume",
