@@ -108,9 +108,13 @@ const PayrollBatch = (props) => {
         corporateId ? "complete" : "confirm"
       } this batch <strong>"${item?.batchId}"</strong>?`
     );
-    actionInitialValues.batchId = item?.batchId;
-    actionInitialValues.action =
-      action === "Complete Batch" ? "Complete" : "Confirm";
+    if (action === "Complete Batch") {
+      completeInitialValues.batchId = item?.batchId;
+      completeInitialValues.action = payrollConstants.COMPLETE;
+    } else {
+      confirmInitialValues.batchId = item?.batchId;
+      confirmInitialValues.action = payrollConstants.CONFIRM;
+    }
   };
   const handleCancel = () => {
     setShow(false);
@@ -317,6 +321,7 @@ const PayrollBatch = (props) => {
                           name="referenceId"
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          maxLength={50}
                           placeholder="Enter reference ID"
                           className="form-control"
                         />
@@ -335,6 +340,7 @@ const PayrollBatch = (props) => {
                           name="referenceNote"
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          maxLength={500}
                           placeholder="Enter reference note"
                           className="form-control"
                         />
@@ -354,8 +360,8 @@ const PayrollBatch = (props) => {
                         name="action"
                         value={
                           actionType === "Complete Batch"
-                            ? "Complete"
-                            : "Confirm"
+                            ? payrollConstants.COMPLETE
+                            : payrollConstants.CONFIRM
                         }
                       />
                     </>
