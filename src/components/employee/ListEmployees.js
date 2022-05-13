@@ -20,6 +20,7 @@ let goodplatformFields = [
   { label: "PAN", value: "pan" },
   { label: "Joining Date", value: "joiningDate" },
   { label: "Country", value: "country" },
+  { label: "Status", value: "status" },
 ];
 const ListEmployees = (props) => {
   let history = useHistory();

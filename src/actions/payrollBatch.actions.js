@@ -7,6 +7,7 @@ export const payrollBatchActions = {
   getPayrollBatch,
   operateActionRequest,
   processBatch,
+  updateBatchStatus,
 };
 
 function getPayrollBatch(data) {
@@ -57,7 +58,13 @@ function processBatch(data) {
   return (dispatch) => {
     dispatch(request(data));
     payrollService.processBatch(data).then(
-      (batch) => dispatch(success(batch)),
+      // (batch) => dispatch(success(batch)),
+      (batch) => {
+        dispatch(success(batch));
+        dispatch(
+          alertActions.success("Batch processed successfully.")
+        );
+      },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
@@ -79,6 +86,40 @@ function processBatch(data) {
   function failure(error) {
     return {
       type: payrollConstants.PROCESS_BATCH_FAILURE,
+      error,
+    };
+  }
+}
+function updateBatchStatus(data) {
+  return (dispatch) => {
+    dispatch(request());
+    payrollService.updateBatchStatus(data).then(
+      (data) => {
+        dispatch(success());
+        dispatch(
+          alertActions.success("Batch status updated successfully.")
+        );
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return {
+      type: payrollConstants.UPDATE_BATCH_STATUS_REQUEST,
+    };
+  }
+  function success() {
+    return {
+      type: payrollConstants.UPDATE_BATCH_STATUS_SUCCESS,
+    };
+  }
+  function failure(error) {
+    return {
+      type: payrollConstants.UPDATE_BATCH_STATUS_FAILURE,
       error,
     };
   }

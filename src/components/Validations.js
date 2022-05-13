@@ -72,3 +72,8 @@ export const PaymentSchema = Yup.object().shape({
     .max(10, "Please enter valid phone number"),
   // customerDob: Yup.date().nullable().required("Date of birth is required"),
 });
+export const CompleteBatchSchema = Yup.object().shape({
+  referenceId: Yup.string().required("Reference ID is required"),
+  referenceNote: Yup.string()
+    .required("Reference note is required")
+});
