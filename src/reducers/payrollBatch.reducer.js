@@ -9,33 +9,55 @@ export function payrollBatch(state = {}, action) {
     case payrollConstants.GET_PAYROLL_BATCH_SUCCESS:
       return {
         items: action?.batches?.data?.batch,
+        totalCount: action?.batches?.data?.count,
       };
     case payrollConstants.GET_PAYROLL_BATCH_FAILURE:
       return {
         error: action.error,
       };
-    case payrollConstants.PAYROLL_BATCH_ACTION_REQUEST:
+    case payrollConstants.UPDATE_BATCH_STATUS_REQUEST:
       return {
         ...state,
         loading: true,
         batchId: action?.data?.batchId,
+        requestType: action?.data?.requestType,
       };
-    case payrollConstants.PAYROLL_BATCH_ACTION_SUCCESS:
+    case payrollConstants.UPDATE_BATCH_STATUS_SUCCESS:
       return {
         ...state,
-        items: state?.items?.map((batch) =>
-          batch.batchId === state.batchId
-            ? { ...batch, isCompleted: true }
-            : batch
-        ),
+        items: state.items.map((item) => {
+          if (item?.batchId === state?.batchId) {
+            if (state?.requestType === payrollConstants?.COMPLETE) {
+              return {
+                ...item,
+                status: payrollConstants?.COMPLETED_STATUS,
+              };
+            }
+            if (state?.requestType === payrollConstants?.CONFIRM) {
+              return {
+                ...item,
+                status: payrollConstants?.CONFIRMED_STATUS,
+              };
+            }
+            if (state?.requestType === payrollConstants?.UNCONFIRM) {
+              return {
+                ...item,
+                status: payrollConstants?.COMPLETED_STATUS,
+              };
+            }
+          }
+          return item;
+        }),
         loading: false,
+        batchId: null,
+        requestType: null,
       };
-    case payrollConstants.PAYROLL_BATCH_ACTION_FAILURE:
+    case payrollConstants.UPDATE_BATCH_STATUS_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.error,
-      };    
+      };
     default:
       return state;
   }

@@ -47,6 +47,7 @@ export function employee(state = initialState, action) {
       return {
         user: state.user,
         items: action?.employees?.data?.employee,
+        totalCount: action?.employees?.data?.count,
       };
     case employeeConstants.GET_EMPLOYEES_FAILURE:
       return {
