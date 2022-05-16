@@ -70,7 +70,6 @@ const EmployeeDonationPreferences = () => {
     );
   };
   const setDuration = (value) => {
-    console.log(">>>>>>>>>>>>>>>>>> duration", value);
     if (actionType === donationPreferenceConstants.SUSPEND) {
       actionInitialValues.suspendDuration = moment(new Date()).add(
         value,
@@ -108,7 +107,6 @@ const EmployeeDonationPreferences = () => {
   };
   const setPage = (page) => {
     setCurrentPage(page);
-    console.log(">>>>>>>>>>>>>>>>>>>>> after setPage", page);
   };
   useEffect(() => {
     setTotalCount(preferences?.totalCount);

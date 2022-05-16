@@ -76,14 +76,10 @@ const PayrollSetting = (props) => {
   const confirm = () => {
     handleCloseDialog();
     if (selectedPreference) {
-      console.log(
-        "////// fddddddddddddddddddddddf ////////////// processBatch"
-      );
       actionInitialValues.preferenceId =
         selectedPreference?.employeePreferenceId;
       dispatch(payrollSettingActions.operateActionRequest(actionInitialValues));
     } else {
-      console.log("//////////////////// processBatch");
       processBatch();
     }
   };
@@ -129,10 +125,6 @@ const PayrollSetting = (props) => {
   }, [props?.history?.action === "PUSH"]);
   const generatePayroll = () => {
     setIsGenerating(true);
-    console.log(
-      "generate payroll >>>>>>>>>",
-      moment(generateMonthYear).format("MM-YYYY")
-    );
     getData();
   };
   const getData = () => {

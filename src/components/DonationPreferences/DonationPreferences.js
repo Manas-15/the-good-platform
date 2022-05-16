@@ -100,7 +100,6 @@ const DonationPreferences = () => {
     updateDonationPreference();
   };
   const closeCheck = (selectedPreference) => {
-    console.log("selectedPreference", selectedPreference);
     setChecked(false);
     setOpen(false);
     setUpdatedValue();
@@ -110,12 +109,6 @@ const DonationPreferences = () => {
     document
       .getElementById("frequency" + selectedPreference?.employeePreferenceId)
       .reset();
-    // preferences?.items?.map((item) => {
-    //   console.log("selectedPreference?.amount", item?.employeePreferenceId, selectedPreference?.employeePreferenceId)
-    //   if (item?.employeePreferenceId === selectedPreference?.employeePreferenceId) {
-    //     console.log("dddd?.amount", selectedPreference?.donationAmount)
-    //     return { ...item, donationAmount: selectedPreference?.donationAmount };
-    //   }})
   };
   const showConsent = (preference, type) => {
     setOpen(true);
