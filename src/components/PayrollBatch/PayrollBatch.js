@@ -71,7 +71,6 @@ const PayrollBatch = (props) => {
     );
   };
   useEffect(() => {
-    console.log("coming to fetch batch");
     dispatch(
       payrollBatchActions.getPayrollBatch({
         corporateId: corporateId ? corporateId : null,
@@ -126,7 +125,6 @@ const PayrollBatch = (props) => {
     setShow(false);
   };
   const confirm = (values) => {
-    console.log(">>>>>>>>>>>>>>>>> confirm", values);
     handleClose();
     // if (values) {
     //   values.batchId = selectedBatch?.batchId;

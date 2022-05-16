@@ -73,7 +73,6 @@ const ListTransactionsHistory = (props) => {
   };
   const setPage = (page) => {
     setCurrentPage(page);
-    console.log(">>>>>>>>>>>>>>>>>>>>> after setPage", page);
   };
   return (
     <div className="customContainer">

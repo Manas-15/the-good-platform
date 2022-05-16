@@ -68,7 +68,6 @@ const Payment = ({ paymentValues }) => {
     } else {
       cashfree = new cashfreeSandbox.Cashfree();
     }
-    console.log("before Initialisation");
     cashfree.initialiseDropin(parent, {
       orderToken,
       onSuccess: cbs,
@@ -76,7 +75,6 @@ const Payment = ({ paymentValues }) => {
       components,
       style,
     });
-    console.log("after Initialisation");
   };
   return (
     <>
