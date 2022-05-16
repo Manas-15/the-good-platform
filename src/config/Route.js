@@ -33,13 +33,13 @@ const CreateRoutes = () => {
       // clear alert on location change
       dispatch(alertActions.clear());
     });
-  }, []);
+  }, [dispatch]);
   if (alert.message) {
     setTimeout(() => {
       dispatch(alertActions.clear());
     }, 8000);
   }
-  const isCorporateLunchpad = history.location.pathname == "/corporates";
+  const isCorporateLunchpad = history.location.pathname === "/corporates";
   const isEmployeeView = history.location.pathname.includes("/employees");
   if (isCorporateLunchpad) {
     document.body.classList.add("toggle-sidebar");

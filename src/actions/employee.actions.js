@@ -13,6 +13,7 @@ export const employeeActions = {
   setEmployeePassword,
   setPasswordValid,
   employeeAccountRequest,
+  bulkImport,
 };
 
 function login(data, from) {
@@ -275,5 +276,30 @@ function employeeAccountRequest(actionValues) {
   }
   function failure(error) {
     return { type: employeeConstants.EMPLOYEE_ACTION_FAILURE, error };
+  }
+}
+function bulkImport(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+
+    employeeService.bulkImport(data).then(
+      () => {
+        dispatch(success());
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(data) {
+    return { type: employeeConstants.BULK_IMPORT_REQUEST, data };
+  }
+  function success() {
+    return { type: employeeConstants.BULK_IMPORT_SUCCESS };
+  }
+  function failure(error) {
+    return { type: employeeConstants.BULK_IMPORT_FAILURE, error };
   }
 }

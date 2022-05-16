@@ -100,7 +100,7 @@ const Header = () => {
                   to="/transactions-history"
                 >
                   <i className="bi bi-person-circle"></i>
-                  <span>Superadmin Portal</span>
+                  <span>Blue Pencil Admin Portal</span>
                 </Link>
               </li>
               <li>

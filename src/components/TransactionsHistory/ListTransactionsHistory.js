@@ -18,7 +18,6 @@ const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
-  const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
 
@@ -35,7 +34,7 @@ const ListTransactionsHistory = (props) => {
     charityPrograms?.items?.other?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
-  }, [props]);
+  }, [props, charityPrograms?.items?.sponser, charityPrograms?.items?.other]);
   useEffect(() => {
     if (!isFilter) {
       dispatch(

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
@@ -7,7 +7,6 @@ import Loader from "./../Shared/Loader";
 import { alertActions } from "./../../actions";
 import Pagination from "./../Shared/Pagination";
 import { paginationConstants } from "../../constants";
-// import employees from "./../../config/employees.json";
 const actionInitialValues = {
   userId: "",
   requestType: "",
@@ -26,7 +25,6 @@ let goodplatformFields = [
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListEmployees = (props) => {
-  let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
   const hiddenFileInput = useRef(null);
@@ -60,6 +58,9 @@ const ListEmployees = (props) => {
   const setPage = (page) => {
     setCurrentPage(page);
   };
+  useEffect(() => {
+    setTotalCount(employees?.totalCount);
+  }, [employees?.totalCount]);
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
