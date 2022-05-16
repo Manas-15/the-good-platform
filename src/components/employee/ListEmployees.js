@@ -49,7 +49,6 @@ const ListEmployees = (props) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("coming to fetch batch");
     dispatch(
       employeeActions.getEmployees({
         corporateId: corporateId,
@@ -137,6 +136,7 @@ const ListEmployees = (props) => {
     }
   };
   const addSelectedField = (event, index) => {
+    console.log("dddddddddddddddddd event", event, index);
     selectedFieldTypes[index] = event.value;
   };
   const confimUpload = () => {
@@ -369,13 +369,13 @@ const ListEmployees = (props) => {
                     {/* <mdb-select className="form-control" [options]="wakeupsalesFields" [(ngModel)]="selectedFieldTypes[i]" (selected)="addSelectedField($event,i)" mdbInput></mdb-select> */}
                     <select
                       className="form-control col-md-6"
-                      onChange={(event, index) =>
-                        addSelectedField(event, index)
+                      onChange={(event, i) =>
+                        addSelectedField(event.target.value, i)
                       }
                       value={selectedFieldTypes[index]}
                     >
-                      {goodplatformFields.map((field, index) => (
-                        <option value={field.value} key={index + 1}>
+                      {goodplatformFields.map((field, ind) => (
+                        <option value={field.value} key={ind + 1}>
                           {field.label}
                         </option>
                       ))}
