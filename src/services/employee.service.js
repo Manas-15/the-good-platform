@@ -112,7 +112,7 @@ function handleResponse(response) {
 }
 async function bulkImport(data) {
   return await axios.post(
-    process.env.REACT_APP_API_URL + "api/employee_bulk_import/",
+    process.env.REACT_APP_API_URL + "api/employee_bulk_upload/",
     data
     // { headers: authHeader() }
   );

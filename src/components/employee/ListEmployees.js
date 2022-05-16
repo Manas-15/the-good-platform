@@ -127,7 +127,6 @@ const ListEmployees = (props) => {
         }
 
         setFinalData(finalData);
-        console.log(">>> finalData >>>>>>", finalData);
         // this.uploadedRecords = this.csvData.length;
         // this.csvPaginator.currentPage = 1;
         // this.csvPaginator.totalItems = this.uploadedRecords;
