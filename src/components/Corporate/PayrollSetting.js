@@ -138,7 +138,7 @@ const PayrollSetting = (props) => {
   const getData = () => {
     dispatch(
       payrollSettingActions.getDonationPreferences({
-        monthYear: moment(generateMonthYear).format("MM-YYYY"),
+        filterDate: moment(generateMonthYear).format("MM-YYYY"),
         pageSize: 1000,
         offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })

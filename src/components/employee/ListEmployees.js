@@ -15,8 +15,8 @@ const actionInitialValues = {
 let goodplatformFields = [
   { label: "First Name", value: "firstName" },
   { label: "Last Name", value: "lastName" },
-  { label: "Email", value: "emails" },
-  { label: "Phone", value: "phones" },
+  { label: "Email", value: "email" },
+  { label: "Phone", value: "phone" },
   { label: "Employee ID", value: "employeeId" },
   { label: "Gender", value: "gender" },
   { label: "PAN", value: "pan" },
@@ -136,8 +136,8 @@ const ListEmployees = (props) => {
     }
   };
   const addSelectedField = (event, index) => {
-    console.log("dddddddddddddddddd event", event, index);
-    selectedFieldTypes[index] = event.value;
+    selectedFieldTypes[index] = event;
+    setSelectedFieldTypes(selectedFieldTypes);
   };
   const confimUpload = () => {
     console.log(
@@ -161,21 +161,25 @@ const ListEmployees = (props) => {
           </h1>
         </div>
         <div className="col-md-6" style={{ textAlign: "right" }}>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={chooseFile}
-          >
-            <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-            Import Bulk Employee
-          </button>
-          <input
-            type="file"
-            accept=".xlsx, .xls, .csv"
-            ref={hiddenFileInput}
-            onChange={handleChange}
-            style={{ display: "none" }}
-          />
+          {!isBulkUpload && !isImportNextStep && (
+            <>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={chooseFile}
+              >
+                <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                Import Bulk Employee
+              </button>
+              <input
+                type="file"
+                accept=".xlsx, .xls, .csv"
+                ref={hiddenFileInput}
+                onChange={handleChange}
+                style={{ display: "none" }}
+              />
+            </>
+          )}
           {/* <button
             type="button"
             className="btn btn-primary"
@@ -369,8 +373,8 @@ const ListEmployees = (props) => {
                     {/* <mdb-select className="form-control" [options]="wakeupsalesFields" [(ngModel)]="selectedFieldTypes[i]" (selected)="addSelectedField($event,i)" mdbInput></mdb-select> */}
                     <select
                       className="form-control col-md-6"
-                      onChange={(event, i) =>
-                        addSelectedField(event.target.value, i)
+                      onChange={(event) =>
+                        addSelectedField(event.target.value, index)
                       }
                       value={selectedFieldTypes[index]}
                     >
@@ -409,7 +413,7 @@ const ListEmployees = (props) => {
           <table className="table preview_csv_table mt-4">
             <thead>
               <tr>
-                {importHeader?.map((header, index) => (
+                {selectedFieldTypes?.map((header, index) => (
                   <td className="ellipsis-div">
                     <strong>{header.replace("_", " ")}</strong>
                   </td>
