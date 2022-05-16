@@ -244,8 +244,13 @@ const PayrollBatch = (props) => {
                                   {payrollConstants.PENDING}
                                 </span>
                               )}
+                              {batch?.status ===
+                                payrollConstants.CONFIRMED_STATUS && (
+                                <span className="text-info">
+                                  {payrollConstants.CONFIRMED}
+                                </span>
+                              )}
                             </td>
-
                             <td className="ant-table-cell text-center">
                               {corporateId &&
                                 batch?.status ===
@@ -272,7 +277,7 @@ const PayrollBatch = (props) => {
                                     >
                                       <span
                                         className="bi-x-circle fs-5"
-                                        title="Unonfirm"
+                                        title="Unconfirm"
                                       ></span>
                                     </Link>
                                   ) : (
@@ -337,7 +342,7 @@ const PayrollBatch = (props) => {
                     <>
                       <div className="form-group">
                         <label>
-                          <strong>Reference ID</strong>
+                          <strong>Reference ID*</strong>
                         </label>
                         <input
                           type="text"
@@ -356,7 +361,7 @@ const PayrollBatch = (props) => {
                       </div>
                       <div className="form-group">
                         <label>
-                          <strong>Reference Note</strong>
+                          <strong>Reference Note*</strong>
                         </label>
                         <textarea
                           rows="3"
