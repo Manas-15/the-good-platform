@@ -370,7 +370,6 @@ const ListEmployees = (props) => {
                     <div>{importFirstRecord[index]}</div>
                   </td>
                   <td>
-                    {/* <mdb-select className="form-control" [options]="wakeupsalesFields" [(ngModel)]="selectedFieldTypes[i]" (selected)="addSelectedField($event,i)" mdbInput></mdb-select> */}
                     <select
                       className="form-control col-md-6"
                       onChange={(event) =>
