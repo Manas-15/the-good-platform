@@ -110,6 +110,12 @@ export function employee(state = initialState, action) {
         items: state.items,
         error: action.error,
       };
+    case employeeConstants.BULK_IMPORT_REQUEST:
+      return { loading: true };
+    case employeeConstants.BULK_IMPORT_SUCCESS:
+      return {items: action?.data?.data?.employee};
+    case employeeConstants.BULK_IMPORT_FAILURE:
+      return { error: action.error };
     default:
       return state;
   }

@@ -43,4 +43,8 @@ export const employeeConstants = {
 
   INVALID_SET_PASSWORD_ERROR: "Invalid User",
   ALREADY_SET_PASSWORD_ERROR: "Password already set. Please login to continue",
+
+  BULK_IMPORT_REQUEST: "BULK_IMPORT_REQUEST",
+  BULK_IMPORT_SUCCESS: "BULK_IMPORT_SUCCESS",
+  BULK_IMPORT_FAILURE: "BULK_IMPORT_FAILURE",  
 };

@@ -15,6 +15,7 @@ export const employeeService = {
   setEmployeePassword,
   logout,
   employeeAccountRequest,
+  bulkImport,
 };
 
 async function login(data) {
@@ -108,4 +109,11 @@ function handleResponse(response) {
 
     return data;
   });
+}
+async function bulkImport(data) {
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_bulk_import/",
+    data
+    // { headers: authHeader() }
+  );
 }
