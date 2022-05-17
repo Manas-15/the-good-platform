@@ -214,7 +214,8 @@ const PayrollBatchDetail = (props) => {
                                       <th>Program</th>
                                     )}
                                     {currentView ===
-                                      payrollConstants.EMPLOYEE_VIEW && (
+                                      payrollConstants.EMPLOYEE_VIEW || currentView ===
+                                      payrollConstants.CORPORATE_VIEW && (
                                       <th className="ant-table-cell">
                                         Organization
                                       </th>
@@ -279,7 +280,8 @@ const PayrollBatchDetail = (props) => {
                                           </td>
                                         )}
                                         {currentView ===
-                                          payrollConstants.EMPLOYEE_VIEW && (
+                                          payrollConstants.EMPLOYEE_VIEW || currentView ===
+                                          payrollConstants.CORPORATE_VIEW && (
                                           <td className="ant-table-cell">
                                             <span className="ant-typography font-weight-bold">
                                               {preference.socialOrganization}

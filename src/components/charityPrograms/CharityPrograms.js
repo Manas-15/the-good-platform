@@ -27,7 +27,7 @@ const CharityPrograms = () => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
-    setSelectedCharity("");
+    setSelectedCharity(null);
   };
   useEffect(() => {
     dispatch(charityProgramActions.getCharityPrograms({ uuid: user?.uuid }));
@@ -41,6 +41,7 @@ const CharityPrograms = () => {
   };
   const changeTab = (activeKey) => {
     console.log("ffffffffffffffffffffffffff", activeKey);
+    closeNav();
     setTabType(activeKey);
   };
   if (charityPrograms.loading) {
