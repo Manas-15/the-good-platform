@@ -16,11 +16,22 @@ export function jwtInterceptor() {
       console.log("isLoggedIn coming interceptor", isLoggedIn);
       request.headers.common.Authorization = `Bearer ${user?.token}`;
       // request.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')`
-    }else{
+    } else {
       console.log("isLoggedIn else coming interceptor", isLoggedIn);
-      request.headers.common.Authorization = '';
+      request.headers.common.Authorization = "";
     }
 
     return request;
   });
+  axios.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === 401) {
+        console.log("eeeeeeeeeeeeee axios", error);
+      }
+      return error;
+    }
+  );
 }

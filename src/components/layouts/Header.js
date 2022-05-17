@@ -51,7 +51,7 @@ const Header = () => {
                 alt="Profile"
                 className="rounded-circle"
               />
-              <span className="d-none d-md-block dropdown-toggle ps-2">
+              <span className="d-none d-md-block dropdown-toggle ps-2 custom-color">
                 {user?.name}
               </span>
             </a>

@@ -9,4 +9,7 @@ export const charityProgramConstants = {
 
   SPONSOR: "Sponsor",
   OTHER: "Other",
+
+  SPONSORED: "Sponsored",
+  OTHERS: "Others",
 };

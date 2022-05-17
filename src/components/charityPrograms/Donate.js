@@ -185,7 +185,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
                   {tabType === charityProgramConstants.SPONSOR ? (
                     <>
                       <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-                      &nbsp;Add Donation Preference
+                      &nbsp;Add Donation Preference {tabType}
                     </>
                   ) : (
                     "Next"

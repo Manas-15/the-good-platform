@@ -155,7 +155,7 @@ const ListEmployees = (props) => {
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">
             <Link to="/corporates" className="text-decoration-underline">
-              Corporates
+              <span className="custom-color">Corporates</span>
             </Link>{" "}
             / Employees
           </h1>
