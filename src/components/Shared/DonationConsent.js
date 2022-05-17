@@ -61,7 +61,7 @@ export default function DonationConsent({
       <Modal.Footer>
         <Button
           variant="default"
-          className="btn btn-primary"
+          className="btn btn-custom"
           onClick={handleCheck}
         >
           Authorize

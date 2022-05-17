@@ -136,7 +136,7 @@ const Profile = () => {
                           <div className="pt-2">
                             <a
                               href="#"
-                              className="btn btn-primary btn-sm"
+                              className="btn btn-custom btn-sm"
                               title="Upload new profile image"
                             >
                               <i className="bi bi-upload"></i>
@@ -325,7 +325,7 @@ const Profile = () => {
                         </div>
                       </div>
                       <div className="text-center">
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn btn-custom">
                           Save Changes
                         </button>
                       </div>
@@ -376,7 +376,7 @@ const Profile = () => {
                         </div>
                       </div>
                       <div className="text-center">
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn btn-custom">
                           Change Password
                         </button>
                       </div>

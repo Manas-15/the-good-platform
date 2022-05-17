@@ -52,13 +52,13 @@ export default function ConfirmationDialog({
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="primary"
+          <button
             onClick={handleConfirm}
             disabled={isDisabled}
+            className="btn btn-custom"
           >
             Confirm
-          </Button>
+          </button>
           <Button variant="danger" onClick={handleCancel}>
             Cancel
           </Button>

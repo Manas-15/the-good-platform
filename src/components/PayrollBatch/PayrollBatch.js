@@ -17,6 +17,7 @@ import ReactHtmlParser from "react-html-parser";
 import { Modal, Button } from "react-bootstrap";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
+import PayrollBatchDetail from "./PayrollBatchDetail";
 
 const completeInitialValues = {
   batchId: "",
@@ -39,6 +40,8 @@ const PayrollBatch = (props) => {
   const [referenceNote, setReferenceNote] = useState();
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [isBatchDetail, setIsBatchDetail] = useState(false);
+  const [selectedBatchId, setSelectedBatchId] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedBatch, setSelectedBatch] = useState();
   const [updateType, setUpdateType] = useState("");
@@ -47,9 +50,7 @@ const PayrollBatch = (props) => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [currentView, setCurrentView] = useState(
-    corporateId
-      ? payrollConstants?.ORGANIZATION_VIEW
-      : payrollConstants?.CORPORATE_VIEW
+    payrollConstants?.CORPORATE_VIEW
   );
 
   // Pagination
@@ -88,12 +89,6 @@ const PayrollBatch = (props) => {
     setShow(true);
     setReferenceNote(referenceNote);
   };
-  // useEffect(() => {
-  //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>")
-  //   if(!corporateId){
-  //     payrollBatch.filter((pr)=>pr.status !== "Pending")
-  //   }
-  // }, [payrollBatch]);
 
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -137,289 +132,361 @@ const PayrollBatch = (props) => {
     setSelectedBatch(null);
     setActionType(null);
   };
+  const showBatchDetail = (batchId) => {
+    setIsBatchDetail(true);
+    setSelectedBatchId(batchId);
+  };
+  const hideBatchDetail = (status) => {
+    setIsBatchDetail(status);
+    setSelectedBatchId(null);
+  };
   return (
     <div className="customContainer">
-      <div className="row mb-3 payroll">
-        <div className="col-md-5">
-          <h1 className="ant-typography customHeading">Payroll Batch</h1>
-        </div>
-      </div>
-      {payrollBatches.loading && <Loader />}
-      {payrollBatches && (
+      {!isBatchDetail && (
         <>
-          <div className="ant-row">
-            <div className="ant-col ant-col-24 mt-2">
-              <div className="ant-table-wrapper">
-                <div className="ant-table">
-                  <table>
-                    <thead className="ant-table-thead">
-                      <tr>
-                        <th className="ant-table-cell">Sr No.</th>
-                        <th className="ant-table-cell">Batch id</th>
-                        {!corporateId && (
-                          <th className="ant-table-cell">Corporate ID</th>
-                        )}
-                        {!corporateId && (
-                          <th className="ant-table-cell">Corporate Name</th>
-                        )}
-                        <th className="ant-table-cell">Crated Date</th>
-                        <th className="ant-table-cell">
-                          Amount (
-                          {ReactHtmlParser(
-                            donationPreferenceConstants?.CURRENCY
-                          )}
-                          )
-                        </th>
-                        <th className="ant-table-cell">REF ID</th>
-                        <th className="ant-table-cell">Status</th>
-                        <th className="ant-table-cell text-center">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="ant-table-tbody">
-                      {payrollBatches?.items
-                        ?.filter((pr) =>
-                          corporateId
-                            ? pr
-                            : pr.status !== payrollConstants.PENDING_STATUS
-                        )
-                        .map((batch, index) => (
-                          <tr
-                            key={index + 1}
-                            className="ant-table-row ant-table-row-level-0"
-                          >
-                            <td className="ant-table-cell">
-                              {currentPage >= 2
-                                ? currentPage * pageSize - pageSize + index + 1
-                                : index + 1}
-                            </td>
-                            <td className="ant-table-cell">
-                              <Link
-                                to={{
-                                  pathname: `${
-                                    corporateId
-                                      ? "/payroll-setting"
-                                      : "/admin-payroll-setting"
-                                  }`,
-                                  query: { batchId: batch?.batchId },
-                                }}
-                              >
-                                {batch?.batchId}
-                              </Link>
-                            </td>
-                            {!corporateId && (
-                              <td className="ant-table-cell">
-                                {batch?.corporateId}
-                              </td>
-                            )}
-                            {!corporateId && (
-                              <td className="ant-table-cell">
-                                {batch?.corporateName}
-                              </td>
-                            )}
-                            <td className="ant-table-cell">
-                              {moment(batch?.createdDate).format("MMM, YYYY")}
-                            </td>
-                            <td className="ant-table-cell">
-                              {batch?.amount?.toLocaleString()}
-                            </td>
-                            <td className="ant-table-cell">
-                              <Link
-                                onClick={() =>
-                                  showReferenceNote(batch?.referenceNote)
-                                }
-                              >
-                                {batch?.referenceId}
-                              </Link>
-                            </td>
-                            <td className="ant-table-cell text-uppercase">
-                              {batch?.status ===
-                                payrollConstants.COMPLETED_STATUS && (
-                                <span className="text-success">
-                                  {payrollConstants.COMPLETED}
-                                </span>
-                              )}
-                              {batch?.status ===
-                                payrollConstants.PENDING_STATUS && (
-                                <span className="text-warning">
-                                  {payrollConstants.PENDING}
-                                </span>
-                              )}
-                              {batch?.status ===
-                                payrollConstants.CONFIRMED_STATUS && (
-                                <span className="text-info">
-                                  {payrollConstants.CONFIRMED}
-                                </span>
-                              )}
-                            </td>
-                            <td className="ant-table-cell text-center">
-                              {corporateId &&
-                                batch?.status ===
-                                  payrollConstants.PENDING_STATUS && (
-                                  <Link
-                                    onClick={() =>
-                                      handleOpen("Complete Batch", batch)
-                                    }
-                                  >
-                                    <span
-                                      className="bi-check-circle fs-5"
-                                      title="Complete"
-                                    ></span>
-                                  </Link>
-                                )}
-                              {!corporateId && (
-                                <>
-                                  {batch?.status ===
-                                  payrollConstants.CONFIRMED_STATUS ? (
-                                    <Link
-                                      onClick={() =>
-                                        handleOpen("Unconfirm Batch", batch)
-                                      }
-                                    >
-                                      <span
-                                        className="bi-x-circle fs-5"
-                                        title="Unconfirm"
-                                      ></span>
-                                    </Link>
-                                  ) : (
-                                    <Link
-                                      onClick={() =>
-                                        handleOpen("Confirm Batch", batch)
-                                      }
-                                    >
-                                      <span
-                                        className="bi-check-circle fs-5"
-                                        title="Confirm"
-                                      ></span>
-                                    </Link>
-                                  )}
-                                </>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+          <div className="row mb-3 payroll">
+            <div className="col-md-6">
+              <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
-          </div>
-        </>
-      )}
-      <Pagination
-        className="pagination-bar mt-4"
-        currentPage={currentPage}
-        totalCount={totalCount ? totalCount : 0}
-        pageSize={pageSize}
-        onPageChange={(page) => setPage(page)}
-      />
-      {open && (
-        <Modal show={open} onHide={handleClose} backdrop="static">
-          <Modal.Header closeButton>
-            <Modal.Title>{actionTitle}</Modal.Title>
-          </Modal.Header>
-          <Formik
-            initialValues={
-              corporateId ? completeInitialValues : confirmInitialValues
-            }
-            validationSchema={corporateId ? CompleteBatchSchema : null}
-            onSubmit={(values) => {
-              confirm(values);
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-            }) => (
-              <Form>
-                <Modal.Body style={{ fontSize: "18" }}>
-                  {ReactHtmlParser(actionContent)}
-                  {actionType === payrollConstants.COMPLETE_BATCH && (
-                    <>
-                      <div className="form-group">
-                        <label>
-                          <strong>Reference ID*</strong>
-                        </label>
-                        <input
-                          type="text"
-                          name="referenceId"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          maxLength={50}
-                          placeholder="Enter reference ID"
-                          className="form-control"
-                        />
-                        <span className="error">
-                          {errors.referenceId &&
-                            touched.referenceId &&
-                            errors.referenceId}
-                        </span>
-                      </div>
-                      <div className="form-group">
-                        <label>
-                          <strong>Reference Note*</strong>
-                        </label>
-                        <textarea
-                          rows="3"
-                          name="referenceNote"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          maxLength={500}
-                          placeholder="Enter reference note"
-                          className="form-control"
-                        />
-                        <span className="error">
-                          {errors.referenceNote &&
-                            touched.referenceNote &&
-                            errors.referenceNote}
-                        </span>
-                      </div>
-                    </>
-                  )}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    disabled={
-                      isSubmitting ||
-                      (corporateId &&
-                        (!values.referenceId || !values.referenceNote))
+            <div className="col-md-6 text-right">
+              {!corporateId && (
+                <>
+                  <Link
+                    className="fs-6 text-decoration-underline mr-3"
+                    onClick={() =>
+                      setCurrentView(payrollConstants.CORPORATE_VIEW)
                     }
                   >
-                    Confirm
-                  </Button>
-                  <Button variant="danger" onClick={handleClose}>
-                    Cancel
-                  </Button>
-                </Modal.Footer>
-              </Form>
-            )}
-          </Formik>
-        </Modal>
-        // <ConfirmationDialog
-        //   open={true}
-        //   title={actionTitle}
-        //   actionType={actionType}
-        //   content={actionContent}
-        //   handleConfirm={() => {
-        //     confirm();
-        //   }}
-        //   handleCancel={() => {
-        //     handleClose();
-        //   }}
-        // />
+                    <button
+                      type="button"
+                      className={`${
+                        currentView === payrollConstants.CORPORATE_VIEW
+                          ? "active"
+                          : ""
+                      } btn btn-sm btn-outline-primary btn-outline-custom`}
+                    >
+                      Corporate View
+                    </button>
+                  </Link>
+                  <Link
+                    className="fs-6 text-decoration-underline mr-3"
+                    onClick={() =>
+                      setCurrentView(payrollConstants.ORGANIZATION_VIEW)
+                    }
+                  >
+                    <button
+                      type="button"
+                      className={`${
+                        currentView === payrollConstants.ORGANIZATION_VIEW
+                          ? "active"
+                          : ""
+                      } btn btn-sm btn-outline-primary btn-outline-custom`}
+                    >
+                      Organization View
+                    </button>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+          {payrollBatches.loading && <Loader />}
+          {payrollBatches && (
+            <>
+              <div className="ant-row">
+                <div className="ant-col ant-col-24 mt-2">
+                  <div className="ant-table-wrapper">
+                    <div className="ant-table">
+                      <table>
+                        <thead className="ant-table-thead">
+                          <tr>
+                            <th className="ant-table-cell">Sr No.</th>
+                            <th className="ant-table-cell">Batch id</th>
+                            {currentView ===
+                              payrollConstants.ORGANIZATION_VIEW && (
+                              <th className="ant-table-cell">
+                                Organization Id
+                              </th>
+                            )}
+                            {currentView ===
+                              payrollConstants.ORGANIZATION_VIEW && (
+                              <th className="ant-table-cell">
+                                Organization Name
+                              </th>
+                            )}
+                            {!corporateId && (
+                              <th className="ant-table-cell">Corporate ID</th>
+                            )}
+                            {!corporateId && (
+                              <th className="ant-table-cell">Corporate Name</th>
+                            )}
+                            <th className="ant-table-cell">Crated Date</th>
+                            <th className="ant-table-cell">
+                              Amount (
+                              {ReactHtmlParser(
+                                donationPreferenceConstants?.CURRENCY
+                              )}
+                              )
+                            </th>
+                            <th className="ant-table-cell">REF ID</th>
+                            <th className="ant-table-cell">Status</th>
+                            <th className="ant-table-cell text-center">
+                              Actions
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="ant-table-tbody">
+                          {payrollBatches?.items
+                            ?.filter((pr) =>
+                              corporateId
+                                ? pr
+                                : pr.status !== payrollConstants.PENDING_STATUS
+                            )
+                            .map((batch, index) => (
+                              <tr
+                                key={index + 1}
+                                className="ant-table-row ant-table-row-level-0"
+                              >
+                                <td className="ant-table-cell">
+                                  {currentPage >= 2
+                                    ? currentPage * pageSize -
+                                      pageSize +
+                                      index +
+                                      1
+                                    : index + 1}
+                                </td>
+                                <td className="ant-table-cell">
+                                  <Link
+                                    onClick={() =>
+                                      showBatchDetail(batch?.batchId)
+                                    }
+                                  >
+                                    {batch?.batchId}
+                                  </Link>
+                                </td>
+                                {currentView ===
+                                  payrollConstants.ORGANIZATION_VIEW && (
+                                  <td className="ant-table-cell">
+                                    {batch?.socialOrganizationId}
+                                  </td>
+                                )}
+                                {currentView ===
+                                  payrollConstants.ORGANIZATION_VIEW && (
+                                  <td className="ant-table-cell">
+                                    {batch?.socialOrganizationName}
+                                  </td>
+                                )}
+                                {!corporateId && (
+                                  <td className="ant-table-cell">
+                                    {batch?.corporateId}
+                                  </td>
+                                )}
+                                {!corporateId && (
+                                  <td className="ant-table-cell">
+                                    {batch?.corporateName}
+                                  </td>
+                                )}
+                                <td className="ant-table-cell">
+                                  {moment(batch?.createdDate).format(
+                                    "MMM, YYYY"
+                                  )}
+                                </td>
+                                <td className="ant-table-cell">
+                                  {batch?.amount?.toLocaleString()}
+                                </td>
+                                <td className="ant-table-cell">
+                                  <Link
+                                    onClick={() =>
+                                      showReferenceNote(batch?.referenceNote)
+                                    }
+                                  >
+                                    {batch?.referenceId}
+                                  </Link>
+                                </td>
+                                <td className="ant-table-cell text-uppercase">
+                                  {batch?.status ===
+                                    payrollConstants.COMPLETED_STATUS && (
+                                    <span className="text-success">
+                                      {payrollConstants.COMPLETED}
+                                    </span>
+                                  )}
+                                  {batch?.status ===
+                                    payrollConstants.PENDING_STATUS && (
+                                    <span className="text-warning">
+                                      {payrollConstants.PENDING}
+                                    </span>
+                                  )}
+                                  {batch?.status ===
+                                    payrollConstants.CONFIRMED_STATUS && (
+                                    <span className="text-info">
+                                      {payrollConstants.CONFIRMED}
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="ant-table-cell text-center">
+                                  {corporateId &&
+                                    batch?.status ===
+                                      payrollConstants.PENDING_STATUS && (
+                                      <Link
+                                        onClick={() =>
+                                          handleOpen("Complete Batch", batch)
+                                        }
+                                      >
+                                        <span
+                                          className="bi-check-circle fs-5"
+                                          title="Complete"
+                                        ></span>
+                                      </Link>
+                                    )}
+                                  {!corporateId && (
+                                    <>
+                                      {batch?.status ===
+                                      payrollConstants.CONFIRMED_STATUS ? (
+                                        <Link
+                                          onClick={() =>
+                                            handleOpen("Unconfirm Batch", batch)
+                                          }
+                                        >
+                                          <span
+                                            className="bi-x-circle fs-5"
+                                            title="Unconfirm"
+                                          ></span>
+                                        </Link>
+                                      ) : (
+                                        <Link
+                                          onClick={() =>
+                                            handleOpen("Confirm Batch", batch)
+                                          }
+                                        >
+                                          <span
+                                            className="bi-check-circle fs-5"
+                                            title="Confirm"
+                                          ></span>
+                                        </Link>
+                                      )}
+                                    </>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+          <Pagination
+            className="pagination-bar mt-4"
+            currentPage={currentPage}
+            totalCount={totalCount ? totalCount : 0}
+            pageSize={pageSize}
+            onPageChange={(page) => setPage(page)}
+          />
+          {open && (
+            <Modal show={open} onHide={handleClose} backdrop="static">
+              <Modal.Header closeButton>
+                <Modal.Title>{actionTitle}</Modal.Title>
+              </Modal.Header>
+              <Formik
+                initialValues={
+                  corporateId ? completeInitialValues : confirmInitialValues
+                }
+                validationSchema={corporateId ? CompleteBatchSchema : null}
+                onSubmit={(values) => {
+                  confirm(values);
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <Form>
+                    <Modal.Body style={{ fontSize: "18" }}>
+                      {ReactHtmlParser(actionContent)}
+                      {actionType === payrollConstants.COMPLETE_BATCH && (
+                        <>
+                          <div className="form-group">
+                            <label>
+                              <strong>Reference ID*</strong>
+                            </label>
+                            <input
+                              type="text"
+                              name="referenceId"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              maxLength={50}
+                              placeholder="Enter reference ID"
+                              className="form-control"
+                            />
+                            <span className="error">
+                              {errors.referenceId &&
+                                touched.referenceId &&
+                                errors.referenceId}
+                            </span>
+                          </div>
+                          <div className="form-group">
+                            <label>
+                              <strong>Reference Note*</strong>
+                            </label>
+                            <textarea
+                              rows="3"
+                              name="referenceNote"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              maxLength={500}
+                              placeholder="Enter reference note"
+                              className="form-control"
+                            />
+                            <span className="error">
+                              {errors.referenceNote &&
+                                touched.referenceNote &&
+                                errors.referenceNote}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        disabled={
+                          isSubmitting ||
+                          (corporateId &&
+                            (!values.referenceId || !values.referenceNote))
+                        }
+                      >
+                        Confirm
+                      </Button>
+                      <Button variant="danger" onClick={handleClose}>
+                        Cancel
+                      </Button>
+                    </Modal.Footer>
+                  </Form>
+                )}
+              </Formik>
+            </Modal>
+          )}
+          <Modal show={show} onHide={handleCancel} backdrop="static">
+            <Modal.Header closeButton className="fs-5 p-2">
+              <Modal.Title>Reference Note</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
+          </Modal>
+        </>
       )}
-      <Modal show={show} onHide={handleCancel} backdrop="static">
-        <Modal.Header closeButton className="fs-5 p-2">
-          <Modal.Title>Reference Note</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
-      </Modal>
+      {isBatchDetail && (
+        <PayrollBatchDetail
+          batchId={selectedBatchId}
+          hideBatchDetail={hideBatchDetail}
+        />
+      )}
     </div>
   );
 };

@@ -529,20 +529,24 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Sidebar
 --------------------------------------------------------------*/
+.header-logo {width: 175px;}
 .sidebar {
   position: fixed;
-  top: 60px;
   left: 0;
   bottom: 0;
-  width: 300px;
   z-index: 996;
   transition: all 0.3s;
-  padding: 20px;
+  overflow-y: auto;
+  height: 100%;
+  flex: 0 0 225px;
+  max-width: 225px;
+  min-width: 225px;
+  width: 225px;
+  padding: 70px 0 0 10px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
-  background-color: #fff;
 }
 @media (max-width: 1199px) {
   .sidebar {
@@ -560,7 +564,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 1200px) {
   #main, #footer {
-    margin-left: 300px;
+    margin-left: 225px;
   }
 }
 @media (max-width: 1199px) {
@@ -573,7 +577,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: 0;
   }
   .toggle-sidebar .sidebar {
-    left: -300px;
+    left: -225px;
   }
 }
 

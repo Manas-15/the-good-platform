@@ -62,7 +62,7 @@ const Otp = () => {
           <div className="col-md-6">
             <button
               type="submit"
-              className="btn btn-primary btn-block"
+              className="btn btn-custom btn-block"
               onClick={handleSubmit}
               disabled={code.length < 6}
             >
@@ -79,7 +79,7 @@ const Otp = () => {
             resend={handleClick}
             text="Time Left"
             ButtonText="Resend"
-            className="btn btn-primary"
+            className="btn"
           />
         </div>
       </div> */}
