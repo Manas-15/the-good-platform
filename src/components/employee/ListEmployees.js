@@ -165,7 +165,7 @@ const ListEmployees = (props) => {
             <>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-custom"
                 onClick={chooseFile}
               >
                 <i className="bi bi-file-earmark-arrow-up mr-2"></i>
@@ -182,7 +182,7 @@ const ListEmployees = (props) => {
           )}
           {/* <button
             type="button"
-            className="btn btn-primary"
+            className="btn"
             onClick={() => history.push("/employees/add")}
           >
             Add Employee
@@ -348,7 +348,7 @@ const ListEmployees = (props) => {
               </Link>
               <button
                 type="button"
-                className="btn btn-primary btn-sm"
+                className="btn btn-custom btn-sm"
                 onClick={goNext}
               >
                 Next
@@ -402,7 +402,7 @@ const ListEmployees = (props) => {
               </Link>
               <button
                 type="button"
-                className="btn btn-primary btn-sm"
+                className="btn btn-custom btn-sm"
                 onClick={confimUpload}
               >
                 Confirm

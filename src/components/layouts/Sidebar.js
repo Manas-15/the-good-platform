@@ -17,140 +17,152 @@ const Sidebar = () => {
     history.location.pathname === "/social-organizations";
   return (
     <aside id="sidebar" className="sidebar">
-      <ul className="sidebar-nav" id="sidebar-nav">
+      <ul className="ant-menu ant-menu-root ant-menu-inline ant-menu-light" id="sidebar-nav">
         {isEmployeeView ? (
           <>
-            <li className="nav-item">
+            <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+            <span className="ant-menu-title-content">
               <NavLink
-                className="nav-link "
+                className=" "
                 to="/corporates/1/employees"
                 activeClassName="active"
               >
                 <i className="bi bi-people-fill"></i>
-                <span>Employees</span>
+                <span className="menu-text">Employees</span>
               </NavLink>
+              </span>
             </li>
-            <li className="nav-item">
+            <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+              <span className="ant-menu-title-content">
               <NavLink
-                className="nav-link "
+                className=" "
                 to="/employee-donation-preference"
                 activeClassName="active"
               >
                 <i className="bi bi-sliders"></i>
-                <span>Donation Preference</span>
+                <span className="menu-text">Donation Preference</span>
               </NavLink>
+              </span>
             </li>
-            <li className="nav-item">
+            <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+            <span className="ant-menu-title-content">
               <NavLink
-                className="nav-link "
+                className=" "
                 to="/payroll-setting"
                 activeClassName="active"
               >
                 <i className="bi bi-gear"></i>
-                <span>Payroll Setting</span>
+                <span className="menu-text">Payroll Setting</span>
               </NavLink>
+              </span>
             </li>
-            <li className="nav-item">
+            <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+            <span className="ant-menu-title-content">
               <NavLink
-                className="nav-link "
+                className=" "
                 to={`/corporates/${'1'}/payroll-batch`}
                 activeClassName="active"
               >
                 <i className="bi bi-hdd-stack"></i>
-                <span>Payroll Batch</span>
+                <span className="menu-text">Payroll Batch</span>
               </NavLink>
+              </span>
             </li>
           </>
         ) : (
           <>
             {isSuperadminView ? (
               <>
-              <li className="nav-item">
+              <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+              <span className="ant-menu-title-content">
                 <NavLink
-                  className="nav-link "
+                  className=" "
                   to="/transactions-history"
                   activeClassName="active"
                 >
                   <i className="bi bi-clock-history"></i>
-                  <span>Transactions History</span>
+                  <span className="menu-text">Transactions History</span>
                 </NavLink>
+                </span>
               </li>
-              <li className="nav-item">
+              <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+              <span className="ant-menu-title-content">
               <NavLink
-                className="nav-link "
-                to={`/admin-payroll-setting`}
-                activeClassName="active"
-              >
-                <i className="bi bi-gear"></i>
-                <span>Payroll Setting</span>
-              </NavLink>
-            </li>
-              <li className="nav-item">
-              <NavLink
-                className="nav-link "
+                className=" "
                 to={`/admin-payroll-batch`}
                 activeClassName="active"
               >
                 <i className="bi bi-hdd-stack"></i>
-                <span>Payroll Batch</span>
+                <span className="menu-text">Payroll Batch</span>
               </NavLink>
+              </span>
             </li>
             </>
             ) : (
               <>
                 {isOrganizationView && (
-                  <li className="nav-item">
+                  <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                    <span className="ant-menu-title-content">
                     <NavLink
-                      className="nav-link "
+                      className=" "
                       to="/social-organizations"
                       activeClassName="active"
                     >
                       <i className="bi bi-people-fill"></i>
-                      <span>Social Organization</span>
+                      <span className="menu-text">Social Organization</span>
                     </NavLink>
+                    </span>
                   </li>
                 )}
                 {!isOrganizationView && (
                   <>
-                    <li className="nav-item">
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                    <span className="ant-menu-title-content">
                       <NavLink
-                        className="nav-link "
+                        className=" "
                         to="/dashboard"
                         activeClassName="active"
                       >
-                        <i className="bi bi-grid"></i>
-                        <span>Dashboard</span>
+                        <img height="20" src="/assets/img/dashboard.png" />
+                        <span className="menu-text">Dashboard</span>
                       </NavLink>
+                      </span>
                     </li>
-                    <li className="nav-item">
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                    <span className="ant-menu-title-content">
                       <NavLink
-                        className="nav-link "
+                        className=" "
                         to="/charity-programs"
                         activeClassName="active"
                       >
-                        <i className="bi bi-heart"></i>
-                        <span>Charity Programs</span>
+                        <img height="16" src="/assets/img/case.png" />
+                        <span className="menu-text">Programs</span>
                       </NavLink>
+                      </span>
                     </li>
-                    <li className="nav-item">
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                    <span className="ant-menu-title-content">
                       <NavLink
-                        className="nav-link "
+                        className=" "
                         to="/donation-preferences"
                         activeClassName="active"
                       >
                         <i className="bi bi-handbag"></i>
-                        <span>Donation Preferences</span>
+                        <span className="menu-text">Donation Preferences</span>
                       </NavLink>
+                      </span>
                     </li>
-                    <li className="nav-item">
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                    <span className="ant-menu-title-content">
                       <NavLink
-                        className="nav-link "
+                        className=" "
                         to={`/employee/${user?.uuid}/transactions-history`}
                         activeClassName="active"
                       >
                         <i className="bi bi-clock-history"></i>
-                        <span>Transactions History</span>
+                        <span className="menu-text">Transactions History</span>
                       </NavLink>
+                      </span>
                     </li>
                   </>
                 )}

@@ -24,9 +24,8 @@ async function login(data) {
   } else {
     return await axios.post(
       `${process.env.REACT_APP_TGP_API_URL}auth/v1/auth/login/`,
-      JSON.stringify({ username: data?.email, password: data?.password }),
+      ({ username: data?.email, password: data?.password }),
       {
-        withCredentials: true,
         headers: jwtInterceptor(),
       }
     );

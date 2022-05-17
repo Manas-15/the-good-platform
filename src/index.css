@@ -303,6 +303,27 @@ ul.dropdown-menu.actions li:hover {
   border-radius: 10px !important;
   border: 2px solid #e6e8e8;
 }
+.btn-custom {
+  color: #fff!important;
+  background: #39364f!important;
+  border-color: 1px solid #39364f !important;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 5%);
+}
+.btn-custom.active:focus {
+  box-shadow: none !important;
+}
+.btn-outline-custom.btn-outline-primary.active, .btn-outline-custom.btn-outline-primary:hover {
+  color: #fff !important;
+  background-color: #39364f !important;
+  border-color: #39364f !important;
+}
+.btn-outline-custom.btn-outline-primary, .btn-outline-custom.btn-outline-primary.active:focus {
+  color: #39364f;
+  background-color: #fff;
+  border-color: #39364f;
+  box-shadow: none !important;
+}
 .ant-input-search {
   padding: 0;
   border: none;
@@ -310,4 +331,52 @@ ul.dropdown-menu.actions li:hover {
 }
 .switch-group .btn-sm {
   font-size: 13px;
+}
+.ant-menu .ant-menu-item-inactive a {
+  color: #3e3b53!important;
+  font-weight: 100;
+}
+.menu-text {padding-left: 16px; font-size: 13px;}
+.ant-menu-item a:before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+  content: "";
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #0c0d0e !important;
+  text-shadow: 0 0 0.25px currentColor;
+}
+
+.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
+.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+  padding: 10px 80px 60px 100px;
+}
+
+.exception_tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
+.exception_tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+  padding: 0px;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  font-weight: bold;
+  font-size: 18px;
+  color: #837e7e;
+}
+.ant-tabs-tab-btn {
+  font-weight: bold;
+  font-size: 18px;
+  padding: 7px;
+}
+
+.ant-tabs-left > .ant-tabs-content-holder,
+.ant-tabs-left > div > .ant-tabs-content-holder {
+  padding: 30px;
+}
+.ant-tabs-left > .ant-tabs-content-holder,
+.ant-tabs-left > div > .ant-tabs-content-holder {
+  padding: 0px 40px !important;
 }

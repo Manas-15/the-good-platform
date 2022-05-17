@@ -13,8 +13,12 @@ export function jwtInterceptor() {
     //     headers: request.headers.set('Content-type', 'application/json'),
     // });
     if (isLoggedIn) {
+      console.log("isLoggedIn coming interceptor", isLoggedIn);
       request.headers.common.Authorization = `Bearer ${user?.token}`;
       // request.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')`
+    }else{
+      console.log("isLoggedIn else coming interceptor", isLoggedIn);
+      request.headers.common.Authorization = '';
     }
 
     return request;
