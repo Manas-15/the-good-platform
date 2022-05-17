@@ -171,7 +171,7 @@ const PayrollSetting = (props) => {
               <div className="col-md-4 pl-0">
                 <button
                   type="button"
-                  className={"btn btn-primary"}
+                  className={"btn btn-custom"}
                   onClick={generatePayroll}
                 >
                   Generate
@@ -208,7 +208,7 @@ const PayrollSetting = (props) => {
               type="button"
               className={`${
                 currentView === payrollConstants.PROGRAM_VIEW ? "active" : ""
-              } btn btn-sm btn-outline-primary`}
+              } btn btn-sm btn-outline-primary btn-outline-custom`}
             >
               Program View
             </button>
@@ -222,7 +222,7 @@ const PayrollSetting = (props) => {
               type="button"
               className={`${
                 currentView === payrollConstants.EMPLOYEE_VIEW ? "active" : ""
-              } btn btn-sm  btn-outline-primary`}
+              } btn btn-sm  btn-outline-primary btn-outline-custom`}
             >
               Employee View
             </button>
@@ -239,8 +239,8 @@ const PayrollSetting = (props) => {
                 currentView === payrollConstants.ORGANIZATION_VIEW
                   ? "active"
                   : ""
-              } btn btn-sm btn-outline-primary`}
-            >
+              } btn btn-sm btn-outline-primary btn-outline-custom`}
+            > 
               Social Organization View
             </button>
           </Link>
@@ -468,12 +468,12 @@ const PayrollSetting = (props) => {
       )}
       {ProcessHelper(preferences?.items, batchId)?.length > 0 && !batchId && (
         <div className="text-right m-3">
-          <Button
-            className="btn btn-primary"
+          <button
+            className="btn btn-custom"
             onClick={() => handleOpenDialog("Process batch", "")}
           >
             Process Batch
-          </Button>
+          </button>
         </div>
       )}
       {openDialog && (

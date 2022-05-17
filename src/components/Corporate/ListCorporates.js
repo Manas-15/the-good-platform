@@ -49,7 +49,7 @@ const ListCorporates = () => {
         <div className="col-md-6" style={{ textAlign: "right" }}>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-custom"
             onClick={() => history.push("/corporates/add")}
           >
             Add Corporate

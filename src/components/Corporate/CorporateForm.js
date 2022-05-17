@@ -362,7 +362,7 @@ const CorporateForm = ({ type }) => {
                 <div className="col-md-4 offset-md-4">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-block"
+                    className="btn btn-custom btn-block"
                     disabled={addingCorporate}
                   >
                     {addingCorporate && (
