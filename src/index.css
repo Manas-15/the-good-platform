@@ -303,9 +303,18 @@ ul.dropdown-menu.actions li:hover {
   border-radius: 10px !important;
   border: 2px solid #e6e8e8;
 }
+a .custom-color {
+  color: #39364f;
+}
+.accordion-button {
+  background-color: #39364f !important;
+}
+.ant-progress-bg {
+  background-color: rgb(58, 141, 157) !important;
+}
 .btn-custom {
-  color: #fff!important;
-  background: #39364f!important;
+  color: #fff !important;
+  background: #39364f !important;
   border-color: 1px solid #39364f !important;
   text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   box-shadow: 0 1px 0 rgb(0 0 0 / 5%);
@@ -313,12 +322,14 @@ ul.dropdown-menu.actions li:hover {
 .btn-custom.active:focus {
   box-shadow: none !important;
 }
-.btn-outline-custom.btn-outline-primary.active, .btn-outline-custom.btn-outline-primary:hover {
+.btn-outline-custom.btn-outline-primary.active,
+.btn-outline-custom.btn-outline-primary:hover {
   color: #fff !important;
   background-color: #39364f !important;
   border-color: #39364f !important;
 }
-.btn-outline-custom.btn-outline-primary, .btn-outline-custom.btn-outline-primary.active:focus {
+.btn-outline-custom.btn-outline-primary,
+.btn-outline-custom.btn-outline-primary.active:focus {
   color: #39364f;
   background-color: #fff;
   border-color: #39364f;
@@ -333,10 +344,13 @@ ul.dropdown-menu.actions li:hover {
   font-size: 13px;
 }
 .ant-menu .ant-menu-item-inactive a {
-  color: #3e3b53!important;
+  color: #3e3b53 !important;
   font-weight: 100;
 }
-.menu-text {padding-left: 16px; font-size: 13px;}
+.menu-text {
+  padding-left: 16px;
+  font-size: 13px;
+}
 .ant-menu-item a:before {
   position: absolute;
   top: 0;
