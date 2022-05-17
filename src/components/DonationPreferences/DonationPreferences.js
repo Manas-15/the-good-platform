@@ -15,8 +15,8 @@ import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
-import { Switch } from 'antd';
-import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { Switch } from "antd";
+import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -244,7 +244,6 @@ const DonationPreferences = () => {
                             <form
                               id={`frequency${preference?.employeePreferenceId}`}
                             >
-
                               <BootstrapSwitchButton
                                 checked={
                                   updatedValue
@@ -304,7 +303,7 @@ const DonationPreferences = () => {
                                 className="mr-2"
                                 title="Resume"
                               >
-                                <i className="bi bi-play-circle-fill fs-5"></i>
+                                <i className="bi bi-play-circle-fill fs-5 custom-color"></i>
                               </Link>
                             )}
                             {(!preference?.status ||
@@ -317,7 +316,7 @@ const DonationPreferences = () => {
                                 className="mr-2"
                                 title="Suspend"
                               >
-                                <i className="bi bi-pause-circle-fill fs-5"></i>
+                                <i className="bi bi-pause-circle-fill fs-5 custom-color"></i>
                               </Link>
                             )}
                             <Link
@@ -326,7 +325,7 @@ const DonationPreferences = () => {
                               }
                               title="Delete"
                             >
-                              <i className="bi bi-trash fs-5"></i>
+                              <i className="bi bi-trash fs-5 custom-color"></i>
                             </Link>
                           </td>
                         </tr>

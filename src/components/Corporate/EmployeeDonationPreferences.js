@@ -173,6 +173,7 @@ const EmployeeDonationPreferences = () => {
                       Amount (
                       {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
                     </th>
+                    <th className="ant-table-cell text-center">Frequency</th>
                     <th className="ant-table-cell text-center">Status</th>
                     <th className="ant-table-cell text-center">Actions</th>
                   </tr>
@@ -212,6 +213,21 @@ const EmployeeDonationPreferences = () => {
                               disabled={true}
                             />
                           </td>
+                          <td className="ant-table-cell text-center">
+                              <BootstrapSwitchButton
+                                checked={
+                                  preference?.frequency ===
+                                      donationPreferenceConstants.ONCE_FREQUENCY
+                                }
+                                onlabel="Once"
+                                onstyle="primary"
+                                offlabel="Monthly"
+                                offstyle="success"
+                                style="w-100 mx-1"
+                                size="sm"
+                                disabled
+                              />
+                          </td>
                           <td className="ant-table-cell text-center text-uppercase">
                             {preference?.status ===
                               donationPreferenceConstants?.SUSPENDED && (
@@ -247,7 +263,7 @@ const EmployeeDonationPreferences = () => {
                                 className="mr-2"
                                 title="Suspend"
                               >
-                                <i className="bi bi-pause-circle-fill fs-5"></i>
+                                <i className="bi bi-pause-circle-fill fs-5 custom-color"></i>
                               </Link>
                             )}
                             <Link
@@ -256,7 +272,7 @@ const EmployeeDonationPreferences = () => {
                               }
                               title="Delete"
                             >
-                              <i className="bi bi-trash fs-5"></i>
+                              <i className="bi bi-trash fs-5 custom-color"></i>
                             </Link>
                           </td>
                         </tr>

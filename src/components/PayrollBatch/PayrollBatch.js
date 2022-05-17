@@ -18,6 +18,8 @@ import { Modal, Button } from "react-bootstrap";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
+import { Progress } from "antd";
+import { history } from "./../../helpers";
 
 const completeInitialValues = {
   batchId: "",
@@ -31,7 +33,7 @@ const confirmInitialValues = {
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const PayrollBatch = (props) => {
-  let history = useHistory();
+  // let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
@@ -302,24 +304,49 @@ const PayrollBatch = (props) => {
                                     {batch?.referenceId}
                                   </Link>
                                 </td>
-                                <td className="ant-table-cell text-uppercase">
+                                <td className="ant-table-cell">
                                   {batch?.status ===
                                     payrollConstants.COMPLETED_STATUS && (
-                                    <span className="text-success">
-                                      {payrollConstants.COMPLETED}
-                                    </span>
-                                  )}
-                                  {batch?.status ===
-                                    payrollConstants.PENDING_STATUS && (
-                                    <span className="text-warning">
-                                      {payrollConstants.PENDING}
-                                    </span>
+                                    <>
+                                      <span>
+                                        {/* {payrollConstants.CONFIRMED} */}
+                                        50% Batch created
+                                      </span>
+                                      <Progress percent={25} showInfo={false} />
+                                    </>
                                   )}
                                   {batch?.status ===
                                     payrollConstants.CONFIRMED_STATUS && (
-                                    <span className="text-info">
-                                      {payrollConstants.CONFIRMED}
-                                    </span>
+                                    <>
+                                      <span>
+                                        {/* {payrollConstants.CONFIRMED} */}
+                                        50% Confirmed by Bluepencil
+                                      </span>
+                                      <Progress percent={50} showInfo={false} />
+                                    </>
+                                  )}
+                                  {batch?.status ===
+                                    payrollConstants.PAID_STATUS && (
+                                    <>
+                                      <span>
+                                        {/* {payrollConstants.CONFIRMED} */}
+                                        50% Paid to Social Organization
+                                      </span>
+                                      <Progress percent={75} showInfo={false} />
+                                    </>
+                                  )}
+                                  {batch?.status ===
+                                    payrollConstants.RECEIVED_STATUS && (
+                                    <>
+                                      <span>
+                                        {/* {payrollConstants.CONFIRMED} */}
+                                        50% Paid to Social Organization
+                                      </span>
+                                      <Progress
+                                        percent={100}
+                                        showInfo={false}
+                                      />
+                                    </>
                                   )}
                                 </td>
                                 <td className="ant-table-cell text-center">

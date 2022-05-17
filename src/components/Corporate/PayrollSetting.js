@@ -240,7 +240,7 @@ const PayrollSetting = (props) => {
                   ? "active"
                   : ""
               } btn btn-sm btn-outline-primary btn-outline-custom`}
-            > 
+            >
               Social Organization View
             </button>
           </Link>
@@ -412,7 +412,7 @@ const PayrollSetting = (props) => {
                                               }
                                               title="Delete"
                                             >
-                                              <i className="bi bi-trash fs-5"></i>
+                                              <i className="bi bi-trash fs-5 custom-color"></i>
                                             </Link>
                                           </td>
                                         )}

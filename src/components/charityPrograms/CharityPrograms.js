@@ -8,10 +8,9 @@ import { charityProgramConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import Loader from "../Shared/Loader";
-import { Tabs, Icon } from 'antd';
-import { AuditOutlined, RedoOutlined } from '@ant-design/icons';
+import { Tabs, Icon } from "antd";
+import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 const TabPane = Tabs.TabPane;
-
 
 const CharityPrograms = () => {
   let history = useHistory();
@@ -39,6 +38,10 @@ const CharityPrograms = () => {
   const setType = (type) => {
     setTabType(type);
     closeNav();
+  };
+  const changeTab = (activeKey) => {
+    console.log("ffffffffffffffffffffffffff", activeKey);
+    setTabType(activeKey);
   };
   if (charityPrograms.loading) {
     document.getElementById("root").classList.add("loading");
@@ -70,36 +73,55 @@ const CharityPrograms = () => {
         </div>
       </div>
       <div className="ant-tabs-nav-wrap">
-      <Tabs defaultActiveKey="sponsored">
-        <TabPane
-          tab={<span><AuditOutlined className="fs-5"/>{charityProgramConstants.SPONSOR} ({charityPrograms?.items ? (charityPrograms?.items?.sponser?.filter(
-            (charity) => charity.donated === false
-          ).length) : 0})</span>}
-          key="sponsored"
-          onClick={() => setType(charityProgramConstants.SPONSOR)}
+        <Tabs
+          defaultActiveKey={charityProgramConstants.SPONSOR}
+          onChange={changeTab}
         >
-          <ListCharityPrograms
-            items={charityPrograms?.items?.sponser.filter(
-              (charity) => charity.donated === false
-            )}
-            setCharity={setCharity}
-          />
-        </TabPane>
-        <TabPane
-          tab={<span><RedoOutlined className="fs-5"/>{charityProgramConstants.OTHER} ({charityPrograms?.items ? (charityPrograms?.items?.other?.filter(
-            (charity) => charity.donated === false
-          ).length) : 0})</span>}
-          key="Other"
-          onClick={() => setType(charityProgramConstants.OTHER)}
-        >
-          <ListCharityPrograms
-            items={charityPrograms?.items?.other.filter(
-              (charity) => charity.donated === false
-            )}
-            setCharity={setCharity}
-          />
-        </TabPane>
-      </Tabs>
+          <TabPane
+            tab={
+              <span>
+                <AuditOutlined className="fs-5" />
+                {charityProgramConstants.SPONSORED} (
+                {charityPrograms?.items
+                  ? charityPrograms?.items?.sponser?.filter(
+                      (charity) => charity.donated === false
+                    ).length
+                  : 0}
+                )
+              </span>
+            }
+            key={charityProgramConstants.SPONSOR}
+          >
+            <ListCharityPrograms
+              items={charityPrograms?.items?.sponser.filter(
+                (charity) => charity.donated === false
+              )}
+              setCharity={setCharity}
+            />
+          </TabPane>
+          <TabPane
+            tab={
+              <span>
+                <RedoOutlined className="fs-5" />
+                {charityProgramConstants.OTHERS} (
+                {charityPrograms?.items
+                  ? charityPrograms?.items?.other?.filter(
+                      (charity) => charity.donated === false
+                    ).length
+                  : 0}
+                )
+              </span>
+            }
+            key={charityProgramConstants.OTHER}
+          >
+            <ListCharityPrograms
+              items={charityPrograms?.items?.other.filter(
+                (charity) => charity.donated === false
+              )}
+              setCharity={setCharity}
+            />
+          </TabPane>
+        </Tabs>
       </div>
       {
         <div id="sidepanel" className="sidepanel">
