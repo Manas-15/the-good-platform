@@ -245,7 +245,7 @@ const DonateSecondStep = ({
                 <div className="row mb-4">
                   <div className="col-md-12 text-center">
                     <Button
-                      className="btn btn-primary w-100 rounded-pill"
+                      className="btn btn-custom w-100 rounded-pill"
                       type="submit"
                       disabled={!checked}
                     >

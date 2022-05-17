@@ -8,6 +8,10 @@ import { charityProgramConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import Loader from "../Shared/Loader";
+import { Tabs, Icon } from 'antd';
+import { AuditOutlined, RedoOutlined } from '@ant-design/icons';
+const TabPane = Tabs.TabPane;
+
 
 const CharityPrograms = () => {
   let history = useHistory();
@@ -42,7 +46,7 @@ const CharityPrograms = () => {
     document.getElementById("root").classList.remove("loading");
   }
   return (
-    <div className="customContainer">
+    <div className="customContainer program-list">
       <div className="row mb-4">
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">Charity Programs</h1>
@@ -65,46 +69,37 @@ const CharityPrograms = () => {
           </div>
         </div>
       </div>
-      <ul className="nav nav-tabs charity-programs-tab mt-3">
-        <li className="nav-item">
-          <button
-            className="nav-link active"
-            data-bs-toggle="tab"
-            data-bs-target="#sponsored"
-            onClick={() => setType(charityProgramConstants.SPONSOR)}
-          >
-            <span>Sponsored</span>
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className="nav-link"
-            data-bs-toggle="tab"
-            data-bs-target="#others"
-            onClick={() => setType(charityProgramConstants.OTHER)}
-          >
-            <span>Others</span>
-          </button>
-        </li>
-      </ul>
-      <div className="tab-content p-0">
-        {charityPrograms.loading && <Loader />}
-        <div className="tab-pane fade show active" id="sponsored">
+      <div className="ant-tabs-nav-wrap">
+      <Tabs defaultActiveKey="sponsored">
+        <TabPane
+          tab={<span><AuditOutlined className="fs-5"/>{charityProgramConstants.SPONSOR} ({charityPrograms?.items ? (charityPrograms?.items?.sponser?.filter(
+            (charity) => charity.donated === false
+          ).length) : 0})</span>}
+          key="sponsored"
+          onClick={() => setType(charityProgramConstants.SPONSOR)}
+        >
           <ListCharityPrograms
             items={charityPrograms?.items?.sponser.filter(
               (charity) => charity.donated === false
             )}
             setCharity={setCharity}
           />
-        </div>
-        <div className="tab-pane fade show" id="others">
+        </TabPane>
+        <TabPane
+          tab={<span><RedoOutlined className="fs-5"/>{charityProgramConstants.OTHER} ({charityPrograms?.items ? (charityPrograms?.items?.other?.filter(
+            (charity) => charity.donated === false
+          ).length) : 0})</span>}
+          key="Other"
+          onClick={() => setType(charityProgramConstants.OTHER)}
+        >
           <ListCharityPrograms
             items={charityPrograms?.items?.other.filter(
               (charity) => charity.donated === false
             )}
             setCharity={setCharity}
           />
-        </div>
+        </TabPane>
+      </Tabs>
       </div>
       {
         <div id="sidepanel" className="sidepanel">

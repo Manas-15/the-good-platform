@@ -21,7 +21,7 @@ const DonateAmount = ({ isActive, amount, setSelectedAmount }) => {
     <>
       <Button
         variant="outline-primary w-75 font-weight-bold"
-        className={isActive ? "active" : ""}
+        className={`btn-outline-custom ${isActive ? "active" : ""}`}
         onClick={() => setSelectedAmount(amount)}
       >
         {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}

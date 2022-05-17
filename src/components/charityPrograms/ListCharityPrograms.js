@@ -53,7 +53,7 @@ const ListCharityPrograms = ({ items, setCharity }) => {
                         <td className="ant-table-cell text-center">
                           <button
                             type="submit"
-                            className="btn btn-primary btn-sm"
+                            className="btn btn-custom btn-sm"
                             onClick={() => openNav(charityProgram)}
                           >
                             Donate

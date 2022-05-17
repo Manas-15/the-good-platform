@@ -170,8 +170,8 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
             }
           >
             <div className="col-md-12 text-center">
-              <Button
-                className="btn btn-primary w-100 rounded-pill"
+              <button
+                className="btn btn-custom w-100 rounded-pill"
                 disabled={
                   tabType === charityProgramConstants.SPONSOR ? !checked : false
                 }
@@ -191,7 +191,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
                     "Next"
                   )}
                 </span>
-              </Button>
+              </button>
             </div>
           </div>
           {open && (
