@@ -23,6 +23,7 @@ import ThankYou from "../components/Auth/ThankYou";
 import Profile from "../components/Profile/Profile";
 import PayrollSetting from "../components/Corporate/PayrollSetting";
 import PayrollBatch from "../components/PayrollBatch/PayrollBatch";
+import { notification } from "antd";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -50,28 +51,19 @@ const CreateRoutes = () => {
   // const user = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.employee.user);
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: message,
+    });
+  };
   return (
     <Router history={history}>
       {/* &&  otpVerified */}
       {user?.token && otpVerified ? (
         <main id="main" className="main">
           <section className="section dashboard">
-            {alert.message && (
-              <div
-                className={`alert ${alert.type} alert-dismissible`}
-                role="alert"
-              >
-                {alert.message}
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-            )}
+            {alert.message &&
+              openNotificationWithIcon(alert.type, alert.message)}
             {!isCorporateLunchpad && <Header />}
             {!isCorporateLunchpad && <Sidebar />}
             <Switch>
@@ -105,8 +97,16 @@ const CreateRoutes = () => {
                 component={EmployeeDonationPreferences}
               />
               <Route exact path="/payroll-setting" component={PayrollSetting} />
-              <Route exact path="/admin-payroll-setting" component={PayrollSetting} />
-              <Route exact path="/admin-payroll-batch" component={PayrollBatch} />
+              <Route
+                exact
+                path="/admin-payroll-setting"
+                component={PayrollSetting}
+              />
+              <Route
+                exact
+                path="/admin-payroll-batch"
+                component={PayrollBatch}
+              />
               <Route
                 exact
                 path="/corporates/:corporateId/payroll-batch"
@@ -114,18 +114,23 @@ const CreateRoutes = () => {
               />
               <Route
                 exact
-                path="/transactions-history"
+                path="/account-summary"
                 component={ListTransactionsHistory}
               />
               <Route
                 exact
-                path="/employee/:employeeId/transactions-history"
+                path="/employee/:employeeId/account-summary"
                 component={ListTransactionsHistory}
               />
               <Route
                 exact
-                path="/social-organizations"
-                component={ListSocialOrganizations}
+                path="/social-organizations/account-summary"
+                component={ListTransactionsHistory}
+              />
+              <Route
+                exact
+                path="/social-organizations/payroll-batch"
+                component={PayrollBatch}
               />
               <Route exact path="/dashboard" component={Dashboard} />
               <Redirect from="*" to="/" />
@@ -135,22 +140,8 @@ const CreateRoutes = () => {
       ) : (
         <>
           <div className="container authForm">
-            {alert.message && (
-              <div
-                className={`alert ${alert.type} alert-dismissible`}
-                role="alert"
-              >
-                {alert.message}
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-            )}
+            {alert.message &&
+              openNotificationWithIcon(alert.type, alert.message)}
           </div>
           <div className="auth-wrapper">
             <div className="container authForm">

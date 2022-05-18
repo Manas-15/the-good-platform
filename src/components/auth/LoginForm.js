@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { LoginSchema } from "./../Validations";
 import { Button } from "react-bootstrap";
 import "./../../assets/css/loginForm.scss";
+// import { Form, Input, Button, Checkbox } from 'antd';
 
 const LoginForm = ({ submit, disable }) => {
   return (
@@ -38,7 +39,7 @@ const LoginForm = ({ submit, disable }) => {
                 isSubmitting,
                 /* and other goodies */
               }) => (
-                <Form>
+                <Form autoComplete="false">
                   <h5 className="text-center cardHeading mb-0">
                     Login to your account
                   </h5>
@@ -61,16 +62,19 @@ const LoginForm = ({ submit, disable }) => {
                     </label>
                   </div>
                   <div className="form-group m-0">
-                    <label>Registered Email ID</label>
+                    <label for="email" className="has-float-label">
                     <Field
                       name="email"
+                      id="email"
                       type="email"
-                      placeholder="Please enter your registered email"
+                      placeholder=" "
                       className={
                         "form-control" +
                         (errors.email && touched.email ? " is-invalid" : "")
                       }
                     />
+                      <span>Registered Email ID</span>
+                    </label>                    
                     <ErrorMessage
                       name="email"
                       component="div"
@@ -78,10 +82,12 @@ const LoginForm = ({ submit, disable }) => {
                     />
                   </div>
                   <div className="form-group m-0">
-                    <label>Password</label>
+                    <label for="password" className="has-float-label">
                     <Field
                       name="password"
+                      id="password"
                       type="password"
+                      placeholder=" "
                       className={
                         "form-control" +
                         (errors.password && touched.password
@@ -89,6 +95,9 @@ const LoginForm = ({ submit, disable }) => {
                           : "")
                       }
                     />
+                    {/* <i class="bi bi-eye-slash fs-5" id="togglePassword"></i> */}
+                    <span>Password</span>
+                    </label>
                     <ErrorMessage
                       name="password"
                       component="div"

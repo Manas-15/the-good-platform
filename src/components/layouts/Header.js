@@ -1,11 +1,16 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { history } from "../../helpers";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { currentViewActions } from "../../actions";
+import {
+  viewPortalConstants,
+} from "../../constants";
 
 const Header = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const logout = () => {
     // localStorage.removeItem("user");
     localStorage.clear();
@@ -15,6 +20,16 @@ const Header = () => {
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
   };
+  const setCurrentView = (view) => {
+    console.log("dddddddddddddddddd 33333333333 currentView", view)
+    dispatch(currentViewActions.currentView(view));
+    // handleClose();
+    // actionInitialValues.userId = selectedCorporate.userId;
+    // actionInitialValues.requestType = actionType;
+    // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+  };
+  const currentView = useSelector((state) => state.currentView);
+  console.log("dddddddddddddddddd currentView", currentView)
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -28,10 +43,11 @@ const Header = () => {
         <i
           className="bi bi-list toggle-sidebar-btn"
           onClick={showHideLeftSidebar}
-        ></i>
+        ></i>        
       </div>
       <nav className="header-nav ms-auto">
-        <ul className="d-flex align-items-center">
+      <h4 className="current-view">{currentView?.currentView}</h4>
+        <ul className="d-flex align-items-center">          
           <li className="nav-item d-block d-lg-none">
             <a className="nav-link nav-icon search-bar-toggle " href="#">
               <i className="bi bi-search"></i>
@@ -89,6 +105,7 @@ const Header = () => {
                 <Link
                   className="dropdown-item d-flex align-items-center"
                   to="/corporates"
+                  onClick={() => setCurrentView(viewPortalConstants.CORPORATE_PORTAL)}
                 >
                   <i className="bi bi-bookshelf"></i>
                   <span>Corporate Portal</span>
@@ -97,7 +114,8 @@ const Header = () => {
               <li>
                 <Link
                   className="dropdown-item d-flex align-items-center"
-                  to="/transactions-history"
+                  to="/account-summary"
+                  onClick={() => setCurrentView(viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL)}
                 >
                   <i className="bi bi-person-circle"></i>
                   <span>Blue Pencil Admin Portal</span>
@@ -106,10 +124,11 @@ const Header = () => {
               <li>
                 <Link
                   className="dropdown-item d-flex align-items-center"
-                  to="/social-organizations"
+                  to="/social-organizations/account-summary"
+                  onClick={() => setCurrentView(viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL)}
                 >
                   <i className="bi bi-people"></i>
-                  <span>Social Organization View</span>
+                  <span>Social Organization Portal</span>
                 </Link>
               </li>
               <li>

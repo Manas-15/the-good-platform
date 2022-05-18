@@ -1,21 +1,20 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { history } from "./../../helpers";
+import {
+  viewPortalConstants,
+} from "../../constants";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const isEmployeeView =
-    history.location.pathname.includes("/employees") ||
-    history.location.pathname.includes("/employee-donation-preference") ||
-    history.location.pathname.includes("/payroll-setting") ||
-    history.location.pathname.includes("/payroll-batch");
-  const isSuperadminView =
-    history.location.pathname === "/transactions-history" ||
-    history.location.pathname === "/admin-payroll-batch" ||
-    history.location.pathname === "/admin-payroll-setting";
+  const currentView = useSelector((state) => state.currentView);
+  const isEmployeeView = currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isSuperadminView = currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   const isOrganizationView =
-    history.location.pathname === "/social-organizations";
-  return (
+    history.location.pathname.includes("/social-organizations/") && currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  console.log("currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL", isOrganizationView, isEmployeeView)
+    return (
     <aside id="sidebar" className="sidebar">
       <ul className="ant-menu ant-menu-root ant-menu-inline ant-menu-light" id="sidebar-nav">
         {isEmployeeView ? (
@@ -77,11 +76,11 @@ const Sidebar = () => {
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to="/transactions-history"
+                  to="/account-summary"
                   activeClassName="active"
                 >
                   <i className="bi bi-clock-history"></i>
-                  <span className="menu-text">Transactions History</span>
+                  <span className="menu-text">Account Summary</span>
                 </NavLink>
                 </span>
               </li>
@@ -101,18 +100,32 @@ const Sidebar = () => {
             ) : (
               <>
                 {isOrganizationView && (
+                  <>
                   <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                     <span className="ant-menu-title-content">
                     <NavLink
                       className=" "
-                      to="/social-organizations"
+                      to="/social-organizations/account-summary"
                       activeClassName="active"
                     >
                       <i className="bi bi-people-fill"></i>
-                      <span className="menu-text">Social Organization</span>
+                      <span className="menu-text">Account Summary</span>
                     </NavLink>
                     </span>
                   </li>
+                  <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                  <span className="ant-menu-title-content">
+                  <NavLink
+                    className=" "
+                    to="/social-organizations/payroll-batch"
+                    activeClassName="active"
+                  >
+                    <i className="bi bi-people-fill"></i>
+                    <span className="menu-text">Payroll Batch</span>
+                  </NavLink>
+                  </span>
+                </li>
+                </>
                 )}
                 {!isOrganizationView && (
                   <>
@@ -156,11 +169,11 @@ const Sidebar = () => {
                     <span className="ant-menu-title-content">
                       <NavLink
                         className=" "
-                        to={`/employee/${user?.uuid}/transactions-history`}
+                        to={`/employee/${user?.uuid}/account-summary`}
                         activeClassName="active"
                       >
                         <i className="bi bi-clock-history"></i>
-                        <span className="menu-text">Transactions History</span>
+                        <span className="menu-text">Account Summary</span>
                       </NavLink>
                       </span>
                     </li>

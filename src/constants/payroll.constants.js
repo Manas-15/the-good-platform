@@ -11,6 +11,7 @@ export const payrollConstants = {
 
   COMPLETE: "Complete",
   CONFIRM: "Confirm",
+  PAID: "Paid",
   RECEIVE: "Receive",
   UNCONFIRM: "Unconfirm",
 
