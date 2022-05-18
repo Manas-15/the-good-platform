@@ -394,3 +394,32 @@ a .custom-color {
 .ant-tabs-left > div > .ant-tabs-content-holder {
   padding: 0px 40px !important;
 }
+.has-float-label .form-control:placeholder-shown:not(:focus) + * {
+  font-size: 13px;
+  line-height: 19px;
+  opacity: 0.5;
+  color: rgb(57, 54, 79);
+  margin-top: 0;
+  top: 10px;
+}
+.invalid-feedback {
+  display: block !important;
+}
+.form-control:focus,
+.text-area:focus {
+  border: 2px solid rgb(58, 141, 157) !important;
+  border-radius: 6px !important;
+  padding: 15px 0px 15px 20px !important;
+  box-shadow: none !important;
+}
+.form-control.is-invalid {
+  border: 2px solid #dc3545 !important;
+}
+.ant-notification {
+  z-index: 99999 !important;
+}
+.current-view {
+  position: absolute;
+  left: 22%;
+  top: 25%;
+}
