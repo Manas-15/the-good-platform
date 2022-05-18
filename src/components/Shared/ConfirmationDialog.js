@@ -57,10 +57,10 @@ export default function ConfirmationDialog({
             disabled={isDisabled}
             className="btn btn-custom"
           >
-            Confirm
+            Yes
           </button>
           <Button variant="danger" onClick={handleCancel}>
-            Cancel
+            No
           </Button>
         </Modal.Footer>
       </Modal>

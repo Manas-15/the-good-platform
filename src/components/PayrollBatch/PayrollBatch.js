@@ -7,6 +7,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
+  viewPortalConstants,
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -19,7 +20,7 @@ import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
 import { Progress } from "antd";
-import { history } from "./../../helpers";
+import PayrollBatchAccordion from "./PayrollBatchAccordion";
 
 const completeInitialValues = {
   batchId: "",
@@ -37,6 +38,7 @@ const PayrollBatch = (props) => {
   const corporateId = props?.match?.params?.corporateId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
+  const currentPortal = useSelector((state) => state.currentView);
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
@@ -54,7 +56,12 @@ const PayrollBatch = (props) => {
   const [currentView, setCurrentView] = useState(
     payrollConstants?.CORPORATE_VIEW
   );
-
+  const isOrganizationView =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  const isBluePencilView =
+    currentPortal?.currentView ===
+    viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,7 +106,9 @@ const PayrollBatch = (props) => {
     setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
     setActionContent(
       `Are you sure to ${
-        corporateId
+        isOrganizationView
+          ? "receive"
+          : corporateId
           ? "complete"
           : action == "Confirm Batch"
           ? "confirm"
@@ -151,7 +160,7 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
-              {!corporateId && (
+              {!corporateId && !isOrganizationView && (
                 <>
                   <Link
                     className="fs-6 text-decoration-underline mr-3"
@@ -192,7 +201,7 @@ const PayrollBatch = (props) => {
             </div>
           </div>
           {payrollBatches.loading && <Loader />}
-          {payrollBatches && (
+          {payrollBatches && (corporateId || isOrganizationView) && (
             <>
               <div className="ant-row">
                 <div className="ant-col ant-col-24 mt-2">
@@ -310,7 +319,7 @@ const PayrollBatch = (props) => {
                                     <>
                                       <span>
                                         {/* {payrollConstants.CONFIRMED} */}
-                                        50% Batch created
+                                        25% (Batch created)
                                       </span>
                                       <Progress percent={25} showInfo={false} />
                                     </>
@@ -320,7 +329,7 @@ const PayrollBatch = (props) => {
                                     <>
                                       <span>
                                         {/* {payrollConstants.CONFIRMED} */}
-                                        50% Confirmed by Bluepencil
+                                        50% (Confirmed by Bluepencil)
                                       </span>
                                       <Progress percent={50} showInfo={false} />
                                     </>
@@ -330,7 +339,7 @@ const PayrollBatch = (props) => {
                                     <>
                                       <span>
                                         {/* {payrollConstants.CONFIRMED} */}
-                                        50% Paid to Social Organization
+                                        75% (Paid to Social Organization)
                                       </span>
                                       <Progress percent={75} showInfo={false} />
                                     </>
@@ -340,7 +349,7 @@ const PayrollBatch = (props) => {
                                     <>
                                       <span>
                                         {/* {payrollConstants.CONFIRMED} */}
-                                        50% Paid to Social Organization
+                                        100% (Paid to Social Organization)
                                       </span>
                                       <Progress
                                         percent={100}
@@ -364,7 +373,7 @@ const PayrollBatch = (props) => {
                                         ></span>
                                       </Link>
                                     )}
-                                  {!corporateId && (
+                                  {!corporateId && !isOrganizationView && (
                                     <>
                                       {batch?.status ===
                                       payrollConstants.CONFIRMED_STATUS ? (
@@ -391,6 +400,18 @@ const PayrollBatch = (props) => {
                                         </Link>
                                       )}
                                     </>
+                                  )}
+                                  {isOrganizationView && (
+                                    <Link
+                                      onClick={() =>
+                                        handleOpen("Receive Batch", batch)
+                                      }
+                                    >
+                                      <span
+                                        className="bi-cart-check fs-5"
+                                        title="Receive"
+                                      ></span>
+                                    </Link>
                                   )}
                                 </td>
                               </tr>
@@ -481,7 +502,7 @@ const PayrollBatch = (props) => {
                     </Modal.Body>
                     <Modal.Footer>
                       <Button
-                        variant="primary"
+                        className="btn btn-custom"
                         type="submit"
                         disabled={
                           isSubmitting ||
@@ -489,10 +510,10 @@ const PayrollBatch = (props) => {
                             (!values.referenceId || !values.referenceNote))
                         }
                       >
-                        Confirm
+                        Yes
                       </Button>
                       <Button variant="danger" onClick={handleClose}>
-                        Cancel
+                        No
                       </Button>
                     </Modal.Footer>
                   </Form>
@@ -506,6 +527,16 @@ const PayrollBatch = (props) => {
             </Modal.Header>
             <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
           </Modal>
+          {!corporateId &&
+            !isOrganizationView &&
+            (currentView === payrollConstants.ORGANIZATION_VIEW ||
+              currentView === payrollConstants.CORPORATE_VIEW) && (
+              <PayrollBatchAccordion
+                viewType={currentView}
+                showBatchDetail={(e) => showBatchDetail(e)}
+                hideBatchDetail={hideBatchDetail}
+              />
+            )}
         </>
       )}
       {isBatchDetail && (

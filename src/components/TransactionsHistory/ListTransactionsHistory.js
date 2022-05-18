@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import * as moment from "moment";
-import { paymentConstants, paginationConstants } from "../../constants";
+import { paymentConstants, paginationConstants, viewPortalConstants } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 
 let charityProgramsOption = [];
@@ -18,6 +18,7 @@ const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
+  const currentPortal = useSelector((state) => state.currentView);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
 
@@ -25,6 +26,9 @@ const ListTransactionsHistory = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [isFilter, setIsFilter] = useState(false);
+  const isOrganizationView =
+  currentPortal?.currentView ===
+  viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -78,7 +82,7 @@ const ListTransactionsHistory = (props) => {
     <div className="customContainer">
       <div className="row mt-3">
         <div className="col-md-6">
-          <h1 className="ant-typography customHeading">Transactions History</h1>
+          <h1 className="ant-typography customHeading">Account Summary</h1>
         </div>
         <div className="col-md-6 text-right">
           <div className="row mb-4">
@@ -142,12 +146,13 @@ const ListTransactionsHistory = (props) => {
                     <th className="ant-table-cell">SR No.</th>
                     {!employeeId && <th className="ant-table-cell">Name</th>}
                     <th className="ant-table-cell">Program</th>
-                    <th className="ant-table-cell">Organization</th>
+                    {!isOrganizationView && <th className="ant-table-cell">Organization</th>}
                     {!employeeId && (
                       <th className="ant-table-cell">Corporate</th>
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
                     <th className="ant-table-cell">Donation</th>
+                    <th className="ant-table-cell">Donation Type</th>
                     <th className="ant-table-cell">Payment Mode</th>
                     <th className="ant-table-cell">Payment Status</th>
                     <th className="ant-table-cell">Payment Date</th>
@@ -178,11 +183,11 @@ const ListTransactionsHistory = (props) => {
                             {transaction?.charityName}
                           </span>
                         </td>
-                        <td className="ant-table-cell">
+                        {!isOrganizationView && <td className="ant-table-cell">
                           <span className="ant-typography font-weight-bold">
                             {transaction?.socialOrg}
                           </span>
-                        </td>
+                        </td>}
                         {!employeeId && (
                           <td className="ant-table-cell">
                             {transaction?.corporateName}
@@ -193,6 +198,9 @@ const ListTransactionsHistory = (props) => {
                         </td>
                         <td className="ant-table-cell">
                           {transaction?.amount}
+                        </td>
+                        <td className="ant-table-cell">
+                          {transaction?.donationType}
                         </td>
                         <td className="ant-table-cell">
                           {transaction?.paymentMethod &&

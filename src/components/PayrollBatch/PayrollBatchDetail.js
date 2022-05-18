@@ -5,6 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
+  viewPortalConstants,
 } from "../../constants";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
@@ -26,6 +27,7 @@ const PayrollBatchDetail = (props) => {
   const preferences = useSelector((state) => state?.payrollSetting?.items);
   const batchId = props?.batchId;
   const employee = useSelector((state) => state.employee.user);
+  const currentPortal = useSelector((state) => state.currentView);
   const [isBatchView, setIsBatchView] = useState(false);
   const [currentView, setCurrentView] = useState(
     payrollConstants.EMPLOYEE_VIEW
@@ -49,10 +51,15 @@ const PayrollBatchDetail = (props) => {
   } else {
     accordionData = groupBy("employeeName");
   }
+  const isOrganizationView =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
   useEffect(() => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
     setCurrentView(
-      isCorporateView
+      isOrganizationView
+        ? payrollConstants.CORPORATE_VIEW
+        : isCorporateView
         ? payrollConstants.EMPLOYEE_VIEW
         : payrollConstants.CORPORATE_VIEW
     );
@@ -71,7 +78,7 @@ const PayrollBatchDetail = (props) => {
         <div className="col-md-7">
           <h1 className="ant-typography customHeading">
             Payroll Batch Detail -{" "}
-            {moment(preferences[0]?.batchDate).format("MMM YYYY")}
+            {preferences && moment(preferences[0].batchDate).format("MMM YYYY")}
           </h1>
         </div>
       </div>
@@ -109,7 +116,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {isCorporateView && (
+          {isCorporateView && !isOrganizationView && (
             <Link
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.EMPLOYEE_VIEW)}
@@ -124,7 +131,7 @@ const PayrollBatchDetail = (props) => {
               </button>
             </Link>
           )}
-          {!isCorporateView && (
+          {(!isCorporateView || isOrganizationView) && (
             <Link
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}
@@ -141,21 +148,23 @@ const PayrollBatchDetail = (props) => {
               </button>
             </Link>
           )}
-          <Link
-            className="fs-6 text-decoration-underline"
-            onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
-          >
-            <button
-              type="button"
-              className={`${
-                currentView === payrollConstants.ORGANIZATION_VIEW
-                  ? "active"
-                  : ""
-              } btn btn-sm btn-outline-primary btn-outline-custom`}
+          {!isOrganizationView && (
+            <Link
+              className="fs-6 text-decoration-underline"
+              onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
             >
-              Social Organization View
-            </button>
-          </Link>
+              <button
+                type="button"
+                className={`${
+                  currentView === payrollConstants.ORGANIZATION_VIEW
+                    ? "active"
+                    : ""
+                } btn btn-sm btn-outline-primary btn-outline-custom`}
+              >
+                Social Organization View
+              </button>
+            </Link>
+          )}
           {/* )} */}
         </div>
       </div>
@@ -196,26 +205,36 @@ const PayrollBatchDetail = (props) => {
                                     {(currentView ===
                                       payrollConstants.ORGANIZATION_VIEW ||
                                       currentView ===
-                                        payrollConstants.PROGRAM_VIEW) && (
-                                      <th className="ant-table-cell">
-                                        Employee Name
-                                      </th>
-                                    )}
+                                        payrollConstants.PROGRAM_VIEW) &&
+                                      !isOrganizationView && (
+                                        <th className="ant-table-cell">
+                                          Employee Name
+                                        </th>
+                                      )}
                                     {(currentView ===
                                       payrollConstants.ORGANIZATION_VIEW ||
                                       currentView ===
-                                        payrollConstants.PROGRAM_VIEW) && (
+                                        payrollConstants.PROGRAM_VIEW) &&
+                                      !isOrganizationView && (
+                                        <th className="ant-table-cell">
+                                          Employee ID
+                                        </th>
+                                      )}
+                                    {isOrganizationView && (
                                       <th className="ant-table-cell">
-                                        Employee ID
+                                        Corporate Name
                                       </th>
                                     )}
                                     {currentView !==
                                       payrollConstants.PROGRAM_VIEW && (
-                                      <th>Program</th>
+                                      <th className="ant-table-cell">
+                                        Program
+                                      </th>
                                     )}
-                                    {currentView ===
-                                      payrollConstants.EMPLOYEE_VIEW || currentView ===
-                                      payrollConstants.CORPORATE_VIEW && (
+                                    {(currentView ===
+                                      payrollConstants.EMPLOYEE_VIEW ||
+                                      currentView ===
+                                        payrollConstants.CORPORATE_VIEW) && (
                                       <th className="ant-table-cell">
                                         Organization
                                       </th>
@@ -256,19 +275,28 @@ const PayrollBatchDetail = (props) => {
                                         {(currentView ===
                                           payrollConstants.ORGANIZATION_VIEW ||
                                           currentView ===
-                                            payrollConstants.PROGRAM_VIEW) && (
-                                          <td className="ant-table-cell">
-                                            <span className="ant-typography font-weight-bold">
-                                              {preference?.employeeName}
-                                            </span>
-                                          </td>
-                                        )}
+                                            payrollConstants.PROGRAM_VIEW) &&
+                                          !isOrganizationView && (
+                                            <td className="ant-table-cell">
+                                              <span className="ant-typography font-weight-bold">
+                                                {preference?.employeeName}
+                                              </span>
+                                            </td>
+                                          )}
                                         {(currentView ===
                                           payrollConstants.ORGANIZATION_VIEW ||
                                           currentView ===
-                                            payrollConstants.PROGRAM_VIEW) && (
+                                            payrollConstants.PROGRAM_VIEW) &&
+                                          !isOrganizationView && (
+                                            <td className="ant-table-cell">
+                                              {preference?.employeeUid}
+                                            </td>
+                                          )}
+                                        {isOrganizationView && (
                                           <td className="ant-table-cell">
-                                            {preference?.employeeUid}
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference?.corporateName}
+                                            </span>
                                           </td>
                                         )}
                                         {currentView !==
@@ -279,9 +307,10 @@ const PayrollBatchDetail = (props) => {
                                             </span>
                                           </td>
                                         )}
-                                        {currentView ===
-                                          payrollConstants.EMPLOYEE_VIEW || currentView ===
-                                          payrollConstants.CORPORATE_VIEW && (
+                                        {(currentView ===
+                                          payrollConstants.EMPLOYEE_VIEW ||
+                                          currentView ===
+                                            payrollConstants.CORPORATE_VIEW) && (
                                           <td className="ant-table-cell">
                                             <span className="ant-typography font-weight-bold">
                                               {preference.socialOrganization}
