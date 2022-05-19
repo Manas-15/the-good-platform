@@ -7,8 +7,10 @@ import { donationPreferenceConstants } from "./../../constants";
 import { charityProgramConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
+import CardCharityPrograms from "./CardCharityPrograms";
 import Loader from "../Shared/Loader";
 import { Tabs, Icon } from "antd";
+import { Button } from "react-bootstrap";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 const TabPane = Tabs.TabPane;
 
@@ -20,6 +22,9 @@ const CharityPrograms = () => {
   const user = useSelector((state) => state.employee.user);
   const [activeFrequenctTab, setActiveFrequenctTab] = useState(
     donationPreferenceConstants.ONCE
+  );
+  const [currentView, setCurrentView] = useState(
+    charityProgramConstants.LIST_VIEW
   );
   const dispatch = useDispatch();
   const openNav = () => {
@@ -51,8 +56,32 @@ const CharityPrograms = () => {
   return (
     <div className="customContainer program-list">
       <div className="row mb-4">
-        <div className="col-md-6">
-          <h1 className="ant-typography customHeading">Charity Programs</h1>
+        <div className="col-md-12">
+          <h1 className="ant-typography customHeading">
+            Social Organizations/Charity Programs
+          </h1>
+        </div>
+      </div>
+      <div className="row mb-4">
+        <div className="col-md-12 text-right">
+          <button
+            type="button"
+            className={`${
+              currentView === charityProgramConstants.LIST_VIEW ? "active" : ""
+            } btn btn-sm btn-outline-primary btn-outline-custom mr-3`}
+            onClick={() => setCurrentView(charityProgramConstants.LIST_VIEW)}
+          >
+            <i className="bi bi-grid-3x3-gap"></i> List View
+          </button>
+          <button
+            type="button"
+            className={`${
+              currentView === charityProgramConstants.CARD_VIEW ? "active" : ""
+            } btn btn-sm  btn-outline-primary btn-outline-custom`}
+            onClick={() => setCurrentView(charityProgramConstants.CARD_VIEW)}
+          >
+            <i className="bi bi-card-heading"></i> Card View
+          </button>
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
@@ -92,12 +121,22 @@ const CharityPrograms = () => {
             }
             key={charityProgramConstants.SPONSOR}
           >
-            <ListCharityPrograms
-              items={charityPrograms?.items?.sponser.filter(
-                (charity) => charity.donated === false
-              )}
-              setCharity={setCharity}
-            />
+            {currentView === charityProgramConstants.LIST_VIEW && (
+              <ListCharityPrograms
+                items={charityPrograms?.items?.sponser.filter(
+                  (charity) => charity.donated === false
+                )}
+                setCharity={setCharity}
+              />
+            )}
+            {currentView === charityProgramConstants.CARD_VIEW && (
+              <CardCharityPrograms
+                items={charityPrograms?.items?.sponser.filter(
+                  (charity) => charity.donated === false
+                )}
+                setCharity={setCharity}
+              />
+            )}
           </TabPane>
           <TabPane
             tab={
@@ -114,12 +153,22 @@ const CharityPrograms = () => {
             }
             key={charityProgramConstants.OTHER}
           >
-            <ListCharityPrograms
-              items={charityPrograms?.items?.other.filter(
-                (charity) => charity.donated === false
-              )}
-              setCharity={setCharity}
-            />
+            {currentView === charityProgramConstants.LIST_VIEW && (
+              <ListCharityPrograms
+                items={charityPrograms?.items?.other.filter(
+                  (charity) => charity.donated === false
+                )}
+                setCharity={setCharity}
+              />
+            )}
+            {currentView === charityProgramConstants.CARD_VIEW && (
+              <CardCharityPrograms
+                items={charityPrograms?.items?.other.filter(
+                  (charity) => charity.donated === false
+                )}
+                setCharity={setCharity}
+              />
+            )}
           </TabPane>
         </Tabs>
       </div>

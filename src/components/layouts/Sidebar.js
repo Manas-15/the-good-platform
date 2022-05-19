@@ -145,7 +145,7 @@ const Sidebar = () => {
                     <span className="ant-menu-title-content">
                       <NavLink
                         className=" "
-                        to="/charity-programs"
+                        to="/social-organizations"
                         activeClassName="active"
                       >
                         <img height="16" src="/assets/img/case.png" />
