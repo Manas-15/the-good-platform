@@ -76,7 +76,7 @@ const ListCharityPrograms = () => {
                         <td className="ant-table-cell">
                           <span className="ant-typography font-weight-bold">
                             <Link to="/social-organizations/programs">
-                              {socialOrganization?.name}
+                              <span className="custom-color">{socialOrganization?.name}</span>
                             </Link>
                           </span>
                         </td>

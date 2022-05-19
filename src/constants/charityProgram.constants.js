@@ -15,4 +15,10 @@ export const charityProgramConstants = {
 
   LIST_VIEW: "List",
   CARD_VIEW: "Card",
+
+  ALL_CATEGORY: "All",
+  WOMEN_CATEGORY: "Women",
+  YOUTH_CATEGORY: "Youth",
+  ELDERLY_CATEGORY: "Elderly",
+  CHILDREN_CATEGORY: "Children",
 };

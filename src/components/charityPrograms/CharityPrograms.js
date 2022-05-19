@@ -26,6 +26,9 @@ const CharityPrograms = () => {
   const [currentView, setCurrentView] = useState(
     charityProgramConstants.LIST_VIEW
   );
+  const [selectedCategory, setSelectedCategory] = useState(
+    charityProgramConstants.ALL_CATEGORY
+  );
   const dispatch = useDispatch();
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
@@ -98,6 +101,116 @@ const CharityPrograms = () => {
                 />
               </span>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="mt-4">
+        <h5>Categories</h5>
+      </div>
+      <div className="row mb-4">
+        <div className="col">
+          <div
+            className={`categotyButton`}
+            onClick={() =>
+              setSelectedCategory(charityProgramConstants.ALL_CATEGORY)
+            }
+          >
+            <label
+              className={`${
+                selectedCategory === charityProgramConstants.ALL_CATEGORY
+                  ? "active"
+                  : ""
+              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+            >
+              <span>
+                <span className="bi-border-all"></span>{" "}
+                {charityProgramConstants.ALL_CATEGORY}
+              </span>
+            </label>
+          </div>
+        </div>
+        <div className="col">
+          <div
+            className={`categotyButton`}
+            onClick={() =>
+              setSelectedCategory(charityProgramConstants.WOMEN_CATEGORY)
+            }
+          >
+            <label
+              className={`${
+                selectedCategory === charityProgramConstants.WOMEN_CATEGORY
+                  ? "active"
+                  : ""
+              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+            >
+              <span>
+                <img src="/assets/img/women.png" />{" "}
+                {charityProgramConstants.WOMEN_CATEGORY}
+              </span>
+            </label>
+          </div>
+        </div>
+        <div className="col">
+          <div
+            className={`categotyButton`}
+            onClick={() =>
+              setSelectedCategory(charityProgramConstants.YOUTH_CATEGORY)
+            }
+          >
+            <label
+              className={`${
+                selectedCategory === charityProgramConstants.YOUTH_CATEGORY
+                  ? "active"
+                  : ""
+              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+            >
+              <span>
+                <img src="/assets/img/youth.png" />{" "}
+                {charityProgramConstants.YOUTH_CATEGORY}
+              </span>
+            </label>
+          </div>
+        </div>
+        <div className="col">
+          <div
+            className={`categotyButton`}
+            onClick={() =>
+              setSelectedCategory(charityProgramConstants.ELDERLY_CATEGORY)
+            }
+          >
+            <label
+              className={`${
+                selectedCategory === charityProgramConstants.ELDERLY_CATEGORY
+                  ? "active"
+                  : ""
+              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+            >
+              <span>
+                <img src="/assets/img/elderly.png" />{" "}
+                {charityProgramConstants.ELDERLY_CATEGORY}
+              </span>
+            </label>
+          </div>
+        </div>
+        <div className="col">
+          <div
+            className={`categotyButton`}
+            onClick={() =>
+              setSelectedCategory(charityProgramConstants.CHILDREN_CATEGORY)
+            }
+          >
+            <label
+              className={`${
+                selectedCategory === charityProgramConstants.CHILDREN_CATEGORY
+                  ? "active"
+                  : ""
+              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+            >
+              <span>
+                <img src="/assets/img/children.png" />{" "}
+                {charityProgramConstants.CHILDREN_CATEGORY}
+              </span>
+            </label>
           </div>
         </div>
       </div>
