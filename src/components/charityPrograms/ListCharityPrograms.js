@@ -70,6 +70,59 @@ const ListCharityPrograms = ({ items, setCharity }) => {
                   )}
                 </tbody>
               </table>
+              {/* {items?.length === 0 && (
+                <div className="row">
+                  <div className="col-md-4 card p-0">
+                    <div className="img-sec">
+                      <img
+                        src="https://dkprodimages.gumlet.io/campaign/cover/Support-Mark1283685362.jpg"
+                        alt="image"
+                      />
+                    </div>
+                    <div className="description">
+                      <h4>
+                        This 63 Year Old Is Working Relentlessly To Feed Warm
+                        Meals To Senior Citizens
+                      </h4>
+                    </div>
+                    <div className="founder">
+                      <span className="founder-short">RL</span>
+                      <span>By Rahul</span>
+                    </div>
+                    <div class="campaign">
+                      <div class="campaign-heading">
+                        <span class="campaign-raised">₹10,75,010</span>{" "}
+                        <span>raised out of ₹46,20,000</span>
+                      </div>
+                      <div
+                        class="dk-progress-bar_backgroundBar__25DwK"
+                        title="23% Raised"
+                      >
+                        <div class="dk-progress-bar_progressBar__3NzxJ">
+                          <div class="dk-progress-bar_animatedProgressBar__3NDGy"></div>
+                        </div>
+                      </div>
+                      <div class="campaign-card_statsWrapper__eFgvz">
+                        <div class="campaign-card_daysLeft__JraZG">
+                          <img
+                            src=""
+                            width="16"
+                            loading="lazy"
+                            class="gm-observing gm-observing-cb"
+                          />{" "}
+                          29 days left
+                        </div>
+                        <div class="campaign-card_stats__3_5AK">
+                          <img src="" />
+                          &nbsp;&nbsp;1,108 Backers
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-4 card p-0">dddd</div>
+                  <div className="col-md-4 card p-0">vvv</div>
+                </div>
+              )} */}
             </div>
           </div>
         </div>

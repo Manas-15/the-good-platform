@@ -40,7 +40,6 @@ const CharityPrograms = () => {
     closeNav();
   };
   const changeTab = (activeKey) => {
-    console.log("ffffffffffffffffffffffffff", activeKey);
     closeNav();
     setTabType(activeKey);
   };
