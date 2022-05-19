@@ -1,32 +1,37 @@
 [
   {
-    "corporateName": "Creatives Inc",
-    "dateAdded": "03/15/2022",
-    "programName": "Early childhood care",
-    "amount": "12,000"
+    "name": "Creatives Inc",
+    "createdOn": "2022-04-11",
+    "totalPrograms": 15,
+    "createdBy": "Anna Ben",
+    "approvalStatus": "APPROVED"
   },
   {
-    "corporateName": "The Smile Foundation",
-    "dateAdded": "03/25/2022",
-    "programName": "Cancer treatment",
-    "amount": "24,000"
+    "name": "The Smile Foundation",
+    "createdOn": "2022-03-23",
+    "totalPrograms": 25,
+    "createdBy": "Martin Sam",
+    "approvalStatus": "REJECTED"
   },
   {
-    "corporateName": "Hope Charity Organization",
-    "dateAdded": "03/22/2022",
-    "programName": "Mid day meals",
-    "amount": "30,000"
+    "name": "Hope Charity Organization",
+    "createdOn": "2022-04-20",
+    "totalPrograms": 30,
+    "createdBy": "John Doe",
+    "approvalStatus": "PENDING"
   },
   {
-    "corporateName": "Sisters of Charity",
-    "dateAdded": "03/21/2022",
-    "programName": "Flood disater",
-    "amount": "15,000"
+    "name": "Sisters of Charity",
+    "createdOn": "2022-05-02",
+    "totalPrograms": 20,
+    "createdBy": "Kailash Nag",
+    "approvalStatus": "REJECTED"
   },
   {
-    "corporateName": "Life-Changing Foundation",
-    "dateAdded": "03/10/2022",
-    "programName": "Old age care",
-    "amount": "24,000"
+    "name": "Life-Changing Foundation",
+    "createdOn": "2022-02-18",
+    "totalPrograms": 12,
+    "createdBy": "Sam Bill",
+    "approvalStatus": "APPROVED"
   }
 ]

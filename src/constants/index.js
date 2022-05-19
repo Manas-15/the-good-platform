@@ -8,3 +8,4 @@ export * from "./transactionsHistory.constants";
 export * from "./payroll.constants";
 export * from "./pagination.constants";
 export * from "./viewPortal.constants";
+export * from "./socialOrganization.constants";

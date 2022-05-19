@@ -12,4 +12,7 @@ export const charityProgramConstants = {
 
   SPONSORED: "Sponsored",
   OTHERS: "Others",
+
+  LIST_VIEW: "List",
+  CARD_VIEW: "Card",
 };

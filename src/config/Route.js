@@ -1,6 +1,7 @@
 import { Route, Router, Switch, Redirect } from "react-router-dom";
 import Dashboard from "../components/Dashboard/Dashboard";
 import CharityPrograms from "../components/CharityPrograms/CharityPrograms";
+import CharityProgramDetails from "../components/CharityPrograms/CharityProgramDetails";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
 import DonationPreferences from "../components/DonationPreferences/DonationPreferences";
@@ -71,13 +72,18 @@ const CreateRoutes = () => {
                 <Route exact path="/" component={Dashboard} />
               )}
               <Route exact path="/profile" component={Profile} />
-              {!isEmployeeView && (
+              {/* {!isEmployeeView && ( */}
                 <Route
                   exact
-                  path="/charity-programs"
+                  path="/social-organizations/programs"
                   component={CharityPrograms}
                 />
-              )}
+                <Route
+                  exact
+                  path="/social-organizations/programs/:slug"
+                  component={CharityProgramDetails}
+                />
+              {/* )} */}
               {!isEmployeeView && (
                 <Route
                   exact
@@ -121,6 +127,11 @@ const CreateRoutes = () => {
                 exact
                 path="/employee/:employeeId/account-summary"
                 component={ListTransactionsHistory}
+              />
+              <Route
+                exact
+                path="/social-organizations"
+                component={ListSocialOrganizations}
               />
               <Route
                 exact
