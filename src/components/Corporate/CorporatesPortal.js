@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createRef } from "react";
 import { useHistory } from "react-router-dom";
-import { corporateActions } from "../../actions";
+import { corporateActions, selectedCorporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import Loader from "../Shared/Loader";
@@ -52,6 +52,10 @@ const CorporatesPortal = () => {
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
+  const setCorporate = (corporateId) =>{
+    console.log(">>>>>>>>>>>>>>>>>",  corporateId)
+    dispatch(selectedCorporateActions.selectedCorporate(corporateId));
+  }
   return (
     <div>
       <div className="row mb-4">
@@ -81,6 +85,7 @@ const CorporatesPortal = () => {
                     <li key={index + 1}>
                       <Link
                         to={`/corporates/${corporate.corporateId}/employees`}
+                        onClick={()=>setCorporate(corporate.corporateId)}
                       >
                         {corporate?.organizationName}
                       </Link>

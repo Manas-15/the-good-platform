@@ -7,4 +7,6 @@ export * from "./payment.actions";
 export * from "./transactionsHistory.actions";
 export * from "./payrollSetting.actions";
 export * from "./payrollBatch.actions";
+export * from "./socialOrganization.actions";
 export * from "./currentView.actions";
+export * from "./selectedCorporate.actions";

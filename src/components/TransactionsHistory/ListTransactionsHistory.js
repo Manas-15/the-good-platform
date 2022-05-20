@@ -4,8 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import * as moment from "moment";
-import { paymentConstants, paginationConstants, viewPortalConstants } from "../../constants";
+import {
+  paymentConstants,
+  paginationConstants,
+  viewPortalConstants,
+} from "../../constants";
 import Pagination from "./../Shared/Pagination";
+import { Tooltip } from "antd";
 
 let charityProgramsOption = [];
 const paymentStatusOption = [
@@ -27,8 +32,15 @@ const ListTransactionsHistory = (props) => {
   const [totalCount, setTotalCount] = useState(0);
   const [isFilter, setIsFilter] = useState(false);
   const isOrganizationView =
-  currentPortal?.currentView ===
-  viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  const isEmployeePortal =
+    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isBluePencilView =
+    currentPortal?.currentView ===
+    viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -44,6 +56,7 @@ const ListTransactionsHistory = (props) => {
       dispatch(
         transactionsHistoryActions.getTransactionsHistory({
           employeeId: employeeId ? employeeId : null,
+          corporateId: isCorporatePortal ? 1 : null,
           pageSize: pageSize,
           offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         })
@@ -144,10 +157,17 @@ const ListTransactionsHistory = (props) => {
                 <thead className="ant-table-thead">
                   <tr>
                     <th className="ant-table-cell">SR No.</th>
-                    {!employeeId && <th className="ant-table-cell">Name</th>}
+                    {isCorporatePortal && (
+                      <th className="ant-table-cell">Employee Name</th>
+                    )}
+                    {isCorporatePortal && (
+                      <th className="ant-table-cell">Employee ID</th>
+                    )}
                     <th className="ant-table-cell">Program</th>
-                    {!isOrganizationView && <th className="ant-table-cell">Organization</th>}
-                    {!employeeId && (
+                    {!isOrganizationView && (
+                      <th className="ant-table-cell">Organization</th>
+                    )}
+                    {!employeeId && !isCorporatePortal && (
                       <th className="ant-table-cell">Corporate</th>
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
@@ -156,7 +176,9 @@ const ListTransactionsHistory = (props) => {
                     <th className="ant-table-cell">Payment Mode</th>
                     <th className="ant-table-cell">Payment Status</th>
                     <th className="ant-table-cell">Payment Date</th>
-                    {employeeId && <th className="ant-table-cell">Action</th>}
+                    {(employeeId || isCorporatePortal) && (
+                      <th className="ant-table-cell">80G</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -171,10 +193,17 @@ const ListTransactionsHistory = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td>
-                        {!employeeId && (
+                        {isCorporatePortal && (
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
                               {transaction?.employeeName}
+                            </span>
+                          </td>
+                        )}
+                        {isCorporatePortal && (
+                          <td className="ant-table-cell">
+                            <span className="ant-typography font-weight-bold">
+                              {transaction?.employeeId}
                             </span>
                           </td>
                         )}
@@ -183,12 +212,14 @@ const ListTransactionsHistory = (props) => {
                             {transaction?.charityName}
                           </span>
                         </td>
-                        {!isOrganizationView && <td className="ant-table-cell">
-                          <span className="ant-typography font-weight-bold">
-                            {transaction?.socialOrg}
-                          </span>
-                        </td>}
-                        {!employeeId && (
+                        {!isOrganizationView && (
+                          <td className="ant-table-cell">
+                            <span className="ant-typography font-weight-bold">
+                              {transaction?.socialOrg}
+                            </span>
+                          </td>
+                        )}
+                        {!employeeId && !isCorporatePortal && (
                           <td className="ant-table-cell">
                             {transaction?.corporateName}
                           </td>
@@ -221,18 +252,32 @@ const ListTransactionsHistory = (props) => {
                               "DD/MM/YY, h:mm A"
                             )}
                         </td>
-                        {employeeId && (
+                        {(employeeId || isCorporatePortal) && (
                           <td className="ant-table-cell">
                             {transaction?.paymentStatus ===
                               paymentConstants.PAYMENT_SUCCESS && (
-                              <Link
-                                className="text-decoration-underline"
-                                onClick={() =>
-                                  downlad(transaction?.transactionId)
-                                }
-                              >
-                                Download 80G
-                              </Link>
+                              <div className="d-flex">
+                                <Tooltip title="Download">
+                                  <Link
+                                    className="text-decoration-underline"
+                                    onClick={() =>
+                                      downlad(transaction?.transactionId)
+                                    }
+                                  >
+                                    <i className="bi bi-download fs-5 mr-3"></i>
+                                  </Link>
+                                </Tooltip>
+                                <Tooltip title="Email">
+                                  <Link
+                                    className="text-decoration-underline"
+                                    onClick={() =>
+                                      downlad(transaction?.transactionId)
+                                    }
+                                  >
+                                    <i className="bi bi-envelope fs-5"></i>
+                                  </Link>
+                                </Tooltip>
+                              </div>
                             )}
                           </td>
                         )}

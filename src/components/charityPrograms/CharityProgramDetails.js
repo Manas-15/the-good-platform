@@ -89,10 +89,7 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
                     Tax Benefit <i className="bi-info-circle-fill fs-6"></i>
                   </span>
                 </Tooltip>
-                <img
-                  src="https://dkprodimages.gumlet.io/campaign/cover/Support-Mark1283685362.jpg"
-                  alt="image"
-                />
+                <img src="/assets/img/dummy.png" alt="image" />
               </div>
               <div className="col-md-4">
                 <div className="row">

@@ -20,7 +20,7 @@ const CardCharityPrograms = ({ items, setCharity }) => {
               <div className="col-md-4 card  p-0 ml-3">
                 <div className="img-sec">
                   <img
-                    src="https://dkprodimages.gumlet.io/campaign/cover/Support-Mark1283685362.jpg"
+                    src="/assets/img/dummy.png"
                     alt="image"
                   />
                   <Tooltip title="80G Tax benefits available for INR donations">
@@ -39,7 +39,7 @@ const CardCharityPrograms = ({ items, setCharity }) => {
                         programName: charityProgram?.charityName,
                       }}
                     >
-                      {charityProgram?.charityName}
+                      <span className="custom-color">{charityProgram?.charityName}</span>
                     </Link>
                   </h4>
                 </div>
