@@ -11,6 +11,7 @@ function getSocialOrganizations(data) {
     dispatch(request());
 
     socialOrganizationService.getSocialOrganizations(data).then(
+      
       (socialOrganizations) => dispatch(success(socialOrganizations)),
 
       (error) => {

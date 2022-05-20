@@ -3,25 +3,32 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Donate from "./Donate";
 import "./../../assets/css/charityProgramsList.scss";
-import { donationPreferenceConstants, viewPortalConstants } from "./../../constants";
+import {
+  donationPreferenceConstants,
+  viewPortalConstants,
+} from "./../../constants";
 import { charityProgramConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
-import Loader from "../Shared/Loader";
 import { Tabs, Icon } from "antd";
-import { Button } from "react-bootstrap";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 const TabPane = Tabs.TabPane;
 
 const CharityPrograms = () => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
+  const selectedOrganizationId = useSelector(
+    (state) => state.selectedOrganization
+  );
   const [selectedCharity, setSelectedCharity] = useState();
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const user = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
-  const selectedCorporateId = useSelector((state) => state.selectedCorporate);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedOrganization = useSelector(
+    (state) => state.selectedOrganization
+  );
   const [activeFrequenctTab, setActiveFrequenctTab] = useState(
     donationPreferenceConstants.ONCE
   );
@@ -42,7 +49,16 @@ const CharityPrograms = () => {
     setSelectedCharity(null);
   };
   useEffect(() => {
-    dispatch(charityProgramActions.getCharityPrograms(isCorporatePortal ? {corporateId: selectedCorporateId?.id} : {uuid: user?.uuid}));
+    dispatch(
+      charityProgramActions.getCharityPrograms(
+        isCorporatePortal
+          ? {
+              corporateId: selectedCorporate?.id,
+              socialId: selectedOrganization?.id,
+            }
+          : { uuid: user?.uuid, socialId: selectedOrganization?.id }
+      )
+    );
   }, []);
   const setCharity = (charity) => {
     setSelectedCharity(charity);
@@ -240,7 +256,7 @@ const CharityPrograms = () => {
           >
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={charityPrograms?.items?.sponser.filter(
+                items={charityPrograms?.items?.sponser?.filter(
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}
@@ -248,7 +264,7 @@ const CharityPrograms = () => {
             )}
             {currentView === charityProgramConstants.CARD_VIEW && (
               <CardCharityPrograms
-                items={charityPrograms?.items?.sponser.filter(
+                items={charityPrograms?.items?.sponser?.filter(
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}
@@ -272,7 +288,7 @@ const CharityPrograms = () => {
           >
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={charityPrograms?.items?.other.filter(
+                items={charityPrograms?.items?.other?.filter(
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}
@@ -280,7 +296,7 @@ const CharityPrograms = () => {
             )}
             {currentView === charityProgramConstants.CARD_VIEW && (
               <CardCharityPrograms
-                items={charityPrograms?.items?.other.filter(
+                items={charityPrograms?.items?.other?.filter(
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}

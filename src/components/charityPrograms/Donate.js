@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
 import { donationPreferenceActions } from "./../../actions";
 import { charityProgramActions } from "./../../actions";
-import { donationPreferenceConstants, viewPortalConstants } from "./../../constants";
+import {
+  donationPreferenceConstants,
+  viewPortalConstants,
+} from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
 import DonateSecondStep from "./DonateSecondStep";
@@ -145,7 +148,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
               </p>
             </div>
           </div>
-          {(tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) && (
+          {tabType === charityProgramConstants.SPONSOR && !isCorporatePortal && (
             <div className="row">
               <div className="col-md-12">
                 <label className="m-2">
@@ -169,23 +172,30 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
           <div
             className={
               "row mb-4 " +
-              ((tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) ? "" : "mt-4")
+              (tabType === charityProgramConstants.SPONSOR && !isCorporatePortal
+                ? ""
+                : "mt-4")
             }
           >
             <div className="col-md-12 text-center">
               <button
                 className="btn btn-custom w-100 rounded-pill"
                 disabled={
-                  (tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) ? !checked : false
+                  tabType === charityProgramConstants.SPONSOR &&
+                  !isCorporatePortal
+                    ? !checked
+                    : false
                 }
                 onClick={
-                  (tabType === charityProgramConstants.SPONSOR && !isCorporatePortal)
+                  tabType === charityProgramConstants.SPONSOR &&
+                  !isCorporatePortal
                     ? saveDonationPreference
                     : nextStep
                 }
               >
                 <span className="fs-6 ml-2">
-                  {(tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) ? (
+                  {tabType === charityProgramConstants.SPONSOR &&
+                  !isCorporatePortal ? (
                     <>
                       <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
                       &nbsp;Add Donation Preference {tabType}
