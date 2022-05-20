@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Donate from "./Donate";
 import "./../../assets/css/charityProgramsList.scss";
-import { donationPreferenceConstants } from "./../../constants";
+import { donationPreferenceConstants, viewPortalConstants } from "./../../constants";
 import { charityProgramConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
@@ -20,6 +20,8 @@ const CharityPrograms = () => {
   const [selectedCharity, setSelectedCharity] = useState();
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const user = useSelector((state) => state.employee.user);
+  const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporateId = useSelector((state) => state.selectedCorporate);
   const [activeFrequenctTab, setActiveFrequenctTab] = useState(
     donationPreferenceConstants.ONCE
   );
@@ -30,6 +32,8 @@ const CharityPrograms = () => {
     charityProgramConstants.ALL_CATEGORY
   );
   const dispatch = useDispatch();
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
   };
@@ -38,7 +42,7 @@ const CharityPrograms = () => {
     setSelectedCharity(null);
   };
   useEffect(() => {
-    dispatch(charityProgramActions.getCharityPrograms({ uuid: user?.uuid }));
+    dispatch(charityProgramActions.getCharityPrograms(isCorporatePortal ? {corporateId: selectedCorporateId?.id} : {uuid: user?.uuid}));
   }, []);
   const setCharity = (charity) => {
     setSelectedCharity(charity);

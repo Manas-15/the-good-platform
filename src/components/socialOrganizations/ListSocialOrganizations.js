@@ -1,15 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import socialOrganizations from "./../../config/socialOrganizations.json";
+// import socialOrganizations from "./../../config/socialOrganizations.json";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { socialOrganizationConstants } from "./../../constants";
-
+import { socialOrganizationConstants, paginationConstants } from "../../constants";
+import { socialOrganizationActions } from "../../actions";
+import Pagination from "./../Shared/Pagination";
+let pageSize = paginationConstants?.PAGE_SIZE;
 const ListCharityPrograms = () => {
   let history = useHistory();
-  // const corporates = useSelector(state => state.corporates);
-  // const user = useSelector((state) => state.authentication.user);
+  const socialOrganizations = useSelector((state) => state.socialOrganizations);
+
+  // Pagination
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      socialOrganizationActions.getSocialOrganizations({
+        pageSize: pageSize,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+      })
+    );
+  }, [currentPage]);
+  const setPage = (page) => {
+    setCurrentPage(page);
+  };
+  useEffect(() => {
+    setTotalCount(socialOrganizations?.totalCount);
+  }, [socialOrganizations?.totalCount]);
   const renderClass = (param) => {
     switch (param) {
       case socialOrganizationConstants.APPROVED:
@@ -59,15 +79,14 @@ const ListCharityPrograms = () => {
                     <th className="ant-table-cell text-center">
                       Total Programs
                     </th>
-                    <th className="ant-table-cell">Created By</th>
                     <th className="ant-table-cell">Created On</th>
-                    <th className="ant-table-cell">Status</th>
+                    {/* <th className="ant-table-cell">Status</th> */}
                     {/* <th className="ant-table-cell text-center">Actions</th> */}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {socialOrganizations ? (
-                    socialOrganizations.map((socialOrganization, index) => (
+                  {socialOrganizations?.items ? (
+                    socialOrganizations?.items.map((socialOrganization, index) => (
                       <tr
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"
@@ -84,12 +103,9 @@ const ListCharityPrograms = () => {
                           {socialOrganization?.totalPrograms}
                         </td>
                         <td className="ant-table-cell">
-                          {socialOrganization?.createdBy}
-                        </td>
-                        <td className="ant-table-cell">
                           {socialOrganization?.createdOn}
                         </td>
-                        <td className="ant-table-cell">
+                        {/* <td className="ant-table-cell">
                           <span
                             className={renderClass(
                               socialOrganization?.approvalStatus
@@ -97,7 +113,7 @@ const ListCharityPrograms = () => {
                           >
                             {socialOrganization?.approvalStatus}
                           </span>
-                        </td>
+                        </td> */}
                         {/* <td className="ant-table-cell text-center">
                           <Link>
                             <span
@@ -118,6 +134,13 @@ const ListCharityPrograms = () => {
                 </tbody>
               </table>
             </div>
+            <Pagination
+            className="pagination-bar mt-4"
+            currentPage={currentPage}
+            totalCount={totalCount ? totalCount : 0}
+            pageSize={pageSize}
+            onPageChange={(page) => setPage(page)}
+          />
           </div>
         </div>
       </div>

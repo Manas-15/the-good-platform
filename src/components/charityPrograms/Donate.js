@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
 import { donationPreferenceActions } from "./../../actions";
 import { charityProgramActions } from "./../../actions";
-import { donationPreferenceConstants } from "./../../constants";
+import { donationPreferenceConstants, viewPortalConstants } from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
 import DonateSecondStep from "./DonateSecondStep";
@@ -25,11 +25,14 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
   const employee = useSelector((state) => state.employee.user);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const donationPreferences = useSelector((state) => state.donationPreferences);
+  const currentView = useSelector((state) => state.currentView);
   const [selectedAmount, setSelectedAmount] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [showNextStep, setShowNextStep] = useState(false);
+  const isCorporatePortal =
+    currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   useEffect(() => {
     if (selectedCharity) {
       setSelectedAmount(selectedCharity?.unitPrice);
@@ -142,7 +145,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
               </p>
             </div>
           </div>
-          {tabType === charityProgramConstants.SPONSOR && (
+          {(tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) && (
             <div className="row">
               <div className="col-md-12">
                 <label className="m-2">
@@ -166,23 +169,23 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
           <div
             className={
               "row mb-4 " +
-              (tabType === charityProgramConstants.SPONSOR ? "" : "mt-4")
+              ((tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) ? "" : "mt-4")
             }
           >
             <div className="col-md-12 text-center">
               <button
                 className="btn btn-custom w-100 rounded-pill"
                 disabled={
-                  tabType === charityProgramConstants.SPONSOR ? !checked : false
+                  (tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) ? !checked : false
                 }
                 onClick={
-                  tabType === charityProgramConstants.SPONSOR
+                  (tabType === charityProgramConstants.SPONSOR && !isCorporatePortal)
                     ? saveDonationPreference
                     : nextStep
                 }
               >
                 <span className="fs-6 ml-2">
-                  {tabType === charityProgramConstants.SPONSOR ? (
+                  {(tabType === charityProgramConstants.SPONSOR && !isCorporatePortal) ? (
                     <>
                       <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
                       &nbsp;Add Donation Preference {tabType}

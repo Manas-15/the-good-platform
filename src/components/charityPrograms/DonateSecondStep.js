@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DonationConsent from "./../Shared/DonationConsent";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { PaymentSchema } from "./../Validations";
@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Payment from "./../Payment/Payment";
 import ReviewAmountBox from "./../Shared/ReviewAmountBox";
 import donationsConsent from "./../../config/donationsConsent.json";
+import { viewPortalConstants, payrollConstants } from "../../constants";
 
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -55,12 +56,15 @@ const DonateSecondStep = ({
 }) => {
   // Math.random().toString(36).slice(2)
   let charityFirstTwoChar, employeeFirstTwoChar;
+  const currentPortal = useSelector((state) => state.currentView);
   if (selectedCharity) {
     charityFirstTwoChar = selectedCharity?.charityName
       ?.slice(0, 2)
       ?.toLowerCase();
     employeeFirstTwoChar = employee?.name?.slice(0, 2)?.toLowerCase();
   }
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const initialValues = {
     orderId: selectedCharity
       ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
@@ -76,6 +80,9 @@ const DonateSecondStep = ({
     charity: selectedCharity,
     employee: employee,
     corporateId: 1,
+    userType: isCorporatePortal
+      ? payrollConstants.CORPORATE_VIEW
+      : payrollConstants.EMPLOYEE_VIEW,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
   };
