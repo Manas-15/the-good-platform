@@ -9,6 +9,7 @@ import { transactionsHistory } from "./transactionsHistory.reducer";
 import { payrollSetting } from "./payrollSetting.reducer";
 import { payrollBatch } from "./payrollBatch.reducer";
 import { currentView } from "./currentView.reducer";
+import { selectedCorporate } from "./selectedCorporate.reducer";
 
 const rootReducer = combineReducers({
   alert,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   payrollSetting,
   payrollBatch,
   currentView,
+  selectedCorporate,
 });
 
 export default rootReducer;
