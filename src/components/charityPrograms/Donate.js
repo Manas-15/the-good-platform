@@ -224,7 +224,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
         <DonateSecondStep
           frequency={frequency}
           selectedCharity={selectedCharity}
-          selectedAmount={selectedAmount.toLocaleString()}
+          selectedAmount={selectedAmount}
           employee={employee}
         />
       )}

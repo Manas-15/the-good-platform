@@ -7,6 +7,7 @@ import users from "./../../config/users.json";
 import Payment from "./../Payment/Payment";
 import { useSelector } from "react-redux";
 import { Accordion } from "react-bootstrap";
+import Donate from "./Donate";
 const TabPane = Tabs.TabPane;
 
 const CharityProgramDetails = (props, { items, setCharity }) => {
@@ -252,7 +253,11 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
               </div>
             </div>
             <div className="col-md-4" id="payment-section">
-              <Payment selectedAmount={"200"} paymentValues={initialValues} />
+              {/* <Payment selectedAmount={"200"} paymentValues={initialValues} /> */}
+              <Donate
+                frequency={donationPreferenceConstants.MONTHLY}
+                selectedCharity={initialValues.charity}
+              />
             </div>
           </div>
           {/* )} */}

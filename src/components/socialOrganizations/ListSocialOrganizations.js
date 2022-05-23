@@ -3,9 +3,20 @@ import { useHistory } from "react-router-dom";
 // import socialOrganizations from "./../../config/socialOrganizations.json";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { socialOrganizationConstants, paginationConstants } from "../../constants";
-import { socialOrganizationActions } from "../../actions";
+import urlSlug from "url-slug";
+import {
+  socialOrganizationConstants,
+  paginationConstants,
+} from "../../constants";
+import {
+  selectedOrganizationActions,
+  socialOrganizationActions,
+} from "../../actions";
 import Pagination from "./../Shared/Pagination";
+import * as moment from "moment";
+import { selectedOrganization } from "../../reducers/selectedOrganization.reducer";
+import Loader from "../Shared/Loader";
+// import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListCharityPrograms = () => {
   let history = useHistory();
@@ -30,6 +41,9 @@ const ListCharityPrograms = () => {
   useEffect(() => {
     setTotalCount(socialOrganizations?.totalCount);
   }, [socialOrganizations?.totalCount]);
+  const setOrganization = (organizationId) => {
+    dispatch(selectedOrganizationActions.selectedOrganization(organizationId));
+  };
   const renderClass = (param) => {
     switch (param) {
       case socialOrganizationConstants.APPROVED:
@@ -66,7 +80,7 @@ const ListCharityPrograms = () => {
           </div>
         </div>
       </div>
-      {/* {corporates.loading && <em>Loading charity programs...</em>} */}
+      {socialOrganizations.loading && <Loader />}
       <div className="ant-row">
         <div className="ant-col ant-col-24 mt-2">
           <div className="ant-table-wrapper">
@@ -74,7 +88,7 @@ const ListCharityPrograms = () => {
               <table>
                 <thead className="ant-table-thead">
                   <tr>
-                    <th className="ant-table-cell">Sl#</th>
+                    <th className="ant-table-cell">SR NO.</th>
                     <th className="ant-table-cell">Name</th>
                     <th className="ant-table-cell text-center">
                       Total Programs
@@ -86,26 +100,40 @@ const ListCharityPrograms = () => {
                 </thead>
                 <tbody className="ant-table-tbody">
                   {socialOrganizations?.items ? (
-                    socialOrganizations?.items.map((socialOrganization, index) => (
-                      <tr
-                        key={index + 1}
-                        className="ant-table-row ant-table-row-level-0"
-                      >
-                        <td className="ant-table-cell">{index + 1}</td>
-                        <td className="ant-table-cell">
-                          <span className="ant-typography font-weight-bold">
-                            <Link to="/social-organizations/programs">
-                              <span className="custom-color">{socialOrganization?.name}</span>
-                            </Link>
-                          </span>
-                        </td>
-                        <td className="ant-table-cell text-center">
-                          {socialOrganization?.totalPrograms}
-                        </td>
-                        <td className="ant-table-cell">
-                          {socialOrganization?.createdOn}
-                        </td>
-                        {/* <td className="ant-table-cell">
+                    socialOrganizations?.items.map(
+                      (socialOrganization, index) => (
+                        <tr
+                          key={index + 1}
+                          className="ant-table-row ant-table-row-level-0"
+                        >
+                          <td className="ant-table-cell">{index + 1}</td>
+                          <td className="ant-table-cell">
+                            <span className="ant-typography font-weight-bold">
+                              <Link
+                                to={{
+                                  pathname: `/social-organizations/${urlSlug(
+                                    socialOrganization?.name
+                                  )}`,
+                                }}
+                                onClick={() =>
+                                  setOrganization(socialOrganization?.id)
+                                }
+                              >
+                                <span className="custom-color">
+                                  {socialOrganization?.name}
+                                </span>
+                              </Link>
+                            </span>
+                          </td>
+                          <td className="ant-table-cell text-center">
+                            {socialOrganization?.total_program}
+                          </td>
+                          <td className="ant-table-cell">
+                            {moment(socialOrganization?.created_date).format(
+                              "LL"
+                            )}
+                          </td>
+                          {/* <td className="ant-table-cell">
                           <span
                             className={renderClass(
                               socialOrganization?.approvalStatus
@@ -114,7 +142,7 @@ const ListCharityPrograms = () => {
                             {socialOrganization?.approvalStatus}
                           </span>
                         </td> */}
-                        {/* <td className="ant-table-cell text-center">
+                          {/* <td className="ant-table-cell text-center">
                           <Link>
                             <span
                               className="bi-check-circle fs-5"
@@ -122,8 +150,9 @@ const ListCharityPrograms = () => {
                             ></span>
                           </Link>
                         </td> */}
-                      </tr>
-                    ))
+                        </tr>
+                      )
+                    )
                   ) : (
                     <tr>
                       <td colSpan="4" className="text-center">
@@ -135,12 +164,12 @@ const ListCharityPrograms = () => {
               </table>
             </div>
             <Pagination
-            className="pagination-bar mt-4"
-            currentPage={currentPage}
-            totalCount={totalCount ? totalCount : 0}
-            pageSize={pageSize}
-            onPageChange={(page) => setPage(page)}
-          />
+              className="pagination-bar mt-4"
+              currentPage={currentPage}
+              totalCount={totalCount ? totalCount : 0}
+              pageSize={pageSize}
+              onPageChange={(page) => setPage(page)}
+            />
           </div>
         </div>
       </div>

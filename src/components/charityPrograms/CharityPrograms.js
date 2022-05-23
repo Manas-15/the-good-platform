@@ -7,7 +7,7 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
 } from "./../../constants";
-import { charityProgramConstants } from "./../../constants";
+import { charityProgramConstants, payrollConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
@@ -53,10 +53,15 @@ const CharityPrograms = () => {
       charityProgramActions.getCharityPrograms(
         isCorporatePortal
           ? {
-              corporateId: selectedCorporate?.id,
+              corporateId: selectedCorporate?.corporate?.corporateId,
               socialId: selectedOrganization?.id,
+              userType: payrollConstants.CORPORATE_VIEW,
             }
-          : { uuid: user?.uuid, socialId: selectedOrganization?.id }
+          : {
+              uuid: user?.uuid,
+              socialId: selectedOrganization?.id,
+              userType: payrollConstants.EMPLOYEE_VIEW,
+            }
       )
     );
   }, []);
@@ -109,12 +114,12 @@ const CharityPrograms = () => {
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
         <div className="ant-col ant-col-24  searchContainer">
-          <div className="ant-col ant-col-8">
+          <div className="ant-col ant-col-4">
             <div className="ant-input-affix-wrapper inputFilterInput">
               <span className="ant-input-prefix">
                 <i className="bi bi-search"></i>
                 <input
-                  placeholder="Search by Program"
+                  placeholder="Search by Program Name"
                   className="ant-input-search"
                   type="text"
                   value=""
@@ -244,7 +249,7 @@ const CharityPrograms = () => {
               <span>
                 <AuditOutlined className="fs-5" />
                 {charityProgramConstants.SPONSORED} (
-                {charityPrograms?.items
+                {charityPrograms?.items?.sponser
                   ? charityPrograms?.items?.sponser?.filter(
                       (charity) => charity.donated === false
                     ).length
@@ -260,6 +265,7 @@ const CharityPrograms = () => {
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}
+                tabType={tabType}
               />
             )}
             {currentView === charityProgramConstants.CARD_VIEW && (
@@ -268,6 +274,7 @@ const CharityPrograms = () => {
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}
+                tabType={tabType}
               />
             )}
           </TabPane>
@@ -276,7 +283,7 @@ const CharityPrograms = () => {
               <span>
                 <RedoOutlined className="fs-5" />
                 {charityProgramConstants.OTHERS} (
-                {charityPrograms?.items
+                {charityPrograms?.items?.other
                   ? charityPrograms?.items?.other?.filter(
                       (charity) => charity.donated === false
                     ).length
@@ -292,6 +299,7 @@ const CharityPrograms = () => {
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}
+                tabType={tabType}
               />
             )}
             {currentView === charityProgramConstants.CARD_VIEW && (
@@ -300,6 +308,7 @@ const CharityPrograms = () => {
                   (charity) => charity.donated === false
                 )}
                 setCharity={setCharity}
+                tabType={tabType}
               />
             )}
           </TabPane>

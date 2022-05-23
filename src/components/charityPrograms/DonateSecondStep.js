@@ -57,6 +57,7 @@ const DonateSecondStep = ({
   // Math.random().toString(36).slice(2)
   let charityFirstTwoChar, employeeFirstTwoChar;
   const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
   if (selectedCharity) {
     charityFirstTwoChar = selectedCharity?.charityName
       ?.slice(0, 2)
@@ -71,15 +72,17 @@ const DonateSecondStep = ({
       : Math.random().toString(36).slice(2),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
     donationAmount: selectedAmount,
-    customerId: employee?.uuid.toString(),
-    customerName: employee?.name,
-    customerEmail: employee?.email,
-    customerPhone: employee?.phone,
-    customerDob: employee?.dob,
-    customerPan: employee?.pan,
+    customerId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId?.toString() : employee?.uuid?.toString(),
+    customerName: isCorporatePortal ? selectedCorporate?.corporate?.organizationName : employee?.name,
+    customerEmail: isCorporatePortal ? selectedCorporate?.corporate?.email : employee?.email,
+    customerPhone: isCorporatePortal ? selectedCorporate?.corporate?.contactNumber : employee?.phone,
+    customerDob: isCorporatePortal ? "" : employee?.dob,
+    customerPan: isCorporatePortal ? "" : employee?.pan,
     charity: selectedCharity,
-    employee: employee,
-    corporateId: 1,
+    //employee: isCorporatePortal ? null : employee,
+    // corporate: isCorporatePortal ? selectedCorporate : null,
+    corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : 1,
+    userId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId?.toString() : employee?.emp_id?.toString(),
     userType: isCorporatePortal
       ? payrollConstants.CORPORATE_VIEW
       : payrollConstants.EMPLOYEE_VIEW,
@@ -125,10 +128,10 @@ const DonateSecondStep = ({
             initialValues={initialValues}
             validationSchema={PaymentSchema}
             onSubmit={(values, { setSubmitting }) => {
-              values.customerDob = moment(values.customerDob).format(
+              values.customerDob = values.customerDob && moment(values.customerDob).format(
                 "YYYY-MM-DD"
               );
-              values.customerPan = values.customerPan.toUpperCase();
+              // values.customerPan = values?.customerPan?.toUpperCase();
               goToPayment(values);
             }}
           >
@@ -205,13 +208,13 @@ const DonateSecondStep = ({
                 </div>
                 <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1 ml-1">Date of Birth*</label>
+                    <label className="mt-1 ml-1">Date of Birth</label>
                     <FormDatePicker errors={errors} touched={touched} />
                   </div>
                 </div>
                 <div className="row mb-2">
                   <div className="col-md-12">
-                    <label className="mt-1">PAN</label>
+                    <label className="mt-1">PAN*</label>
                     <Field
                       name="customerPan"
                       type="text"
@@ -222,6 +225,11 @@ const DonateSecondStep = ({
                           ? " is-invalid"
                           : "")
                       }
+                    />
+                    <ErrorMessage
+                      name="customerPan"
+                      component="div"
+                      className="invalid-feedback"
                     />
                     <span className="blink_text">
                       Please note that if you do not provide your PAN Number,

@@ -1,13 +1,61 @@
 import React, { useState } from "react";
 import "./../../assets/css/charityProgramsList.scss";
-import { donationPreferenceConstants } from "../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  donationPreferenceConstants,
+  viewPortalConstants,
+  charityProgramConstants,
+} from "../../constants";
 import ReactHtmlParser from "react-html-parser";
+import { Link } from "react-router-dom";
+import { Tooltip } from "antd";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
+import { charityProgramActions } from "./../../actions";
 
-const ListCharityPrograms = ({ items, setCharity }) => {
+const ListCharityPrograms = ({ items, setCharity, tabType }) => {
+  const dispatch = useDispatch();
   const openNav = (charity) => {
     document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
+  const currentPortal = useSelector((state) => state.currentView);
+  const [open, setOpen] = useState(false);
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const [actionType, setActionType] = useState("");
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionContent, setActionContent] = useState("");
+  const [selectedProgram, setSelectedProgram] = useState(Object);
+
+  const handleOpen = (action, item) => {
+    setOpen(true);
+    setActionType(action);
+    setSelectedProgram(item);
+    setActionTitle(`${action} Confirmation`);
+    setActionContent(
+      `Are you sure to ${action.toLowerCase()} <strong>"${
+        item.charityName
+      }"</strong>?`
+    );
+  };
+  const confirm = () => {
+    handleClose();
+    dispatch(
+      actionType === charityProgramConstants.SPONSOR
+        ? charityProgramActions.operateSponsorRequest({
+            corporateId: selectedCorporate?.corporate?.corporateId,
+            socialId: selectedProgram?.soicalId,
+            charityId: selectedProgram?.charityId,
+          })
+        : charityProgramActions.operateDenyRequest({
+            corporateId: selectedCorporate?.corporate?.corporateId,
+            socialId: selectedProgram?.soicalId,
+            programId: selectedProgram?.charityId,
+          })
+    );
+  };
+  const handleClose = () => setOpen(false);
   return (
     <>
       <div className="ant-row">
@@ -51,12 +99,50 @@ const ListCharityPrograms = ({ items, setCharity }) => {
                           {charityProgram?.unitPrice.toLocaleString()}
                         </td>
                         <td className="ant-table-cell text-center">
+                          {isCorporatePortal &&
+                            tabType === charityProgramConstants.SPONSOR && (
+                              <Tooltip
+                                title={charityProgramConstants.UNPROMOTE}
+                              >
+                                <Link
+                                  onClick={() =>
+                                    handleOpen(
+                                      charityProgramConstants.UNPROMOTE,
+                                      charityProgram
+                                    )
+                                  }
+                                >
+                                  <i className="bi-heart-fill fs-6 custom-color mr-1"></i>
+                                </Link>
+                              </Tooltip>
+                            )}
+                          {isCorporatePortal &&
+                            tabType === charityProgramConstants.OTHER && (
+                              <Tooltip title={charityProgramConstants.PROMOTE}>
+                                <Link
+                                  onClick={() =>
+                                    handleOpen(
+                                      charityProgramConstants.PROMOTE,
+                                      charityProgram
+                                    )
+                                  }
+                                >
+                                  <i className="bi-heart fs-6 custom-color"></i>
+                                </Link>
+                              </Tooltip>
+                            )}
                           <button
                             type="submit"
-                            className="btn btn-custom btn-sm"
+                            className="btn btn-sm mb-2"
                             onClick={() => openNav(charityProgram)}
                           >
-                            Donate
+                            <Tooltip title="Donate">
+                              <img
+                                src="/assets/img/donate.png"
+                                alt="dontae"
+                                height={22}
+                              />
+                            </Tooltip>
                           </button>
                         </td>
                       </tr>
@@ -64,7 +150,7 @@ const ListCharityPrograms = ({ items, setCharity }) => {
                   ) : (
                     <tr>
                       <td colSpan="6" className="text-center">
-                        No charity programs found
+                        No programs found
                       </td>
                     </tr>
                   )}
@@ -124,6 +210,19 @@ const ListCharityPrograms = ({ items, setCharity }) => {
                 </div>
               )} */}
             </div>
+            {open && (
+              <ConfirmationDialog
+                open={true}
+                title={actionTitle}
+                content={actionContent}
+                handleConfirm={() => {
+                  confirm();
+                }}
+                handleCancel={() => {
+                  handleClose();
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
