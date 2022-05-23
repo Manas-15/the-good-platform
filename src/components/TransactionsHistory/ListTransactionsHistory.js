@@ -40,7 +40,12 @@ const ListTransactionsHistory = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [isFilter, setIsFilter] = useState(false);
+  const [searchByEmployeeName, setSearchByEmployeeName] = useState("");
+  const [searchByProgramName, setSearchByProgramName] = useState("");
+  const [searchByAmount, setSearchByAmount] = useState("");
+  const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
+  
   const isOrganizationView =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
@@ -115,6 +120,32 @@ const ListTransactionsHistory = (props) => {
       : employee?.user?.email;
     initialValues.transactionId = transactionId;
   };
+  const search = (value, type) => {
+    if (value.length > 3) {
+      console.log("----------- search inside", value, type);
+      if (type === "employeeName") {
+        setSearchByEmployeeName(value);
+      } else if (type === "programName") {
+        setSearchByProgramName(value);
+      } else if (type === "amount") {
+        setSearchByAmount(value);
+      }
+      dispatch(
+        transactionsHistoryActions.getTransactionsHistory({
+          employeeId: employeeId ? employeeId : null,
+          corporateId: isCorporatePortal
+            ? selectedCorporate?.corporate?.corporateId
+            : null,
+          pageSize: pageSize,
+          offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+          searchByEmployeeName: searchByEmployeeName,
+          searchByProgramName: searchByProgramName,
+          searchByAmount: searchByAmount,
+        })
+      );
+    }
+  };
+
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -164,7 +195,7 @@ const ListTransactionsHistory = (props) => {
                 placeholder="Search by Program Name"
                 className="ant-input-search"
                 type="text"
-                value=""
+                onKeyUp={(e) => search(e.target.value, "programName")}
               />
             </span>
           </div>
@@ -177,7 +208,7 @@ const ListTransactionsHistory = (props) => {
                 placeholder="Search by Employee Name"
                 className="ant-input-search"
                 type="text"
-                value=""
+                onKeyUp={(e) => search(e.target.value, "employeeName")}
               />
             </span>
           </div>
@@ -189,8 +220,12 @@ const ListTransactionsHistory = (props) => {
               <input
                 placeholder="Search by Amount"
                 className="ant-input-search"
-                type="text"
-                value=""
+                type="number"
+                pattern="[0-9]*"
+                maxLength={15}
+                onKeyUp={(e) => {
+                  search(e.target.value, "amount");
+                }}
               />
             </span>
           </div>

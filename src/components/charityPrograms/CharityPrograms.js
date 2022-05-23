@@ -6,13 +6,15 @@ import "./../../assets/css/charityProgramsList.scss";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
+  charityProgramConstants,
+  payrollConstants
 } from "./../../constants";
-import { charityProgramConstants, payrollConstants } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
+import DonateHeader from "./DonateHeader";
 const TabPane = Tabs.TabPane;
 
 const CharityPrograms = () => {
@@ -29,9 +31,7 @@ const CharityPrograms = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-  const [activeFrequenctTab, setActiveFrequenctTab] = useState(
-    donationPreferenceConstants.ONCE
-  );
+
   const [currentView, setCurrentView] = useState(
     charityProgramConstants.LIST_VIEW
   );
@@ -316,59 +316,7 @@ const CharityPrograms = () => {
       </div>
       {
         <div id="sidepanel" className="sidepanel">
-          <div className="donate-header">
-            <div className="row">
-              <div className="col-md-10 p-2">
-                <span className="pl-3">
-                  You can make a big difference to their lives?
-                </span>
-              </div>
-              <div className="col-md-2">
-                <a
-                  href="javascript:void(0)"
-                  className="closebtn"
-                  onClick={closeNav}
-                >
-                  ×
-                </a>
-              </div>
-            </div>
-            <ul className="nav nav-tabs nav-tabs-bordered">
-              <li className="nav-item">
-                <button
-                  className="nav-link active"
-                  data-bs-toggle="tab"
-                  data-bs-target="#give-once"
-                  onClick={() =>
-                    setActiveFrequenctTab(donationPreferenceConstants.ONCE)
-                  }
-                >
-                  <span>Give Once</span>
-                  {activeFrequenctTab === donationPreferenceConstants.ONCE && (
-                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                  )}
-                </button>
-              </li>
-              {/* {tabType === charityProgramConstants.SPONSOR && ( */}
-              <li className="nav-item">
-                <button
-                  className="nav-link"
-                  data-bs-toggle="tab"
-                  data-bs-target="#give-monthly"
-                  onClick={() =>
-                    setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
-                  }
-                >
-                  <span>Give Monthly</span>
-                  {activeFrequenctTab ===
-                    donationPreferenceConstants.MONTHLY && (
-                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                  )}
-                </button>
-              </li>
-              {/* )} */}
-            </ul>
-          </div>
+          <DonateHeader />
           <div className="tab-content pt-2">
             <div className="tab-pane fade show active give-once" id="give-once">
               <Donate

@@ -430,6 +430,7 @@ $light-blue-bg: #f4f8f8;
   background: #fff;
   width: 400px;
 }
+.detail-tab .ant-tabs-nav-wrap {padding: 0 !important;}
 @-moz-keyframes blinker {
   0% {
     opacity: 1;
