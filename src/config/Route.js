@@ -75,7 +75,7 @@ const CreateRoutes = () => {
               {/* {!isEmployeeView && ( */}
               <Route
                 exact
-                path="/social-organizations/programs"
+                path="/social-organizations/:slug"
                 component={CharityPrograms}
               />
               <Route

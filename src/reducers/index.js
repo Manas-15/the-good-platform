@@ -10,6 +10,8 @@ import { payrollSetting } from "./payrollSetting.reducer";
 import { payrollBatch } from "./payrollBatch.reducer";
 import { currentView } from "./currentView.reducer";
 import { selectedCorporate } from "./selectedCorporate.reducer";
+import { selectedOrganization } from "./selectedOrganization.reducer";
+import { socialOrganizations } from "./socialOrganizations.reducer";
 
 const rootReducer = combineReducers({
   alert,
@@ -23,6 +25,8 @@ const rootReducer = combineReducers({
   payrollBatch,
   currentView,
   selectedCorporate,
+  socialOrganizations,
+  selectedOrganization,
 });
 
 export default rootReducer;

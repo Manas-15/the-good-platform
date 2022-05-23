@@ -336,10 +336,12 @@ a .custom-color {
   box-shadow: none !important;
 }
 .ant-input-search {
-  padding: 0;
+  padding-top: 2px;
   border: none;
   outline: none;
+  width: 85%;
 }
+.ant-input-prefix, .ant-input-suffix {width: 100% !important;}
 .switch-group .btn-sm {
   font-size: 13px;
 }

@@ -43,6 +43,58 @@ export function charityPrograms(state = {}, action) {
         loading: false,
         error: action.error,
       };
+    case charityProgramConstants.OPERATE_SPONSOR_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        programId: action?.program?.charityId,
+      };
+    case charityProgramConstants.OPERATE_SPONSOR_SUCCESS:
+      const operateCharity = state.items["other"].filter((element) => 
+        element.charityId === state.programId
+      );
+      return {
+        ...state,
+        items: {
+          sponser: [...state.items["sponser"], operateCharity[0]],
+          other: state.items["other"].filter(function (charity) {
+            return charity.charityId !== operateCharity[0]?.charityId;
+          }),
+        },
+        loading: false,
+      };
+    case charityProgramConstants.OPERATE_SPONSOR_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+    case charityProgramConstants.OPERATE_DENY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        programId: action?.program?.programId,
+      };
+    case charityProgramConstants.OPERATE_DENY_SUCCESS:
+      const denyCharity = state.items["sponser"].filter((element) => 
+        element.charityId === state.programId
+      );
+      return {
+        ...state,
+        items: {
+          other: [...state.items["other"], denyCharity[0]],
+          sponser: state.items["sponser"].filter(function (charity) {
+            return charity.charityId !== denyCharity[0]?.charityId;
+          }),
+        },
+        loading: false,
+      };
+    case charityProgramConstants.OPERATE_DENY_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
     default:
       return state;
   }
