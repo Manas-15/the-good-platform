@@ -70,10 +70,15 @@ export const PaymentSchema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Must be number only")
     .min(10, "Please enter valid phone number")
     .max(10, "Please enter valid phone number"),
+  customerPan: Yup.string().required("PAN is required"),
   // customerDob: Yup.date().nullable().required("Date of birth is required"),
 });
 export const CompleteBatchSchema = Yup.object().shape({
   referenceId: Yup.string().required("Reference ID is required"),
-  referenceNote: Yup.string()
-    .required("Reference note is required")
+  referenceNote: Yup.string().required("Reference note is required"),
+});
+export const Mail80GSchema = Yup.object().shape({
+  email: Yup.string()
+    .required("Email is required")
+    .email("Invalid email address"),
 });

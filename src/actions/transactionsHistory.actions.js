@@ -6,6 +6,7 @@ import { history } from "../helpers";
 export const transactionsHistoryActions = {
   getTransactionsHistory,
   download80G,
+  send80GEmail,
 };
 
 function getTransactionsHistory(data) {
@@ -80,5 +81,37 @@ function download80G(data) {
   }
   function failure(error) {
     return { type: transactionsHistoryConstants.GET_80G_FAILURE, error };
+  }
+}
+function send80GEmail(data) {
+  return (dispatch) => {
+    dispatch(request());
+    transactionsHistoryService.send80GEmail(data).then(
+      (data) => {
+        dispatch(success());
+        dispatch(alertActions.success("Mail sent successfully."));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return {
+      type: transactionsHistoryConstants.SEND_80G_EMAIL_REQUEST,
+    };
+  }
+  function success() {
+    return {
+      type: transactionsHistoryConstants.SEND_80G_EMAIL_SUCCESS,
+    };
+  }
+  function failure(error) {
+    return {
+      type: transactionsHistoryConstants.SEND_80G_EMAIL_FAILURE,
+      error,
+    };
   }
 }

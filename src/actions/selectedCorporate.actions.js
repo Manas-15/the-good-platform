@@ -3,5 +3,5 @@ export const selectedCorporateActions = {
 };
 
 function selectedCorporate(view) {
-  return { type: "GET_ID", view };
+  return { type: "GET_CORPORATE", view };
 }

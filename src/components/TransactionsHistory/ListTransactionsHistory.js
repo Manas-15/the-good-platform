@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
+import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
+import { Modal, Button } from "react-bootstrap";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   paymentConstants,
   paginationConstants,
@@ -19,11 +22,17 @@ const paymentStatusOption = [
   { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
+const initialValues = {
+  email: "",
+  transactionId: ""
+};
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const employee = useSelector((state) => state.employee);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
 
@@ -31,6 +40,7 @@ const ListTransactionsHistory = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [isFilter, setIsFilter] = useState(false);
+  const [open, setOpen] = useState(false);
   const isOrganizationView =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
@@ -41,7 +51,6 @@ const ListTransactionsHistory = (props) => {
   const isBluePencilView =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
-
   useEffect(() => {
     setCurrentPage(1);
     charityPrograms?.items?.sponser?.forEach((e) => {
@@ -91,6 +100,19 @@ const ListTransactionsHistory = (props) => {
   const setPage = (page) => {
     setCurrentPage(page);
   };
+  const confirm = (values) => {
+    handleClose();
+    
+    dispatch(transactionsHistoryActions.send80GEmail(values));
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const setEmailSend = (transactionId) => {
+    setOpen(true);
+    initialValues.email = isCorporatePortal ? selectedCorporate?.corporate?.email : employee?.user?.email;
+    initialValues.transactionId = transactionId;
+  }
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -132,19 +154,43 @@ const ListTransactionsHistory = (props) => {
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
-        <div className="ant-col ant-col-24  searchContainer">
-          <div className="ant-col ant-col-8">
+        <div className="ant-col-6 searchContainer">
             <div className="ant-input-affix-wrapper inputFilterInput">
               <span className="ant-input-prefix">
                 <i className="bi bi-search"></i>
                 <input
-                  placeholder="Search by Program"
+                  placeholder="Search by Program Name"
                   className="ant-input-search"
                   type="text"
                   value=""
                 />
               </span>
-            </div>
+          </div>
+        </div>
+        <div className="ant-col-6  searchContainer ml-3">
+            <div className="ant-input-affix-wrapper inputFilterInput">
+              <span className="ant-input-prefix">
+                <i className="bi bi-search"></i>
+                <input
+                  placeholder="Search by Employee Name"
+                  className="ant-input-search"
+                  type="text"
+                  value=""
+                />
+              </span>
+          </div>
+        </div>
+        <div className="ant-col-6  searchContainer ml-3">
+            <div className="ant-input-affix-wrapper inputFilterInput">
+              <span className="ant-input-prefix">
+                <i className="bi bi-search"></i>
+                <input
+                  placeholder="Search by Amount"
+                  className="ant-input-search"
+                  type="text"
+                  value=""
+                />
+              </span>
           </div>
         </div>
       </div>
@@ -270,9 +316,7 @@ const ListTransactionsHistory = (props) => {
                                 <Tooltip title="Email">
                                   <Link
                                     className="text-decoration-underline"
-                                    onClick={() =>
-                                      downlad(transaction?.transactionId)
-                                    }
+                                    onClick={()=>setEmailSend(transaction?.transactionId)}
                                   >
                                     <i className="bi bi-envelope fs-5"></i>
                                   </Link>
@@ -303,6 +347,64 @@ const ListTransactionsHistory = (props) => {
         pageSize={pageSize}
         onPageChange={(page) => setPage(page)}
       />
+      {open && (
+        <Modal show={open} onHide={handleClose} backdrop="static">
+          <Modal.Header closeButton>
+            <Modal.Title>Send Mail</Modal.Title>
+          </Modal.Header>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={Mail80GSchema}
+            onSubmit={(values) => {
+              confirm(values);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <Form>
+                <Modal.Body style={{ fontSize: "18" }}>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <label className="mt-1">
+                        Email<span className="text-danger">*</span>
+                      </label>
+                      <Field
+                        name="email"
+                        type="text"
+                        className={
+                          "form-control" +
+                          (errors.email && touched.email ? " is-invalid" : "")
+                        }
+                      />
+                      <ErrorMessage
+                        name="email"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <button
+                    className="btn btn-custom"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    Submit
+                  </button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
+        </Modal>
+      )}
     </div>
   );
 };

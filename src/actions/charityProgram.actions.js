@@ -5,6 +5,8 @@ import { alertActions } from "./";
 export const charityProgramActions = {
   getCharityPrograms,
   saveDonationPreference,
+  operateSponsorRequest,
+  operateDenyRequest,
 };
 
 function getCharityPrograms(data) {
@@ -68,6 +70,70 @@ function saveDonationPreference(data) {
   function failure(error) {
     return {
       type: charityProgramConstants.SAVE_DONATION_PREFERENCE_FAILURE,
+      error,
+    };
+  }
+}
+function operateSponsorRequest(actionValues) {
+  return (dispatch) => {
+    dispatch(request(actionValues));
+
+    charityProgramService.operateSponsorRequest(actionValues).then(
+      (data) => {
+        dispatch(success());
+        dispatch(alertActions.success("Sponsored successfully."));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(program) {
+    return {
+      type: charityProgramConstants.OPERATE_SPONSOR_REQUEST,
+      program,
+    };
+  }
+  function success() {
+    return { type: charityProgramConstants.OPERATE_SPONSOR_SUCCESS };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.OPERATE_SPONSOR_FAILURE,
+      error,
+    };
+  }
+}
+function operateDenyRequest(actionValues) {
+  return (dispatch) => {
+    dispatch(request(actionValues));
+
+    charityProgramService.operateDenyRequest(actionValues).then(
+      (data) => {
+        dispatch(success());
+        dispatch(alertActions.success("Denied successfully."));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(program) {
+    return {
+      type: charityProgramConstants.OPERATE_DENY_REQUEST,
+      program,
+    };
+  }
+  function success() {
+    return { type: charityProgramConstants.OPERATE_DENY_SUCCESS };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.OPERATE_DENY_FAILURE,
       error,
     };
   }

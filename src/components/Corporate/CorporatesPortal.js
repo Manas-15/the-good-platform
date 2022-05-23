@@ -52,9 +52,9 @@ const CorporatesPortal = () => {
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
-  const setCorporate = (corporateId) => {
-    console.log(">>>>>>>>>>>>>>>>>", corporateId);
-    dispatch(selectedCorporateActions.selectedCorporate(corporateId));
+  const setCorporate = (corporate) => {
+    console.log(">>>>>>>>>>>>>>>>>", corporate);
+    dispatch(selectedCorporateActions.selectedCorporate(corporate));
   };
   return (
     <div>
@@ -85,7 +85,7 @@ const CorporatesPortal = () => {
                     <li key={index + 1}>
                       <Link
                         to={`/corporates/${corporate.corporateId}/employees`}
-                        onClick={() => setCorporate(corporate.corporateId)}
+                        onClick={() => setCorporate(corporate)}
                       >
                         {corporate?.organizationName}
                       </Link>
