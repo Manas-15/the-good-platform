@@ -45,7 +45,7 @@ const ListTransactionsHistory = (props) => {
   const [searchByAmount, setSearchByAmount] = useState("");
   const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
-  
+
   const isOrganizationView =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
@@ -121,31 +121,42 @@ const ListTransactionsHistory = (props) => {
     initialValues.transactionId = transactionId;
   };
   const search = (value, type) => {
-    if (value.length > 3) {
-      console.log("----------- search inside", value, type);
-      if (type === "employeeName") {
-        setSearchByEmployeeName(value);
-      } else if (type === "programName") {
-        setSearchByProgramName(value);
-      } else if (type === "amount") {
-        setSearchByAmount(value);
-      }
-      dispatch(
-        transactionsHistoryActions.getTransactionsHistory({
-          employeeId: employeeId ? employeeId : null,
-          corporateId: isCorporatePortal
-            ? selectedCorporate?.corporate?.corporateId
-            : null,
-          pageSize: pageSize,
-          offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-          searchByEmployeeName: searchByEmployeeName,
-          searchByProgramName: searchByProgramName,
-          searchByAmount: searchByAmount,
-        })
-      );
+    // if (value.length > 3) {
+    console.log("----------- search inside", value, type);
+    if (type === "employeeName") {
+      setSearchByEmployeeName(value);
+    } else if (type === "programName") {
+      setSearchByProgramName(value);
+    } else if (type === "amount") {
+      setSearchByAmount(value);
     }
-  };
 
+    // }
+  };
+  const fetchResults = () => {
+    dispatch(
+      transactionsHistoryActions.getTransactionsHistory({
+        employeeId: employeeId ? employeeId : null,
+        corporateId: isCorporatePortal
+          ? selectedCorporate?.corporate?.corporateId
+          : null,
+        pageSize: pageSize,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        searchByEmployeeName: searchByEmployeeName,
+        searchByProgramName: searchByProgramName,
+        searchByAmount: searchByAmount,
+      })
+    );
+  };
+  useEffect(() => {
+    fetchResults();
+  }, [searchByProgramName]);
+  useEffect(() => {
+    fetchResults();
+  }, [searchByEmployeeName]);
+  useEffect(() => {
+    fetchResults();
+  }, [searchByAmount]);
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -195,7 +206,7 @@ const ListTransactionsHistory = (props) => {
                 placeholder="Search by Program Name"
                 className="ant-input-search"
                 type="text"
-                onKeyUp={(e) => search(e.target.value, "programName")}
+                onChange={(e) => search(e.target.value, "programName")}
               />
             </span>
           </div>
@@ -208,7 +219,7 @@ const ListTransactionsHistory = (props) => {
                 placeholder="Search by Employee Name"
                 className="ant-input-search"
                 type="text"
-                onKeyUp={(e) => search(e.target.value, "employeeName")}
+                onChange={(e) => search(e.target.value, "employeeName")}
               />
             </span>
           </div>
@@ -223,7 +234,7 @@ const ListTransactionsHistory = (props) => {
                 type="number"
                 pattern="[0-9]*"
                 maxLength={15}
-                onKeyUp={(e) => {
+                onChange={(e) => {
                   search(e.target.value, "amount");
                 }}
               />
@@ -243,9 +254,6 @@ const ListTransactionsHistory = (props) => {
                     {isCorporatePortal && (
                       <th className="ant-table-cell">Employee Name</th>
                     )}
-                    {isCorporatePortal && (
-                      <th className="ant-table-cell">Employee ID</th>
-                    )}
                     <th className="ant-table-cell">Program</th>
                     {!isOrganizationView && (
                       <th className="ant-table-cell">Organization</th>
@@ -255,7 +263,7 @@ const ListTransactionsHistory = (props) => {
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
                     <th className="ant-table-cell">Donation</th>
-                    <th className="ant-table-cell">Donation Type</th>
+                    {/* <th className="ant-table-cell">Donation Type</th> */}
                     <th className="ant-table-cell">Payment Mode</th>
                     <th className="ant-table-cell">Payment Status</th>
                     <th className="ant-table-cell">Payment Date</th>
@@ -283,13 +291,6 @@ const ListTransactionsHistory = (props) => {
                             </span>
                           </td>
                         )}
-                        {isCorporatePortal && (
-                          <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
-                              {transaction?.employeeId}
-                            </span>
-                          </td>
-                        )}
                         <td className="ant-table-cell">
                           <span className="ant-typography font-weight-bold">
                             {transaction?.charityName}
@@ -313,9 +314,9 @@ const ListTransactionsHistory = (props) => {
                         <td className="ant-table-cell">
                           {transaction?.amount}
                         </td>
-                        <td className="ant-table-cell">
+                        {/* <td className="ant-table-cell">
                           {transaction?.donationType}
-                        </td>
+                        </td> */}
                         <td className="ant-table-cell">
                           {transaction?.paymentMethod &&
                             transaction?.paymentMethod.replace(/_/g, " ")}

@@ -50,8 +50,8 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.charityId,
       };
     case charityProgramConstants.OPERATE_SPONSOR_SUCCESS:
-      const operateCharity = state.items["other"].filter((element) => 
-        element.charityId === state.programId
+      const operateCharity = state.items["other"].filter(
+        (element) => element.charityId === state.programId
       );
       return {
         ...state,
@@ -76,8 +76,8 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.programId,
       };
     case charityProgramConstants.OPERATE_DENY_SUCCESS:
-      const denyCharity = state.items["sponser"].filter((element) => 
-        element.charityId === state.programId
+      const denyCharity = state.items["sponser"].filter(
+        (element) => element.charityId === state.programId
       );
       return {
         ...state,

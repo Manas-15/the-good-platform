@@ -9,57 +9,56 @@ import Donate from "./Donate";
 import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
 import { charityProgramConstants } from "./../../constants";
+import donationsConsent from "./../../config/donationsConsent.json";
 const TabPane = Tabs.TabPane;
 
 const CharityProgramDetails = (props, { items, setCharity }) => {
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
+  const selectedCharity = useSelector((state) => state.selectedCharity);
+
   const listInnerRef = useRef();
-  const openNav = (charity) => {
-    document.getElementById("sidepanel").classList.add("is-open");
-    setCharity(charity);
-  };
+  // const openNav = () => {
+  //   // document.getElementById("sidepanel").classList.add("is-open");
+  //   // setCharity(charity);
+  // };
   const user = useSelector((state) => state.employee.user);
   const programName = props?.location?.programName;
   const initialValues = {
     orderId: Math.random().toString(36).slice(2),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
-    donationAmount: "200",
+    donationAmount: selectedCharity?.charity?.donationAmount,
     customerId: user?.uuid.toString(),
     customerName: user?.name,
     customerEmail: user?.email,
     customerPhone: user?.phone,
     customerDob: user?.dob,
     customerPan: user?.pan,
-    charity: {
-      category: "Diaster",
-      charityId: 8,
-      charityName: "Kerela flood",
-      donated: false,
-      soicalId: 6,
-      soicalName: "Kokatta Rescue",
-      unitPrice: "200",
-    },
+    charity: selectedCharity?.charity,
     employee: user,
     corporateId: 1,
     orderPaymentStatus: 1,
-    orderNote: `Donated to ${"test"}`,
-    donationConsent: "Test",
+    orderNote: `Donated to ${selectedCharity?.charityName}`,
+    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
   };
   const onScroll = () => {
-    console.log("listInnerRef.current", listInnerRef.current, window.scrollY);
-    if (listInnerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
-      if (window.scrollY > clientHeight) {
-        document
-          .getElementById("payment-section")
-          .classList.add("detail-payment");
-        // alert("reached bottom");
-      } else {
-        document
-          .getElementById("payment-section")
-          .classList.remove("detail-payment");
-      }
-    }
+    console.log(
+      "listInnerRef.current",
+      listInnerRef.current.clientHeight,
+      window.scrollY
+    );
+    // if (listInnerRef.current) {
+    //   const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+    //   if (window.scrollY > listInnerRef.current.clientHeight) {
+    //     document
+    //       .getElementById("payment-section")
+    //       .classList.add("detail-payment");
+    //     // alert("reached bottom");
+    //   } else {
+    //     document
+    //       .getElementById("payment-section")
+    //       .classList.remove("detail-payment");
+    //   }
+    // }
   };
   useEffect(() => {
     // clean up code
@@ -150,7 +149,7 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-8 program-list detail-tab">
+            <div className="col-md-7 program-list detail-tab">
               <Tabs defaultActiveKey={"donors"}>
                 <TabPane tab={"Donors"} key={"donors"}>
                   <div className="row mt-4 program-list">
@@ -281,15 +280,33 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
                 <TabPane tab={"Teams"} key={"teams"}>
                   <div className="row mt-4 program-list">
                     <h6 className="mb-0">Peer Team</h6>
-                    <i className="bi-info-circle-fill fs-6"></i>peerreview2022@gmail.com
-                    <i className="bi-info-circle-fill fs-6"></i>xxxxxxx151
-                    <i className="bi-info-circle-fill fs-6"></i>Primary Contact
+                    <div className="row mt-3">
+                      <div className="col-md-1 pr-0">
+                        <i className="bi-envelope fs-6"></i>
+                      </div>
+                      <div className="col-md-10 pl-0">
+                        peerreview2022@gmail.com
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-1 pr-0">
+                        <i className="bi-telephone fs-6"></i>
+                      </div>
+                      <div className="col-md-10 pl-0">xxxxxxx151</div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-1 pr-0">
+                        <i className="bi-person-bounding-box fs-6"></i>
+                      </div>
+                      <div className="col-md-10 pl-0">Primary Contact</div>
+                    </div>
                   </div>
                 </TabPane>
               </Tabs>
             </div>
-            <div className="col-md-4" id="payment-section">
+            <div className="col-md-5  mt-4" id="payment-section">
               {/* <Payment selectedAmount={"200"} paymentValues={initialValues} /> */}
+              {/* <div className="sidepanel is-open" id="sidepanel"> */}
               <DonateHeader />
               <div className="tab-content pt-2">
                 <div
@@ -312,6 +329,7 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
                     tabType={tabType}
                   />
                 </div>
+                {/* </div> */}
               </div>
             </div>
           </div>

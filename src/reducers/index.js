@@ -12,6 +12,8 @@ import { currentView } from "./currentView.reducer";
 import { selectedCorporate } from "./selectedCorporate.reducer";
 import { selectedOrganization } from "./selectedOrganization.reducer";
 import { socialOrganizations } from "./socialOrganizations.reducer";
+import { selectedCharity } from "./selectedCharity.reducer";
+
 
 const rootReducer = combineReducers({
   alert,
@@ -27,6 +29,7 @@ const rootReducer = combineReducers({
   selectedCorporate,
   socialOrganizations,
   selectedOrganization,
+  selectedCharity,
 });
 
 export default rootReducer;

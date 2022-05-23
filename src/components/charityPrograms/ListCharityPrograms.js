@@ -10,7 +10,7 @@ import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 import { Tooltip } from "antd";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
-import { charityProgramActions } from "./../../actions";
+import { charityProgramActions, selectedCharityActions } from "./../../actions";
 import urlSlug from "url-slug";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
@@ -28,17 +28,26 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [selectedProgram, setSelectedProgram] = useState(Object);
+  const [isSelectedAll, setIsSelectedAll] = useState(false);
+  const [checkList, setCheckList] = useState();
 
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
     setSelectedProgram(item);
     setActionTitle(`${action} Confirmation`);
-    setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${
-        item.charityName
-      }"</strong>?`
-    );
+    
+    if(action === charityProgramConstants.UNPROMOTE){
+      setActionContent(
+        `Are you sure want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
+      );
+    }else{
+      setActionContent(
+        `Are you sure to ${action.toLowerCase()} <strong>"${
+          item.charityName
+        }"</strong>?`
+      );
+    }
   };
   const confirm = () => {
     handleClose();
@@ -57,6 +66,49 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     );
   };
   const handleClose = () => setOpen(false);
+  const CheckBox = ({ name, value, tick, onCheck }) => {
+    return (
+      <label>
+        <input
+          name={name}
+          type="checkbox"
+          value={value}
+          checked={tick || false}
+          onChange={onCheck}
+        />
+        {value}
+      </label>
+    );
+  };
+  const onCheckBoxChange = (checkName, isSelected) => {
+    let isAllChecked = checkName === "all" && isSelected;
+    let isAllUnChecked = checkName === "all" && !isSelected;
+    const checked = isSelected;
+
+    const allCheckBox = checkList?.map((color, index) => {
+      if (isAllChecked || color.value === checkName) {
+        return Object.assign({}, color, {
+          checked,
+        });
+      } else if (isAllUnChecked) {
+        return Object.assign({}, color, {
+          checked: false,
+        });
+      }
+
+      return color;
+    });
+
+    let isCheckedAll =
+      allCheckBox?.findIndex((item) => item.checked === false) === -1 ||
+      isAllChecked;
+
+    setCheckList(allCheckBox);
+    setIsSelectedAll(isCheckedAll);
+  };
+  const setSelectedCharity = (charity) => {
+    dispatch(selectedCharityActions.selectedCharity(charity));
+  }
   return (
     <>
       <div className="ant-row">
@@ -66,6 +118,15 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
               <table>
                 <thead className="ant-table-thead">
                   <tr>
+                    <th>
+                      {/* <CheckBox
+                        name="select-all"
+                        tick={isSelectedAll}
+                        onCheck={(e) =>
+                          onCheckBoxChange("all", e.target.checked)
+                        }
+                      /> */}
+                    </th>
                     <th className="ant-table-cell">Sr No.</th>
                     <th className="ant-table-cell">Program</th>
                     <th className="ant-table-cell">Organization</th>
@@ -84,17 +145,29 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"
                       >
+                        <td>
+                          {/* <CheckBox
+                            name="select-all"
+                            tick={isSelectedAll || null}
+                            onCheck={(e) =>
+                              onCheckBoxChange("", e.target.checked)
+                            }
+                          /> */}
+                        </td>
                         <td className="ant-table-cell">{index + 1}</td>
                         <td className="ant-table-cell">
-                          <Link to={{
-                        pathname: `/social-organizations/programs/${urlSlug(
-                          charityProgram?.charityName
-                        )}`,
-                        programName: charityProgram?.charityName,
-                      }}>
-                          <span className="ant-typography font-weight-bold custom-color">
-                            {charityProgram?.charityName}
-                          </span>
+                          <Link
+                            to={{
+                              pathname: `/social-organizations/programs/${urlSlug(
+                                charityProgram?.charityName
+                              )}`,
+                              programName: charityProgram?.charityName,
+                            }}
+                            onClick={()=>setSelectedCharity(charityProgram)}
+                          >
+                            <span className="ant-typography font-weight-bold custom-color">
+                              {charityProgram?.charityName}
+                            </span>
                           </Link>
                         </td>
                         <td className="ant-table-cell">

@@ -6,6 +6,7 @@ import axios from "axios";
 export const transactionsHistoryService = {
   getTransactionsHistory,
   download80G,
+  send80GEmail,
 };
 
 function getTransactionsHistory(data) {
@@ -22,6 +23,13 @@ function download80G(data) {
       "Content-Type": "application/pdf",
     },
   });
+}
+function send80GEmail(data) {
+  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/send_80G_email/",
+    data
+  );
 }
 function handleResponse(response) {
   return response.text().then((text) => {
