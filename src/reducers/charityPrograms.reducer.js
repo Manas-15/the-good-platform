@@ -24,12 +24,12 @@ export function charityPrograms(state = {}, action) {
       return {
         ...state,
         items: {
-          sponser: state.items["sponser"].map((charity) =>
+          sponser: state?.items["sponser"]?.map((charity) =>
             charity.charityId === state.charityId
               ? { ...charity, donated: true }
               : charity
           ),
-          other: state.items["other"].map((charity) =>
+          other: state?.items["other"]?.map((charity) =>
             charity.charityId === state.charityId
               ? { ...charity, donated: true }
               : charity
@@ -50,14 +50,14 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.charityId,
       };
     case charityProgramConstants.OPERATE_SPONSOR_SUCCESS:
-      const operateCharity = state.items["other"].filter(
+      const operateCharity = state?.items["other"]?.filter(
         (element) => element.charityId === state.programId
       );
       return {
         ...state,
         items: {
-          sponser: [...state.items["sponser"], operateCharity[0]],
-          other: state.items["other"].filter(function (charity) {
+          sponser: [...state?.items["sponser"], operateCharity[0]],
+          other: state?.items["other"]?.filter(function (charity) {
             return charity.charityId !== operateCharity[0]?.charityId;
           }),
         },

@@ -133,11 +133,11 @@ const CreateRoutes = () => {
                 path="/social-organizations"
                 component={ListSocialOrganizations}
               />
-              <Route
+              {/* <Route
                 exact
                 path="/social-organizations/account-summary"
                 component={ListTransactionsHistory}
-              />
+              /> */}
               <Route
                 exact
                 path="/social-organizations/payroll-batch"

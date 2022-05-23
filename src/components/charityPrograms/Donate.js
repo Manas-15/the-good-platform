@@ -13,6 +13,7 @@ import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
 import DonateSecondStep from "./DonateSecondStep";
 import donationsConsent from "./../../config/donationsConsent.json";
+import { history } from "../../helpers";
 
 const preferenceForm = {
   corporateId: "",
@@ -36,6 +37,10 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
   const [showNextStep, setShowNextStep] = useState(false);
   const isCorporatePortal =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isEmployeePortal =
+    currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isProgramDetail =
+    history.location.pathname.includes("/programs/");
   useEffect(() => {
     if (selectedCharity) {
       setSelectedAmount(selectedCharity?.unitPrice);
@@ -195,10 +200,10 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
               >
                 <span className="fs-6 ml-2">
                   {tabType === charityProgramConstants.SPONSOR &&
-                  !isCorporatePortal ? (
+                  !isCorporatePortal && !isProgramDetail ? (
                     <>
                       <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-                      &nbsp;Add Donation Preference {tabType}
+                      &nbsp;Add Donation Preference
                     </>
                   ) : (
                     "Next"

@@ -16,6 +16,7 @@ import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import { selectedOrganization } from "../../reducers/selectedOrganization.reducer";
 import Loader from "../Shared/Loader";
+import { Tooltip } from "antd";
 // import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListCharityPrograms = () => {
@@ -95,7 +96,7 @@ const ListCharityPrograms = () => {
                     </th>
                     <th className="ant-table-cell">Created On</th>
                     {/* <th className="ant-table-cell">Status</th> */}
-                    {/* <th className="ant-table-cell text-center">Actions</th> */}
+                    <th className="ant-table-cell text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -133,6 +134,9 @@ const ListCharityPrograms = () => {
                               "LL"
                             )}
                           </td>
+                          <td className="ant-table-cell text-center">
+                          
+                            </td>
                           {/* <td className="ant-table-cell">
                           <span
                             className={renderClass(
@@ -150,6 +154,7 @@ const ListCharityPrograms = () => {
                             ></span>
                           </Link>
                         </td> */}
+                        
                         </tr>
                       )
                     )

@@ -12,13 +12,7 @@ const Sidebar = () => {
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   const isOrganizationView =
-    history.location.pathname.includes("/social-organizations/") &&
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
-  console.log(
-    "currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL",
-    isOrganizationView,
-    isEmployeeView
-  );
   return (
     <aside id="sidebar" className="sidebar">
       <ul
@@ -133,7 +127,7 @@ const Sidebar = () => {
               <>
                 {isOrganizationView && (
                   <>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                    {/* <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
                         <NavLink
                           className=" "
@@ -144,7 +138,7 @@ const Sidebar = () => {
                           <span className="menu-text">Account Summary</span>
                         </NavLink>
                       </span>
-                    </li>
+                    </li> */}
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
                         <NavLink
