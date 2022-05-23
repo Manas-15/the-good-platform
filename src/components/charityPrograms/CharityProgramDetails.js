@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import "./../../assets/css/charityProgramsList.scss";
 import { donationPreferenceConstants } from "../../constants";
-import ReactHtmlParser from "react-html-parser";
 import { Progress, Tooltip, Tabs } from "antd";
 import users from "./../../config/users.json";
-import Payment from "./../Payment/Payment";
 import { useSelector } from "react-redux";
 import { Accordion } from "react-bootstrap";
 import Donate from "./Donate";
@@ -90,11 +88,17 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
                     Tax Benefit <i className="bi-info-circle-fill fs-6"></i>
                   </span>
                 </Tooltip>
-                <img src="/assets/img/dummy.png" alt="image" />
+                <img src="/assets/img/organization.jpg" alt="image" />
               </div>
               <div className="col-md-4">
                 <div className="row">
-                  <div className="col-md-6"></div>
+                  <div className="col-md-6 mt-3">
+                    <Progress
+                      type="circle"
+                      percent={75}
+                      format={() => <span className="fs-6">75% Completed</span>}
+                    />
+                  </div>
                   <div className="col-md-6">
                     <div className="row">
                       <div className="col-md-6  p-1">

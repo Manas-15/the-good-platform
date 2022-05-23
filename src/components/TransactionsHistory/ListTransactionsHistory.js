@@ -24,7 +24,7 @@ const paymentStatusOption = [
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: ""
+  transactionId: "",
 };
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
@@ -102,7 +102,7 @@ const ListTransactionsHistory = (props) => {
   };
   const confirm = (values) => {
     handleClose();
-    
+
     dispatch(transactionsHistoryActions.send80GEmail(values));
   };
   const handleClose = () => {
@@ -110,9 +110,11 @@ const ListTransactionsHistory = (props) => {
   };
   const setEmailSend = (transactionId) => {
     setOpen(true);
-    initialValues.email = isCorporatePortal ? selectedCorporate?.corporate?.email : employee?.user?.email;
+    initialValues.email = isCorporatePortal
+      ? selectedCorporate?.corporate?.email
+      : employee?.user?.email;
     initialValues.transactionId = transactionId;
-  }
+  };
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -155,42 +157,42 @@ const ListTransactionsHistory = (props) => {
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
         <div className="ant-col-6 searchContainer">
-            <div className="ant-input-affix-wrapper inputFilterInput">
-              <span className="ant-input-prefix">
-                <i className="bi bi-search"></i>
-                <input
-                  placeholder="Search by Program Name"
-                  className="ant-input-search"
-                  type="text"
-                  value=""
-                />
-              </span>
+          <div className="ant-input-affix-wrapper inputFilterInput">
+            <span className="ant-input-prefix">
+              <i className="bi bi-search"></i>
+              <input
+                placeholder="Search by Program Name"
+                className="ant-input-search"
+                type="text"
+                value=""
+              />
+            </span>
           </div>
         </div>
         <div className="ant-col-6  searchContainer ml-3">
-            <div className="ant-input-affix-wrapper inputFilterInput">
-              <span className="ant-input-prefix">
-                <i className="bi bi-search"></i>
-                <input
-                  placeholder="Search by Employee Name"
-                  className="ant-input-search"
-                  type="text"
-                  value=""
-                />
-              </span>
+          <div className="ant-input-affix-wrapper inputFilterInput">
+            <span className="ant-input-prefix">
+              <i className="bi bi-search"></i>
+              <input
+                placeholder="Search by Employee Name"
+                className="ant-input-search"
+                type="text"
+                value=""
+              />
+            </span>
           </div>
         </div>
         <div className="ant-col-6  searchContainer ml-3">
-            <div className="ant-input-affix-wrapper inputFilterInput">
-              <span className="ant-input-prefix">
-                <i className="bi bi-search"></i>
-                <input
-                  placeholder="Search by Amount"
-                  className="ant-input-search"
-                  type="text"
-                  value=""
-                />
-              </span>
+          <div className="ant-input-affix-wrapper inputFilterInput">
+            <span className="ant-input-prefix">
+              <i className="bi bi-search"></i>
+              <input
+                placeholder="Search by Amount"
+                className="ant-input-search"
+                type="text"
+                value=""
+              />
+            </span>
           </div>
         </div>
       </div>
@@ -316,7 +318,9 @@ const ListTransactionsHistory = (props) => {
                                 <Tooltip title="Email">
                                   <Link
                                     className="text-decoration-underline"
-                                    onClick={()=>setEmailSend(transaction?.transactionId)}
+                                    onClick={() =>
+                                      setEmailSend(transaction?.transactionId)
+                                    }
                                   >
                                     <i className="bi bi-envelope fs-5"></i>
                                   </Link>

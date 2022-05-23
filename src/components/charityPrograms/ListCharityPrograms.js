@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { Tooltip } from "antd";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { charityProgramActions } from "./../../actions";
+import urlSlug from "url-slug";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const dispatch = useDispatch();
@@ -85,9 +86,16 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                       >
                         <td className="ant-table-cell">{index + 1}</td>
                         <td className="ant-table-cell">
-                          <span className="ant-typography font-weight-bold">
+                          <Link to={{
+                        pathname: `/social-organizations/programs/${urlSlug(
+                          charityProgram?.charityName
+                        )}`,
+                        programName: charityProgram?.charityName,
+                      }}>
+                          <span className="ant-typography font-weight-bold custom-color">
                             {charityProgram?.charityName}
                           </span>
+                          </Link>
                         </td>
                         <td className="ant-table-cell">
                           {charityProgram?.soicalName}

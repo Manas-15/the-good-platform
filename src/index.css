@@ -341,7 +341,10 @@ a .custom-color {
   outline: none;
   width: 85%;
 }
-.ant-input-prefix, .ant-input-suffix {width: 100% !important;}
+.ant-input-prefix,
+.ant-input-suffix {
+  width: 100% !important;
+}
 .switch-group .btn-sm {
   font-size: 13px;
 }

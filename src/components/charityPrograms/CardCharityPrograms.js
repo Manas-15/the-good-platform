@@ -20,7 +20,7 @@ const CardCharityPrograms = ({ items, setCharity }) => {
               <div className="col-md-4 card  p-0 ml-3">
                 <div className="img-sec">
                   <img
-                    src="/assets/img/dummy.png"
+                    src="/assets/img/organization.jpg"
                     alt="image"
                   />
                   <Tooltip title="80G Tax benefits available for INR donations">
