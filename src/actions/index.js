@@ -11,3 +11,4 @@ export * from "./socialOrganization.actions";
 export * from "./currentView.actions";
 export * from "./selectedCorporate.actions";
 export * from "./selectedOrganization.actions";
+export * from "./selectedCharity.actions";

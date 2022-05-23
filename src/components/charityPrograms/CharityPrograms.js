@@ -251,7 +251,7 @@ const CharityPrograms = () => {
                 {charityProgramConstants.SPONSORED} (
                 {charityPrograms?.items?.sponser
                   ? charityPrograms?.items?.sponser?.filter(
-                      (charity) => charity.donated === false
+                      (charity) => charity?.donated === false
                     ).length
                   : 0}
                 )
@@ -262,7 +262,7 @@ const CharityPrograms = () => {
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
                 items={charityPrograms?.items?.sponser?.filter(
-                  (charity) => charity.donated === false
+                  (charity) => charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}
@@ -271,7 +271,7 @@ const CharityPrograms = () => {
             {currentView === charityProgramConstants.CARD_VIEW && (
               <CardCharityPrograms
                 items={charityPrograms?.items?.sponser?.filter(
-                  (charity) => charity.donated === false
+                  (charity) => charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}
@@ -285,7 +285,7 @@ const CharityPrograms = () => {
                 {charityProgramConstants.OTHERS} (
                 {charityPrograms?.items?.other
                   ? charityPrograms?.items?.other?.filter(
-                      (charity) => charity.donated === false
+                      (charity) => charity?.donated === false
                     ).length
                   : 0}
                 )
@@ -296,7 +296,7 @@ const CharityPrograms = () => {
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
                 items={charityPrograms?.items?.other?.filter(
-                  (charity) => charity.donated === false
+                  (charity) => charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}
@@ -305,7 +305,7 @@ const CharityPrograms = () => {
             {currentView === charityProgramConstants.CARD_VIEW && (
               <CardCharityPrograms
                 items={charityPrograms?.items?.other?.filter(
-                  (charity) => charity.donated === false
+                  (charity) => charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}

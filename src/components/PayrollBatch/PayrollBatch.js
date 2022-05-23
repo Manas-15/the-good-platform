@@ -383,7 +383,7 @@ const PayrollBatch = (props) => {
                                           }
                                         >
                                           <span
-                                            className="bi-x-circle fs-5"
+                                            className="bi-arrow-counterclockwise fs-5"
                                             title="Unconfirm"
                                           ></span>
                                         </Link>
@@ -416,6 +416,11 @@ const PayrollBatch = (props) => {
                                 </td>
                               </tr>
                             ))}
+                            {!payrollBatches?.items &&
+                              <tr>
+                                <td className="text-center" colSpan={7}>No data found</td>
+                                </tr>
+                            }
                         </tbody>
                       </table>
                     </div>

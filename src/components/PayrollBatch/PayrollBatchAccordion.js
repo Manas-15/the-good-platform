@@ -324,7 +324,7 @@ const PayrollBatchAccordion = (props) => {
                                             }
                                           >
                                             <span
-                                              className="bi-x-circle fs-5"
+                                              className="bi-arrow-counterclockwise fs-5"
                                               title="Unconfirm"
                                             ></span>
                                           </Link>

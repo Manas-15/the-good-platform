@@ -12,17 +12,17 @@ import { charityProgramConstants } from "./../../constants";
 import donationsConsent from "./../../config/donationsConsent.json";
 const TabPane = Tabs.TabPane;
 
-const CharityProgramDetails = (props, { items, setCharity }) => {
+const CharityProgramDetails = (props) => {
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
-
+  console.log(">>>>>>>>>>>> selectedCharity", selectedCharity);
   const listInnerRef = useRef();
   // const openNav = () => {
   //   // document.getElementById("sidepanel").classList.add("is-open");
   //   // setCharity(charity);
   // };
   const user = useSelector((state) => state.employee.user);
-  const programName = props?.location?.programName;
+  // const programName = props?.location?.programName;
   const initialValues = {
     orderId: Math.random().toString(36).slice(2),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
@@ -41,11 +41,11 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
     donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
   };
   const onScroll = () => {
-    console.log(
-      "listInnerRef.current",
-      listInnerRef.current.clientHeight,
-      window.scrollY
-    );
+    // console.log(
+    //   "listInnerRef.current",
+    //   listInnerRef.current.clientHeight,
+    //   window.scrollY
+    // );
     // if (listInnerRef.current) {
     //   const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
     //   if (window.scrollY > listInnerRef.current.clientHeight) {
@@ -73,7 +73,9 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
           {/* {items?.length === 0 && ( */}
           <div className="row">
             <div className="col-md-12">
-              <h1 className="ant-typography customHeading">{programName}</h1>
+              <h1 className="ant-typography customHeading">
+                {selectedCharity?.charity?.charityName}
+              </h1>
             </div>
           </div>
           <div className="card w-100" onScroll={onScroll} ref={listInnerRef}>
@@ -150,52 +152,117 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
           </div>
           <div className="row">
             <div className="col-md-7 program-list detail-tab">
-              <Tabs defaultActiveKey={"donors"}>
-                <TabPane tab={"Donors"} key={"donors"}>
+              <Tabs defaultActiveKey={"details"}>
+                <TabPane tab={"Detail"} key={"details"}>
                   <div className="row mt-4 program-list">
-                    <h4 className="mb-0">Donors (1985)</h4>
                     <div className="col-md-12">
-                      <Tabs defaultActiveKey={0}>
-                        <TabPane tab={<span>Most Generious</span>} key={0}>
-                          {users?.slice(0, 4).map((user) => (
-                            <div className="donor">
-                              <div className="section">
-                                <img src="/assets/img/no-image.png" />
-                                <div className="content">
-                                  <h5>{user?.name}</h5>
-                                  <p className="donated">
-                                    Donated ₹{user?.donatedAmount}
-                                  </p>
-                                  <p className="timeline">{user?.donatedOn}</p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </TabPane>
-                        <TabPane tab={<span>Recent</span>} key={1}>
-                          {users?.slice(4, 8).map((user) => (
-                            <div className="donor">
-                              <div className="section">
-                                <img src="/assets/img/no-image.png" />
-                                <div className="content">
-                                  <h5>{user?.name}</h5>
-                                  <p className="donated">
-                                    Donated ₹{user?.donatedAmount}
-                                  </p>
-                                  <p className="timeline">{user?.donatedOn}</p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </TabPane>
-                      </Tabs>
+                      <strong>Description</strong>
+                      <p>
+                        Distribute ration at the identified cluster of villages
+                        to the BPL beneficiaries holding valid identify proof
+                        and ration card. Ration Kits will be provided to the
+                        family of more than one member.
+                      </p>
+                      What is the duration for this program?
+                      <p>2022-04-19 - 2022-08-31</p>
+                      Who do you aim to benefit with this program?
+                      <p>Beneficiary</p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className={`categotyButton`}>
+                            <label
+                              className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                            >
+                              <span>
+                                <img src="/assets/img/elderly.png" /> {"People"}
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="mt-4">Target Category</p>
+                      <div className="row">
+                        <div className="col-md-6 mb-4">
+                          <div className={`categotyButton`}>
+                            <label
+                              className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                            >
+                              <span>
+                                <img src="/assets/img/women.png" />{" "}
+                                {charityProgramConstants.WOMEN_CATEGORY}
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                          <div className={`categotyButton`}>
+                            <label
+                              className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                            >
+                              <span>
+                                <img src="/assets/img/youth.png" />{" "}
+                                {charityProgramConstants.YOUTH_CATEGORY}
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                          <div className={`categotyButton`}>
+                            <label
+                              className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                            >
+                              <span>
+                                <img src="/assets/img/elderly.png" />{" "}
+                                {charityProgramConstants.ELDERLY_CATEGORY}
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                          <div className={`categotyButton`}>
+                            <label
+                              className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                            >
+                              <span>
+                                <img src="/assets/img/children.png" />{" "}
+                                {charityProgramConstants.CHILDREN_CATEGORY}
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </TabPane>
-                <TabPane tab={"Faqs"} key={"faq"}>
+                <TabPane tab={"Team"} key={"team"}>
+                  <div className="row mt-4 program-list">
+                    <h6 className="mb-0">Peer Team</h6>
+                    <div className="row mt-3">
+                      <div className="col-md-1 pr-0">
+                        <i className="bi-envelope fs-6"></i>
+                      </div>
+                      <div className="col-md-10 pl-0">
+                        peerreview2022@gmail.com
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-1 pr-0">
+                        <i className="bi-telephone fs-6"></i>
+                      </div>
+                      <div className="col-md-10 pl-0">xxxxxxx151</div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-1 pr-0">
+                        <i className="bi-person-bounding-box fs-6"></i>
+                      </div>
+                      <div className="col-md-10 pl-0">Primary Contact</div>
+                    </div>
+                  </div>
+                </TabPane>
+                <TabPane tab={"Faq"} key={"faq"}>
                   <div className="row">
                     <div className="col-md-12">
-                      <h4>FAQs</h4>
+                      <h4>FAQ</h4>
                       <Accordion defaultActiveKey={0} className="Payroll">
                         <Accordion.Item eventKey={0}>
                           <Accordion.Header>
@@ -277,28 +344,44 @@ const CharityProgramDetails = (props, { items, setCharity }) => {
                     </div>
                   </div>
                 </TabPane>
-                <TabPane tab={"Teams"} key={"teams"}>
+                <TabPane tab={"Donors"} key={"donors"}>
                   <div className="row mt-4 program-list">
-                    <h6 className="mb-0">Peer Team</h6>
-                    <div className="row mt-3">
-                      <div className="col-md-1 pr-0">
-                        <i className="bi-envelope fs-6"></i>
-                      </div>
-                      <div className="col-md-10 pl-0">
-                        peerreview2022@gmail.com
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-1 pr-0">
-                        <i className="bi-telephone fs-6"></i>
-                      </div>
-                      <div className="col-md-10 pl-0">xxxxxxx151</div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-1 pr-0">
-                        <i className="bi-person-bounding-box fs-6"></i>
-                      </div>
-                      <div className="col-md-10 pl-0">Primary Contact</div>
+                    <h4 className="mb-0">Donors (1985)</h4>
+                    <div className="col-md-12">
+                      <Tabs defaultActiveKey={0}>
+                        <TabPane tab={<span>Most Generious</span>} key={0}>
+                          {users?.slice(0, 4).map((user) => (
+                            <div className="donor">
+                              <div className="section">
+                                <img src="/assets/img/no-image.png" />
+                                <div className="content">
+                                  <h5>{user?.name}</h5>
+                                  <p className="donated">
+                                    Donated ₹{user?.donatedAmount}
+                                  </p>
+                                  <p className="timeline">{user?.donatedOn}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </TabPane>
+                        <TabPane tab={<span>Recent</span>} key={1}>
+                          {users?.slice(4, 8).map((user) => (
+                            <div className="donor">
+                              <div className="section">
+                                <img src="/assets/img/no-image.png" />
+                                <div className="content">
+                                  <h5>{user?.name}</h5>
+                                  <p className="donated">
+                                    Donated ₹{user?.donatedAmount}
+                                  </p>
+                                  <p className="timeline">{user?.donatedOn}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </TabPane>
+                      </Tabs>
                     </div>
                   </div>
                 </TabPane>
