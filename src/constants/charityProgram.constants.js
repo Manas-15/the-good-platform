@@ -22,11 +22,15 @@ export const charityProgramConstants = {
   PROMOTE: "Promote",
   UNPROMOTE: "Unpromote",
 
+  PROMOTED: "Promoted",
+  UNPROMOTED: "Unpromoted",
+
   SPONSORED: "Sponsored",
   OTHERS: "Others",
 
   LIST_VIEW: "List",
   CARD_VIEW: "Card",
+  PROGRESS_VIEW: "Progress",
 
   ALL_CATEGORY: "All",
   WOMEN_CATEGORY: "Women",

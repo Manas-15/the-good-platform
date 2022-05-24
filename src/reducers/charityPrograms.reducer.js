@@ -94,7 +94,7 @@ export function charityPrograms(state = {}, action) {
         ...state,
         loading: false,
         error: action.error,
-      };
+      };   
     default:
       return state;
   }

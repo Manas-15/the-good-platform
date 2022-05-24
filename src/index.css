@@ -251,12 +251,12 @@ ul.dropdown-menu.actions li:hover {
   width: 100%;
   background: green;
 }
-.donate-header .nav-link span {
+.donate-header .nav-link span, .donate-header-program-detail .nav-link span {
   font-size: 0.85rem;
   font-weight: 500;
   color: #fff;
 }
-.donate-header .nav-link.active span {
+.donate-header .nav-link.active span, .donate-header-program-detail .nav-link.active span {
   color: #000;
 }
 .ant-spin-nested-loading {
@@ -427,4 +427,10 @@ a .custom-color {
   position: absolute;
   left: 22%;
   top: 25%;
+}
+.rdrDateRangePickerWrapper {
+  position: absolute;
+  right: 0;
+  z-index: 999;
+  border: 1px solid #39364f;
 }
