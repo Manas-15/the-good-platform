@@ -14,8 +14,8 @@ import {
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
-import { DateRangePicker } from 'rsuite';
-import 'rsuite/styles/index.less';
+// import { DateRangePicker } from "rsuite";
+// import "rsuite/dist/styles/rsuite-default.css";
 
 let charityProgramsOption = [];
 const paymentStatusOption = [
@@ -73,7 +73,9 @@ const ListTransactionsHistory = (props) => {
       dispatch(
         transactionsHistoryActions.getTransactionsHistory({
           employeeId: employeeId ? employeeId : null,
-          corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : null,
+          corporateId: isCorporatePortal
+            ? selectedCorporate?.corporate?.corporateId
+            : null,
           pageSize: pageSize,
           offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         })
@@ -224,9 +226,7 @@ const ListTransactionsHistory = (props) => {
             Date range
           </button> */}
           {/* {isDateRangeFilter && ( */}
-            <DateRangePicker
-            appearance="default"
-            />
+          {/* <DateRangePicker appearance="default" /> */}
           {/* )} */}
         </div>
       </div>

@@ -212,12 +212,12 @@ const PayrollBatch = (props) => {
                           <tr>
                             <th className="ant-table-cell">Sr No.</th>
                             <th className="ant-table-cell">Batch id</th>
-                            {currentView ===
+                            {/* {currentView ===
                               payrollConstants.ORGANIZATION_VIEW && (
                               <th className="ant-table-cell">
                                 Organization Id
                               </th>
-                            )}
+                            )} */}
                             {currentView ===
                               payrollConstants.ORGANIZATION_VIEW && (
                               <th className="ant-table-cell">
@@ -274,12 +274,12 @@ const PayrollBatch = (props) => {
                                     {batch?.batchId}
                                   </Link>
                                 </td>
-                                {currentView ===
+                                {/* {currentView ===
                                   payrollConstants.ORGANIZATION_VIEW && (
                                   <td className="ant-table-cell">
                                     {batch?.socialOrganizationId}
                                   </td>
-                                )}
+                                )} */}
                                 {currentView ===
                                   payrollConstants.ORGANIZATION_VIEW && (
                                   <td className="ant-table-cell">

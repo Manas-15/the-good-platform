@@ -81,7 +81,7 @@ function operateSponsorRequest(actionValues) {
     charityProgramService.operateSponsorRequest(actionValues).then(
       (data) => {
         dispatch(success());
-        dispatch(alertActions.success("Sponsored successfully."));
+        dispatch(alertActions.success("Promoted successfully."));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -113,7 +113,7 @@ function operateDenyRequest(actionValues) {
     charityProgramService.operateDenyRequest(actionValues).then(
       (data) => {
         dispatch(success());
-        dispatch(alertActions.success("Denied successfully."));
+        dispatch(alertActions.success("Unpromoted successfully."));
       },
       (error) => {
         dispatch(failure(error.toString()));

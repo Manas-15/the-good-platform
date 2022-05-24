@@ -153,12 +153,12 @@ const PayrollBatchAccordion = (props) => {
                                   <tr>
                                     <th className="ant-table-cell">Sr No.</th>
                                     <th className="ant-table-cell">Batch id</th>
-                                    {currentView ===
+                                    {/* {currentView ===
                                       payrollConstants.CORPORATE_VIEW && (
                                       <th className="ant-table-cell">
                                         Organization Id
                                       </th>
-                                    )}
+                                    )} */}
                                     {currentView ===
                                       payrollConstants.CORPORATE_VIEW && (
                                       <th className="ant-table-cell">
@@ -219,12 +219,12 @@ const PayrollBatchAccordion = (props) => {
                                           {batch?.batchId}
                                         </Link>
                                       </td>
-                                      {currentView ===
+                                      {/* {currentView ===
                                         payrollConstants.CORPORATE_VIEW && (
                                         <td className="ant-table-cell">
                                           {batch?.socialOrganizationId}
                                         </td>
-                                      )}
+                                      )} */}
                                       {currentView ===
                                         payrollConstants.CORPORATE_VIEW && (
                                         <td className="ant-table-cell">

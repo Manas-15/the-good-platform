@@ -5,12 +5,19 @@ import ReactHtmlParser from "react-html-parser";
 import { Progress, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import urlSlug from "url-slug";
+import { selectedCharityActions, selectedCharityTabActions } from "./../../actions";
+import { useDispatch } from "react-redux";
 
-const CardCharityPrograms = ({ items, setCharity }) => {
+const CardCharityPrograms = ({ items, setCharity, tabType }) => {
+  const dispatch = useDispatch();
   const openNav = (charity) => {
     document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
+  const setSelectedCharity = (charity) => {
+    dispatch(selectedCharityActions.selectedCharity(charity));
+    dispatch(selectedCharityTabActions.selectedTabType(tabType));
+  }
   return (
     <div className="ant-row">
       <div className="ant-col ant-col-24 mt-2">
@@ -38,6 +45,7 @@ const CardCharityPrograms = ({ items, setCharity }) => {
                         )}`,
                         programName: charityProgram?.charityName,
                       }}
+                      onClick={()=>setSelectedCharity(charityProgram)}
                     >
                       <span className="custom-color">{charityProgram?.charityName}</span>
                     </Link>
