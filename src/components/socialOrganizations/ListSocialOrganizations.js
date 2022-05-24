@@ -20,10 +20,12 @@ import Loader from "../Shared/Loader";
 import { Tooltip } from "antd";
 // import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
+let theArray = [];
 const ListCharityPrograms = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
   const [open, setOpen] = useState(false);
+  const [allChecked, setAllChecked] = useState(false);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -74,6 +76,28 @@ const ListCharityPrograms = () => {
       setActionContent(`Are you sure to ${action.toLowerCase()}?`);
     }
   };
+  const handleChange = (id) => {
+    // let items = socialOrganizations?.items;
+    // if (e.target.value === "checkAll") {
+    //   items.forEach((item) => {
+    //     item.isChecked = e.target.checked;
+    //     allChecked = e.target.checked;
+    //   });
+    // } else {
+    //   items.find((item) => item.name === e.target.name).isChecked =
+    //     e.target.checked;
+    // }
+    const index = theArray.indexOf(id);
+    console.log("ddddddddddddddddddd checked start", theArray);
+    if (index !== -1) {
+      theArray.splice(index, 1);
+    } else {
+      theArray.push(id);
+    }
+    console.log("ddddddddddddddddddd checked end", theArray);
+
+    // setState({items:items, allChecked: allChecked});
+  };
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -106,6 +130,14 @@ const ListCharityPrograms = () => {
               <table>
                 <thead className="ant-table-thead">
                   <tr>
+                    <th className="ant-table-cell">
+                      <input
+                        type="checkbox"
+                        value="checkAll"
+                        checked={allChecked}
+                        onChange={() => handleChange('checkAll')}
+                      />
+                    </th>
                     <th className="ant-table-cell">SR NO.</th>
                     <th className="ant-table-cell">Name</th>
                     <th className="ant-table-cell text-center">
@@ -113,7 +145,7 @@ const ListCharityPrograms = () => {
                     </th>
                     <th className="ant-table-cell">Created On</th>
                     {/* <th className="ant-table-cell">Status</th> */}
-                    {/* <th className="ant-table-cell text-center">Actions</th> */}
+                    <th className="ant-table-cell text-center">&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -124,6 +156,19 @@ const ListCharityPrograms = () => {
                           key={index + 1}
                           className="ant-table-row ant-table-row-level-0"
                         >
+                          <td className="ant-table-cell">
+                            <input
+                              type="checkbox"
+                              value={index + 1}
+                              name={index + 1}
+                              checked={
+                                theArray?.indexOf(socialOrganization?.id) !== -1 ? true : false
+                              }
+                              onChange={() =>
+                                handleChange(socialOrganization?.id)
+                              }
+                            />
+                          </td>
                           <td className="ant-table-cell">{index + 1}</td>
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">

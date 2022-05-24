@@ -14,8 +14,8 @@ import {
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
-// import { DateRangePicker } from "rsuite";
-// import "rsuite/dist/styles/rsuite-default.css";
+import { DateRangePicker } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 let charityProgramsOption = [];
 const paymentStatusOption = [
@@ -180,10 +180,13 @@ const ListTransactionsHistory = (props) => {
   return (
     <div className="customContainer">
       <div className="row mt-3">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <h1 className="ant-typography customHeading">Account Summary</h1>
         </div>
-        <div className="col-md-6 text-right">
+        <div className="col-md-4 text-center">
+        <DateRangePicker appearance="default" />
+        </div>
+        <div className="col-md-4 text-right">
           <div className="row mb-4">
             <div className="col-md-6">
               <h6 className="mt-2">Filter By</h6>
@@ -215,19 +218,6 @@ const ListTransactionsHistory = (props) => {
               </select>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-12 text-right">
-          {/* <button
-            className="btn btn-sm btn-custom"
-            onClick={() => setIsDateRangeFilter(true)}
-          >
-            Date range
-          </button> */}
-          {/* {isDateRangeFilter && ( */}
-          {/* <DateRangePicker appearance="default" /> */}
-          {/* )} */}
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">

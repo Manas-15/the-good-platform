@@ -53,6 +53,7 @@ const PayrollBatch = (props) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [records, setRecords] = useState([]);
   const [currentView, setCurrentView] = useState(
     payrollConstants?.CORPORATE_VIEW
   );
@@ -62,6 +63,8 @@ const PayrollBatch = (props) => {
   const isBluePencilView =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +91,11 @@ const PayrollBatch = (props) => {
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
+    filter("All");
   }, [currentPage]);
+  useEffect(() => {
+    setRecords(payrollBatches?.items);
+  }, [payrollBatches?.items]);
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -98,7 +105,11 @@ const PayrollBatch = (props) => {
     setShow(true);
     setReferenceNote(referenceNote);
   };
-
+  const statusOption = [
+    { label: "All", value: 0 },
+    { label: "Pending", value: payrollConstants.PENDING_STATUS },
+    { label: "Processed", value: "10" },
+  ];
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
@@ -151,6 +162,23 @@ const PayrollBatch = (props) => {
     setIsBatchDetail(status);
     setSelectedBatchId(null);
   };
+  const filter = (value) => {
+    if (value && value !== "0" && value !== "10") {
+      setRecords(
+        payrollBatches?.items?.filter(
+          (record) => record?.status?.toString() === value
+        )
+      );
+    } else if (value && value === "10") {
+      setRecords(
+        payrollBatches?.items?.filter(
+          (record) => record?.status?.toString() !== value
+        )
+      );
+    } else {
+      setRecords(payrollBatches?.items);
+    }
+  };
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -160,6 +188,29 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
+              {isCorporatePortal && (
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <h6 className="mt-2">Filter By</h6>
+                  </div>
+                  <div className="col-md-6">
+                    <select
+                      className="form-select"
+                      defaultValue={""}
+                      onChange={(e) => filter(e.target.value)}
+                    >
+                      <option value={""} key={"default"} disabled>
+                        Status
+                      </option>
+                      {statusOption.map((status, index) => (
+                        <option value={status.value} key={index}>
+                          {status.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              )}
               {!corporateId && !isOrganizationView && (
                 <>
                   <Link
@@ -201,7 +252,7 @@ const PayrollBatch = (props) => {
             </div>
           </div>
           {payrollBatches.loading && <Loader />}
-          {payrollBatches && (corporateId || isOrganizationView) && (
+          {records && (corporateId || isOrganizationView) && (
             <>
               <div className="ant-row">
                 <div className="ant-col ant-col-24 mt-2">
@@ -246,7 +297,7 @@ const PayrollBatch = (props) => {
                           </tr>
                         </thead>
                         <tbody className="ant-table-tbody">
-                          {payrollBatches?.items
+                          {records
                             ?.filter((pr) =>
                               corporateId
                                 ? pr
@@ -431,7 +482,7 @@ const PayrollBatch = (props) => {
                                 </td>
                               </tr>
                             ))}
-                          {!payrollBatches?.items && (
+                          {records?.length === 0 && (
                             <tr>
                               <td className="text-center" colSpan={7}>
                                 No data found
