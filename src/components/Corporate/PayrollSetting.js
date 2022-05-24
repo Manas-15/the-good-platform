@@ -44,7 +44,7 @@ const PayrollSetting = (props) => {
   );
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
   const [isGenerating, setIsGenerating] = useState(false);
-  
+
   // Pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);

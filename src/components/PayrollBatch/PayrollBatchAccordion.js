@@ -347,16 +347,21 @@ const PayrollBatchAccordion = (props) => {
                                           </>
                                         ) : (
                                           batch?.status ===
-                                            payrollConstants.COMPLETED_STATUS && <Link
-                                            onClick={() =>
-                                              handleOpen("Confirm Batch", batch)
-                                            }
-                                          >
-                                            <span
-                                              className="bi-check-circle fs-5"
-                                              title="Confirm"
-                                            ></span>
-                                          </Link>
+                                            payrollConstants.COMPLETED_STATUS && (
+                                            <Link
+                                              onClick={() =>
+                                                handleOpen(
+                                                  "Confirm Batch",
+                                                  batch
+                                                )
+                                              }
+                                            >
+                                              <span
+                                                className="bi-check-circle fs-5"
+                                                title="Confirm"
+                                              ></span>
+                                            </Link>
+                                          )
                                         )}
                                       </td>
                                     </tr>
@@ -452,8 +457,8 @@ const PayrollBatchAccordion = (props) => {
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
                       <p>
-                        This is a simulating service. Click on the respective button to
-                        send the response.
+                        This is a simulating service. Click on the respective
+                        button to send the response.
                       </p>
                     </Modal.Body>
                     <Modal.Footer>

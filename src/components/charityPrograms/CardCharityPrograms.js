@@ -5,7 +5,10 @@ import ReactHtmlParser from "react-html-parser";
 import { Progress, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import urlSlug from "url-slug";
-import { selectedCharityActions, selectedCharityTabActions } from "./../../actions";
+import {
+  selectedCharityActions,
+  selectedCharityTabActions,
+} from "./../../actions";
 import { useDispatch } from "react-redux";
 
 const CardCharityPrograms = ({ items, setCharity, tabType }) => {
@@ -17,7 +20,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
   const setSelectedCharity = (charity) => {
     dispatch(selectedCharityActions.selectedCharity(charity));
     dispatch(selectedCharityTabActions.selectedTabType(tabType));
-  }
+  };
   return (
     <div className="ant-row">
       <div className="ant-col ant-col-24 mt-2">
@@ -26,10 +29,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
             {items.map((charityProgram) => (
               <div className="col-md-4 card  p-0 ml-3">
                 <div className="img-sec">
-                  <img
-                    src="/assets/img/organization.jpg"
-                    alt="image"
-                  />
+                  <img src="/assets/img/organization.jpg" alt="image" />
                   <Tooltip title="80G Tax benefits available for INR donations">
                     <span className="tax-benefit">
                       Tax Benefit <i className="bi-info-circle-fill fs-6"></i>
@@ -45,9 +45,11 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
                         )}`,
                         programName: charityProgram?.charityName,
                       }}
-                      onClick={()=>setSelectedCharity(charityProgram)}
+                      onClick={() => setSelectedCharity(charityProgram)}
                     >
-                      <span className="custom-color">{charityProgram?.charityName}</span>
+                      <span className="custom-color">
+                        {charityProgram?.charityName}
+                      </span>
                     </Link>
                   </h4>
                 </div>

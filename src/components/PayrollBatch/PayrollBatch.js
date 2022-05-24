@@ -377,26 +377,31 @@ const PayrollBatch = (props) => {
                                     <>
                                       {batch?.status ===
                                       payrollConstants.CONFIRMED_STATUS ? (
-                                        <><Link
-                                          onClick={() =>
-                                            handleOpen("Unconfirm Batch", batch)
-                                          }
-                                        >
-                                          <span
-                                            className="bi-arrow-counterclockwise fs-5"
-                                            title="Unconfirm"
-                                          ></span>
-                                        </Link>
-                                        <Link
-                                        onClick={() =>
-                                          handleOpen("Paid", batch)
-                                        }
-                                      >
-                                        <span
-                                          className="bi-box2-heart fs-5 ml-2"
-                                          title="Paid"
-                                        ></span>
-                                      </Link></>
+                                        <>
+                                          <Link
+                                            onClick={() =>
+                                              handleOpen(
+                                                "Unconfirm Batch",
+                                                batch
+                                              )
+                                            }
+                                          >
+                                            <span
+                                              className="bi-arrow-counterclockwise fs-5"
+                                              title="Unconfirm"
+                                            ></span>
+                                          </Link>
+                                          <Link
+                                            onClick={() =>
+                                              handleOpen("Paid", batch)
+                                            }
+                                          >
+                                            <span
+                                              className="bi-box2-heart fs-5 ml-2"
+                                              title="Paid"
+                                            ></span>
+                                          </Link>
+                                        </>
                                       ) : (
                                         <Link
                                           onClick={() =>
@@ -426,11 +431,13 @@ const PayrollBatch = (props) => {
                                 </td>
                               </tr>
                             ))}
-                            {!payrollBatches?.items &&
-                              <tr>
-                                <td className="text-center" colSpan={7}>No data found</td>
-                                </tr>
-                            }
+                          {!payrollBatches?.items && (
+                            <tr>
+                              <td className="text-center" colSpan={7}>
+                                No data found
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>

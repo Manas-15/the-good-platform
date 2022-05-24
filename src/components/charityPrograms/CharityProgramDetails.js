@@ -16,7 +16,6 @@ const CharityProgramDetails = (props) => {
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
   const tabType = useSelector((state) => state.selectedCharityTab.tab);
-  console.log(">>>>>>>>>>>> selectedCharity", selectedCharity);
   const listInnerRef = useRef();
   // const openNav = () => {
   //   // document.getElementById("sidepanel").classList.add("is-open");
@@ -42,24 +41,18 @@ const CharityProgramDetails = (props) => {
     donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
   };
   const onScroll = () => {
-    // console.log(
-    //   "listInnerRef.current",
-    //   listInnerRef.current.clientHeight,
-    //   window.scrollY
-    // );
-    // if (listInnerRef.current) {
-    //   const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
-    //   if (window.scrollY > listInnerRef.current.clientHeight) {
-    //     document
-    //       .getElementById("payment-section")
-    //       .classList.add("detail-payment");
-    //     // alert("reached bottom");
-    //   } else {
-    //     document
-    //       .getElementById("payment-section")
-    //       .classList.remove("detail-payment");
-    //   }
-    // }
+    if (listInnerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+      if (window.scrollY > listInnerRef.current.clientHeight) {
+        document
+          .getElementById("payment-section")
+          .classList.add("detail-payment");
+      } else {
+        document
+          .getElementById("payment-section")
+          .classList.remove("detail-payment");
+      }
+    }
   };
   useEffect(() => {
     // clean up code
@@ -388,7 +381,7 @@ const CharityProgramDetails = (props) => {
                 </TabPane>
               </Tabs>
             </div>
-            <div className="col-md-5  mt-4" id="payment-section">
+            <div className="col-md-5 mt-4 pl-0 pr-0" id="payment-section">
               {/* <Payment selectedAmount={"200"} paymentValues={initialValues} /> */}
               {/* <div className="sidepanel is-open" id="sidepanel"> */}
               <DonateHeader />
