@@ -7,6 +7,7 @@ import urlSlug from "url-slug";
 import {
   socialOrganizationConstants,
   paginationConstants,
+  charityProgramConstants,
 } from "../../constants";
 import {
   selectedOrganizationActions,
@@ -22,7 +23,10 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 const ListCharityPrograms = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
-
+  const [open, setOpen] = useState(false);
+  const [actionType, setActionType] = useState("");
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionContent, setActionContent] = useState("");
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,6 +59,19 @@ const ListCharityPrograms = () => {
         return "text-warning";
       default:
         return "text-warning";
+    }
+  };
+  const handleOpen = (action, item) => {
+    setOpen(true);
+    setActionType(action);
+    setActionTitle(`${action} Confirmation`);
+
+    if (action === charityProgramConstants.UNPROMOTE) {
+      setActionContent(
+        `Are you sure want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
+      );
+    } else {
+      setActionContent(`Are you sure to ${action.toLowerCase()}?`);
     }
   };
   return (
@@ -96,7 +113,7 @@ const ListCharityPrograms = () => {
                     </th>
                     <th className="ant-table-cell">Created On</th>
                     {/* <th className="ant-table-cell">Status</th> */}
-                    <th className="ant-table-cell text-center">Actions</th>
+                    {/* <th className="ant-table-cell text-center">Actions</th> */}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -135,8 +152,10 @@ const ListCharityPrograms = () => {
                             )}
                           </td>
                           <td className="ant-table-cell text-center">
-                          
-                            </td>
+                            <Tooltip title={charityProgramConstants.UNPROMOTED}>
+                              <i className="bi-heart fs-6 custom-color"></i>
+                            </Tooltip>
+                          </td>
                           {/* <td className="ant-table-cell">
                           <span
                             className={renderClass(
@@ -154,7 +173,6 @@ const ListCharityPrograms = () => {
                             ></span>
                           </Link>
                         </td> */}
-                        
                         </tr>
                       )
                     )

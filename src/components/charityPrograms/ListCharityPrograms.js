@@ -10,7 +10,7 @@ import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 import { Tooltip } from "antd";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
-import { charityProgramActions, selectedCharityActions } from "./../../actions";
+import { charityProgramActions, selectedCharityActions, selectedCharityTabActions } from "./../../actions";
 import urlSlug from "url-slug";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
@@ -52,16 +52,16 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const confirm = () => {
     handleClose();
     dispatch(
-      actionType === charityProgramConstants.SPONSOR
-        ? charityProgramActions.operateSponsorRequest({
-            corporateId: selectedCorporate?.corporate?.corporateId,
-            socialId: selectedProgram?.soicalId,
-            charityId: selectedProgram?.charityId,
-          })
-        : charityProgramActions.operateDenyRequest({
+      actionType === charityProgramConstants.UNPROMOTE
+        ? charityProgramActions.operateDenyRequest({
             corporateId: selectedCorporate?.corporate?.corporateId,
             socialId: selectedProgram?.soicalId,
             programId: selectedProgram?.charityId,
+          })
+        : charityProgramActions.operateSponsorRequest({
+            corporateId: selectedCorporate?.corporate?.corporateId,
+            socialId: selectedProgram?.soicalId,
+            charityId: selectedProgram?.charityId,
           })
     );
   };
@@ -108,6 +108,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   };
   const setSelectedCharity = (charity) => {
     dispatch(selectedCharityActions.selectedCharity(charity));
+    dispatch(selectedCharityTabActions.selectedTabType(tabType));
   }
   return (
     <>

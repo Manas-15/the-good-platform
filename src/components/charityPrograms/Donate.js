@@ -200,7 +200,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
               >
                 <span className="fs-6 ml-2">
                   {tabType === charityProgramConstants.SPONSOR &&
-                  !isCorporatePortal && !isProgramDetail ? (
+                  !isCorporatePortal ? (
                     <>
                       <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
                       &nbsp;Add Donation Preference

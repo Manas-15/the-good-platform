@@ -13,8 +13,9 @@ import donationsConsent from "./../../config/donationsConsent.json";
 const TabPane = Tabs.TabPane;
 
 const CharityProgramDetails = (props) => {
-  const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
+  // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
+  const tabType = useSelector((state) => state.selectedCharityTab.tab);
   console.log(">>>>>>>>>>>> selectedCharity", selectedCharity);
   const listInnerRef = useRef();
   // const openNav = () => {
@@ -395,6 +396,7 @@ const CharityProgramDetails = (props) => {
                 <div
                   className="tab-pane fade show active give-once"
                   id="give-once"
+                  tabType={tabType}
                 >
                   <Donate
                     frequency={donationPreferenceConstants.ONCE}

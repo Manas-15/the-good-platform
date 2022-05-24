@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
-  console.log("selectedCorporateselectedCorporate", selectedCorporate)
+  console.log("selectedCorporateselectedCorporate", selectedCorporate);
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;

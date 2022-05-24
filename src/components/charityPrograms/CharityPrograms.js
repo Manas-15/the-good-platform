@@ -7,7 +7,7 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
   charityProgramConstants,
-  payrollConstants
+  payrollConstants,
 } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
@@ -104,11 +104,15 @@ const CharityPrograms = () => {
           <button
             type="button"
             className={`${
-              currentView === charityProgramConstants.CARD_VIEW ? "active" : ""
+              currentView === charityProgramConstants.PROGRESS_VIEW
+                ? "active"
+                : ""
             } btn btn-sm  btn-outline-primary btn-outline-custom`}
-            onClick={() => setCurrentView(charityProgramConstants.CARD_VIEW)}
+            onClick={() =>
+              setCurrentView(charityProgramConstants.PROGRESS_VIEW)
+            }
           >
-            <i className="bi bi-card-heading"></i> Card View
+            <i className="bi bi-card-heading"></i> Progress view
           </button>
         </div>
       </div>
@@ -268,7 +272,7 @@ const CharityPrograms = () => {
                 tabType={tabType}
               />
             )}
-            {currentView === charityProgramConstants.CARD_VIEW && (
+            {currentView === charityProgramConstants.PROGRESS_VIEW && (
               <CardCharityPrograms
                 items={charityPrograms?.items?.sponser?.filter(
                   (charity) => charity?.donated === false
@@ -302,7 +306,7 @@ const CharityPrograms = () => {
                 tabType={tabType}
               />
             )}
-            {currentView === charityProgramConstants.CARD_VIEW && (
+            {currentView === charityProgramConstants.PROGRESS_VIEW && (
               <CardCharityPrograms
                 items={charityPrograms?.items?.other?.filter(
                   (charity) => charity?.donated === false
