@@ -14,6 +14,8 @@ import {
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/styles/index.less';
 
 let charityProgramsOption = [];
 const paymentStatusOption = [
@@ -45,6 +47,7 @@ const ListTransactionsHistory = (props) => {
   const [searchByAmount, setSearchByAmount] = useState("");
   const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
+  const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
 
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -70,7 +73,7 @@ const ListTransactionsHistory = (props) => {
       dispatch(
         transactionsHistoryActions.getTransactionsHistory({
           employeeId: employeeId ? employeeId : null,
-          corporateId: isCorporatePortal ? 1 : null,
+          corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : null,
           pageSize: pageSize,
           offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         })
@@ -157,6 +160,21 @@ const ListTransactionsHistory = (props) => {
   useEffect(() => {
     fetchResults();
   }, [searchByAmount]);
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  };
+  const handleSelect = (ranges) => {
+    console.log(ranges);
+    // setIsDateRangeFilter(false);
+    // {
+    //   selection: {
+    //     startDate: [native Date Object],
+    //     endDate: [native Date Object],
+    //   }
+    // }
+  };
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -195,6 +213,21 @@ const ListTransactionsHistory = (props) => {
               </select>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12 text-right">
+          {/* <button
+            className="btn btn-sm btn-custom"
+            onClick={() => setIsDateRangeFilter(true)}
+          >
+            Date range
+          </button> */}
+          {/* {isDateRangeFilter && ( */}
+            <DateRangePicker
+            appearance="default"
+            />
+          {/* )} */}
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">

@@ -349,7 +349,7 @@ const PayrollBatch = (props) => {
                                     <>
                                       <span>
                                         {/* {payrollConstants.CONFIRMED} */}
-                                        100% (Paid to Social Organization)
+                                        100% (Received by Social Organization)
                                       </span>
                                       <Progress
                                         percent={100}
@@ -377,7 +377,7 @@ const PayrollBatch = (props) => {
                                     <>
                                       {batch?.status ===
                                       payrollConstants.CONFIRMED_STATUS ? (
-                                        <Link
+                                        <><Link
                                           onClick={() =>
                                             handleOpen("Unconfirm Batch", batch)
                                           }
@@ -387,6 +387,16 @@ const PayrollBatch = (props) => {
                                             title="Unconfirm"
                                           ></span>
                                         </Link>
+                                        <Link
+                                        onClick={() =>
+                                          handleOpen("Paid", batch)
+                                        }
+                                      >
+                                        <span
+                                          className="bi-box2-heart fs-5 ml-2"
+                                          title="Paid"
+                                        ></span>
+                                      </Link></>
                                       ) : (
                                         <Link
                                           onClick={() =>

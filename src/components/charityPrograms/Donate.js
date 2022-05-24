@@ -61,7 +61,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
-    preferenceForm.corporateId = 1;
+    preferenceForm.corporateId = 3;
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = selectedCharity?.charityId;
     preferenceForm.socialOrganizationId = selectedCharity?.soicalId;

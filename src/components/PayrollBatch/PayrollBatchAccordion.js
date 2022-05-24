@@ -37,6 +37,7 @@ const PayrollBatchAccordion = (props) => {
   const [checked, setChecked] = useState(false);
   const [isBatchDetail, setIsBatchDetail] = useState(false);
   const [selectedBatchId, setSelectedBatchId] = useState(false);
+  const [openPaidSimulator, setOpenPaidSimulator] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedBatch, setSelectedBatch] = useState();
   const [actionType, setActionType] = useState("");
@@ -96,6 +97,9 @@ const PayrollBatchAccordion = (props) => {
     setOpen(false);
     setSelectedBatch(null);
     setActionType(null);
+  };
+  const hidePaidSimulator = () => {
+    setOpenPaidSimulator(false);
   };
   // const showBatchDetail = (batchId) => {
   //   // props?.isBatchDetail = true
@@ -303,7 +307,8 @@ const PayrollBatchAccordion = (props) => {
                                           <>
                                             <span>
                                               {/* {payrollConstants.CONFIRMED} */}
-                                              100% (Paid to Social Organization)
+                                              100% (Received by Social
+                                              Organization)
                                             </span>
                                             <Progress
                                               percent={100}
@@ -315,21 +320,34 @@ const PayrollBatchAccordion = (props) => {
                                       <td className="ant-table-cell text-center">
                                         {batch?.status ===
                                         payrollConstants.CONFIRMED_STATUS ? (
-                                          <Link
-                                            onClick={() =>
-                                              handleOpen(
-                                                "Unconfirm Batch",
-                                                batch
-                                              )
-                                            }
-                                          >
-                                            <span
-                                              className="bi-arrow-counterclockwise fs-5"
-                                              title="Unconfirm"
-                                            ></span>
-                                          </Link>
+                                          <>
+                                            <Link
+                                              onClick={() =>
+                                                handleOpen(
+                                                  "Unconfirm Batch",
+                                                  batch
+                                                )
+                                              }
+                                            >
+                                              <span
+                                                className="bi-arrow-counterclockwise fs-5"
+                                                title="Unconfirm"
+                                              ></span>
+                                            </Link>
+                                            <Link
+                                              onClick={() =>
+                                                setOpenPaidSimulator(true)
+                                              }
+                                            >
+                                              <span
+                                                className="bi-check-square fs-5 ml-2"
+                                                title="Paid"
+                                              ></span>
+                                            </Link>
+                                          </>
                                         ) : (
-                                          <Link
+                                          batch?.status ===
+                                            payrollConstants.COMPLETED_STATUS && <Link
                                             onClick={() =>
                                               handleOpen("Confirm Batch", batch)
                                             }
@@ -399,6 +417,55 @@ const PayrollBatchAccordion = (props) => {
                       </Button>
                       <Button variant="danger" onClick={handleClose}>
                         No
+                      </Button>
+                    </Modal.Footer>
+                  </Form>
+                )}
+              </Formik>
+            </Modal>
+          )}
+          {openPaidSimulator && (
+            <Modal
+              show={openPaidSimulator}
+              onHide={hidePaidSimulator}
+              backdrop="static"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Paid Confirmation</Modal.Title>
+              </Modal.Header>
+              <Formik
+                initialValues={null}
+                validationSchema={null}
+                onSubmit={(values) => {
+                  console.log("dddddddddddd simulator");
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <Form>
+                    <Modal.Body style={{ fontSize: "18" }}>
+                      <p>
+                        This is a simulating service. Click on the respective button to
+                        send the response.
+                      </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <button
+                        className="btn btn-custom"
+                        disabled={isSubmitting}
+                        onClick={hidePaidSimulator}
+                      >
+                        Simulate Success
+                      </button>
+                      <Button variant="danger" onClick={hidePaidSimulator}>
+                        Simulate Failure
                       </Button>
                     </Modal.Footer>
                   </Form>

@@ -28,6 +28,7 @@ const PayrollSetting = (props) => {
   let history = useHistory();
   const preferences = useSelector((state) => state.payrollSetting);
   const employee = useSelector((state) => state.employee.user);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -43,7 +44,7 @@ const PayrollSetting = (props) => {
   );
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
   const [isGenerating, setIsGenerating] = useState(false);
-
+  
   // Pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -107,7 +108,7 @@ const PayrollSetting = (props) => {
   const processBatch = () => {
     const data = ProcessHelper(preferences?.items);
     const finalData = {
-      corporateId: 1,
+      corporateId: selectedCorporate?.corporate?.corporateId,
       totalAmount: data.reduce(
         (total, currentValue) => (total = total + currentValue.donationAmount),
         0
