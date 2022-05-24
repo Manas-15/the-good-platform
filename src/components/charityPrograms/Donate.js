@@ -39,8 +39,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isEmployeePortal =
     currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
-  const isProgramDetail =
-    history.location.pathname.includes("/programs/");
+  const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
     if (selectedCharity) {
       setSelectedAmount(selectedCharity?.unitPrice);

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./../../assets/css/charityProgramsList.scss";
-import { donationPreferenceConstants } from "../../constants";
+import {
+  donationPreferenceConstants,
+  viewPortalConstants,
+} from "../../constants";
 import { Progress, Tooltip, Tabs } from "antd";
 import users from "./../../config/users.json";
 import { useSelector } from "react-redux";
@@ -13,18 +16,31 @@ import donationsConsent from "./../../config/donationsConsent.json";
 const TabPane = Tabs.TabPane;
 
 const CharityProgramDetails = (props) => {
+  let charityFirstTwoChar, employeeFirstTwoChar;
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
   const tabType = useSelector((state) => state.selectedCharityTab.tab);
+  const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const listInnerRef = useRef();
   // const openNav = () => {
   //   // document.getElementById("sidepanel").classList.add("is-open");
   //   // setCharity(charity);
   // };
   const user = useSelector((state) => state.employee.user);
+  if (selectedCharity) {
+    charityFirstTwoChar = selectedCharity?.charityName
+      ?.slice(0, 2)
+      ?.toLowerCase();
+    employeeFirstTwoChar = user?.name?.slice(0, 2)?.toLowerCase();
+  }
   // const programName = props?.location?.programName;
   const initialValues = {
-    orderId: Math.random().toString(36).slice(2),
+    orderId: selectedCharity
+      ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
+      : Math.random().toString(36).slice(2),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
     donationAmount: selectedCharity?.charity?.donationAmount,
     customerId: user?.uuid.toString(),
@@ -35,24 +51,26 @@ const CharityProgramDetails = (props) => {
     customerPan: user?.pan,
     charity: selectedCharity?.charity,
     employee: user,
-    corporateId: 1,
+    corporateId: isCorporatePortal
+      ? selectedCorporate?.corporate?.corporateId
+      : 1,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
     donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
   };
   const onScroll = () => {
-    if (listInnerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
-      if (window.scrollY > listInnerRef.current.clientHeight) {
-        document
-          .getElementById("payment-section")
-          .classList.add("detail-payment");
-      } else {
-        document
-          .getElementById("payment-section")
-          .classList.remove("detail-payment");
-      }
-    }
+    // if (listInnerRef.current) {
+    //   const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+    //   if (window.scrollY > listInnerRef.current.clientHeight) {
+    //     document
+    //       .getElementById("payment-section")
+    //       .classList.add("detail-payment");
+    //   } else {
+    //     document
+    //       .getElementById("payment-section")
+    //       .classList.remove("detail-payment");
+    //   }
+    // }
   };
   useEffect(() => {
     // clean up code

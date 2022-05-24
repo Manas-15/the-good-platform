@@ -72,17 +72,29 @@ const DonateSecondStep = ({
       : Math.random().toString(36).slice(2),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
     donationAmount: selectedAmount,
-    customerId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId?.toString() : employee?.uuid?.toString(),
-    customerName: isCorporatePortal ? selectedCorporate?.corporate?.organizationName : employee?.name,
-    customerEmail: isCorporatePortal ? selectedCorporate?.corporate?.email : employee?.email,
-    customerPhone: isCorporatePortal ? selectedCorporate?.corporate?.contactNumber : employee?.phone,
+    customerId: isCorporatePortal
+      ? selectedCorporate?.corporate?.corporateId?.toString()
+      : employee?.uuid?.toString(),
+    customerName: isCorporatePortal
+      ? selectedCorporate?.corporate?.organizationName
+      : employee?.name,
+    customerEmail: isCorporatePortal
+      ? selectedCorporate?.corporate?.email
+      : employee?.email,
+    customerPhone: isCorporatePortal
+      ? selectedCorporate?.corporate?.contactNumber
+      : employee?.phone,
     customerDob: isCorporatePortal ? "" : employee?.dob,
     customerPan: isCorporatePortal ? "" : employee?.pan,
     charity: selectedCharity,
     //employee: isCorporatePortal ? null : employee,
     // corporate: isCorporatePortal ? selectedCorporate : null,
-    corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : 1,
-    userId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId?.toString() : employee?.emp_id?.toString(),
+    corporateId: isCorporatePortal
+      ? selectedCorporate?.corporate?.corporateId
+      : 1,
+    userId: isCorporatePortal
+      ? selectedCorporate?.corporate?.corporateId?.toString()
+      : employee?.emp_id?.toString(),
     userType: isCorporatePortal
       ? payrollConstants.CORPORATE_VIEW
       : payrollConstants.EMPLOYEE_VIEW,
@@ -128,9 +140,9 @@ const DonateSecondStep = ({
             initialValues={initialValues}
             validationSchema={PaymentSchema}
             onSubmit={(values, { setSubmitting }) => {
-              values.customerDob = values.customerDob && moment(values.customerDob).format(
-                "YYYY-MM-DD"
-              );
+              values.customerDob =
+                values.customerDob &&
+                moment(values.customerDob).format("YYYY-MM-DD");
               // values.customerPan = values?.customerPan?.toUpperCase();
               goToPayment(values);
             }}

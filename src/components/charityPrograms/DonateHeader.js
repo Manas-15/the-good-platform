@@ -33,63 +33,67 @@ const DonateHeader = ({ frequency, tabType }) => {
     document.getElementById("sidepanel").classList.remove("is-open");
     setSelectedCharity(null);
   };
-  const isProgramDetail =
-    history.location.pathname.includes("/programs/");
+  const isProgramDetail = history.location.pathname.includes("/programs/");
   return (
     <>
-      <div className={`${isProgramDetail ? "donate-header-program-detail" : "donate-header"}`}>
-            <div className="row">
-              <div className="col-md-10 p-2">
-                <span className="pl-3">
-                  You can make a big difference to their lives?
-                </span>
-              </div>
-              <div className="col-md-2">
-                <a
-                  href="javascript:void(0)"
-                  className="closebtn"
-                  onClick={closeNav}
-                >
-                  ×
-                </a>
-              </div>
-            </div>
-            <ul className="nav nav-tabs nav-tabs-bordered">
-              <li className="nav-item">
-                <button
-                  className="nav-link active"
-                  data-bs-toggle="tab"
-                  data-bs-target="#give-once"
-                  onClick={() =>
-                    setActiveFrequenctTab(donationPreferenceConstants.ONCE)
-                  }
-                >
-                  <span>Give Once</span>
-                  {activeFrequenctTab === donationPreferenceConstants.ONCE && (
-                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                  )}
-                </button>
-              </li>
-              {/* {tabType === charityProgramConstants.SPONSOR && ( */}
-              <li className="nav-item">
-                <button
-                  className="nav-link"
-                  data-bs-toggle="tab"
-                  data-bs-target="#give-monthly"
-                  onClick={() =>
-                    setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
-                  }
-                >
-                  <span>Give Monthly</span>
-                  {activeFrequenctTab ===
-                    donationPreferenceConstants.MONTHLY && (
-                    <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
-                  )}
-                </button>
-              </li>
-              {/* )} */}
-            </ul>
+      <div
+        className={`${
+          isProgramDetail ? "donate-header-program-detail" : "donate-header"
+        }`}
+      >
+        <div className="row">
+          <div className="col-md-10 p-2">
+            <span className="pl-3">
+              You can make a big difference to their lives?
+            </span>
           </div>
+          {!isProgramDetail && (
+            <div className="col-md-2">
+              <a
+                href="javascript:void(0)"
+                className="closebtn"
+                onClick={closeNav}
+              >
+                ×
+              </a>
+            </div>
+          )}
+        </div>
+        <ul className="nav nav-tabs nav-tabs-bordered">
+          <li className="nav-item">
+            <button
+              className="nav-link active"
+              data-bs-toggle="tab"
+              data-bs-target="#give-once"
+              onClick={() =>
+                setActiveFrequenctTab(donationPreferenceConstants.ONCE)
+              }
+            >
+              <span>Give Once</span>
+              {activeFrequenctTab === donationPreferenceConstants.ONCE && (
+                <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
+              )}
+            </button>
+          </li>
+          {/* {tabType === charityProgramConstants.SPONSOR && ( */}
+          <li className="nav-item">
+            <button
+              className="nav-link"
+              data-bs-toggle="tab"
+              data-bs-target="#give-monthly"
+              onClick={() =>
+                setActiveFrequenctTab(donationPreferenceConstants.MONTHLY)
+              }
+            >
+              <span>Give Monthly</span>
+              {activeFrequenctTab === donationPreferenceConstants.MONTHLY && (
+                <span className="bi-check-circle-fill fs-6 ml-2 text-success"></span>
+              )}
+            </button>
+          </li>
+          {/* )} */}
+        </ul>
+      </div>
     </>
   );
 };
