@@ -10,7 +10,11 @@ import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 import { Tooltip } from "antd";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
-import { charityProgramActions, selectedCharityActions, selectedCharityTabActions } from "./../../actions";
+import {
+  charityProgramActions,
+  selectedCharityActions,
+  selectedCharityTabActions,
+} from "./../../actions";
 import urlSlug from "url-slug";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
@@ -36,12 +40,12 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setActionType(action);
     setSelectedProgram(item);
     setActionTitle(`${action} Confirmation`);
-    
-    if(action === charityProgramConstants.UNPROMOTE){
+
+    if (action === charityProgramConstants.UNPROMOTE) {
       setActionContent(
         `Are you sure want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
       );
-    }else{
+    } else {
       setActionContent(
         `Are you sure to ${action.toLowerCase()} <strong>"${
           item.charityName
@@ -109,7 +113,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const setSelectedCharity = (charity) => {
     dispatch(selectedCharityActions.selectedCharity(charity));
     dispatch(selectedCharityTabActions.selectedTabType(tabType));
-  }
+  };
   return (
     <>
       <div className="ant-row">
@@ -164,7 +168,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               )}`,
                               programName: charityProgram?.charityName,
                             }}
-                            onClick={()=>setSelectedCharity(charityProgram)}
+                            onClick={() => setSelectedCharity(charityProgram)}
                           >
                             <span className="ant-typography font-weight-bold custom-color">
                               {charityProgram?.charityName}
