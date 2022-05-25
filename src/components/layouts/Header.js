@@ -124,7 +124,7 @@ const Header = () => {
               <li>
                 <Link
                   className="dropdown-item d-flex align-items-center"
-                  to="/admin-payroll-batch"
+                  to="/organizations"
                   onClick={() => setCurrentView(viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL)}
                 >
                   <i className="bi bi-people"></i>

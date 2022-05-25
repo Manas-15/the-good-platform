@@ -27,6 +27,7 @@ import PayrollBatch from "../components/PayrollBatch/PayrollBatch";
 import { notification } from "antd";
 import TermsOfService from "../components/TermsOfService/TermsOfService";
 import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
+import SocialOrganizationsPortal from "../components/SocialOrganizations/SocialOrganizationsPortal";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -44,8 +45,9 @@ const CreateRoutes = () => {
     }, 8000);
   }
   const isCorporateLunchpad = history.location.pathname === "/corporates";
+  const isSocialOrganizationLunchpad = history.location.pathname === "/organizations";
   const isEmployeeView = history.location.pathname.includes("/employees");
-  if (isCorporateLunchpad) {
+  if (isCorporateLunchpad && isSocialOrganizationLunchpad) {
     document.body.classList.add("toggle-sidebar");
   }
   if (isEmployeeView) {
@@ -67,8 +69,8 @@ const CreateRoutes = () => {
           <section className="section dashboard">
             {alert.message &&
               openNotificationWithIcon(alert.type, alert.message)}
-            {!isCorporateLunchpad && <Header />}
-            {!isCorporateLunchpad && <Sidebar />}
+            {!isCorporateLunchpad && !isSocialOrganizationLunchpad && <Header />}
+            {!isCorporateLunchpad && !isSocialOrganizationLunchpad && <Sidebar />}
             <Switch>
               {!isEmployeeView && (
                 <Route exact path="/" component={Dashboard} />
@@ -94,6 +96,7 @@ const CreateRoutes = () => {
                 />
               )}
               <Route exact path="/corporates" component={CorporatesPortal} />
+              <Route exact path="/organizations" component={SocialOrganizationsPortal} />
               <Route
                 exact
                 path="/corporates/:corporateId/employees"
@@ -118,6 +121,11 @@ const CreateRoutes = () => {
               <Route
                 exact
                 path="/corporates/:corporateId/payroll-batch"
+                component={PayrollBatch}
+              />
+              <Route
+                exact
+                path="/organizations/:organizationId/payroll-batch"
                 component={PayrollBatch}
               />
               <Route
