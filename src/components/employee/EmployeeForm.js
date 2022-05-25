@@ -21,7 +21,7 @@ const initialValues = {
   email: "",
   employeeId: "",
   pan: "",
-  corporateProfileId: 3,
+  corporateProfileId: 1,
   organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
@@ -385,8 +385,24 @@ const EmployeeForm = ({ type }) => {
                         className="custom-control-label"
                         htmlFor="termsCheck"
                       >
-                        &nbsp;By signing up, I agree to the The Good Platform
-                        Privacy Policy and Terms of Service.
+                        &nbsp;By signing up, I agree to the The Good
+                        Platform&nbsp;
+                        <Link
+                          to="/privacy-policy"
+                          target="_blank"
+                          className="text-decoration-underline"
+                        >
+                          Privacy Policy
+                        </Link>{" "}
+                        and{" "}
+                        <Link
+                          to="/terms-of-service"
+                          target="_blank"
+                          className="text-decoration-underline"
+                        >
+                          Terms of Service
+                        </Link>
+                        .
                       </label>
                     </div>
                   </div>

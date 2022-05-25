@@ -226,7 +226,14 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               <img
                                 src="/assets/img/donate.png"
                                 alt="dontae"
-                                height={22}
+                                onMouseEnter={(event) =>
+                                  (event.target.src =
+                                    "/assets/img/donate-fill.png")
+                                }
+                                onMouseOut={(event) =>
+                                  (event.target.src = "/assets/img/donate.png")
+                                }
+                                height={25}
                               />
                             </Tooltip>
                           </button>

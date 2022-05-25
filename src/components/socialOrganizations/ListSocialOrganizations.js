@@ -130,14 +130,14 @@ const ListCharityPrograms = () => {
               <table>
                 <thead className="ant-table-thead">
                   <tr>
-                    <th className="ant-table-cell">
+                    {/* <th className="ant-table-cell">
                       <input
                         type="checkbox"
                         value="checkAll"
                         checked={allChecked}
                         onChange={() => handleChange('checkAll')}
                       />
-                    </th>
+                    </th> */}
                     <th className="ant-table-cell">SR NO.</th>
                     <th className="ant-table-cell">Name</th>
                     <th className="ant-table-cell text-center">
@@ -145,7 +145,7 @@ const ListCharityPrograms = () => {
                     </th>
                     <th className="ant-table-cell">Created On</th>
                     {/* <th className="ant-table-cell">Status</th> */}
-                    <th className="ant-table-cell text-center">&nbsp;</th>
+                    {/* <th className="ant-table-cell text-center">&nbsp;</th> */}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -156,7 +156,7 @@ const ListCharityPrograms = () => {
                           key={index + 1}
                           className="ant-table-row ant-table-row-level-0"
                         >
-                          <td className="ant-table-cell">
+                          {/* <td className="ant-table-cell">
                             <input
                               type="checkbox"
                               value={index + 1}
@@ -168,7 +168,7 @@ const ListCharityPrograms = () => {
                                 handleChange(socialOrganization?.id)
                               }
                             />
-                          </td>
+                          </td> */}
                           <td className="ant-table-cell">{index + 1}</td>
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
@@ -196,11 +196,11 @@ const ListCharityPrograms = () => {
                               "LL"
                             )}
                           </td>
-                          <td className="ant-table-cell text-center">
+                          {/* <td className="ant-table-cell text-center">
                             <Tooltip title={charityProgramConstants.UNPROMOTED}>
                               <i className="bi-heart fs-6 custom-color"></i>
                             </Tooltip>
-                          </td>
+                          </td> */}
                           {/* <td className="ant-table-cell">
                           <span
                             className={renderClass(

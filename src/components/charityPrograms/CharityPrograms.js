@@ -253,9 +253,9 @@ const CharityPrograms = () => {
               <span>
                 <AuditOutlined className="fs-5" />
                 {charityProgramConstants.SPONSORED} (
-                {charityPrograms?.items?.sponser
-                  ? charityPrograms?.items?.sponser?.filter(
-                      (charity) => (isCorporatePortal ? charity : charity?.donated === false)
+                {charityPrograms?.items?.sponsored
+                  ? charityPrograms?.items?.sponsored?.filter((charity) =>
+                      isCorporatePortal ? charity : charity?.donated === false
                     ).length
                   : 0}
                 )
@@ -265,8 +265,8 @@ const CharityPrograms = () => {
           >
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={charityPrograms?.items?.sponser?.filter(
-                  (charity) => (isCorporatePortal ? charity : charity?.donated === false)
+                items={charityPrograms?.items?.sponsored?.filter((charity) =>
+                  isCorporatePortal ? charity : charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}
@@ -274,8 +274,8 @@ const CharityPrograms = () => {
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
               <CardCharityPrograms
-                items={charityPrograms?.items?.sponser?.filter(
-                  (charity) => (isCorporatePortal ? charity : charity?.donated === false)
+                items={charityPrograms?.items?.sponsored?.filter((charity) =>
+                  isCorporatePortal ? charity : charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}
@@ -288,8 +288,8 @@ const CharityPrograms = () => {
                 <RedoOutlined className="fs-5" />
                 {charityProgramConstants.OTHERS} (
                 {charityPrograms?.items?.other
-                  ? charityPrograms?.items?.other?.filter(
-                      (charity) => (isCorporatePortal ? charity : charity?.donated === false)
+                  ? charityPrograms?.items?.other?.filter((charity) =>
+                      isCorporatePortal ? charity : charity?.donated === false
                     ).length
                   : 0}
                 )
@@ -299,8 +299,8 @@ const CharityPrograms = () => {
           >
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={charityPrograms?.items?.other?.filter(
-                  (charity) => (isCorporatePortal ? charity : charity?.donated === false)
+                items={charityPrograms?.items?.other?.filter((charity) =>
+                  isCorporatePortal ? charity : charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}
@@ -308,8 +308,8 @@ const CharityPrograms = () => {
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
               <CardCharityPrograms
-                items={charityPrograms?.items?.other?.filter(
-                  (charity) => (isCorporatePortal ? charity : charity?.donated === false)
+                items={charityPrograms?.items?.other?.filter((charity) =>
+                  isCorporatePortal ? charity : charity?.donated === false
                 )}
                 setCharity={setCharity}
                 tabType={tabType}
