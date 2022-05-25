@@ -36,6 +36,7 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 const PayrollBatch = (props) => {
   // let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
+  const organizationId = props?.match?.params?.organizationId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
@@ -87,6 +88,9 @@ const PayrollBatch = (props) => {
     dispatch(
       payrollBatchActions.getPayrollBatch({
         corporateId: corporateId ? corporateId : null,
+        socialOrganizationId: organizationId ? organizationId : null,
+        userType: corporateId ? "Corporate" : (organizationId ? organizationId : null),
+        requestType: "Batch",
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
@@ -256,7 +260,7 @@ const PayrollBatch = (props) => {
             </div>
           </div>
           {payrollBatches.loading && <Loader />}
-          {records && (corporateId || isOrganizationView) && (
+          {records && (corporateId || organizationId) && (
             <>
               <div className="ant-row">
                 <div className="ant-col ant-col-24 mt-2">
@@ -302,12 +306,7 @@ const PayrollBatch = (props) => {
                         </thead>
                         <tbody className="ant-table-tbody">
                           {records
-                            ?.filter((pr) =>
-                              corporateId
-                                ? pr
-                                : pr.status !== payrollConstants.PENDING_STATUS
-                            )
-                            .map((batch, index) => (
+                            ?.map((batch, index) => (
                               <tr
                                 key={index + 1}
                                 className="ant-table-row ant-table-row-level-0"

@@ -56,6 +56,7 @@ const DonationPreferences = () => {
     dispatch(
       donationPreferenceActions.getDonationPreferences({
         employeeId: employee?.emp_id,
+        userType: "Employee",
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })

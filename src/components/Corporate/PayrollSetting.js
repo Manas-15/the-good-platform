@@ -136,6 +136,8 @@ const PayrollSetting = (props) => {
     dispatch(
       payrollSettingActions.getDonationPreferences({
         corporateId: selectedCorporate?.corporate?.corporateId,
+        userType: isCorporatePortal ? "Corporate" : null,
+        requestType: "Batch",
         filterDate: moment(generateMonthYear).format("MM-YYYY"),
         pageSize: 1000,
         offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
@@ -321,7 +323,7 @@ const PayrollSetting = (props) => {
                                     )}
                                     )
                                   </th>
-                                  {!batchId && (
+                                  {(!preferences?.items?.[0]?.batchId && !batchId) && (
                                     <th className="ant-table-cell text-center">
                                       Actions
                                     </th>
@@ -397,7 +399,7 @@ const PayrollSetting = (props) => {
                                           disabled={true}
                                         />
                                       </td>
-                                      {!batchId && (
+                                      {(!preferences?.items?.[0]?.batchId && !batchId) && (
                                         <td className="ant-table-cell text-center">
                                           <Link
                                             onClick={() =>
@@ -433,17 +435,7 @@ const PayrollSetting = (props) => {
                   <span className="fs-5">
                     {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                     {preferences?.items
-                      ? preferences?.items
-                          .filter((preference) =>
-                            batchId
-                              ? preference
-                              : preference?.isDeleted === false &&
-                                !preference?.batchId &&
-                                (preference?.status ===
-                                  donationPreferenceConstants?.RESUMED ||
-                                  preference?.status === null)
-                          )
-                          ?.reduce(
+                      ? preferences?.items?.reduce(
                             (total, currentValue) =>
                               (total = total + currentValue.donationAmount),
                             0
@@ -462,8 +454,9 @@ const PayrollSetting = (props) => {
           <button
             className="btn btn-custom"
             onClick={() => handleOpenDialog("Process batch", "")}
+            disabled={preferences?.items?.[0]?.batchId}
           >
-            Process Batch
+            {preferences?.items?.[0]?.batchId ? "Processed" : "Process Batch"}
           </button>
         </div>
       )}

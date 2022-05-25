@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import { donationPreferenceConstants, paginationConstants } from "../../constants";
+import { donationPreferenceConstants, paginationConstants, viewPortalConstants } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
@@ -30,6 +30,10 @@ const EmployeeDonationPreferences = () => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
+  const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -48,6 +52,9 @@ const EmployeeDonationPreferences = () => {
   useEffect(() => {
     dispatch(
       donationPreferenceActions.getDonationPreferences({
+        corporateId: selectedCorporate?.corporate?.corporateId,
+        userType: isCorporatePortal ? "Corporate" : null,
+        requestType: "Preference",
         pageSize: pageSize,
         offset:
           currentPage >= 2

@@ -57,7 +57,10 @@ function processBatch(data) {
   return (dispatch) => {
     dispatch(request(data));
     payrollService.processBatch(data).then(
-      (batch) => dispatch(success(batch)),
+      (batch) => {
+        dispatch(success(batch));
+        dispatch(alertActions.success("Batch processed successfully."));
+      },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
