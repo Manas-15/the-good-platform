@@ -88,8 +88,8 @@ const PayrollBatch = (props) => {
     dispatch(
       payrollBatchActions.getPayrollBatch({
         corporateId: corporateId ? corporateId : null,
-        socialOrganizationId: organizationId ? organizationId : null,
-        userType: corporateId ? "Corporate" : (organizationId ? organizationId : null),
+        socialId: organizationId ? organizationId : null,
+        userType: corporateId ? "Corporate" : (organizationId ? "SocialOrganization" : "BluePencilAdmin"),
         requestType: "Batch",
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,

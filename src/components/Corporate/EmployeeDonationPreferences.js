@@ -3,7 +3,11 @@ import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import { donationPreferenceConstants, paginationConstants, viewPortalConstants } from "../../constants";
+import {
+  donationPreferenceConstants,
+  paginationConstants,
+  viewPortalConstants,
+} from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
@@ -56,11 +60,7 @@ const EmployeeDonationPreferences = () => {
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Preference",
         pageSize: pageSize,
-        offset:
-          currentPage >= 2
-            ? currentPage * pageSize -
-            pageSize
-            : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
   }, [currentPage]);
@@ -221,19 +221,19 @@ const EmployeeDonationPreferences = () => {
                             />
                           </td>
                           <td className="ant-table-cell text-center">
-                              <BootstrapSwitchButton
-                                checked={
-                                  preference?.frequency ===
-                                      donationPreferenceConstants.ONCE_FREQUENCY
-                                }
-                                onlabel="Once"
-                                onstyle="primary"
-                                offlabel="Monthly"
-                                offstyle="success"
-                                style="w-100 mx-1"
-                                size="sm"
-                                disabled
-                              />
+                            <BootstrapSwitchButton
+                              checked={
+                                preference?.frequency ===
+                                donationPreferenceConstants.ONCE_FREQUENCY
+                              }
+                              onlabel="Once"
+                              onstyle="primary"
+                              offlabel="Monthly"
+                              offstyle="success"
+                              style="w-100 mx-1"
+                              size="sm"
+                              disabled
+                            />
                           </td>
                           <td className="ant-table-cell text-center text-uppercase">
                             {preference?.status ===

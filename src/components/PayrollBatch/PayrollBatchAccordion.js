@@ -131,6 +131,14 @@ const PayrollBatchAccordion = (props) => {
   } else {
     accordionData = groupBy("corporateName");
   }
+  const confirmPaid = () => {
+    dispatch(
+      payrollBatchActions.updateBatchStatus({
+        batchId: selectedBatch?.batchId,
+        requestType: "Paid",
+      })
+    );
+  };
   return (
     <>
       {accordionData && !isBatchDetail && (
@@ -385,9 +393,7 @@ const PayrollBatchAccordion = (props) => {
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>
-              ) : (
-                <div className="text-center m-4">No data found</div>
-              )}
+              ) : null}
             </div>
           ))}
           <Pagination
@@ -498,7 +504,7 @@ const PayrollBatchAccordion = (props) => {
                 initialValues={null}
                 validationSchema={null}
                 onSubmit={(values) => {
-                  console.log("dddddddddddd simulator");
+                  confirmPaid();
                 }}
               >
                 {({
@@ -541,6 +547,11 @@ const PayrollBatchAccordion = (props) => {
             <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
           </Modal>
         </>
+      )}
+      {!payrollBatches && (
+        <div className="card text-center m-4 p-4">
+          <h6>No data found</h6>
+        </div>
       )}
       {isBatchDetail && (
         <PayrollBatchDetail

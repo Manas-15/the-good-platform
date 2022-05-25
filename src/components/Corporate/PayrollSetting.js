@@ -112,7 +112,9 @@ const PayrollSetting = (props) => {
   const processBatch = () => {
     const data = ProcessHelper(preferences?.items);
     const finalData = {
-      corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : null,
+      corporateId: isCorporatePortal
+        ? selectedCorporate?.corporate?.corporateId
+        : null,
       totalAmount: data.reduce(
         (total, currentValue) => (total = total + currentValue.donationAmount),
         0
@@ -323,15 +325,17 @@ const PayrollSetting = (props) => {
                                     )}
                                     )
                                   </th>
-                                  {(!preferences?.items?.[0]?.batchId && !batchId) && (
-                                    <th className="ant-table-cell text-center">
-                                      Actions
-                                    </th>
-                                  )}
+                                  {!preferences?.items?.[0]?.batchId &&
+                                    !batchId && (
+                                      <th className="ant-table-cell text-center">
+                                        Actions
+                                      </th>
+                                    )}
                                 </tr>
                               </thead>
                               <tbody className="ant-table-tbody">
-                                {ProcessHelper(accordionData[type], null).map((preference, i) => (
+                                {ProcessHelper(accordionData[type], null).map(
+                                  (preference, i) => (
                                     <tr
                                       key={index + 1}
                                       className="ant-table-row ant-table-row-level-0"
@@ -399,23 +403,25 @@ const PayrollSetting = (props) => {
                                           disabled={true}
                                         />
                                       </td>
-                                      {(!preferences?.items?.[0]?.batchId && !batchId) && (
-                                        <td className="ant-table-cell text-center">
-                                          <Link
-                                            onClick={() =>
-                                              handleOpenDialog(
-                                                "Delete",
-                                                preference
-                                              )
-                                            }
-                                            title="Delete"
-                                          >
-                                            <i className="bi bi-trash fs-5 custom-color"></i>
-                                          </Link>
-                                        </td>
-                                      )}
+                                      {!preferences?.items?.[0]?.batchId &&
+                                        !batchId && (
+                                          <td className="ant-table-cell text-center">
+                                            <Link
+                                              onClick={() =>
+                                                handleOpenDialog(
+                                                  "Delete",
+                                                  preference
+                                                )
+                                              }
+                                              title="Delete"
+                                            >
+                                              <i className="bi bi-trash fs-5 custom-color"></i>
+                                            </Link>
+                                          </td>
+                                        )}
                                     </tr>
-                                  ))}
+                                  )
+                                )}
                               </tbody>
                             </table>
                           </div>
@@ -435,7 +441,8 @@ const PayrollSetting = (props) => {
                   <span className="fs-5">
                     {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                     {preferences?.items
-                      ? preferences?.items?.reduce(
+                      ? preferences?.items
+                          ?.reduce(
                             (total, currentValue) =>
                               (total = total + currentValue.donationAmount),
                             0
