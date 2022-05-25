@@ -25,6 +25,8 @@ import Profile from "../components/Profile/Profile";
 import PayrollSetting from "../components/Corporate/PayrollSetting";
 import PayrollBatch from "../components/PayrollBatch/PayrollBatch";
 import { notification } from "antd";
+import TermsOfService from "../components/TermsOfService/TermsOfService";
+import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -175,6 +177,8 @@ const CreateRoutes = () => {
                   path="/set-password/:uuid"
                   component={SetPassword}
                 />
+                <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+                <Route exact path="/terms-of-service" component={TermsOfService} />
                 {user && !otpVerified && (
                   <Route exact path="/otp" component={Otp} />
                 )}
