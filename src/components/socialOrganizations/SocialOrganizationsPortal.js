@@ -1,6 +1,9 @@
 import React, { useEffect, useState, createRef } from "react";
 import { useHistory } from "react-router-dom";
-import { socialOrganizationActions, selectedOrganizationActions } from "../../actions";
+import {
+  socialOrganizationActions,
+  selectedOrganizationActions,
+} from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Shared/Loader";
 import "./../../assets/css/corporates.scss";
@@ -54,15 +57,14 @@ const SocialOrganizationsPortal = () => {
       <div className="row mb-4">
         <div className="col-md-4 offset-md-3">
           {socialOrganizations.loading && <Loader />}
-          {socialOrganizations?.items && socialOrganizations?.items.length > 0 ? (
+          {socialOrganizations?.items &&
+          socialOrganizations?.items.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
                 {socialOrganizations?.items.map((org, index) => {
                   return (
                     <li key={index + 1}>
-                      <Link
-                        to={`/organizations/${org.id}/payroll-batch`}
-                      >
+                      <Link to={`/organizations/${org.id}/payroll-batch`}>
                         {org?.name}
                       </Link>
                     </li>

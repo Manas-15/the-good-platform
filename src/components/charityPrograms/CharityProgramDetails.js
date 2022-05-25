@@ -12,8 +12,11 @@ import Donate from "./Donate";
 import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
 import { charityProgramConstants } from "./../../constants";
+import { Chart, ArcElement } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 import donationsConsent from "./../../config/donationsConsent.json";
 const TabPane = Tabs.TabPane;
+Chart.register(ArcElement);
 
 const CharityProgramDetails = (props) => {
   let charityFirstTwoChar, employeeFirstTwoChar;
@@ -78,6 +81,20 @@ const CharityProgramDetails = (props) => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => onScroll();
   }, []);
+  const data1 = {
+    labels: ["Operations", "Communication", "Travel", "Administrative"],
+    datasets: [
+      {
+        data: [30, 30, 5, 15],
+        backgroundColor: [
+          "rgb(242,165,152)",
+          "rgb(255,232,157)",
+          "rgb(236,107,109)",
+          "rgb(122,231,125)",
+        ],
+      },
+    ],
+  };
   return (
     <>
       <div className="ant-row">
@@ -139,11 +156,11 @@ const CharityProgramDetails = (props) => {
                   </div>
                 </div>
                 <div className="row mt-3">
-                  <div className="col-md-12 text-justify">
+                  <div className="col-md-12 text-center">
                     <b>Each share brings us closer to our goal</b>
                   </div>
                 </div>
-                <div className="row">
+                <div className="row text-center">
                   <div className="col-md-12">
                     <Link>
                       <i className="bi-facebook fs-3 mr-3 custom-color"></i>
@@ -268,6 +285,67 @@ const CharityProgramDetails = (props) => {
                         <i className="bi-person-bounding-box fs-6"></i>
                       </div>
                       <div className="col-md-10 pl-0">Primary Contact</div>
+                    </div>
+                  </div>
+                </TabPane>
+                <TabPane tab={"Our Plan"} key={"pur_plan"}>
+                  <div className="row mt-4 program-list">
+                    <div className="row mt-3">
+                      <div className="col-md-12">
+                        <strong>
+                          Here are the problems faced by the
+                          community/individual targetted and their needs
+                        </strong>
+                        <p>
+                          These are the families falling in the below poverty
+                          line and cannot afford to provide the bare minimum
+                          requirement of nutrition to their family
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-md-12">
+                        <strong>
+                          These are our unique points,with regards to this
+                          program
+                        </strong>
+                        <p>
+                          Our volunteers reach out to them to collect their
+                          data, door to door program, provide ration bags post
+                          verification of their identification.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-md-12">
+                        <strong>Key Highlights</strong>
+                        <p>
+                          Providing food security to the poor and deprived
+                          community to meet their basic survival need and good
+                          health leading Independent lifestyle
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </TabPane>
+                <TabPane tab={"Budget"} key={"budget"}>
+                  <div className="row mt-4 program-list">
+                    <div className="row mt-3">
+                      <div className="col-md-12">
+                        <Doughnut
+                          data={data1}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: {
+                                display: true,
+                                position: "right",
+                              },
+                            },
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </TabPane>

@@ -45,7 +45,8 @@ const CreateRoutes = () => {
     }, 8000);
   }
   const isCorporateLunchpad = history.location.pathname === "/corporates";
-  const isSocialOrganizationLunchpad = history.location.pathname === "/organizations";
+  const isSocialOrganizationLunchpad =
+    history.location.pathname === "/organizations";
   const isEmployeeView = history.location.pathname.includes("/employees");
   if (isCorporateLunchpad && isSocialOrganizationLunchpad) {
     document.body.classList.add("toggle-sidebar");
@@ -69,8 +70,12 @@ const CreateRoutes = () => {
           <section className="section dashboard">
             {alert.message &&
               openNotificationWithIcon(alert.type, alert.message)}
-            {!isCorporateLunchpad && !isSocialOrganizationLunchpad && <Header />}
-            {!isCorporateLunchpad && !isSocialOrganizationLunchpad && <Sidebar />}
+            {!isCorporateLunchpad && !isSocialOrganizationLunchpad && (
+              <Header />
+            )}
+            {!isCorporateLunchpad && !isSocialOrganizationLunchpad && (
+              <Sidebar />
+            )}
             <Switch>
               {!isEmployeeView && (
                 <Route exact path="/" component={Dashboard} />
@@ -96,7 +101,11 @@ const CreateRoutes = () => {
                 />
               )}
               <Route exact path="/corporates" component={CorporatesPortal} />
-              <Route exact path="/organizations" component={SocialOrganizationsPortal} />
+              <Route
+                exact
+                path="/organizations"
+                component={SocialOrganizationsPortal}
+              />
               <Route
                 exact
                 path="/corporates/:corporateId/employees"
@@ -186,7 +195,11 @@ const CreateRoutes = () => {
                   component={SetPassword}
                 />
                 <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-                <Route exact path="/terms-of-service" component={TermsOfService} />
+                <Route
+                  exact
+                  path="/terms-of-service"
+                  component={TermsOfService}
+                />
                 {user && !otpVerified && (
                   <Route exact path="/otp" component={Otp} />
                 )}
