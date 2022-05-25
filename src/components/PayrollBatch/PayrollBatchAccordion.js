@@ -5,6 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
+  viewPortalConstants,
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -29,6 +30,10 @@ let accordionData;
 const PayrollBatchAccordion = (props) => {
   // let history = useHistory();
   const payrollBatches = useSelector((state) => state.payrollBatch);
+  const currentPortal = useSelector((state) => state.currentView);
+  const isOrganizationView =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
   const batchId = props?.batchId;
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
@@ -59,7 +64,7 @@ const PayrollBatchAccordion = (props) => {
     setSelectedPreference(item);
     setActionTitle(`${action} Confirmation`);
     setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${
+      `Are you sure you wnat to ${action.toLowerCase()} <strong>"${
         item?.charityProgram
       }"</strong>?`
     );
@@ -73,12 +78,17 @@ const PayrollBatchAccordion = (props) => {
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
-    setActionTitle(`${action}`);
-    setActionContent(
-      `Are you sure to ${
-        action == "Confirm Batch" ? "confirm" : "unconfirm"
-      } this batch <strong>"${item?.batchId}"</strong>?`
-    );
+    if (isOrganizationView) {
+      setActionTitle("Confirm Payment Receipt");
+      setActionContent(`Are you sure you want to receive this batch payments?`);
+    } else {
+      setActionTitle(`${action}`);
+      setActionContent(
+        `Are you sure you want to ${
+          action == "Confirm Batch" ? "confirm" : "unconfirm"
+        } this batch <strong>"${item?.batchId}"</strong>?`
+      );
+    }
     confirmInitialValues.batchId = item?.batchId;
     if (action === "Confirm Batch") {
       confirmInitialValues.requestType = payrollConstants.CONFIRM;
@@ -411,6 +421,52 @@ const PayrollBatchAccordion = (props) => {
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
                       {ReactHtmlParser(actionContent)}
+                      {actionType !== payrollConstants.COMPLETE_BATCH && (
+                        <>
+                          <div className="row mt-4 mb-2">
+                            <div className="col-md-4">
+                              <strong>Batch ID:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.batchId}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Amount:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.amount}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Payment Date:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {moment(selectedBatch?.createdDate).format(
+                                "MMM, YYYY"
+                              )}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Reference ID:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.referenceId}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Reference Note:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.referenceNote}
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </Modal.Body>
                     <Modal.Footer>
                       <Button
@@ -462,13 +518,13 @@ const PayrollBatchAccordion = (props) => {
                       </p>
                     </Modal.Body>
                     <Modal.Footer>
-                      <button
-                        className="btn btn-custom"
+                      <Button
+                        variant="success"
                         disabled={isSubmitting}
                         onClick={hidePaidSimulator}
                       >
                         Simulate Success
-                      </button>
+                      </Button>
                       <Button variant="danger" onClick={hidePaidSimulator}>
                         Simulate Failure
                       </Button>

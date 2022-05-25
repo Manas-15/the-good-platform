@@ -61,13 +61,13 @@ const ListTransactionsHistory = (props) => {
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   useEffect(() => {
     setCurrentPage(1);
-    charityPrograms?.items?.sponser?.forEach((e) => {
+    charityPrograms?.items?.sponsored?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
     charityPrograms?.items?.other?.forEach((e) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
-  }, [props, charityPrograms?.items?.sponser, charityPrograms?.items?.other]);
+  }, [props, charityPrograms?.items?.sponsored, charityPrograms?.items?.other]);
   useEffect(() => {
     if (!isFilter) {
       dispatch(
@@ -180,13 +180,13 @@ const ListTransactionsHistory = (props) => {
   return (
     <div className="customContainer">
       <div className="row mt-3">
-        <div className="col-md-4">
+        <div className="col-md-6">
           <h1 className="ant-typography customHeading">Account Summary</h1>
         </div>
-        <div className="col-md-4 text-center">
+        {/* <div className="col-md-4 text-center">
         <DateRangePicker appearance="default" />
-        </div>
-        <div className="col-md-4 text-right">
+        </div> */}
+        <div className="col-md-6 text-right">
           <div className="row mb-4">
             <div className="col-md-6">
               <h6 className="mt-2">Filter By</h6>
@@ -234,7 +234,7 @@ const ListTransactionsHistory = (props) => {
             </span>
           </div>
         </div>
-        <div className="ant-col-6  searchContainer ml-3">
+        {/* <div className="ant-col-6  searchContainer ml-3">
           <div className="ant-input-affix-wrapper inputFilterInput">
             <span className="ant-input-prefix">
               <i className="bi bi-search"></i>
@@ -263,7 +263,7 @@ const ListTransactionsHistory = (props) => {
               />
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
       {transactions.loading && <Loader />}
       <div className="ant-row">

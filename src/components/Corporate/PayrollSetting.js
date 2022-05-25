@@ -6,6 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
+  viewPortalConstants,
 } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -29,6 +30,7 @@ const PayrollSetting = (props) => {
   const preferences = useSelector((state) => state.payrollSetting);
   const employee = useSelector((state) => state.employee.user);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const currentPortal = useSelector((state) => state.currentView);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -44,6 +46,8 @@ const PayrollSetting = (props) => {
   );
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
   const [isGenerating, setIsGenerating] = useState(false);
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -108,7 +112,7 @@ const PayrollSetting = (props) => {
   const processBatch = () => {
     const data = ProcessHelper(preferences?.items);
     const finalData = {
-      corporateId: selectedCorporate?.corporate?.corporateId,
+      corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : null,
       totalAmount: data.reduce(
         (total, currentValue) => (total = total + currentValue.donationAmount),
         0
@@ -131,6 +135,7 @@ const PayrollSetting = (props) => {
   const getData = () => {
     dispatch(
       payrollSettingActions.getDonationPreferences({
+        corporateId: selectedCorporate?.corporate?.corporateId,
         filterDate: moment(generateMonthYear).format("MM-YYYY"),
         pageSize: 1000,
         offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,

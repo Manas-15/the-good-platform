@@ -114,18 +114,22 @@ const PayrollBatch = (props) => {
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
-    setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
-    setActionContent(
-      `Are you sure to ${
-        isOrganizationView
-          ? "receive"
-          : corporateId
-          ? "complete"
-          : action == "Confirm Batch"
-          ? "confirm"
-          : "unconfirm"
-      } this batch <strong>"${item?.batchId}"</strong>?`
-    );
+    if (isOrganizationView) {
+      setActionTitle("Confirm Payment Receipt");
+      setActionContent(`Are you sure want to receive this batch paymentsss?`);
+    } else {
+      setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
+      setActionContent(
+        `Are you sure to ${
+          corporateId
+            ? "complete"
+            : action == "Confirm Batch"
+            ? "confirm"
+            : "unconfirm"
+        } this batch <strong>"${item?.batchId}"</strong>?`
+      );
+    }
+
     if (action === "Complete Batch") {
       completeInitialValues.batchId = item?.batchId;
       completeInitialValues.requestType = payrollConstants.COMPLETE;
@@ -473,10 +477,13 @@ const PayrollBatch = (props) => {
                                         handleOpen("Receive Batch", batch)
                                       }
                                     >
-                                      <span
-                                        className="bi-cart-check fs-5"
+                                      <img
+                                        src="/assets/img/receive.svg"
+                                        alt="Receive"
                                         title="Receive"
-                                      ></span>
+                                        height={20}
+                                        className="custom-color"
+                                      />
                                     </Link>
                                   )}
                                 </td>
@@ -530,6 +537,52 @@ const PayrollBatch = (props) => {
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
                       {ReactHtmlParser(actionContent)}
+                      {actionType !== payrollConstants.COMPLETE_BATCH && (
+                        <>
+                          <div className="row mt-4 mb-2">
+                            <div className="col-md-4">
+                              <strong>Batch ID:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.batchId}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Amount:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.amount}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Payment Date:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {moment(selectedBatch?.createdDate).format(
+                                "MMM, YYYY"
+                              )}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Reference ID:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.referenceId}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
+                            <div className="col-md-4">
+                              <strong>Reference Note:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.referenceNote}
+                            </div>
+                          </div>
+                        </>
+                      )}
                       {actionType === payrollConstants.COMPLETE_BATCH && (
                         <>
                           <div className="form-group">
