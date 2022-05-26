@@ -116,7 +116,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {isCorporateView && !isOrganizationView && (
+          {isCorporateView && (
             <Link
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.EMPLOYEE_VIEW)}
@@ -220,11 +220,13 @@ const PayrollBatchDetail = (props) => {
                                           Employee ID
                                         </th>
                                       )}
-                                    {isOrganizationView && (
-                                      <th className="ant-table-cell">
-                                        Corporate Name
-                                      </th>
-                                    )}
+                                    {isOrganizationView &&
+                                      currentView !==
+                                        payrollConstants.CORPORATE_VIEW && (
+                                        <th className="ant-table-cell">
+                                          Corporate Name
+                                        </th>
+                                      )}
                                     {currentView !==
                                       payrollConstants.PROGRAM_VIEW && (
                                       <th className="ant-table-cell">
@@ -292,13 +294,15 @@ const PayrollBatchDetail = (props) => {
                                               {preference?.employeeUid}
                                             </td>
                                           )}
-                                        {isOrganizationView && (
-                                          <td className="ant-table-cell">
-                                            <span className="ant-typography font-weight-bold">
-                                              {preference?.corporateName}
-                                            </span>
-                                          </td>
-                                        )}
+                                        {isOrganizationView &&
+                                          currentView !==
+                                            payrollConstants.CORPORATE_VIEW && (
+                                            <td className="ant-table-cell">
+                                              <span className="ant-typography font-weight-bold">
+                                                {preference?.corporateName}
+                                              </span>
+                                            </td>
+                                          )}
                                         {currentView !==
                                           payrollConstants.PROGRAM_VIEW && (
                                           <td className="ant-table-cell">

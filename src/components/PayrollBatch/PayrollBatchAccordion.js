@@ -109,10 +109,10 @@ const PayrollBatchAccordion = (props) => {
     setActionType(null);
   };
   const openPaidConfirmation = (item) => {
-     console.log("cccccccccccccccccccccccccc item", item)
+    console.log("cccccccccccccccccccccccccc item", item);
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
-  }
+  };
   const hidePaidSimulator = () => {
     setOpenPaidSimulator(false);
   };
@@ -140,7 +140,7 @@ const PayrollBatchAccordion = (props) => {
     dispatch(
       payrollBatchActions.updateBatchStatus({
         batchId: selectedBatch?.batchId,
-        requestType: "Paid",
+        requestType: payrollConstants.PAID,
       })
     );
     hidePaidSimulator();
@@ -523,25 +523,21 @@ const PayrollBatchAccordion = (props) => {
                   isSubmitting,
                 }) => (
                   <Form> */}
-                    <Modal.Body style={{ fontSize: "18" }}>
-                      <p>
-                        This is a simulating service. Click on the respective
-                        button to send the response.
-                      </p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <Button
-                        type="submit"
-                        variant="success"
-                        onClick={confirmPaid}
-                      >
-                        Simulate Success
-                      </Button>
-                      <Button variant="danger" onClick={hidePaidSimulator}>
-                        Simulate Failure
-                      </Button>
-                    </Modal.Footer>
-                  {/* </Form>
+              <Modal.Body style={{ fontSize: "18" }}>
+                <p>
+                  This is a simulating service. Click on the respective button
+                  to send the response.
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button type="submit" variant="success" onClick={confirmPaid}>
+                  Simulate Success
+                </Button>
+                <Button variant="danger" onClick={hidePaidSimulator}>
+                  Simulate Failure
+                </Button>
+              </Modal.Footer>
+              {/* </Form>
                 )}
               </Formik> */}
             </Modal>

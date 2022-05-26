@@ -467,7 +467,8 @@ const PayrollBatch = (props) => {
                                     )}
                                   </>
                                 )}
-                                {isOrganizationView && (
+                                {isOrganizationView && batch?.status !==
+                                    payrollConstants.RECEIVED_STATUS && (
                                   <Link
                                     onClick={() =>
                                       handleOpen("Receive Batch", batch)
@@ -481,6 +482,10 @@ const PayrollBatch = (props) => {
                                       className="custom-color"
                                     />
                                   </Link>
+                                )}
+                                {isOrganizationView && batch?.status ===
+                                    payrollConstants.RECEIVED_STATUS && (
+                                  <button className="btn btn-sm btn-success">Received</button>
                                 )}
                               </td>
                             </tr>

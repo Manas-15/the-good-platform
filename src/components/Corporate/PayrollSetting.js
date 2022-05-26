@@ -143,8 +143,8 @@ const PayrollSetting = (props) => {
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Batch",
         filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
-          ? moment().format("DD-MM-YYYY")
-          : moment(generateMonthYear).format("DD-MM-YYYY"),
+          ? moment().format("MM-DD-YYYY")
+          : moment(generateMonthYear).format("MM-DD-YYYY"),
         // pageSize: 1000,
         // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })
@@ -460,17 +460,22 @@ const PayrollSetting = (props) => {
           )}
         </>
       ) : null}
-      {ProcessHelper(preferences?.items, batchId)?.length > 0 && !batchId && (
-        <div className="text-right m-3">
-          <button
-            className="btn btn-custom"
-            onClick={() => handleOpenDialog("Process batch", "")}
-            disabled={preferences?.items?.[0]?.batchId}
-          >
-            {preferences?.items?.[0]?.batchId ? "Processed" : "Process Batch"}
-          </button>
-        </div>
-      )}
+      {!moment(generateMonthYear).isAfter(moment()) &&
+        ProcessHelper(preferences?.items, batchId)?.length > 0 &&
+        !batchId && (
+          <div className="text-right m-3">
+            <button
+              className="btn btn-custom"
+              onClick={() => handleOpenDialog("Process batch", "")}
+              disabled={
+                preferences?.items?.[0]?.batchId ||
+                moment(generateMonthYear).isAfter(moment())
+              }
+            >
+              {preferences?.items?.[0]?.batchId ? "Processed" : "Process Batch"}
+            </button>
+          </div>
+        )}
       {openDialog && (
         <ConfirmationDialog
           open={true}
