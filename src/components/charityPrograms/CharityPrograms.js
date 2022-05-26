@@ -21,7 +21,7 @@ const CharityPrograms = () => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const selectedOrganizationId = useSelector(
-    (state) => state.selectedOrganization
+    (state) => state?.selectedOrganization?.organization?.id
   );
   const [selectedCharity, setSelectedCharity] = useState();
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
@@ -29,7 +29,7 @@ const CharityPrograms = () => {
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const selectedOrganization = useSelector(
-    (state) => state.selectedOrganization
+    (state) => state.selectedOrganization?.organization
   );
 
   const [currentView, setCurrentView] = useState(

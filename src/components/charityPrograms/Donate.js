@@ -25,16 +25,15 @@ const preferenceForm = {
   isConsentCheck: "",
   donationConsent: "",
 };
-const Donate = ({ frequency, selectedCharity, tabType }) => {
+const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   const employee = useSelector((state) => state.employee.user);
-  const charityPrograms = useSelector((state) => state.charityPrograms);
-  const donationPreferences = useSelector((state) => state.donationPreferences);
   const currentView = useSelector((state) => state.currentView);
   const [selectedAmount, setSelectedAmount] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [showNextStep, setShowNextStep] = useState(false);
+  const [addedFromProgramDetail, setAddedFromProgramDetail] = useState(false);
   const isCorporatePortal =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isEmployeePortal =
@@ -45,6 +44,9 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
       setSelectedAmount(selectedCharity?.unitPrice);
     } else {
       setShowNextStep(false);
+    }
+    if (selectedCharity?.donated && from) {
+      setAddedFromProgramDetail(true);
     }
   }, [selectedCharity]);
   const handleCheck = () => {
@@ -70,7 +72,14 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
     preferenceForm.isConsentCheck = true;
     preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
     dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
-    document.getElementById("sidepanel").classList.remove("is-open");
+    const sidepanel = document.getElementById("sidepanel");
+    if (sidepanel) {
+      document.getElementById("sidepanel").classList.remove("is-open");
+    }
+    if (from) {
+      setAddedFromProgramDetail(true);
+      selectedCharity.donated = true;
+    }
   };
   const nextStep = () => {
     setShowNextStep(!showNextStep);
@@ -140,7 +149,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
             <div className="col-md-10 text-center offset-md-1">
               <p className="mb-2">
                 <span className="bi-heart-fill fs-6 ml-2 cursor-pointer text-danger"></span>
-                How will my donation help?
+                &nbsp;How will my donation help?
               </p>
               <p className="mb-2">
                 Your contribution will used towards giving India's
@@ -152,27 +161,29 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
               </p>
             </div>
           </div>
-          {tabType === charityProgramConstants.SPONSOR && !isCorporatePortal && (
-            <div className="row">
-              <div className="col-md-12">
-                <label className="m-2">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => setOpen(true)}
-                  />
-                  <Link
-                    className="text-dark d-inline pl-0"
-                    onClick={() => setOpen(true)}
-                  >
-                    <p className="ml-2 d-inline-block text-decoration-underline">
-                      Please select the checkbox to your consents
-                    </p>
-                  </Link>
-                </label>
+          {tabType === charityProgramConstants.SPONSOR &&
+            !isCorporatePortal &&
+            !addedFromProgramDetail && (
+              <div className="row">
+                <div className="col-md-12">
+                  <label className="m-2">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => setOpen(true)}
+                    />
+                    <Link
+                      className="text-dark d-inline pl-0"
+                      onClick={() => setOpen(true)}
+                    >
+                      <p className="ml-2 d-inline-block text-decoration-underline">
+                        Please select the checkbox to your consents
+                      </p>
+                    </Link>
+                  </label>
+                </div>
               </div>
-            </div>
-          )}
+            )}
           <div
             className={
               "row mb-4 " +
@@ -187,7 +198,7 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
                 disabled={
                   tabType === charityProgramConstants.SPONSOR &&
                   !isCorporatePortal
-                    ? !checked
+                    ? addedFromProgramDetail || !checked
                     : false
                 }
                 onClick={
@@ -201,8 +212,13 @@ const Donate = ({ frequency, selectedCharity, tabType }) => {
                   {tabType === charityProgramConstants.SPONSOR &&
                   !isCorporatePortal ? (
                     <>
-                      <span className="bi-heart-fill fs-6 ml-2 text-white"></span>
-                      &nbsp;Add Donation Preference
+                      <span
+                        className={`${
+                          addedFromProgramDetail ? "text-danger" : "text-white"
+                        } bi-heart-fill fs-6 ml-2`}
+                      ></span>
+                      &nbsp;{addedFromProgramDetail ? "Added" : "Add"} Donation
+                      Preference
                     </>
                   ) : (
                     "Next"

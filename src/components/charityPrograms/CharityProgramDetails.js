@@ -95,6 +95,20 @@ const CharityProgramDetails = (props) => {
       },
     ],
   };
+  const data2 = {
+    labels: ["Operations", "Communication", "Travel", "Administrative"],
+    datasets: [
+      {
+        data: [30, 30, 5, 15],
+        backgroundColor: [
+          "rgb(242,165,152)",
+          "rgb(255,232,157)",
+          "rgb(236,107,109)",
+          "rgb(122,231,125)",
+        ],
+      },
+    ],
+  };
   return (
     <>
       <div className="ant-row">
@@ -437,6 +451,19 @@ const CharityProgramDetails = (props) => {
                 <TabPane tab={"Donors"} key={"donors"}>
                   <div className="row mt-4 program-list">
                     <h4 className="mb-0">Donors (1985)</h4>
+                    <Doughnut
+                          data={data2}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: {
+                                display: true,
+                                position: "right",
+                              },
+                            },
+                          }}
+                        />
                     <div className="col-md-12">
                       <Tabs defaultActiveKey={0}>
                         <TabPane tab={<span>Most Generious</span>} key={0}>
@@ -491,6 +518,7 @@ const CharityProgramDetails = (props) => {
                     frequency={donationPreferenceConstants.ONCE}
                     selectedCharity={initialValues.charity}
                     tabType={tabType}
+                    from={"ProgramDetail"}
                   />
                 </div>
                 <div
@@ -501,6 +529,7 @@ const CharityProgramDetails = (props) => {
                     frequency={donationPreferenceConstants.MONTHLY}
                     selectedCharity={initialValues.charity}
                     tabType={tabType}
+                    from={"ProgramDetail"}
                   />
                 </div>
                 {/* </div> */}

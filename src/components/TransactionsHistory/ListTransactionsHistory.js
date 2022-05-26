@@ -286,7 +286,7 @@ const ListTransactionsHistory = (props) => {
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
                     <th className="ant-table-cell">Donation</th>
-                    {/* <th className="ant-table-cell">Donation Type</th> */}
+                    <th className="ant-table-cell">Donation Type</th>
                     <th className="ant-table-cell">Payment Mode</th>
                     <th className="ant-table-cell">Payment Status</th>
                     <th className="ant-table-cell">Payment Date</th>
@@ -337,9 +337,9 @@ const ListTransactionsHistory = (props) => {
                         <td className="ant-table-cell">
                           {transaction?.amount}
                         </td>
-                        {/* <td className="ant-table-cell">
+                        <td className="ant-table-cell">
                           {transaction?.donationType}
-                        </td> */}
+                        </td>
                         <td className="ant-table-cell">
                           {transaction?.paymentMethod &&
                             transaction?.paymentMethod.replace(/_/g, " ")}

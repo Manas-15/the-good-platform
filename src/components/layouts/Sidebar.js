@@ -7,7 +7,14 @@ import { useSelector } from "react-redux";
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
-  console.log("selectedCorporateselectedCorporate", selectedCorporate);
+  const selectedOrganization = useSelector(
+    (state) => state.selectedOrganization
+  );
+  console.log(
+    "selectedCorporateselectedCorporate",
+    selectedCorporate,
+    selectedOrganization
+  );
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
@@ -116,7 +123,7 @@ const Sidebar = () => {
                   <span className="ant-menu-title-content">
                     <NavLink
                       className=" "
-                      to={`/admin-payroll-batch`}
+                      to="/admin-payroll-batch"
                       activeClassName="active"
                     >
                       <i className="bi bi-hdd-stack"></i>
@@ -145,7 +152,7 @@ const Sidebar = () => {
                       <span className="ant-menu-title-content">
                         <NavLink
                           className=" "
-                          to="/admin-payroll-batch"
+                          to={`/organizations/${selectedOrganization?.organization?.id}/payroll-batch`}
                           activeClassName="active"
                         >
                           <i className="bi bi-people-fill"></i>
