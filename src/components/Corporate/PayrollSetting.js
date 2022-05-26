@@ -145,8 +145,8 @@ const PayrollSetting = (props) => {
         filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
           ? moment().format("DD-MM-YYYY")
           : moment(generateMonthYear).format("DD-MM-YYYY"),
-        pageSize: 1000,
-        offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
+        // pageSize: 1000,
+        // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })
     );
   };

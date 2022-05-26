@@ -487,7 +487,7 @@ const PayrollBatch = (props) => {
                           ))}
                           {records?.length === 0 && (
                             <tr>
-                              <td className="text-center" colSpan={7}>
+                              <td className="text-center" colSpan={9}>
                                 No data found
                               </td>
                             </tr>

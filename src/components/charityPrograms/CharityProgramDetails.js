@@ -452,18 +452,18 @@ const CharityProgramDetails = (props) => {
                   <div className="row mt-4 program-list">
                     <h4 className="mb-0">Donors (1985)</h4>
                     <Doughnut
-                          data={data2}
-                          options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                              legend: {
-                                display: true,
-                                position: "right",
-                              },
-                            },
-                          }}
-                        />
+                      data={data2}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: {
+                            display: true,
+                            position: "right",
+                          },
+                        },
+                      }}
+                    />
                     <div className="col-md-12">
                       <Tabs defaultActiveKey={0}>
                         <TabPane tab={<span>Most Generious</span>} key={0}>

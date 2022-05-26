@@ -108,6 +108,11 @@ const PayrollBatchAccordion = (props) => {
     setSelectedBatch(null);
     setActionType(null);
   };
+  const openPaidConfirmation = (item) => {
+     console.log("cccccccccccccccccccccccccc item", item)
+    setOpenPaidSimulator(true);
+    setSelectedBatch(item);
+  }
   const hidePaidSimulator = () => {
     setOpenPaidSimulator(false);
   };
@@ -138,6 +143,7 @@ const PayrollBatchAccordion = (props) => {
         requestType: "Paid",
       })
     );
+    hidePaidSimulator();
   };
   return (
     <>
@@ -354,7 +360,7 @@ const PayrollBatchAccordion = (props) => {
                                             </Link>
                                             <Link
                                               onClick={() =>
-                                                setOpenPaidSimulator(true)
+                                                openPaidConfirmation(batch)
                                               }
                                             >
                                               <span
@@ -500,11 +506,11 @@ const PayrollBatchAccordion = (props) => {
               <Modal.Header closeButton>
                 <Modal.Title>Paid Confirmation</Modal.Title>
               </Modal.Header>
-              <Formik
+              {/* <Formik
                 initialValues={null}
                 validationSchema={null}
                 onSubmit={(values) => {
-                  confirmPaid();
+                  console.log("<<<<<<<<<<<<<<<<<<< Confirm batch >>>>>>>>>>>>>>>>>")
                 }}
               >
                 {({
@@ -516,7 +522,7 @@ const PayrollBatchAccordion = (props) => {
                   handleSubmit,
                   isSubmitting,
                 }) => (
-                  <Form>
+                  <Form> */}
                     <Modal.Body style={{ fontSize: "18" }}>
                       <p>
                         This is a simulating service. Click on the respective
@@ -525,9 +531,9 @@ const PayrollBatchAccordion = (props) => {
                     </Modal.Body>
                     <Modal.Footer>
                       <Button
+                        type="submit"
                         variant="success"
-                        disabled={isSubmitting}
-                        onClick={hidePaidSimulator}
+                        onClick={confirmPaid}
                       >
                         Simulate Success
                       </Button>
@@ -535,9 +541,9 @@ const PayrollBatchAccordion = (props) => {
                         Simulate Failure
                       </Button>
                     </Modal.Footer>
-                  </Form>
+                  {/* </Form>
                 )}
-              </Formik>
+              </Formik> */}
             </Modal>
           )}
           <Modal show={show} onHide={handleCancel} backdrop="static">
