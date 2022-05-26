@@ -3,5 +3,5 @@ export const selectedOrganizationActions = {
 };
 
 function selectedOrganization(view) {
-  return { type: "GET_ID", view };
+  return { type: "GET_ORGANIZATION", view };
 }

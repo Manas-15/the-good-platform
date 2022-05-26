@@ -135,12 +135,16 @@ const PayrollSetting = (props) => {
     getData();
   };
   const getData = () => {
+    const startMonth = moment().startOf("month");
+    const endOfMonth = moment().endOf("month");
     dispatch(
       payrollSettingActions.getDonationPreferences({
         corporateId: selectedCorporate?.corporate?.corporateId,
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Batch",
-        filterDate: moment(generateMonthYear).format("MM-YYYY"),
+        filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
+          ? moment().format("DD-MM-YYYY")
+          : moment(generateMonthYear).format("DD-MM-YYYY"),
         pageSize: 1000,
         offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })

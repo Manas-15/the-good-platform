@@ -86,7 +86,7 @@ const PayrollBatchAccordion = (props) => {
       setActionContent(
         `Are you sure you want to ${
           action == "Confirm Batch" ? "confirm" : "unconfirm"
-        } this batch <strong>"${item?.batchId}"</strong>?`
+        } this batch?`
       );
     }
     confirmInitialValues.batchId = item?.batchId;

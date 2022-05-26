@@ -89,7 +89,11 @@ const PayrollBatch = (props) => {
       payrollBatchActions.getPayrollBatch({
         corporateId: corporateId ? corporateId : null,
         socialId: organizationId ? organizationId : null,
-        userType: corporateId ? "Corporate" : (organizationId ? "SocialOrganization" : "BluePencilAdmin"),
+        userType: corporateId
+          ? "Corporate"
+          : organizationId
+          ? "SocialOrganization"
+          : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
@@ -120,7 +124,7 @@ const PayrollBatch = (props) => {
     setSelectedBatch(item);
     if (isOrganizationView) {
       setActionTitle("Confirm Payment Receipt");
-      setActionContent(`Are you sure want to receive this batch paymentsss?`);
+      setActionContent(`Are you sure want to receive this batch payments?`);
     } else {
       setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
       setActionContent(
@@ -130,13 +134,15 @@ const PayrollBatch = (props) => {
             : action == "Confirm Batch"
             ? "confirm"
             : "unconfirm"
-        } this batch <strong>"${item?.batchId}"</strong>?`
+        } this batch?`
       );
     }
-
     if (action === "Complete Batch") {
       completeInitialValues.batchId = item?.batchId;
       completeInitialValues.requestType = payrollConstants.COMPLETE;
+    } else if (action === "Receive Batch") {
+      confirmInitialValues.batchId = item?.batchId;
+      confirmInitialValues.requestType = payrollConstants.RECEIVE;
     } else {
       confirmInitialValues.batchId = item?.batchId;
       if (action === "Confirm Batch") {
@@ -305,189 +311,180 @@ const PayrollBatch = (props) => {
                           </tr>
                         </thead>
                         <tbody className="ant-table-tbody">
-                          {records
-                            ?.map((batch, index) => (
-                              <tr
-                                key={index + 1}
-                                className="ant-table-row ant-table-row-level-0"
-                              >
-                                <td className="ant-table-cell">
-                                  {currentPage >= 2
-                                    ? currentPage * pageSize -
-                                      pageSize +
-                                      index +
-                                      1
-                                    : index + 1}
-                                </td>
-                                <td className="ant-table-cell">
-                                  <Link
-                                    onClick={() =>
-                                      showBatchDetail(batch?.batchId)
-                                    }
-                                  >
-                                    {batch?.batchId}
-                                  </Link>
-                                </td>
-                                {/* {currentView ===
+                          {records?.map((batch, index) => (
+                            <tr
+                              key={index + 1}
+                              className="ant-table-row ant-table-row-level-0"
+                            >
+                              <td className="ant-table-cell">
+                                {currentPage >= 2
+                                  ? currentPage * pageSize -
+                                    pageSize +
+                                    index +
+                                    1
+                                  : index + 1}
+                              </td>
+                              <td className="ant-table-cell">
+                                <Link
+                                  onClick={() =>
+                                    showBatchDetail(batch?.batchId)
+                                  }
+                                >
+                                  {batch?.batchId}
+                                </Link>
+                              </td>
+                              {/* {currentView ===
                                   payrollConstants.ORGANIZATION_VIEW && (
                                   <td className="ant-table-cell">
                                     {batch?.socialOrganizationId}
                                   </td>
                                 )} */}
-                                {currentView ===
-                                  payrollConstants.ORGANIZATION_VIEW && (
-                                  <td className="ant-table-cell">
-                                    {batch?.socialOrganizationName}
-                                  </td>
+                              {currentView ===
+                                payrollConstants.ORGANIZATION_VIEW && (
+                                <td className="ant-table-cell">
+                                  {batch?.socialOrganizationName}
+                                </td>
+                              )}
+                              {!corporateId && (
+                                <td className="ant-table-cell">
+                                  {batch?.corporateId}
+                                </td>
+                              )}
+                              {!corporateId && (
+                                <td className="ant-table-cell">
+                                  {batch?.corporateName}
+                                </td>
+                              )}
+                              <td className="ant-table-cell">
+                                {moment(batch?.createdDate).format("MMM, YYYY")}
+                              </td>
+                              <td className="ant-table-cell">
+                                {batch?.amount?.toLocaleString()}
+                              </td>
+                              <td className="ant-table-cell">
+                                <Link
+                                  onClick={() =>
+                                    showReferenceNote(batch?.referenceNote)
+                                  }
+                                >
+                                  {batch?.referenceId}
+                                </Link>
+                              </td>
+                              <td className="ant-table-cell">
+                                {batch?.status ===
+                                  payrollConstants.COMPLETED_STATUS && (
+                                  <>
+                                    <span>
+                                      {/* {payrollConstants.CONFIRMED} */}
+                                      25% (Batch created)
+                                    </span>
+                                    <Progress percent={25} showInfo={false} />
+                                  </>
                                 )}
-                                {!corporateId && (
-                                  <td className="ant-table-cell">
-                                    {batch?.corporateId}
-                                  </td>
+                                {batch?.status ===
+                                  payrollConstants.CONFIRMED_STATUS && (
+                                  <>
+                                    <span>
+                                      {/* {payrollConstants.CONFIRMED} */}
+                                      50% (Confirmed by Bluepencil)
+                                    </span>
+                                    <Progress percent={50} showInfo={false} />
+                                  </>
                                 )}
-                                {!corporateId && (
-                                  <td className="ant-table-cell">
-                                    {batch?.corporateName}
-                                  </td>
+                                {batch?.status ===
+                                  payrollConstants.PAID_STATUS && (
+                                  <>
+                                    <span>
+                                      {/* {payrollConstants.CONFIRMED} */}
+                                      75% (Paid to Social Organization)
+                                    </span>
+                                    <Progress percent={75} showInfo={false} />
+                                  </>
                                 )}
-                                <td className="ant-table-cell">
-                                  {moment(batch?.createdDate).format(
-                                    "MMM, YYYY"
+                                {batch?.status ===
+                                  payrollConstants.RECEIVED_STATUS && (
+                                  <>
+                                    <span>
+                                      {/* {payrollConstants.CONFIRMED} */}
+                                      100% (Received by Social Organization)
+                                    </span>
+                                    <Progress percent={100} showInfo={false} />
+                                  </>
+                                )}
+                              </td>
+                              <td className="ant-table-cell text-center">
+                                {corporateId &&
+                                  batch?.status ===
+                                    payrollConstants.PENDING_STATUS && (
+                                    <Link
+                                      onClick={() =>
+                                        handleOpen("Complete Batch", batch)
+                                      }
+                                    >
+                                      <span
+                                        className="bi-check-circle fs-5"
+                                        title="Complete"
+                                      ></span>
+                                    </Link>
                                   )}
-                                </td>
-                                <td className="ant-table-cell">
-                                  {batch?.amount?.toLocaleString()}
-                                </td>
-                                <td className="ant-table-cell">
-                                  <Link
-                                    onClick={() =>
-                                      showReferenceNote(batch?.referenceNote)
-                                    }
-                                  >
-                                    {batch?.referenceId}
-                                  </Link>
-                                </td>
-                                <td className="ant-table-cell">
-                                  {batch?.status ===
-                                    payrollConstants.COMPLETED_STATUS && (
-                                    <>
-                                      <span>
-                                        {/* {payrollConstants.CONFIRMED} */}
-                                        25% (Batch created)
-                                      </span>
-                                      <Progress percent={25} showInfo={false} />
-                                    </>
-                                  )}
-                                  {batch?.status ===
-                                    payrollConstants.CONFIRMED_STATUS && (
-                                    <>
-                                      <span>
-                                        {/* {payrollConstants.CONFIRMED} */}
-                                        50% (Confirmed by Bluepencil)
-                                      </span>
-                                      <Progress percent={50} showInfo={false} />
-                                    </>
-                                  )}
-                                  {batch?.status ===
-                                    payrollConstants.PAID_STATUS && (
-                                    <>
-                                      <span>
-                                        {/* {payrollConstants.CONFIRMED} */}
-                                        75% (Paid to Social Organization)
-                                      </span>
-                                      <Progress percent={75} showInfo={false} />
-                                    </>
-                                  )}
-                                  {batch?.status ===
-                                    payrollConstants.RECEIVED_STATUS && (
-                                    <>
-                                      <span>
-                                        {/* {payrollConstants.CONFIRMED} */}
-                                        100% (Received by Social Organization)
-                                      </span>
-                                      <Progress
-                                        percent={100}
-                                        showInfo={false}
-                                      />
-                                    </>
-                                  )}
-                                </td>
-                                <td className="ant-table-cell text-center">
-                                  {corporateId &&
-                                    batch?.status ===
-                                      payrollConstants.PENDING_STATUS && (
+                                {!corporateId && !isOrganizationView && (
+                                  <>
+                                    {batch?.status ===
+                                    payrollConstants.CONFIRMED_STATUS ? (
+                                      <>
+                                        <Link
+                                          onClick={() =>
+                                            handleOpen("Unconfirm Batch", batch)
+                                          }
+                                        >
+                                          <span
+                                            className="bi-arrow-counterclockwise fs-5"
+                                            title="Unconfirm"
+                                          ></span>
+                                        </Link>
+                                        <Link
+                                          onClick={() =>
+                                            handleOpen("Paid", batch)
+                                          }
+                                        >
+                                          <span
+                                            className="bi-box2-heart fs-5 ml-2"
+                                            title="Paid"
+                                          ></span>
+                                        </Link>
+                                      </>
+                                    ) : (
                                       <Link
                                         onClick={() =>
-                                          handleOpen("Complete Batch", batch)
+                                          handleOpen("Confirm Batch", batch)
                                         }
                                       >
                                         <span
                                           className="bi-check-circle fs-5"
-                                          title="Complete"
+                                          title="Confirm"
                                         ></span>
                                       </Link>
                                     )}
-                                  {!corporateId && !isOrganizationView && (
-                                    <>
-                                      {batch?.status ===
-                                      payrollConstants.CONFIRMED_STATUS ? (
-                                        <>
-                                          <Link
-                                            onClick={() =>
-                                              handleOpen(
-                                                "Unconfirm Batch",
-                                                batch
-                                              )
-                                            }
-                                          >
-                                            <span
-                                              className="bi-arrow-counterclockwise fs-5"
-                                              title="Unconfirm"
-                                            ></span>
-                                          </Link>
-                                          <Link
-                                            onClick={() =>
-                                              handleOpen("Paid", batch)
-                                            }
-                                          >
-                                            <span
-                                              className="bi-box2-heart fs-5 ml-2"
-                                              title="Paid"
-                                            ></span>
-                                          </Link>
-                                        </>
-                                      ) : (
-                                        <Link
-                                          onClick={() =>
-                                            handleOpen("Confirm Batch", batch)
-                                          }
-                                        >
-                                          <span
-                                            className="bi-check-circle fs-5"
-                                            title="Confirm"
-                                          ></span>
-                                        </Link>
-                                      )}
-                                    </>
-                                  )}
-                                  {isOrganizationView && (
-                                    <Link
-                                      onClick={() =>
-                                        handleOpen("Receive Batch", batch)
-                                      }
-                                    >
-                                      <img
-                                        src="/assets/img/receive.svg"
-                                        alt="Receive"
-                                        title="Receive"
-                                        height={20}
-                                        className="custom-color"
-                                      />
-                                    </Link>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
+                                  </>
+                                )}
+                                {isOrganizationView && (
+                                  <Link
+                                    onClick={() =>
+                                      handleOpen("Receive Batch", batch)
+                                    }
+                                  >
+                                    <img
+                                      src="/assets/img/receive.svg"
+                                      alt="Receive"
+                                      title="Receive"
+                                      height={20}
+                                      className="custom-color"
+                                    />
+                                  </Link>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
                           {records?.length === 0 && (
                             <tr>
                               <td className="text-center" colSpan={7}>
