@@ -128,14 +128,16 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     );
   };
 
-  
-
   useEffect(() => {
-    console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", beforeUnrpomoteMsg);
-    if (beforeUnrpomoteMsg) {
+    console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", !selectedProgram);
+    if (selectedProgram?.charityId && !selectedProgram?.unpromoteMsg) {
+      console.log(
+        "beforeUnrpomoteMsg >>>>>>>> 2222222222222 >>>>>>>",
+        selectedProgram?.unpromoteMsg
+      );
       handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
     }
-  }, [beforeUnrpomoteMsg]);
+  }, [selectedProgram]);
   return (
     <>
       <div className="ant-row">
@@ -263,7 +265,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                     <tr>
                       <td colSpan="6" className="text-center">
                         {tabType === charityProgramConstants.SPONSOR
-                          ? ReactHtmlParser(isCorporatePortal ? "No programs are promoted yet" : "No programs are promoted by your corporate.<br/>However, you can still make donation individually by browsing the programs in other category.")
+                          ? ReactHtmlParser(
+                              isCorporatePortal
+                                ? "No programs are promoted yet"
+                                : "No programs are promoted by your corporate.<br/>However, you can still make donation individually by browsing the programs in other category."
+                            )
                           : "No programs found"}
                       </td>
                     </tr>

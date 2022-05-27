@@ -91,7 +91,7 @@ const DonateSecondStep = ({
     // corporate: isCorporatePortal ? selectedCorporate : null,
     corporateId: isCorporatePortal
       ? selectedCorporate?.corporate?.corporateId
-      : 1,
+      : employee?.corporateId,
     userId: isCorporatePortal
       ? selectedCorporate?.corporate?.corporateId?.toString()
       : employee?.emp_id?.toString(),

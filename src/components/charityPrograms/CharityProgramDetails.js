@@ -57,7 +57,7 @@ const CharityProgramDetails = (props) => {
     employee: user,
     corporateId: isCorporatePortal
       ? selectedCorporate?.corporate?.corporateId
-      : 1,
+      : user?.corporateId,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
     donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
