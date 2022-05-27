@@ -40,6 +40,7 @@ const CharityProgramDetails = (props) => {
     employeeFirstTwoChar = user?.name?.slice(0, 2)?.toLowerCase();
   }
   // const programName = props?.location?.programName;
+  const imgUrl = props?.location?.imgUrl;
   const initialValues = {
     orderId: selectedCharity
       ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
@@ -116,9 +117,18 @@ const CharityProgramDetails = (props) => {
           {/* {items?.length === 0 && ( */}
           <div className="row">
             <div className="col-md-12">
+              {tabType === "Sponsor" && (
+                <div>
+                  <i className="bi-heart-fill fs-6 custom-color mr-1"></i>{" "}
+                  <span className="display-flex fs-6"> Promoted</span>
+                </div>
+              )}
               <h1 className="ant-typography customHeading">
                 {selectedCharity?.charity?.charityName}
               </h1>
+              <h6 className="mb-3">
+                by {selectedCharity?.charity?.soicalName}
+              </h6>
             </div>
           </div>
           <div className="card w-100" onScroll={onScroll} ref={listInnerRef}>
@@ -129,7 +139,14 @@ const CharityProgramDetails = (props) => {
                     Tax Benefit <i className="bi-info-circle-fill fs-6"></i>
                   </span>
                 </Tooltip>
-                <img src="/assets/img/organization.jpg" alt="image" />
+                <img
+                  src={
+                    selectedCharity?.charity?.imgUrl
+                      ? selectedCharity?.charity?.imgUrl
+                      : "/assets/img/charity3.jpg"
+                  }
+                  alt="image"
+                />
               </div>
               <div className="col-md-4">
                 <div className="row">
@@ -451,19 +468,6 @@ const CharityProgramDetails = (props) => {
                 <TabPane tab={"Donors"} key={"donors"}>
                   <div className="row mt-4 program-list">
                     <h4 className="mb-0">Donors (1985)</h4>
-                    <Doughnut
-                      data={data2}
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                          legend: {
-                            display: true,
-                            position: "right",
-                          },
-                        },
-                      }}
-                    />
                     <div className="col-md-12">
                       <Tabs defaultActiveKey={0}>
                         <TabPane tab={<span>Most Generious</span>} key={0}>

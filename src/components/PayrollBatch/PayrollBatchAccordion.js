@@ -370,8 +370,7 @@ const PayrollBatchAccordion = (props) => {
                                             </Link>
                                           </>
                                         ) : (
-                                          batch?.status ===
-                                            payrollConstants.COMPLETED_STATUS && (
+                                         
                                             <Link
                                               onClick={() =>
                                                 handleOpen(
@@ -385,7 +384,6 @@ const PayrollBatchAccordion = (props) => {
                                                 title="Confirm"
                                               ></span>
                                             </Link>
-                                          )
                                         )}
                                       </td>
                                     </tr>
@@ -436,6 +434,14 @@ const PayrollBatchAccordion = (props) => {
                       {actionType !== payrollConstants.COMPLETE_BATCH && (
                         <>
                           <div className="row mt-4 mb-2">
+                            <div className="col-md-4">
+                              <strong>Corporate Name:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.corporateName}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
                             <div className="col-md-4">
                               <strong>Batch ID:</strong>
                             </div>

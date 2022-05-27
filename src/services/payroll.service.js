@@ -1,5 +1,6 @@
 import { authHeader } from "../helpers";
 import axios from "axios";
+import { payrollConstants } from "../constants";
 
 export const payrollService = {
   getPayrollBatch,
@@ -35,7 +36,10 @@ function getBatchDetail(data) {
 }
 function updateBatchStatus(data) {
   return axios.post(
-    process.env.REACT_APP_API_URL + "api/update_batch_status/",
+    process.env.REACT_APP_API_URL +
+      (data?.requestType === payrollConstants.PAID
+        ? "api/simulate_success_open_bank/"
+        : "api/update_batch_status/"),
     data
   );
 }

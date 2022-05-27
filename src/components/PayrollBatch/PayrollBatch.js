@@ -58,10 +58,10 @@ const PayrollBatch = (props) => {
   const [currentView, setCurrentView] = useState(
     payrollConstants?.CORPORATE_VIEW
   );
-  const isOrganizationView =
+  const isOrganizationPortal =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
-  const isBluePencilView =
+  const isBluePencilPortal =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   const isCorporatePortal =
@@ -122,7 +122,7 @@ const PayrollBatch = (props) => {
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
-    if (isOrganizationView) {
+    if (isOrganizationPortal) {
       setActionTitle("Confirm Payment Receipt");
       setActionContent(`Are you sure want to receive this batch payments?`);
     } else {
@@ -225,7 +225,7 @@ const PayrollBatch = (props) => {
                   </div>
                 </div>
               )}
-              {!corporateId && !isOrganizationView && (
+              {!corporateId && !isOrganizationPortal && (
                 <>
                   <Link
                     className="fs-6 text-decoration-underline mr-3"
@@ -266,6 +266,14 @@ const PayrollBatch = (props) => {
             </div>
           </div>
           {payrollBatches.loading && <Loader />}
+          {!payrollBatches?.items && (
+            <div className="card p-4 text-center">
+              
+                {isOrganizationPortal && <strong>No Payroll donation batch created by the Blue Pencil Admin till now.<br/>You should wait a while till any donation reaches to you.</strong>}
+                {isCorporatePortal && <strong>There is no Payroll Batch processed by you.<br/>Please go to Donation preferences to process a batch now.</strong>}
+                {isBluePencilPortal && <strong>No Payroll donation batch created by any corporate.<br/>You should wait a while till any donation reaches to you.</strong>}
+            </div>
+          )}
           {records && (corporateId || organizationId) && (
             <>
               <div className="ant-row">
@@ -427,7 +435,7 @@ const PayrollBatch = (props) => {
                                       ></span>
                                     </Link>
                                   )}
-                                {!corporateId && !isOrganizationView && (
+                                {!corporateId && !isOrganizationPortal && (
                                   <>
                                     {batch?.status ===
                                     payrollConstants.CONFIRMED_STATUS ? (
@@ -467,26 +475,30 @@ const PayrollBatch = (props) => {
                                     )}
                                   </>
                                 )}
-                                {isOrganizationView && batch?.status !==
+                                {isOrganizationPortal &&
+                                  batch?.status !==
                                     payrollConstants.RECEIVED_STATUS && (
-                                  <Link
-                                    onClick={() =>
-                                      handleOpen("Receive Batch", batch)
-                                    }
-                                  >
-                                    <img
-                                      src="/assets/img/receive.svg"
-                                      alt="Receive"
-                                      title="Receive"
-                                      height={20}
-                                      className="custom-color"
-                                    />
-                                  </Link>
-                                )}
-                                {isOrganizationView && batch?.status ===
+                                    <Link
+                                      onClick={() =>
+                                        handleOpen("Receive Batch", batch)
+                                      }
+                                    >
+                                      <img
+                                        src="/assets/img/receive.svg"
+                                        alt="Receive"
+                                        title="Receive"
+                                        height={20}
+                                        className="custom-color"
+                                      />
+                                    </Link>
+                                  )}
+                                {isOrganizationPortal &&
+                                  batch?.status ===
                                     payrollConstants.RECEIVED_STATUS && (
-                                  <button className="btn btn-sm btn-success">Received</button>
-                                )}
+                                    <button className="btn btn-sm btn-success">
+                                      Received
+                                    </button>
+                                  )}
                               </td>
                             </tr>
                           ))}
@@ -541,6 +553,14 @@ const PayrollBatch = (props) => {
                       {actionType !== payrollConstants.COMPLETE_BATCH && (
                         <>
                           <div className="row mt-4 mb-2">
+                            <div className="col-md-4">
+                              <strong>Corporate Name:</strong>
+                            </div>
+                            <div className="col-md-8">
+                              {selectedBatch?.corporateName}
+                            </div>
+                          </div>
+                          <div className="row mb-2">
                             <div className="col-md-4">
                               <strong>Batch ID:</strong>
                             </div>
@@ -655,7 +675,7 @@ const PayrollBatch = (props) => {
             <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
           </Modal>
           {!corporateId &&
-            !isOrganizationView &&
+            !isOrganizationPortal &&
             (currentView === payrollConstants.ORGANIZATION_VIEW ||
               currentView === payrollConstants.CORPORATE_VIEW) && (
               <PayrollBatchAccordion

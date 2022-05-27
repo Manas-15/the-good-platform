@@ -6,6 +6,7 @@ export const charityProgramService = {
   saveDonationPreference,
   operateSponsorRequest,
   operateDenyRequest,
+  checkBeforeUnpromote,
 };
 
 function getCharityPrograms(data) {
@@ -20,8 +21,22 @@ function saveDonationPreference(data) {
   );
 }
 function operateSponsorRequest(data) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/save_corporate_sponser/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/save_corporate_sponser/",
+    data
+  );
 }
 function operateDenyRequest(data) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/remove_corporate_sponser/", data);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/remove_corporate_sponser/",
+    data
+  );
+}
+function checkBeforeUnpromote(data) {
+  return axios.get(
+    process.env.REACT_APP_API_URL + "api/check_donation_preference/",
+    {
+      params: data,
+    }
+  );
 }
