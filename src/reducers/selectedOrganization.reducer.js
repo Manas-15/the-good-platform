@@ -1,8 +1,8 @@
 export function selectedOrganization(state = {}, action) {
   switch (action.type) {
-    case "GET_ID":
+    case "GET_ORGANIZATION":
       return {
-        id: action?.view,
+        organization: action?.view,
       };
     default:
       return state;

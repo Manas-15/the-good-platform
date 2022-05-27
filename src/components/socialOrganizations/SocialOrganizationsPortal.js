@@ -32,10 +32,11 @@ const SocialOrganizationsPortal = () => {
   useEffect(() => {
     dispatch(socialOrganizationActions.getSocialOrganizations());
   }, []);
-  const setSocialOrganization = (organizationId) => {
-    console.log(">>>>>>>>>>>>>>>>> organizationId", organizationId);
-    dispatch(selectedOrganizationActions.selectedOrganization(organizationId));
+  const setSocialOrganization = (organization) => {
+    console.log(">>>>>>>>>>>>>>>>> organizationId", organization);
+    dispatch(selectedOrganizationActions.selectedOrganization(organization));
   };
+
   return (
     <div>
       <div className="row mb-4">
@@ -64,7 +65,10 @@ const SocialOrganizationsPortal = () => {
                 {socialOrganizations?.items.map((org, index) => {
                   return (
                     <li key={index + 1}>
-                      <Link to={`/organizations/${org.id}/payroll-batch`}>
+                      <Link
+                        to={`/organizations/${org.id}/payroll-batch`}
+                        onClick={() => setSocialOrganization(org)}
+                      >
                         {org?.name}
                       </Link>
                     </li>

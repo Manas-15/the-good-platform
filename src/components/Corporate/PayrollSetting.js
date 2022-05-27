@@ -143,8 +143,8 @@ const PayrollSetting = (props) => {
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Batch",
         filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
-          ? moment().format("MM-DD-YYYY")
-          : moment(generateMonthYear).format("MM-DD-YYYY"),
+          ? moment().format("MM-YYYY")
+          : moment(generateMonthYear).format("MM-YYYY"),
         // pageSize: 1000,
         // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })

@@ -24,6 +24,7 @@ let theArray = [];
 const ListCharityPrograms = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
+  const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
   const [actionType, setActionType] = useState("");
@@ -37,6 +38,7 @@ const ListCharityPrograms = () => {
   useEffect(() => {
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
+        employeeId: user?.emp_id,
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
@@ -48,8 +50,9 @@ const ListCharityPrograms = () => {
   useEffect(() => {
     setTotalCount(socialOrganizations?.totalCount);
   }, [socialOrganizations?.totalCount]);
-  const setOrganization = (organizationId) => {
-    dispatch(selectedOrganizationActions.selectedOrganization(organizationId));
+  const setOrganization = (organization) => {
+    console.log(">>>>>>>>>>>>>>>>>>>> ffff", organization)
+    dispatch(selectedOrganizationActions.selectedOrganization(organization));
   };
   const renderClass = (param) => {
     switch (param) {
@@ -179,7 +182,7 @@ const ListCharityPrograms = () => {
                                   )}`,
                                 }}
                                 onClick={() =>
-                                  setOrganization(socialOrganization?.id)
+                                  setOrganization(socialOrganization)
                                 }
                               >
                                 <span className="custom-color">

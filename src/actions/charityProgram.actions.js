@@ -7,6 +7,7 @@ export const charityProgramActions = {
   saveDonationPreference,
   operateSponsorRequest,
   operateDenyRequest,
+  checkBeforeUnpromote,
 };
 
 function getCharityPrograms(data) {
@@ -134,6 +135,40 @@ function operateDenyRequest(actionValues) {
   function failure(error) {
     return {
       type: charityProgramConstants.OPERATE_DENY_FAILURE,
+      error,
+    };
+  }
+}
+function checkBeforeUnpromote(actionValues) {
+  return (dispatch) => {
+    dispatch(request(actionValues));
+
+    charityProgramService.checkBeforeUnpromote(actionValues).then(
+      (data) => {
+        dispatch(success(data));
+        if(data?.data?.msg){
+          dispatch(alertActions.error(data?.data?.msg));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(program) {
+    return {
+      type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_REQUEST,
+      program,
+    };
+  }
+  function success(data) {
+    return { type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS, data };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_FAILURE,
       error,
     };
   }

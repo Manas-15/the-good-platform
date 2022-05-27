@@ -27,6 +27,10 @@ const Header = () => {
     // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
   };
   const currentView = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedOrganization = useSelector(
+    (state) => state.selectedOrganization
+  );
   console.log("dddddddddddddddddd currentView", currentView);
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
@@ -44,7 +48,12 @@ const Header = () => {
         ></i>
       </div>
       <nav className="header-nav ms-auto">
-        <h4 className="current-view">{currentView?.currentView}</h4>
+        <h4 className="current-view">
+          {currentView?.currentView}{" "}
+          {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
+            ? " - " + selectedCorporate?.corporate?.organizationName
+            : ""}
+        </h4>
         <ul className="d-flex align-items-center">
           <li className="nav-item d-block d-lg-none">
             <a className="nav-link nav-icon search-bar-toggle " href="#">
