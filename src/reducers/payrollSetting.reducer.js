@@ -54,8 +54,6 @@ export function payrollSetting(state = {}, action) {
         loading: true,
       };
     case payrollConstants.GET_BATCH_DETAILS_SUCCESS:
-      console.log("ddddddddd reducer", action?.batches?.data?.batch_detail);
-      console.log("ddddddddd reducer state", state);
       return {
         items: action?.batches?.data?.batch_detail,
       };

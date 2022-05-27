@@ -50,14 +50,16 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.charityId,
       };
     case charityProgramConstants.OPERATE_SPONSOR_SUCCESS:
-      const operateCharity = state?.items["other"]?.filter(
+      const operateCharity = state?.items?.["other"]?.filter(
         (element) => element.charityId === state.programId
       );
       return {
         ...state,
         items: {
-          sponsored: [...state?.items["sponsored"], operateCharity[0]],
-          other: state?.items["other"]?.filter(function (charity) {
+          sponsored: state?.items?.["sponsored"]
+            ? [...state?.items?.["sponsored"], operateCharity[0]]
+            : [operateCharity[0]],
+          other: state?.items?.["other"]?.filter(function (charity) {
             return charity.charityId !== operateCharity[0]?.charityId;
           }),
         },
@@ -76,14 +78,16 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.programId,
       };
     case charityProgramConstants.OPERATE_DENY_SUCCESS:
-      const denyCharity = state.items["sponsored"].filter(
+      const denyCharity = state?.items?.["sponsored"]?.filter(
         (element) => element.charityId === state.programId
       );
       return {
         ...state,
         items: {
-          other: [...state.items["other"], denyCharity[0]],
-          sponsored: state.items["sponsored"].filter(function (charity) {
+          other: state?.items?.["other"]
+            ? [...state?.items?.["other"], denyCharity[0]]
+            : [denyCharity[0]],
+          sponsored: state?.items?.["sponsored"]?.filter(function (charity) {
             return charity.charityId !== denyCharity[0]?.charityId;
           }),
         },
@@ -94,6 +98,23 @@ export function charityPrograms(state = {}, action) {
         ...state,
         loading: false,
         error: action.error,
+      };
+    case charityProgramConstants.CHECK_BEFORE_UNPROMOTE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS:
+      console.log("ddddddddddddddd before unpromote", action?.data?.data?.msg)
+      return {
+        ...state,
+        checkBeforeUnpromoteMsg: action?.data?.data?.msg,
+        loading: false,
+      };
+    case charityProgramConstants.CHECK_BEFORE_UNPROMOTE_FAILURE:
+      return {
+        error: action.error,
+        loading: false,
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./../../assets/css/charityProgramsList.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,6 +24,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setCharity(charity);
   };
   const currentPortal = useSelector((state) => state.currentView);
+  const beforeUnrpomoteMsg = useSelector(
+    (state) => state?.charityPrograms?.checkBeforeUnpromoteMsg
+  );
   const [open, setOpen] = useState(false);
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
@@ -114,6 +117,25 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     dispatch(selectedCharityActions.selectedCharity(charity));
     dispatch(selectedCharityTabActions.selectedTabType(tabType));
   };
+  const checkBeforeUnpromote = (item) => {
+    setSelectedProgram(item);
+    dispatch(
+      charityProgramActions.checkBeforeUnpromote({
+        corporateId: selectedCorporate?.corporate?.corporateId,
+        socialId: item?.soicalId,
+        programId: item?.charityId,
+      })
+    );
+  };
+
+  
+
+  useEffect(() => {
+    console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", beforeUnrpomoteMsg);
+    if (beforeUnrpomoteMsg) {
+      handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
+    }
+  }, [beforeUnrpomoteMsg]);
   return (
     <>
       <div className="ant-row">
@@ -192,10 +214,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               >
                                 <Link
                                   onClick={() =>
-                                    handleOpen(
-                                      charityProgramConstants.UNPROMOTE,
-                                      charityProgram
-                                    )
+                                    checkBeforeUnpromote(charityProgram)
                                   }
                                 >
                                   <i className="bi-heart-fill fs-6 custom-color mr-1"></i>
@@ -228,7 +247,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 alt="dontae"
                                 onMouseEnter={(event) =>
                                   (event.target.src =
-                                    "/assets/img/donate-fill.png")
+                                    "/assets/img/donate-fill-red.png")
                                 }
                                 onMouseOut={(event) =>
                                   (event.target.src = "/assets/img/donate.png")
@@ -243,7 +262,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                   ) : (
                     <tr>
                       <td colSpan="6" className="text-center">
-                        No programs found
+                        {tabType === charityProgramConstants.SPONSOR
+                          ? ReactHtmlParser(isCorporatePortal ? "No programs are promoted yet" : "No programs are promoted by your corporate.<br/>However, you can still make donation individually by browsing the programs in other category.")
+                          : "No programs found"}
                       </td>
                     </tr>
                   )}

@@ -14,6 +14,7 @@ import { charityProgramConstants } from "./../../constants";
 import DonateSecondStep from "./DonateSecondStep";
 import donationsConsent from "./../../config/donationsConsent.json";
 import { history } from "../../helpers";
+import AddedDonationFromDetail from "./AddedDonationFromDetail";
 
 const preferenceForm = {
   corporateId: "",
@@ -86,159 +87,166 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   };
   return (
     <>
-      {!showNextStep && (
-        <>
-          <div className="row mb-4">
-            <div className="col-md-12">
-              <span className="bi-lock-fill fs-5 text-success"></span>Choose an
-              amount to donate
-            </div>
-          </div>
-          <div className="row mb-4">
-            <div className="col-md-6 text-right pl-0">
-              <DonateAmount
-                isActive={selectedAmount === selectedCharity?.unitPrice * 1}
-                amount={selectedCharity?.unitPrice * 1}
-                setSelectedAmount={setAmount}
-              />
-            </div>
-            <div className="col-md-6 pr-0">
-              <DonateAmount
-                isActive={selectedAmount === selectedCharity?.unitPrice * 2}
-                amount={selectedCharity?.unitPrice * 2}
-                setSelectedAmount={setAmount}
-              />
-            </div>
-          </div>
-          <div className="row mb-4">
-            <div className="col-md-6 text-right pl-0">
-              <DonateAmount
-                isActive={selectedAmount === selectedCharity?.unitPrice * 3}
-                amount={selectedCharity?.unitPrice * 3}
-                setSelectedAmount={setAmount}
-              />
-            </div>
-            <div className="col-md-6 pr-0">
-              <DonateAmount
-                isActive={selectedAmount === selectedCharity?.unitPrice * 4}
-                amount={selectedCharity?.unitPrice * 4}
-                setSelectedAmount={setAmount}
-              />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-md-10 offset-md-1">
-              <input
-                type="text"
-                pattern="[0-9]*"
-                maxLength={10}
-                value={val}
-                onChange={(e) =>
-                  setVal((v) =>
-                    e.target.validity.valid
-                      ? setSelectedAmount(e.target.value)
-                      : v
-                  )
-                }
-                className="form-control"
-                placeholder="Other Amount"
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-10 text-center offset-md-1">
-              <p className="mb-2">
-                <span className="bi-heart-fill fs-6 ml-2 cursor-pointer text-danger"></span>
-                &nbsp;How will my donation help?
-              </p>
-              <p className="mb-2">
-                Your contribution will used towards giving India's
-                underprevileged children happier childhoods.
-              </p>
-              <p className="mb-0">
-                Your dontaions are tax excepted under 80G of the Indian Income
-                Tax Act.
-              </p>
-            </div>
-          </div>
-          {tabType === charityProgramConstants.SPONSOR &&
-            !isCorporatePortal &&
-            !addedFromProgramDetail && (
-              <div className="row">
-                <div className="col-md-12">
-                  <label className="m-2">
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={() => setOpen(true)}
-                    />
-                    <Link
-                      className="text-dark d-inline pl-0"
-                      onClick={() => setOpen(true)}
-                    >
-                      <p className="ml-2 d-inline-block text-decoration-underline">
-                        Please select the checkbox to your consents
-                      </p>
-                    </Link>
-                  </label>
-                </div>
+      {addedFromProgramDetail ? (
+        <AddedDonationFromDetail charity={selectedCharity} selectedAmount={selectedAmount} frequency={frequency}/>
+      ) : (
+        !showNextStep && (
+          <>
+            <div className="row mb-4">
+              <div className="col-md-12">
+                <span className="bi-lock-fill fs-5 text-success"></span>Choose
+                an amount to donate
               </div>
-            )}
-          <div
-            className={
-              "row mb-4 " +
-              (tabType === charityProgramConstants.SPONSOR && !isCorporatePortal
-                ? ""
-                : "mt-4")
-            }
-          >
-            <div className="col-md-12 text-center">
-              <button
-                className="btn btn-custom w-100 rounded-pill"
-                disabled={
-                  tabType === charityProgramConstants.SPONSOR &&
-                  !isCorporatePortal
-                    ? addedFromProgramDetail || !checked
-                    : false
-                }
-                onClick={
-                  tabType === charityProgramConstants.SPONSOR &&
-                  !isCorporatePortal
-                    ? saveDonationPreference
-                    : nextStep
-                }
-              >
-                <span className="fs-6 ml-2">
-                  {tabType === charityProgramConstants.SPONSOR &&
-                  !isCorporatePortal ? (
-                    <>
-                      <span
-                        className={`${
-                          addedFromProgramDetail ? "text-danger" : "text-white"
-                        } bi-heart-fill fs-6 ml-2`}
-                      ></span>
-                      &nbsp;{addedFromProgramDetail ? "Added" : "Add"} Donation
-                      Preference
-                    </>
-                  ) : (
-                    "Next"
-                  )}
-                </span>
-              </button>
             </div>
-          </div>
-          {open && (
-            <DonationConsent
-              open={open}
-              amount={selectedAmount.toLocaleString()}
-              selectedCharity={selectedCharity}
-              employee={employee}
-              frequency={frequency}
-              handleCheck={handleCheck}
-              closeCheck={closeCheck}
-            />
-          )}
-        </>
+            <div className="row mb-4">
+              <div className="col-md-6 text-right pl-0">
+                <DonateAmount
+                  isActive={selectedAmount === selectedCharity?.unitPrice * 1}
+                  amount={selectedCharity?.unitPrice * 1}
+                  setSelectedAmount={setAmount}
+                />
+              </div>
+              <div className="col-md-6 pr-0">
+                <DonateAmount
+                  isActive={selectedAmount === selectedCharity?.unitPrice * 2}
+                  amount={selectedCharity?.unitPrice * 2}
+                  setSelectedAmount={setAmount}
+                />
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-6 text-right pl-0">
+                <DonateAmount
+                  isActive={selectedAmount === selectedCharity?.unitPrice * 3}
+                  amount={selectedCharity?.unitPrice * 3}
+                  setSelectedAmount={setAmount}
+                />
+              </div>
+              <div className="col-md-6 pr-0">
+                <DonateAmount
+                  isActive={selectedAmount === selectedCharity?.unitPrice * 4}
+                  amount={selectedCharity?.unitPrice * 4}
+                  setSelectedAmount={setAmount}
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-md-10 offset-md-1">
+                <input
+                  type="text"
+                  pattern="[0-9]*"
+                  maxLength={10}
+                  value={val}
+                  onChange={(e) =>
+                    setVal((v) =>
+                      e.target.validity.valid
+                        ? setSelectedAmount(e.target.value)
+                        : v
+                    )
+                  }
+                  className="form-control"
+                  placeholder="Other Amount"
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-10 text-center offset-md-1">
+                <p className="mb-2">
+                  <span className="bi-heart-fill fs-6 ml-2 cursor-pointer text-danger"></span>
+                  &nbsp;How will my donation help?
+                </p>
+                <p className="mb-2">
+                  Your contribution will used towards giving India's
+                  underprevileged children happier childhoods.
+                </p>
+                <p className="mb-0">
+                  Your dontaions are tax excepted under 80G of the Indian Income
+                  Tax Act.
+                </p>
+              </div>
+            </div>
+            {tabType === charityProgramConstants.SPONSOR &&
+              !isCorporatePortal &&
+              !addedFromProgramDetail && (
+                <div className="row">
+                  <div className="col-md-12">
+                    <label className="m-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => setOpen(true)}
+                      />
+                      <Link
+                        className="text-dark d-inline pl-0"
+                        onClick={() => setOpen(true)}
+                      >
+                        <p className="ml-2 d-inline-block text-decoration-underline">
+                          Please select the checkbox to your consents
+                        </p>
+                      </Link>
+                    </label>
+                  </div>
+                </div>
+              )}
+            <div
+              className={
+                "row mb-4 " +
+                (tabType === charityProgramConstants.SPONSOR &&
+                !isCorporatePortal
+                  ? ""
+                  : "mt-4")
+              }
+            >
+              <div className="col-md-12 text-center">
+                <button
+                  className="btn btn-custom w-100 rounded-pill"
+                  disabled={
+                    tabType === charityProgramConstants.SPONSOR &&
+                    !isCorporatePortal
+                      ? addedFromProgramDetail || !checked
+                      : false
+                  }
+                  onClick={
+                    tabType === charityProgramConstants.SPONSOR &&
+                    !isCorporatePortal
+                      ? saveDonationPreference
+                      : nextStep
+                  }
+                >
+                  <span className="fs-6 ml-2">
+                    {tabType === charityProgramConstants.SPONSOR &&
+                    !isCorporatePortal ? (
+                      <>
+                        <span
+                          className={`${
+                            addedFromProgramDetail
+                              ? "text-danger"
+                              : "text-white"
+                          } bi-heart-fill fs-6 ml-2`}
+                        ></span>
+                        &nbsp;{addedFromProgramDetail ? "Added" : "Add"}{" "}
+                        Donation Preference
+                      </>
+                    ) : (
+                      "Next"
+                    )}
+                  </span>
+                </button>
+              </div>
+            </div>
+            {open && (
+              <DonationConsent
+                open={open}
+                amount={selectedAmount.toLocaleString()}
+                selectedCharity={selectedCharity}
+                employee={employee}
+                frequency={frequency}
+                handleCheck={handleCheck}
+                closeCheck={closeCheck}
+              />
+            )}
+          </>
+        )
       )}
       {showNextStep && (
         <DonateSecondStep
