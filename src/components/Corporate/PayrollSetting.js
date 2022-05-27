@@ -262,6 +262,13 @@ const PayrollSetting = (props) => {
         </div>
       </div>
       {preferences.loading && <Loader />}
+      {!preferences?.items && (
+        <strong>
+          Seems like there is no donation preferences set by your employees.
+          <br />
+          Let's wait till any good soul makes a right decision.
+        </strong>
+      )}
       {accordionData ? (
         <>
           {Object.keys(accordionData).map((type, index) =>
