@@ -106,15 +106,12 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.programId,
       };
     case charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS:
-      
       return {
         ...state,
         items: {
           other: state?.items?.["other"],
           sponsored: state?.items?.["sponsored"]?.map((item) => {
-            if (
-              item?.charityId === state?.programId
-            ) {
+            if (item?.charityId === state?.programId) {
               return {
                 ...item,
                 employeeCount: action?.data?.data?.count,

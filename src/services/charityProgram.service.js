@@ -10,6 +10,9 @@ export const charityProgramService = {
 };
 
 function getCharityPrograms(data) {
+  // return axios.get(process.env.REACT_APP_API_URL + "api/social_charity_list/", {
+  //   params: data,
+  // });
   return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
     params: data,
   });
