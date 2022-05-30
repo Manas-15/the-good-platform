@@ -94,7 +94,7 @@ const PayrollSetting = (props) => {
     document.getElementById("root").classList.remove("loading");
   }
   const groupBy = (key) => {
-    return preferences?.items?.reduce(function (acc, item) {
+    return preferences?.items?.active?.reduce?.(function (acc, item) {
       (acc[item[key]] = acc[item[key]] || []).push(item);
       return acc;
     }, {});
@@ -110,7 +110,7 @@ const PayrollSetting = (props) => {
   //   return str.substring(0, 1).toUpperCase() + str.substring(1);
   // };
   const processBatch = () => {
-    const data = ProcessHelper(preferences?.items);
+    const data = ProcessHelper(preferences?.items?.active);
     const finalData = {
       corporateId: isCorporatePortal
         ? selectedCorporate?.corporate?.corporateId
@@ -195,9 +195,9 @@ const PayrollSetting = (props) => {
           )}
         </div>
         <div className="col-md-8 text-right">
-          {preferences?.items && (
+          {preferences?.items?.active?.length > 0 && (
             <CSVLink
-              data={preferences?.items?.map(
+              data={preferences?.items?.active?.map?.(
                 ({
                   employeePreferenceId,
                   isDeleted,
@@ -262,7 +262,7 @@ const PayrollSetting = (props) => {
         </div>
       </div>
       {preferences.loading && <Loader />}
-      {!preferences?.items && (
+      {!preferences?.items?.active && (
         <div className="card p-4 text-center mt-4">
           <strong>
             Seems like there is no donation preferences set by your employees.
@@ -338,7 +338,7 @@ const PayrollSetting = (props) => {
                                     )}
                                     )
                                   </th>
-                                  {!preferences?.items?.[0]?.batchId &&
+                                  {!preferences?.items?.active?.[0]?.batchId &&
                                     !batchId && (
                                       <th className="ant-table-cell text-center">
                                         Actions
@@ -416,7 +416,7 @@ const PayrollSetting = (props) => {
                                           disabled={true}
                                         />
                                       </td>
-                                      {!preferences?.items?.[0]?.batchId &&
+                                      {!preferences?.items?.active?.[0]?.batchId &&
                                         !batchId && (
                                           <td className="ant-table-cell text-center">
                                             <Link
@@ -446,15 +446,15 @@ const PayrollSetting = (props) => {
               </Accordion>
             ) : null
           )}
-          {ProcessHelper(preferences?.items, batchId)?.length > 0 && (
+          {ProcessHelper(preferences?.items?.active, batchId)?.length > 0 && (
             <div className="row mt-4">
               <div className="col-md-12 text-right">
                 <h5>
                   Total:&nbsp;
                   <span className="fs-5">
                     {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
-                    {preferences?.items
-                      ? preferences?.items
+                    {preferences?.items?.active
+                      ? preferences?.items?.active
                           ?.reduce(
                             (total, currentValue) =>
                               (total = total + currentValue.donationAmount),
@@ -470,18 +470,18 @@ const PayrollSetting = (props) => {
         </>
       ) : null}
       {!moment(generateMonthYear).isAfter(moment()) &&
-        ProcessHelper(preferences?.items, batchId)?.length > 0 &&
+        ProcessHelper(preferences?.items?.active, batchId)?.length > 0 &&
         !batchId && (
           <div className="text-right m-3">
             <button
               className="btn btn-custom"
               onClick={() => handleOpenDialog("Process batch", "")}
               disabled={
-                preferences?.items?.[0]?.batchId ||
+                preferences?.items?.active?.[0]?.batchId ||
                 moment(generateMonthYear).isAfter(moment())
               }
             >
-              {preferences?.items?.[0]?.batchId ? "Processed" : "Process Batch"}
+              {preferences?.items?.active?.[0]?.batchId ? "Processed" : "Process Batch"}
             </button>
           </div>
         )}

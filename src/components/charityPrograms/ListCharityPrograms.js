@@ -134,28 +134,28 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       })
     );
   };
-  useEffect(() => {
-    console.log(
-      "beforeUnrpomoteMsg >>>>>>>>>>>>>>>",
-      selectedProgram,
-      Object.keys(selectedProgram).length > 0,
-      selectedProgram?.employeeCount
-    );
-    if (Object.keys(selectedProgram).length > 0) {
-      handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
-    }
-  }, [selectedProgram]);
-  useEffect(() => {
-    console.log(
-      "bssssssssssssssssssss >>>>>>>>>>>>>>>",
-      selectedProgram,
-      Object.keys(selectedProgram).length > 0,
-      selectedProgram?.employeeCount
-    );
-    if (Object.keys(selectedProgram).length > 0) {
-      handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
-    }
-  }, [selectedProgram?.employeeCount]);
+  // useEffect(() => {
+  //   console.log(
+  //     "beforeUnrpomoteMsg >>>>>>>>>>>>>>>",
+  //     selectedProgram,
+  //     Object.keys(selectedProgram).length > 0,
+  //     selectedProgram?.employeeCount
+  //   );
+  //   if (Object.keys(selectedProgram).length > 0) {
+  //     handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
+  //   }
+  // }, [selectedProgram]);
+  // useEffect(() => {
+  //   console.log(
+  //     "bssssssssssssssssssss >>>>>>>>>>>>>>>",
+  //     selectedProgram,
+  //     Object.keys(selectedProgram).length > 0,
+  //     selectedProgram?.employeeCount
+  //   );
+  //   if (Object.keys(selectedProgram).length > 0) {
+  //     handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
+  //   }
+  // }, [selectedProgram?.employeeCount]);
   // useEffect(() => {
   //   console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
   //   setSelectedProgram(selectedProgram)
@@ -188,7 +188,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         }
                       /> */}
                     </th>
-                    <th className="ant-table-cell">Sr No.</th>
+                    {/* <th className="ant-table-cell">Sr No.</th> */}
                     <th className="ant-table-cell">Program</th>
                     <th className="ant-table-cell">Organization</th>
                     <th className="ant-table-cell">Category</th>
@@ -215,8 +215,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             }
                           /> */}
                         </td>
-                        <td className="ant-table-cell">{index + 1}</td>
+                        {/* <td className="ant-table-cell">{index + 1}</td> */}
                         <td className="ant-table-cell">
+                          <Tooltip
+                                title={charityProgram?.charityName}
+                              >
                           <Link
                             to={{
                               pathname: `/social-organizations/programs/${urlSlug(
@@ -227,9 +230,13 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             onClick={() => setSelectedCharity(charityProgram)}
                           >
                             <span className="ant-typography font-weight-bold custom-color">
-                              {charityProgram?.charityName}
+                              {charityProgram?.charityName?.length > 35
+                                ? charityProgram?.charityName.substring(0, 32) +
+                                  "..."
+                                : charityProgram?.charityName}
                             </span>
                           </Link>
+                          </Tooltip>
                         </td>
                         <td className="ant-table-cell">
                           {charityProgram?.soicalName}
@@ -248,7 +255,10 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               >
                                 <Link
                                   onClick={() =>
-                                    checkBeforeUnpromote(charityProgram)
+                                    handleOpen(
+                                      charityProgramConstants.UNPROMOTE,
+                                      charityProgram
+                                    )
                                   }
                                 >
                                   <i className="bi-heart-fill fs-6 custom-color mr-1"></i>
@@ -256,7 +266,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               </Tooltip>
                             )}
                           {isCorporatePortal &&
-                            tabType === charityProgramConstants.OTHER && (
+                            tabType === charityProgramConstants.OTHERS && (
                               <Tooltip title={charityProgramConstants.PROMOTE}>
                                 <Link
                                   onClick={() =>

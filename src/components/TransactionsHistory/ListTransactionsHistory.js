@@ -275,7 +275,7 @@ const ListTransactionsHistory = (props) => {
                   <tr>
                     {/* <th className="ant-table-cell">SR No.</th> */}
                     {isCorporatePortal && (
-                      <th className="ant-table-cell">Employee Name</th>
+                      <th className="ant-table-cell">Donor</th>
                     )}
                     <th className="ant-table-cell">Program</th>
                     {!isOrganizationView && (

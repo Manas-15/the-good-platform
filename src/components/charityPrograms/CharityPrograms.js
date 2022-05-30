@@ -15,6 +15,7 @@ import CardCharityPrograms from "./CardCharityPrograms";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import DonateHeader from "./DonateHeader";
+import { SearchCharityHelper, SearchHelper } from "../../helpers";
 const TabPane = Tabs.TabPane;
 
 const CharityPrograms = (props) => {
@@ -28,6 +29,7 @@ const CharityPrograms = (props) => {
   const user = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const [searchText, setSearchText] = useState("");
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization?.organization
   );
@@ -88,6 +90,14 @@ const CharityPrograms = (props) => {
   } else {
     document.getElementById("root").classList.remove("loading");
   }
+  const search = (value) => {
+    console.log("fffffffffffffffffffffff", tabType, value);
+    setSearchText(value);
+    // if(tabType === socialOrganizationConstants.SPONSORED){
+    //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
+    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
+    // }
+  };
   return (
     <div className="customContainer program-list">
       <div className="row mb-4">
@@ -125,7 +135,7 @@ const CharityPrograms = (props) => {
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
         <div className="ant-col ant-col-24  searchContainer">
-          <div className="ant-col ant-col-4">
+          <div className="ant-col ant-col-8">
             <div className="ant-input-affix-wrapper inputFilterInput">
               <span className="ant-input-prefix">
                 <i className="bi bi-search"></i>
@@ -133,7 +143,7 @@ const CharityPrograms = (props) => {
                   placeholder="Search by Program Name"
                   className="ant-input-search"
                   type="text"
-                  value=""
+                  onChange={(e) => search(e.target.value)}
                 />
               </span>
             </div>
@@ -252,7 +262,7 @@ const CharityPrograms = (props) => {
       </div>
       <div className="ant-tabs-nav-wrap">
         <Tabs
-          defaultActiveKey={charityProgramConstants.OTHERS}
+          defaultActiveKey={charityProgramConstants.SPONSORED}
           onChange={changeTab}
         >
           <TabPane
@@ -261,8 +271,9 @@ const CharityPrograms = (props) => {
                 <AuditOutlined className="fs-5" />
                 {charityProgramConstants.SPONSORED} (
                 {charityPrograms?.items?.sponsored
-                  ? charityPrograms?.items?.sponsored?.filter((charity) =>
-                      isCorporatePortal ? charity : charity?.donated === false
+                  ? SearchCharityHelper(
+                      charityPrograms?.items?.sponsored,
+                      searchText
                     ).length
                   : 0}
                 )
@@ -272,18 +283,28 @@ const CharityPrograms = (props) => {
           >
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={charityPrograms?.items?.sponsored?.filter((charity) =>
-                  isCorporatePortal ? charity : charity?.donated === false
-                )}
+                items={
+                  searchText && tabType === charityProgramConstants.SPONSOR
+                    ? SearchCharityHelper(
+                        charityPrograms?.items?.sponsored,
+                        searchText
+                      )
+                    : charityPrograms?.items?.sponsored
+                }
                 setCharity={setCharity}
                 tabType={tabType}
               />
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
               <CardCharityPrograms
-                items={charityPrograms?.items?.sponsored?.filter((charity) =>
-                  isCorporatePortal ? charity : charity?.donated === false
-                )}
+                items={
+                  searchText && tabType === charityProgramConstants.SPONSOR
+                    ? SearchCharityHelper(
+                        charityPrograms?.items?.sponsored,
+                        searchText
+                      )
+                    : charityPrograms?.items?.sponsored
+                }
                 setCharity={setCharity}
                 tabType={tabType}
               />
@@ -295,8 +316,9 @@ const CharityPrograms = (props) => {
                 <RedoOutlined className="fs-5" />
                 {charityProgramConstants.OTHERS} (
                 {charityPrograms?.items?.other
-                  ? charityPrograms?.items?.other?.filter((charity) =>
-                      isCorporatePortal ? charity : charity?.donated === false
+                  ? SearchCharityHelper(
+                      charityPrograms?.items?.other,
+                      searchText
                     ).length
                   : 0}
                 )
@@ -306,18 +328,28 @@ const CharityPrograms = (props) => {
           >
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={charityPrograms?.items?.other?.filter((charity) =>
-                  isCorporatePortal ? charity : charity?.donated === false
-                )}
+                items={
+                  searchText && tabType === charityProgramConstants.OTHERS
+                    ? SearchCharityHelper(
+                        charityPrograms?.items?.other,
+                        searchText
+                      )
+                    : charityPrograms?.items?.other
+                }
                 setCharity={setCharity}
                 tabType={tabType}
               />
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
               <CardCharityPrograms
-                items={charityPrograms?.items?.other?.filter((charity) =>
-                  isCorporatePortal ? charity : charity?.donated === false
-                )}
+                items={
+                  searchText && tabType === charityProgramConstants.OTHERS
+                    ? SearchCharityHelper(
+                        charityPrograms?.items?.other,
+                        searchText
+                      )
+                    : charityPrograms?.items?.other
+                }
                 setCharity={setCharity}
                 tabType={tabType}
               />
