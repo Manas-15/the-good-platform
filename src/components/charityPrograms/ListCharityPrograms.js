@@ -31,12 +31,14 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const user = useSelector((state) => state.employee.user);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [selectedProgram, setSelectedProgram] = useState(Object);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const [checkList, setCheckList] = useState();
+  
 
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -45,7 +47,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setActionTitle(`${action} Confirmation`);
 
     if (action === charityProgramConstants.UNPROMOTE) {
-      console.log("dddddddddddddddddddd selectedProgram", selectedProgram)
+      console.log("dddddddddddddddddddd selectedProgram", selectedProgram);
       setActionContent(
         selectedProgram?.employeeCount > 0
           ? `Are you sure you want to unpromote?.<br/><br/>Doing this would remove all the donation preferences set for the programs by the employees.<br/><br/>Total ${selectedProgram?.employeeCount} employees have set donation preference for the programs.`
@@ -127,18 +129,29 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         corporateId: selectedCorporate?.corporate?.corporateId,
         socialId: item?.soicalId,
         programId: item?.charityId,
+        corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : user?.corporateId,
       })
     );
   };
   useEffect(() => {
-    console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
-    if(Object.keys(selectedProgram).length > 0){
+    console.log(
+      "beforeUnrpomoteMsg >>>>>>>>>>>>>>>",
+      selectedProgram,
+      Object.keys(selectedProgram).length > 0,
+      selectedProgram?.employeeCount
+    );
+    if (Object.keys(selectedProgram).length > 0) {
       handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
     }
   }, [selectedProgram]);
   useEffect(() => {
-    console.log("bssssssssssssssssssss >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
-    if(Object.keys(selectedProgram).length > 0){
+    console.log(
+      "bssssssssssssssssssss >>>>>>>>>>>>>>>",
+      selectedProgram,
+      Object.keys(selectedProgram).length > 0,
+      selectedProgram?.employeeCount
+    );
+    if (Object.keys(selectedProgram).length > 0) {
       handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
     }
   }, [selectedProgram?.employeeCount]);
@@ -187,7 +200,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                 </thead>
                 <tbody className="ant-table-tbody">
                   {items?.length > 0 ? (
-                    items.map((charityProgram, index) => (
+                    items?.map((charityProgram, index) => (
                       <tr
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"

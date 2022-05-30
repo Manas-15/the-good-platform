@@ -22,7 +22,7 @@ import { Tooltip } from "antd";
 // import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
-const ListSocialOrganizations = ({ tabType }) => {
+const ListSocialOrganizations = ({ tabType, items }) => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
   const currentPortal = useSelector((state) => state.currentView);
@@ -39,21 +39,24 @@ const ListSocialOrganizations = ({ tabType }) => {
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(
-      socialOrganizationActions.getSocialOrganizations({
-        employeeId: user?.emp_id,
-        pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-      })
-    );
-  }, [currentPage]);
-  const setPage = (page) => {
-    setCurrentPage(page);
-  };
-  useEffect(() => {
-    setTotalCount(socialOrganizations?.totalCount);
-  }, [socialOrganizations?.totalCount]);
+  // useEffect(() => {
+  //   dispatch(
+  //     socialOrganizationActions.getSocialOrganizations({
+  //       employeeId: isEmployeePortal ? user?.emp_id : null,
+  //       corporateId: isCorporatePortal
+  //         ? selectedCorporate?.corporate?.corporateId
+  //         : null,
+  //       pageSize: pageSize,
+  //       offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+  //     })
+  //   );
+  // }, [currentPage]);
+  // const setPage = (page) => {
+  //   setCurrentPage(page);
+  // };
+  // useEffect(() => {
+  //   setTotalCount(socialOrganizations?.totalCount);
+  // }, [socialOrganizations?.totalCount]);
   const setOrganization = (organization) => {
     dispatch(selectedOrganizationActions.selectedOrganization(organization));
   };
@@ -131,8 +134,8 @@ const ListSocialOrganizations = ({ tabType }) => {
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {socialOrganizations?.items ? (
-                    socialOrganizations?.items.map(
+                  {items?.length > 0 ? (
+                    items.map(
                       (socialOrganization, index) => (
                         <tr
                           key={index + 1}
@@ -159,6 +162,7 @@ const ListSocialOrganizations = ({ tabType }) => {
                                   pathname: `/social-organizations/${urlSlug(
                                     socialOrganization?.name
                                   )}`,
+                                  tabType: tabType,
                                 }}
                                 onClick={() =>
                                   setOrganization(socialOrganization)
@@ -213,13 +217,13 @@ const ListSocialOrganizations = ({ tabType }) => {
                 </tbody>
               </table>
             </div>
-            <Pagination
+            {/* <Pagination
               className="pagination-bar mt-4"
               currentPage={currentPage}
               totalCount={totalCount ? totalCount : 0}
               pageSize={pageSize}
               onPageChange={(page) => setPage(page)}
-            />
+            /> */}
           </div>
         </div>
       </div>

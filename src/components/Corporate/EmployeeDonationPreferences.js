@@ -14,6 +14,9 @@ import { Link } from "react-router-dom";
 import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
+import ListDonationPreferences from "../DonationPreferences/ListDonationPreferences";
+import { Tabs, Icon } from "antd";
+import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -30,6 +33,7 @@ const actionInitialValues = {
   preferenceId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
+const TabPane = Tabs.TabPane;
 const EmployeeDonationPreferences = () => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
@@ -47,6 +51,7 @@ const EmployeeDonationPreferences = () => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [tabType, setTabType] = useState(donationPreferenceConstants.ACTIVE);
 
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
@@ -97,7 +102,9 @@ const EmployeeDonationPreferences = () => {
       donationPreferenceActions.operateActionRequest(actionInitialValues)
     );
   };
-
+  const changeTab = (activeKey) => {
+    setTabType(activeKey);
+  };
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -140,7 +147,7 @@ const EmployeeDonationPreferences = () => {
     document.getElementById("root").classList.remove("loading");
   }
   return (
-    <div className="customContainer">
+    <div className="customContainer program-list">
       <div className="row mb-4">
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">Donation Preference</h1>
@@ -164,138 +171,46 @@ const EmployeeDonationPreferences = () => {
         </div>
       </div>
       {preferences.loading && <Loader />}
-      <div className="ant-row">
-        <div className="ant-col ant-col-24 mt-2">
-          <div className="ant-table-wrapper">
-            <div className="ant-table">
-              <table>
-                <thead className="ant-table-thead">
-                  <tr>
-                    <th className="ant-table-cell">SR No.</th>
-                    <th className="ant-table-cell">Employee Name</th>
-                    <th className="ant-table-cell">Employee ID</th>
-                    <th className="ant-table-cell">Program</th>
-                    <th className="ant-table-cell">Organization</th>
-                    <th className="ant-table-cell">
-                      Amount (
-                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
-                    </th>
-                    <th className="ant-table-cell text-center">Frequency</th>
-                    <th className="ant-table-cell text-center">Status</th>
-                    <th className="ant-table-cell text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="ant-table-tbody">
-                  {preferences?.items?.length > 0 ? (
-                    preferences?.items
-                      ?.filter((preference) => preference?.isDeleted === false)
-                      .map((preference, index) => (
-                        <tr
-                          key={index + 1}
-                          className="ant-table-row ant-table-row-level-0"
-                        >
-                          <td className="ant-table-cell">{index + 1}</td>
-                          <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
-                              {preference?.employeeName}
-                            </span>
-                          </td>
-                          <td className="ant-table-cell">
-                            {preference?.employeeUid}
-                          </td>
-                          <td className="ant-table-cell">
-                            {preference.charityProgram}
-                          </td>
-                          <td className="ant-table-cell">
-                            {preference.socialOrganization}
-                          </td>
-                          <td className="ant-table-cell">
-                            <input
-                              name="amount"
-                              type="text"
-                              size="4"
-                              maxLength={10}
-                              defaultValue={preference.donationAmount.toLocaleString()}
-                              className="form-control"
-                              disabled={true}
-                            />
-                          </td>
-                          <td className="ant-table-cell text-center">
-                            <BootstrapSwitchButton
-                              checked={
-                                preference?.frequency ===
-                                donationPreferenceConstants.ONCE_FREQUENCY
-                              }
-                              onlabel="Once"
-                              onstyle="primary"
-                              offlabel="Monthly"
-                              offstyle="success"
-                              style="w-100 mx-1"
-                              size="sm"
-                              disabled
-                            />
-                          </td>
-                          <td className="ant-table-cell text-center text-uppercase">
-                            {preference?.status ===
-                              donationPreferenceConstants?.SUSPENDED && (
-                              <span className="text-danger">Suspended</span>
-                            )}
-
-                            {(!preference?.status ||
-                              preference?.status ===
-                                donationPreferenceConstants?.RESUMED) && (
-                              <span className="text-success">Active</span>
-                            )}
-                          </td>
-                          <td className="ant-table-cell text-center">
-                            {preference?.status ===
-                              donationPreferenceConstants?.SUSPENDED && (
-                              <Link
-                                onClick={() =>
-                                  handleOpenDialog("Resume", preference)
-                                }
-                                className="mr-2"
-                                title="Resume"
-                              >
-                                <i className="bi bi-play-circle-fill fs-5"></i>
-                              </Link>
-                            )}
-                            {(!preference?.status ||
-                              preference?.status ===
-                                donationPreferenceConstants?.RESUMED) && (
-                              <Link
-                                onClick={() =>
-                                  handleOpenDialog("Suspend", preference)
-                                }
-                                className="mr-2"
-                                title="Suspend"
-                              >
-                                <i className="bi bi-pause-circle-fill fs-5 custom-color"></i>
-                              </Link>
-                            )}
-                            <Link
-                              onClick={() =>
-                                handleOpenDialog("Delete", preference)
-                              }
-                              title="Delete"
-                            >
-                              <i className="bi bi-trash fs-5 custom-color"></i>
-                            </Link>
-                          </td>
-                        </tr>
-                      ))
-                  ) : (
-                    <tr>
-                      <td colSpan="7" className="text-center">
-                        No preferences found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+      <div className="ant-tabs-nav-wrap">
+        <Tabs
+          defaultActiveKey={donationPreferenceConstants.ACTIVE}
+          onChange={changeTab}
+        >
+          <TabPane
+            tab={
+              <span>
+                <AuditOutlined className="fs-5" />
+                {donationPreferenceConstants.ACTIVE} (
+                {preferences?.items?.sponsored
+                  ? preferences?.items?.sponsored?.filter((charity) =>
+                      isCorporatePortal ? charity : charity?.donated === false
+                    ).length
+                  : 0}
+                )
+              </span>
+            }
+            key={donationPreferenceConstants.ACTIVE}
+          >
+            <ListDonationPreferences tabType={tabType} items={preferences?.items} />
+          </TabPane>
+          <TabPane
+            tab={
+              <span>
+                <RedoOutlined className="fs-5" />
+                {donationPreferenceConstants.COMPLETED} (
+                {preferences?.items?.other
+                  ? preferences?.items?.other?.filter((charity) =>
+                      isCorporatePortal ? charity : charity?.donated === false
+                    ).length
+                  : 0}
+                )
+              </span>
+            }
+            key={donationPreferenceConstants.COMPLETED}
+          >
+            <ListDonationPreferences tabType={tabType} items={preferences?.items} />
+          </TabPane>
+        </Tabs>
       </div>
       <Pagination
         className="pagination-bar mt-4"

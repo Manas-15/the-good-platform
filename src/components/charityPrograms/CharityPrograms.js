@@ -17,7 +17,7 @@ import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import DonateHeader from "./DonateHeader";
 const TabPane = Tabs.TabPane;
 
-const CharityPrograms = () => {
+const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const selectedOrganizationId = useSelector(
@@ -48,6 +48,10 @@ const CharityPrograms = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
     setSelectedCharity(null);
   };
+  // useEffect(() => {
+  //   setTabType(props?.location?.tabType);
+  //   console.log("props?.location?.tabType", props?.location?.tabType);
+  // }, [props?.location?.tabType]);
   useEffect(() => {
     dispatch(
       charityProgramActions.getCharityPrograms(
@@ -61,6 +65,9 @@ const CharityPrograms = () => {
               uuid: user?.uuid,
               socialId: selectedOrganization?.id,
               userType: payrollConstants.EMPLOYEE_VIEW,
+              corporateId: isCorporatePortal
+                ? selectedCorporate?.corporate?.corporateId
+                : user?.corporateId,
             }
       )
     );
@@ -245,7 +252,7 @@ const CharityPrograms = () => {
       </div>
       <div className="ant-tabs-nav-wrap">
         <Tabs
-          defaultActiveKey={charityProgramConstants.SPONSOR}
+          defaultActiveKey={charityProgramConstants.OTHERS}
           onChange={changeTab}
         >
           <TabPane
@@ -295,7 +302,7 @@ const CharityPrograms = () => {
                 )
               </span>
             }
-            key={charityProgramConstants.OTHER}
+            key={charityProgramConstants.OTHERS}
           >
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms

@@ -6,6 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
+  viewPortalConstants,
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -17,6 +18,9 @@ import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
 import { Switch } from "antd";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
+import ListDonationPreferences from "./ListDonationPreferences";
+import { Tabs, Icon } from "antd";
+import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -34,6 +38,7 @@ const actionInitialValues = {
   preferenceId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
+const TabPane = Tabs.TabPane;
 const DonationPreferences = () => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
@@ -47,6 +52,13 @@ const DonationPreferences = () => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [tabType, setTabType] = useState(donationPreferenceConstants.ACTIVE);
+
+  const currentPortal = useSelector((state) => state.currentView);
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isEmployeePortal =
+    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
 
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
@@ -156,6 +168,9 @@ const DonationPreferences = () => {
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
+  const changeTab = (activeKey) => {
+    setTabType(activeKey);
+  };
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -181,176 +196,47 @@ const DonationPreferences = () => {
         </div>
       </div>
       {preferences.loading && <Loader />}
-      <div className="ant-row">
-        <div className="ant-col ant-col-24 mt-2">
-          <div className="ant-table-wrapper">
-            <div className="ant-table">
-              <table>
-                <thead className="ant-table-thead">
-                  <tr>
-                    <th className="ant-table-cell">SR No.</th>
-                    <th className="ant-table-cell">Program</th>
-                    <th className="ant-table-cell">Organization</th>
-                    <th className="ant-table-cell">Category</th>
-                    <th className="ant-table-cell">Amount</th>
-                    <th className="ant-table-cell text-center">Frequency</th>
-                    <th className="ant-table-cell text-center">Status</th>
-                    <th className="ant-table-cell text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="ant-table-tbody">
-                  {preferences?.items?.length > 0 ? (
-                    preferences?.items
-                      ?.filter((preference) => preference?.isDeleted === false)
-                      .map((preference, index) => (
-                        <tr
-                          key={index + 1}
-                          className="ant-table-row ant-table-row-level-0"
-                        >
-                          <td className="ant-table-cell">{index + 1}</td>
-                          <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
-                              {preference.charityProgram}
-                            </span>
-                          </td>
-                          <td className="ant-table-cell">
-                            {preference.socialOrganization}
-                          </td>
-                          <td className="ant-table-cell">
-                            {preference.category}
-                          </td>
-                          <td className="ant-table-cell">
-                            <form
-                              id={`amount${preference?.employeePreferenceId}`}
-                            >
-                              <input
-                                name="amount"
-                                type="text"
-                                size="4"
-                                maxLength={10}
-                                defaultValue={preference?.donationAmount.toLocaleString()}
-                                className="form-control"
-                                onBlur={() =>
-                                  showConsent(
-                                    preference,
-                                    donationPreferenceConstants.AMOUNT
-                                  )
-                                }
-                                onInput={(e) => setUpdatedValue(e.target.value)}
-                                id={`amount${preference?.employeePreferenceId}`}
-                              />
-                            </form>
-                          </td>
-                          <td className="ant-table-cell text-center">
-                            <form
-                              id={`frequency${preference?.employeePreferenceId}`}
-                            >
-                              <BootstrapSwitchButton
-                                checked={
-                                  updatedValue
-                                    ? updatedValue
-                                    : preference?.frequency ===
-                                      donationPreferenceConstants.ONCE_FREQUENCY
-                                }
-                                onlabel="Once"
-                                onstyle="primary"
-                                offlabel="Monthly"
-                                offstyle="success"
-                                style="w-100 mx-1"
-                                size="sm"
-                                onChange={(checked) => {
-                                  showConsent(
-                                    preference,
-                                    donationPreferenceConstants.FREQUENCY
-                                  );
-                                  setUpdatedValue(
-                                    checked
-                                      ? donationPreferenceConstants.ONCE
-                                      : donationPreferenceConstants.MONTHLY
-                                  );
-                                }}
-                              />
-                            </form>
-                          </td>
-                          <td className="ant-table-cell text-center text-uppercase">
-                            {preference?.status ===
-                              donationPreferenceConstants?.SUSPENDED && (
-                              <>
-                                {preference?.frequency ===
-                                  donationPreferenceConstants?.MONTHLY_FREQUENCY && (
-                                  <span className="text-danger">Suspended</span>
-                                )}
-                                {preference?.frequency ===
-                                  donationPreferenceConstants?.ONCE_FREQUENCY && (
-                                  <span className="text-primary">
-                                    Completed
-                                  </span>
-                                )}
-                              </>
-                            )}
-                            {(!preference?.status ||
-                              preference?.status ===
-                                donationPreferenceConstants?.RESUMED) && (
-                              <span className="text-success">Active</span>
-                            )}
-                          </td>
-                          <td className="ant-table-cell text-center">
-                            {preference?.status ===
-                              donationPreferenceConstants?.SUSPENDED && (
-                              <Link
-                                onClick={() =>
-                                  handleOpenDialog("Resume", preference)
-                                }
-                                className="mr-2"
-                                title="Resume"
-                              >
-                                <i className="bi bi-play-circle-fill fs-5 custom-color"></i>
-                              </Link>
-                            )}
-                            {(!preference?.status ||
-                              preference?.status ===
-                                donationPreferenceConstants?.RESUMED) && (
-                              <Link
-                                onClick={() =>
-                                  handleOpenDialog("Suspend", preference)
-                                }
-                                className="mr-2"
-                                title="Suspend"
-                              >
-                                <i className="bi bi-pause-circle-fill fs-5 custom-color"></i>
-                              </Link>
-                            )}
-                            <Link
-                              onClick={() =>
-                                handleOpenDialog("Delete", preference)
-                              }
-                              title="Delete"
-                            >
-                              <i className="bi bi-trash fs-5 custom-color"></i>
-                            </Link>
-                          </td>
-                        </tr>
-                      ))
-                  ) : (
-                    <tr>
-                      <td colSpan="8" className="text-center">
-                        No preferences found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Pagination
-        className="pagination-bar mt-4"
-        currentPage={currentPage}
-        totalCount={totalCount ? totalCount : 0}
-        pageSize={pageSize}
-        onPageChange={(page) => setPage(page)}
-      />
+      <div className="ant-tabs-nav-wrap">
+        <Tabs
+          defaultActiveKey={donationPreferenceConstants.ACTIVE}
+          onChange={changeTab}
+        >
+          <TabPane
+            tab={
+              <span>
+                <AuditOutlined className="fs-5" />
+                {donationPreferenceConstants.ACTIVE} (
+                {preferences?.items?.sponsored
+                  ? preferences?.items?.sponsored?.filter((charity) =>
+                      isCorporatePortal ? charity : charity?.donated === false
+                    ).length
+                  : 0}
+                )
+              </span>
+            }
+            key={donationPreferenceConstants.ACTIVE}
+          >
+            <ListDonationPreferences tabType={tabType} items={preferences?.items} />
+          </TabPane>
+          <TabPane
+            tab={
+              <span>
+                <RedoOutlined className="fs-5" />
+                {donationPreferenceConstants.COMPLETED} (
+                {preferences?.items?.others
+                  ? preferences?.items?.others?.filter((charity) =>
+                      isCorporatePortal ? charity : charity?.donated === false
+                    ).length
+                  : 0}
+                )
+              </span>
+            }
+            key={donationPreferenceConstants.COMPLETED}
+          >
+            <ListDonationPreferences tabType={tabType} items={preferences?.items} />
+          </TabPane>
+        </Tabs>
+      </div>      
       {openDialog && (
         <ConfirmationDialog
           open={true}
