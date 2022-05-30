@@ -21,6 +21,7 @@ import { BellOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import ListDonationPreferences from "./ListDonationPreferences";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
+import { SearchDonationPreferenceHelper } from "../../helpers";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -53,6 +54,7 @@ const DonationPreferences = () => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [tabType, setTabType] = useState(donationPreferenceConstants.ACTIVE);
+  const [searchText, setSearchText] = useState("");
 
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
@@ -171,6 +173,14 @@ const DonationPreferences = () => {
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
+  const search = (value) => {
+    console.log("fffffffffffffffffffffff", tabType, value);
+    setSearchText(value);
+    // if(tabType === socialOrganizationConstants.SPONSORED){
+    //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
+    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
+    // }
+  };
   return (
     <div className="customContainer program-list">
       <div className="row mb-4">
@@ -180,15 +190,15 @@ const DonationPreferences = () => {
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
         <div className="ant-col ant-col-24  searchContainer">
-          <div className="ant-col ant-col-8">
+          <div className="ant-col ant-col-12">
             <div className="ant-input-affix-wrapper inputFilterInput">
               <span className="ant-input-prefix">
                 <i className="bi bi-search"></i>
                 <input
-                  placeholder="Search by Program"
+                  placeholder="Search by amount or program or organization name"
                   className="ant-input-search"
                   type="text"
-                  value=""
+                  onChange={(e) => search(e.target.value)}
                 />
               </span>
             </div>
@@ -206,9 +216,10 @@ const DonationPreferences = () => {
               <span>
                 <BellOutlined className="fs-5" />
                 {donationPreferenceConstants.ACTIVE} (
-                {preferences?.items?.sponsored
-                  ? preferences?.items?.sponsored?.filter((charity) =>
-                      isCorporatePortal ? charity : charity?.donated === false
+                {preferences?.items?.active
+                  ? SearchDonationPreferenceHelper(
+                      preferences?.items?.active,
+                      searchText
                     ).length
                   : 0}
                 )
@@ -218,7 +229,14 @@ const DonationPreferences = () => {
           >
             <ListDonationPreferences
               tabType={tabType}
-              items={preferences?.items}
+              items={
+                searchText && tabType === donationPreferenceConstants.ACTIVE
+                  ? SearchDonationPreferenceHelper(
+                      preferences?.items?.active,
+                      searchText
+                    )
+                  : preferences?.items?.active
+              }
             />
           </TabPane>
           <TabPane
@@ -226,9 +244,10 @@ const DonationPreferences = () => {
               <span>
                 <CheckCircleOutlined className="fs-5" />
                 {donationPreferenceConstants.COMPLETED} (
-                {preferences?.items?.others
-                  ? preferences?.items?.others?.filter((charity) =>
-                      isCorporatePortal ? charity : charity?.donated === false
+                {preferences?.items?.complete
+                  ? SearchDonationPreferenceHelper(
+                      preferences?.items?.complete,
+                      searchText
                     ).length
                   : 0}
                 )
@@ -238,7 +257,14 @@ const DonationPreferences = () => {
           >
             <ListDonationPreferences
               tabType={tabType}
-              items={preferences?.items}
+              items={
+                searchText && tabType === donationPreferenceConstants.COMPLETED
+                  ? SearchDonationPreferenceHelper(
+                      preferences?.items?.complete,
+                      searchText
+                    )
+                  : preferences?.items?.complete
+              }
             />
           </TabPane>
         </Tabs>
