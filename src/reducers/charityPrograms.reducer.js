@@ -106,21 +106,21 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.programId,
       };
     case charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS:
-      console.log("ddddddddddddddd before unpromote", action?.data?.data?.msg);
+      
       return {
         ...state,
         items: {
           other: state?.items?.["other"],
           sponsored: state?.items?.["sponsored"]?.map((item) => {
             if (
-              item?.charityId === state?.programId &&
-              action?.data?.data?.msg
+              item?.charityId === state?.programId
             ) {
               return {
                 ...item,
-                unpromoteMsg: action?.data?.data?.msg,
+                employeeCount: action?.data?.data?.count,
               };
             }
+            return item;
           }),
         },
         loading: false,
