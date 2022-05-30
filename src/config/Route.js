@@ -28,6 +28,7 @@ import { notification } from "antd";
 import TermsOfService from "../components/TermsOfService/TermsOfService";
 import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 import SocialOrganizationsPortal from "../components/SocialOrganizations/SocialOrganizationsPortal";
+import SocialOrganizations from "../components/SocialOrganizations/SocialOrganizations";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -150,7 +151,7 @@ const CreateRoutes = () => {
               <Route
                 exact
                 path="/social-organizations"
-                component={ListSocialOrganizations}
+                component={SocialOrganizations}
               />
               {/* <Route
                 exact

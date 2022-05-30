@@ -45,8 +45,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setActionTitle(`${action} Confirmation`);
 
     if (action === charityProgramConstants.UNPROMOTE) {
+      console.log("dddddddddddddddddddd selectedProgram", selectedProgram)
       setActionContent(
-        `Are you sure want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
+        selectedProgram?.employeeCount > 0
+          ? `Are you sure you want to unpromote?.<br/><br/>Doing this would remove all the donation preferences set for the programs by the employees.<br/><br/>Total ${selectedProgram?.employeeCount} employees have set donation preference for the programs.`
+          : `Are you sure you want to unpromote?.`
       );
     } else {
       setActionContent(
@@ -117,9 +120,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     dispatch(selectedCharityActions.selectedCharity(charity));
     dispatch(selectedCharityTabActions.selectedTabType(tabType));
   };
-  const checkBeforeUnpromote = (item) => {
+  const checkBeforeUnpromote = async (item) => {
     setSelectedProgram(item);
-    dispatch(
+    await dispatch(
       charityProgramActions.checkBeforeUnpromote({
         corporateId: selectedCorporate?.corporate?.corporateId,
         socialId: item?.soicalId,
@@ -127,17 +130,32 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       })
     );
   };
-
   useEffect(() => {
-    console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", !selectedProgram);
-    if (selectedProgram?.charityId && !selectedProgram?.unpromoteMsg) {
-      console.log(
-        "beforeUnrpomoteMsg >>>>>>>> 2222222222222 >>>>>>>",
-        selectedProgram?.unpromoteMsg
-      );
+    console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
+    if(Object.keys(selectedProgram).length > 0){
       handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
     }
   }, [selectedProgram]);
+  useEffect(() => {
+    console.log("bssssssssssssssssssss >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
+    if(Object.keys(selectedProgram).length > 0){
+      handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
+    }
+  }, [selectedProgram?.employeeCount]);
+  // useEffect(() => {
+  //   console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
+  //   setSelectedProgram(selectedProgram)
+  // }, [selectedProgram?.employeeCount]);
+  // useEffect(() => {
+  //   console.log("beforeUnrpomoteMsg >>>>>>>>> ssssssssssssss >>>>>>", selectedProgram);
+  //     setOpen(true);
+  //     setActionType("Confirm");
+  //     setActionTitle(`Confirm Confirmation`);
+  //     setActionContent(
+  //       `Are you sure you want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total ${selectedProgram?.employeeCount} employees have set donation preference for the programs.`
+  //     );
+  // }, [selectedProgram?.employeeCount]);
+
   return (
     <>
       <div className="ant-row">

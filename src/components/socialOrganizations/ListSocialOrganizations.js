@@ -8,6 +8,7 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   charityProgramConstants,
+  viewPortalConstants,
 } from "../../constants";
 import {
   selectedOrganizationActions,
@@ -21,9 +22,10 @@ import { Tooltip } from "antd";
 // import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
-const ListCharityPrograms = () => {
+const ListSocialOrganizations = ({ tabType }) => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
+  const currentPortal = useSelector((state) => state.currentView);
   const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
@@ -33,6 +35,8 @@ const ListCharityPrograms = () => {
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,7 +55,6 @@ const ListCharityPrograms = () => {
     setTotalCount(socialOrganizations?.totalCount);
   }, [socialOrganizations?.totalCount]);
   const setOrganization = (organization) => {
-    console.log(">>>>>>>>>>>>>>>>>>>> ffff", organization)
     dispatch(selectedOrganizationActions.selectedOrganization(organization));
   };
   const renderClass = (param) => {
@@ -70,10 +73,9 @@ const ListCharityPrograms = () => {
     setOpen(true);
     setActionType(action);
     setActionTitle(`${action} Confirmation`);
-
     if (action === charityProgramConstants.UNPROMOTE) {
       setActionContent(
-        `Are you sure want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
+        `Are you sure you want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
       );
     } else {
       setActionContent(`Are you sure to ${action.toLowerCase()}?`);
@@ -103,29 +105,6 @@ const ListCharityPrograms = () => {
   };
   return (
     <div className="customContainer">
-      <div className="row mb-4">
-        <div className="col-md-6">
-          <h1 className="ant-typography customHeading">Social Organizations</h1>
-        </div>
-      </div>
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
-        <div className="ant-col ant-col-24  searchContainer">
-          <div className="ant-col ant-col-8">
-            <div className="ant-input-affix-wrapper inputFilterInput">
-              <span className="ant-input-prefix">
-                <i className="bi bi-search"></i>
-                <input
-                  placeholder="Search by Name"
-                  className="ant-input-search"
-                  type="text"
-                  value=""
-                />
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      {socialOrganizations.loading && <Loader />}
       <div className="ant-row">
         <div className="ant-col ant-col-24 mt-2">
           <div className="ant-table-wrapper">
@@ -247,4 +226,4 @@ const ListCharityPrograms = () => {
     </div>
   );
 };
-export default ListCharityPrograms;
+export default ListSocialOrganizations;

@@ -146,9 +146,9 @@ function checkBeforeUnpromote(actionValues) {
     charityProgramService.checkBeforeUnpromote(actionValues).then(
       (data) => {
         dispatch(success(data));
-        if(data?.data?.msg){
-          dispatch(alertActions.error(data?.data?.msg));
-        }
+        // if(data?.data?.msg){
+        //   dispatch(alertActions.error(data?.data?.msg));
+        // }
       },
       (error) => {
         dispatch(failure(error.toString()));

@@ -1,7 +1,11 @@
 import { Button, Modal } from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
+import { useSelector } from "react-redux";
 import { donationPreferenceConstants, payrollConstants } from "../../constants";
 import donationsConsent from "./../../config/donationsConsent.json";
+import {
+  viewPortalConstants,
+} from "../../constants";
 export default function DonationConsent({
   closeCheck,
   amount,
@@ -11,6 +15,9 @@ export default function DonationConsent({
   open,
   handleCheck,
 }) {
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const currentPortal = useSelector((state) => state.currentView);
+  const isCorporatePortal = currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   return (
     <Modal show={open} onHide={closeCheck} size="lg" backdrop="static">
       <Modal.Header closeButton className="fs-2">
@@ -36,7 +43,7 @@ export default function DonationConsent({
           </thead>
           <tbody>
             <tr>
-              <td>{employee?.name}</td>
+              <td>{isCorporatePortal ? selectedCorporate?.corporate?.organizationName : employee?.name}</td>
               <td>
                 {selectedCharity?.charityName && selectedCharity?.charityName}
                 {selectedCharity?.charityProgram &&
