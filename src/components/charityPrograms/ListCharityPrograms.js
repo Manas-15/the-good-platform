@@ -38,7 +38,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [selectedProgram, setSelectedProgram] = useState(Object);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const [checkList, setCheckList] = useState();
-  
 
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -129,7 +128,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         corporateId: selectedCorporate?.corporate?.corporateId,
         socialId: item?.soicalId,
         programId: item?.charityId,
-        corporateId: isCorporatePortal ? selectedCorporate?.corporate?.corporateId : user?.corporateId,
+        corporateId: isCorporatePortal
+          ? selectedCorporate?.corporate?.corporateId
+          : user?.corporateId,
       })
     );
   };

@@ -135,13 +135,12 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                 </thead>
                 <tbody className="ant-table-tbody">
                   {items?.length > 0 ? (
-                    items.map(
-                      (socialOrganization, index) => (
-                        <tr
-                          key={index + 1}
-                          className="ant-table-row ant-table-row-level-0"
-                        >
-                          {/* <td className="ant-table-cell">
+                    items.map((socialOrganization, index) => (
+                      <tr
+                        key={index + 1}
+                        className="ant-table-row ant-table-row-level-0"
+                      >
+                        {/* <td className="ant-table-cell">
                             <input
                               type="checkbox"
                               value={index + 1}
@@ -154,40 +153,40 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                               }
                             />
                           </td> */}
-                          <td className="ant-table-cell">{index + 1}</td>
-                          <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
-                              <Link
-                                to={{
-                                  pathname: `/social-organizations/${urlSlug(
-                                    socialOrganization?.name
-                                  )}`,
-                                  tabType: tabType,
-                                }}
-                                onClick={() =>
-                                  setOrganization(socialOrganization)
-                                }
-                              >
-                                <span className="custom-color">
-                                  {socialOrganization?.name}
-                                </span>
-                              </Link>
-                            </span>
-                          </td>
-                          <td className="ant-table-cell text-center">
-                            {socialOrganization?.total_program}
-                          </td>
-                          <td className="ant-table-cell">
-                            {moment(socialOrganization?.created_date).format(
-                              "LL"
-                            )}
-                          </td>
-                          {/* <td className="ant-table-cell text-center">
+                        <td className="ant-table-cell">{index + 1}</td>
+                        <td className="ant-table-cell">
+                          <span className="ant-typography font-weight-bold">
+                            <Link
+                              to={{
+                                pathname: `/social-organizations/${urlSlug(
+                                  socialOrganization?.name
+                                )}`,
+                                tabType: tabType,
+                              }}
+                              onClick={() =>
+                                setOrganization(socialOrganization)
+                              }
+                            >
+                              <span className="custom-color">
+                                {socialOrganization?.name}
+                              </span>
+                            </Link>
+                          </span>
+                        </td>
+                        <td className="ant-table-cell text-center">
+                          {socialOrganization?.total_program}
+                        </td>
+                        <td className="ant-table-cell">
+                          {moment(socialOrganization?.created_date).format(
+                            "LL"
+                          )}
+                        </td>
+                        {/* <td className="ant-table-cell text-center">
                             <Tooltip title={charityProgramConstants.UNPROMOTED}>
                               <i className="bi-heart fs-6 custom-color"></i>
                             </Tooltip>
                           </td> */}
-                          {/* <td className="ant-table-cell">
+                        {/* <td className="ant-table-cell">
                           <span
                             className={renderClass(
                               socialOrganization?.approvalStatus
@@ -196,7 +195,7 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                             {socialOrganization?.approvalStatus}
                           </span>
                         </td> */}
-                          {/* <td className="ant-table-cell text-center">
+                        {/* <td className="ant-table-cell text-center">
                           <Link>
                             <span
                               className="bi-check-circle fs-5"
@@ -204,9 +203,8 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                             ></span>
                           </Link>
                         </td> */}
-                        </tr>
-                      )
-                    )
+                      </tr>
+                    ))
                   ) : (
                     <tr>
                       <td colSpan="4" className="text-center">

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 // import socialOrganizations from "./../../config/socialOrganizations.json";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import urlSlug from "url-slug";
 import {
   socialOrganizationConstants,
   paginationConstants,
@@ -17,11 +15,9 @@ import {
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import Pagination from "./../Shared/Pagination";
-import * as moment from "moment";
-import { selectedOrganization } from "../../reducers/selectedOrganization.reducer";
 import Loader from "../Shared/Loader";
-import { Tooltip } from "antd";
 import ListSocialOrganizations from "./ListSocialOrganizations";
+import { SearchHelper } from "../../helpers";
 
 // import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
@@ -36,10 +32,15 @@ const SocialOrganizations = () => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
-  const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSOR);
+  const [searchText, setSearchText] = useState("");
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSORED);
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isEmployeePortal =
+    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +49,10 @@ const SocialOrganizations = () => {
   useEffect(() => {
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
-        employeeId: user?.emp_id,
+        employeeId: isEmployeePortal ? user?.emp_id : null,
+        corporateId: isCorporatePortal
+          ? selectedCorporate?.corporate?.corporateId
+          : user?.corporateId,
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
@@ -60,10 +64,9 @@ const SocialOrganizations = () => {
   useEffect(() => {
     setTotalCount(socialOrganizations?.totalCount);
   }, [socialOrganizations?.totalCount]);
-  const setOrganization = (organization) => {
-    console.log(">>>>>>>>>>>>>>>>>>>> ffff", organization);
-    dispatch(selectedOrganizationActions.selectedOrganization(organization));
-  };
+  // const setOrganization = (organization) => {
+  //   dispatch(selectedOrganizationActions.selectedOrganization(organization));
+  // };
   const renderClass = (param) => {
     switch (param) {
       case socialOrganizationConstants.APPROVED:
@@ -113,6 +116,14 @@ const SocialOrganizations = () => {
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
+  const search = (value) => {
+    console.log("fffffffffffffffffffffff", tabType, value);
+    setSearchText(value);
+    // if(tabType === socialOrganizationConstants.SPONSORED){
+    //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
+    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
+    // }
+  };
   return (
     <div className="customContainer program-list">
       <div className="row mb-4">
@@ -127,10 +138,10 @@ const SocialOrganizations = () => {
               <span className="ant-input-prefix">
                 <i className="bi bi-search"></i>
                 <input
-                  placeholder="Search by Name"
+                  placeholder="Search by Organization Name"
                   className="ant-input-search"
                   type="text"
-                  value=""
+                  onChange={(e) => search(e.target.value)}
                 />
               </span>
             </div>
@@ -149,33 +160,57 @@ const SocialOrganizations = () => {
                 <AuditOutlined className="fs-5" />
                 {socialOrganizationConstants.SPONSORED} (
                 {socialOrganizations?.items?.sponsored
-                  ? socialOrganizations?.items?.sponsored?.filter((charity) =>
-                      isCorporatePortal ? charity : charity?.donated === false
-                    ).length
+                  ? searchText &&
+                    tabType === socialOrganizationConstants.SPONSORED
+                    ? SearchHelper(
+                        socialOrganizations?.items?.sponsored,
+                        searchText
+                      ).length
+                    : socialOrganizations?.items?.sponsored?.length
                   : 0}
                 )
               </span>
             }
             key={socialOrganizationConstants.SPONSORED}
           >
-            <ListSocialOrganizations tabType={tabType} />
+            <ListSocialOrganizations
+              tabType={tabType}
+              items={
+                searchText && tabType === socialOrganizationConstants.SPONSORED
+                  ? SearchHelper(
+                      socialOrganizations?.items?.sponsored,
+                      searchText
+                    )
+                  : socialOrganizations?.items?.sponsored
+              }
+            />
           </TabPane>
           <TabPane
             tab={
               <span>
                 <RedoOutlined className="fs-5" />
                 {socialOrganizationConstants.OTHERS} (
-                {socialOrganizations?.items?.other
-                  ? socialOrganizations?.items?.other?.filter((charity) =>
-                      isCorporatePortal ? charity : charity?.donated === false
-                    ).length
+                {socialOrganizations?.items?.others
+                  ? searchText && tabType === socialOrganizationConstants.OTHERS
+                    ? SearchHelper(
+                        socialOrganizations?.items?.others,
+                        searchText
+                      ).length
+                    : socialOrganizations?.items?.others?.length
                   : 0}
                 )
               </span>
             }
             key={socialOrganizationConstants.OTHERS}
           >
-            <ListSocialOrganizations tabType={tabType} />
+            <ListSocialOrganizations
+              tabType={tabType}
+              items={
+                searchText && tabType === socialOrganizationConstants.OTHERS
+                  ? SearchHelper(socialOrganizations?.items?.others, searchText)
+                  : socialOrganizations?.items?.others
+              }
+            />
           </TabPane>
         </Tabs>
       </div>

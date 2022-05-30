@@ -88,7 +88,11 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   return (
     <>
       {addedFromProgramDetail ? (
-        <AddedDonationFromDetail charity={selectedCharity} selectedAmount={selectedAmount} frequency={frequency}/>
+        <AddedDonationFromDetail
+          charity={selectedCharity}
+          selectedAmount={selectedAmount}
+          frequency={frequency}
+        />
       ) : (
         !showNextStep && (
           <>

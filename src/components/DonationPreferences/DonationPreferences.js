@@ -17,7 +17,7 @@ import * as moment from "moment";
 import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
 import { Switch } from "antd";
-import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
+import { BellOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import ListDonationPreferences from "./ListDonationPreferences";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
@@ -172,7 +172,7 @@ const DonationPreferences = () => {
     setTabType(activeKey);
   };
   return (
-    <div className="customContainer">
+    <div className="customContainer program-list">
       <div className="row mb-4">
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">Donation Preferences</h1>
@@ -204,7 +204,7 @@ const DonationPreferences = () => {
           <TabPane
             tab={
               <span>
-                <AuditOutlined className="fs-5" />
+                <BellOutlined className="fs-5" />
                 {donationPreferenceConstants.ACTIVE} (
                 {preferences?.items?.sponsored
                   ? preferences?.items?.sponsored?.filter((charity) =>
@@ -216,12 +216,15 @@ const DonationPreferences = () => {
             }
             key={donationPreferenceConstants.ACTIVE}
           >
-            <ListDonationPreferences tabType={tabType} items={preferences?.items} />
+            <ListDonationPreferences
+              tabType={tabType}
+              items={preferences?.items}
+            />
           </TabPane>
           <TabPane
             tab={
               <span>
-                <RedoOutlined className="fs-5" />
+                <CheckCircleOutlined className="fs-5" />
                 {donationPreferenceConstants.COMPLETED} (
                 {preferences?.items?.others
                   ? preferences?.items?.others?.filter((charity) =>
@@ -233,10 +236,13 @@ const DonationPreferences = () => {
             }
             key={donationPreferenceConstants.COMPLETED}
           >
-            <ListDonationPreferences tabType={tabType} items={preferences?.items} />
+            <ListDonationPreferences
+              tabType={tabType}
+              items={preferences?.items}
+            />
           </TabPane>
         </Tabs>
-      </div>      
+      </div>
       {openDialog && (
         <ConfirmationDialog
           open={true}
