@@ -335,7 +335,7 @@ const ListTransactionsHistory = (props) => {
                           {transaction?.transactionId}
                         </td>
                         <td className="ant-table-cell">
-                          {transaction?.amount}
+                          {transaction?.amount?.toLocaleString()}
                         </td>
                         <td className="ant-table-cell">
                           {transaction?.donationType}

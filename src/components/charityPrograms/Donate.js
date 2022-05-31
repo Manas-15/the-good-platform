@@ -63,6 +63,7 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedAmount)
     preferenceForm.corporateId = employee?.corporateId;
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = selectedCharity?.charityId;
@@ -72,7 +73,15 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     preferenceForm.isConsentCheck = true;
     preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
-    dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
+    if(selectedCharity?.employeePreferenceId){
+      preferenceForm.employeePreferenceId = selectedCharity?.employeePreferenceId;
+      preferenceForm.type = null
+      dispatch(
+        donationPreferenceActions.updateDonationPreference(preferenceForm)
+      );
+    }else{      
+      dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
+    }
     const sidepanel = document.getElementById("sidepanel");
     if (sidepanel) {
       document.getElementById("sidepanel").classList.remove("is-open");
@@ -228,8 +237,8 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
                               : "text-white"
                           } bi-heart-fill fs-6 ml-2`}
                         ></span>
-                        &nbsp;{addedFromProgramDetail ? "Added" : "Add"}{" "}
-                        Donation Preference
+                        &nbsp;{selectedCharity?.donated ? "Update" : "Add"}{" "}
+                        Donation Preference {selectedCharity?.donated}
                       </>
                     ) : (
                       "Next"

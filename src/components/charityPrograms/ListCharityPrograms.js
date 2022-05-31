@@ -30,6 +30,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [open, setOpen] = useState(false);
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isEmployeePortal =
+    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const user = useSelector((state) => state.employee.user);
   const [actionType, setActionType] = useState("");
@@ -217,25 +219,25 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         </td>
                         {/* <td className="ant-table-cell">{index + 1}</td> */}
                         <td className="ant-table-cell">
-                          <Tooltip
-                                title={charityProgram?.charityName}
-                              >
-                          <Link
-                            to={{
-                              pathname: `/social-organizations/programs/${urlSlug(
-                                charityProgram?.charityName
-                              )}`,
-                              programName: charityProgram?.charityName,
-                            }}
-                            onClick={() => setSelectedCharity(charityProgram)}
-                          >
-                            <span className="ant-typography font-weight-bold custom-color">
-                              {charityProgram?.charityName?.length > 35
-                                ? charityProgram?.charityName.substring(0, 32) +
-                                  "..."
-                                : charityProgram?.charityName}
-                            </span>
-                          </Link>
+                          <Tooltip title={charityProgram?.charityName}>
+                            <Link
+                              to={{
+                                pathname: `/social-organizations/programs/${urlSlug(
+                                  charityProgram?.charityName
+                                )}`,
+                                programName: charityProgram?.charityName,
+                              }}
+                              onClick={() => setSelectedCharity(charityProgram)}
+                            >
+                              <span className="ant-typography font-weight-bold custom-color">
+                                {charityProgram?.charityName?.length > 35
+                                  ? charityProgram?.charityName.substring(
+                                      0,
+                                      32
+                                    ) + "..."
+                                  : charityProgram?.charityName}
+                              </span>
+                            </Link>
                           </Tooltip>
                         </td>
                         <td className="ant-table-cell">
@@ -280,26 +282,37 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 </Link>
                               </Tooltip>
                             )}
-                          <button
-                            type="submit"
-                            className="btn btn-sm mb-2"
-                            onClick={() => openNav(charityProgram)}
-                          >
-                            <Tooltip title="Donate">
-                              <img
-                                src="/assets/img/donate.png"
-                                alt="dontae"
-                                onMouseEnter={(event) =>
-                                  (event.target.src =
-                                    "/assets/img/donate-fill-red.png")
-                                }
-                                onMouseOut={(event) =>
-                                  (event.target.src = "/assets/img/donate.png")
-                                }
-                                height={25}
-                              />
+                          {isEmployeePortal && charityProgram?.donated && (
+                            <Tooltip title="Edit">
+                              <Link onClick={() => openNav(charityProgram)}>
+                                <i className="bi-pencil-square fs-5 custom-color"></i>
+                              </Link>
                             </Tooltip>
-                          </button>
+                          )}
+                          {(isCorporatePortal ||
+                            (isEmployeePortal && !charityProgram?.donated)) && (
+                            <button
+                              type="submit"
+                              className="btn btn-sm mb-2"
+                              onClick={() => openNav(charityProgram)}
+                            >
+                              <Tooltip title={`${isEmployeePortal && tabType === charityProgramConstants.SPONSOR ? "Add to donation preference" : "Donate"}`}>
+                                <img
+                                  src="/assets/img/donate.png"
+                                  alt="donate"
+                                  onMouseEnter={(event) =>
+                                    (event.target.src =
+                                      "/assets/img/donate-fill-red.png")
+                                  }
+                                  onMouseOut={(event) =>
+                                    (event.target.src =
+                                      "/assets/img/donate.png")
+                                  }
+                                  height={25}
+                                />
+                              </Tooltip>
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))

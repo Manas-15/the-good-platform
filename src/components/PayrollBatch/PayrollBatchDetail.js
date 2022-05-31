@@ -37,7 +37,7 @@ const PayrollBatchDetail = (props) => {
     dispatch(payrollSettingActions.getBatchDetail({ batchId: props?.batchId }));
   }, [props?.batchId]);
   const groupBy = (key) => {
-    return preferences?.reduce(function (acc, item) {
+    return preferences?.reduce?.(function (acc, item) {
       (acc[item[key]] = acc[item[key]] || []).push(item);
       return acc;
     }, {});
@@ -54,12 +54,15 @@ const PayrollBatchDetail = (props) => {
   const isOrganizationView =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  const isBluePencilPortal =
+    currentPortal?.currentView ===
+    viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   useEffect(() => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
     setCurrentView(
       isOrganizationView
         ? payrollConstants.CORPORATE_VIEW
-        : isCorporateView
+        : (isCorporateView || isBluePencilPortal)
         ? payrollConstants.EMPLOYEE_VIEW
         : payrollConstants.CORPORATE_VIEW
     );
@@ -78,15 +81,15 @@ const PayrollBatchDetail = (props) => {
         <div className="col-md-7">
           <h1 className="ant-typography customHeading">
             Payroll Batch Detail -{" "}
-            {preferences && moment(preferences[0].batchDate).format("MMM YYYY")}
+            {preferences && moment(preferences[0]?.batchDate).format("MMM YYYY")}
           </h1>
         </div>
       </div>
       <div className="row mb-b payroll ">
         <div className="col-md-12 text-right">
-          {preferences && (
+          {preferences?.items?.length > 0 && (
             <CSVLink
-              data={preferences?.map(
+              data={preferences?.map?.(
                 ({
                   employeePreferenceId,
                   isDeleted,
@@ -116,7 +119,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {isCorporateView && (
+          {(isCorporateView || isBluePencilPortal) && (
             <Link
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.EMPLOYEE_VIEW)}
@@ -131,7 +134,7 @@ const PayrollBatchDetail = (props) => {
               </button>
             </Link>
           )}
-          {(!isCorporateView || isOrganizationView) && (
+          {(!isBluePencilPortal  && (!isCorporateView || isOrganizationView)) && (
             <Link
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}
@@ -220,9 +223,9 @@ const PayrollBatchDetail = (props) => {
                                           Employee ID
                                         </th>
                                       )}
-                                    {isOrganizationView &&
+                                    {(isOrganizationView &&
                                       currentView !==
-                                        payrollConstants.CORPORATE_VIEW && (
+                                        payrollConstants.CORPORATE_VIEW) && (
                                         <th className="ant-table-cell">
                                           Corporate Name
                                         </th>
@@ -294,9 +297,9 @@ const PayrollBatchDetail = (props) => {
                                               {preference?.employeeUid}
                                             </td>
                                           )}
-                                        {isOrganizationView &&
+                                        {(isOrganizationView &&
                                           currentView !==
-                                            payrollConstants.CORPORATE_VIEW && (
+                                            payrollConstants.CORPORATE_VIEW) && (
                                             <td className="ant-table-cell">
                                               <span className="ant-typography font-weight-bold">
                                                 {preference?.corporateName}
