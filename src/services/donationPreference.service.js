@@ -6,6 +6,7 @@ export const donationPreferenceService = {
   saveDonationPreference,
   updateDonationPreference,
   operateActionRequest,
+  repeatDonationPreference,
 };
 
 function getDonationPreferences(data) {
@@ -31,6 +32,12 @@ function updateDonationPreference(data) {
 function operateActionRequest(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/preference_action/",
+    data
+  );
+}
+function repeatDonationPreference(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/save_employee_donation_preference/",
     data
   );
 }
