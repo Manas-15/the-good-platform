@@ -16,8 +16,8 @@ import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
-import { Switch } from "antd";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
+import { Progress, Tooltip, Switch } from "antd";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -93,16 +93,32 @@ const ListDonationPreferences = ({ tabType, items }) => {
   };
   const handleCloseDialog = () => setOpenDialog(false);
   const confirm = () => {
+    if (actionType === donationPreferenceConstants.REPEAT) {
+      // selectedPreference.corporateId = employee?.corporateId;
+      selectedPreference.donationConsent = `${
+        donationsConsent?.consent
+      } [Frequency: ${
+        selectedPreference?.frequency ===
+        donationPreferenceConstants.ONCE?.ONCE_FREQUENCY
+          ? donationPreferenceConstants.ONCE
+          : donationPreferenceConstants.MONTHLY
+      }]`;
+      dispatch(
+        donationPreferenceActions.repeatDonationPreference(selectedPreference)
+      );
+    } else {      
+      actionInitialValues.isDeleted =
+        actionType === donationPreferenceConstants.DELETE;
+      actionInitialValues.isSuspended =
+        actionType === donationPreferenceConstants.SUSPEND;
+      actionInitialValues.preferenceId =
+        selectedPreference?.employeePreferenceId;
+      actionInitialValues.requestType = actionType;
+      dispatch(
+        donationPreferenceActions.operateActionRequest(actionInitialValues)
+      );
+    }
     handleCloseDialog();
-    actionInitialValues.isDeleted =
-      actionType === donationPreferenceConstants.DELETE;
-    actionInitialValues.isSuspended =
-      actionType === donationPreferenceConstants.SUSPEND;
-    actionInitialValues.preferenceId = selectedPreference?.employeePreferenceId;
-    actionInitialValues.requestType = actionType;
-    dispatch(
-      donationPreferenceActions.operateActionRequest(actionInitialValues)
-    );
   };
 
   const handleCheck = () => {
@@ -187,9 +203,9 @@ const ListDonationPreferences = ({ tabType, items }) => {
                     <th className="ant-table-cell">Amount</th>
                     <th className="ant-table-cell text-center">Frequency</th>
                     <th className="ant-table-cell text-center">Status</th>
-                    {tabType !== donationPreferenceConstants.COMPLETED && (
-                      <th className="ant-table-cell text-center">Actions</th>
-                    )}
+                    {/* {tabType !== donationPreferenceConstants.COMPLETED && ( */}
+                    <th className="ant-table-cell text-center">Actions</th>
+                    {/* )} */}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -215,9 +231,14 @@ const ListDonationPreferences = ({ tabType, items }) => {
                             </td>
                           )}
                           <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
-                              {preference.charityProgram}
-                            </span>
+                            <Tooltip title={preference.charityProgram}>
+                              <span className="ant-typography font-weight-bold">
+                                {preference.charityProgram?.length > 30
+                                  ? preference.charityProgram.substring(0, 27) +
+                                    "..."
+                                  : preference.charityProgram}
+                              </span>
+                            </Tooltip>
                           </td>
                           <td className="ant-table-cell">
                             {preference.socialOrganization}
@@ -296,12 +317,13 @@ const ListDonationPreferences = ({ tabType, items }) => {
                                 )} */}
                               </>
                             )}
-                            {((!preference?.status ||
+                            {(!preference?.status ||
                               preference?.status ===
-                                donationPreferenceConstants?.RESUMED) && tabType !==
-                                donationPreferenceConstants.COMPLETED) && (
-                              <span className="text-success">Active</span>
-                            )}
+                                donationPreferenceConstants?.RESUMED) &&
+                              tabType !==
+                                donationPreferenceConstants.COMPLETED && (
+                                <span className="text-success">Active</span>
+                              )}
                             {tabType ===
                               donationPreferenceConstants.COMPLETED &&
                               preference?.status !==
@@ -309,34 +331,62 @@ const ListDonationPreferences = ({ tabType, items }) => {
                                 <span className="text-success">Completed</span>
                               )}
                           </td>
-                          {tabType !==
-                            donationPreferenceConstants.COMPLETED && (
-                            <td className="ant-table-cell text-center">
-                              {preference?.status ===
+                          {/* {tabType !==
+                            donationPreferenceConstants.COMPLETED && ( */}
+                          <td className="ant-table-cell text-center">
+                            {preference?.frequency ===
+                              donationPreferenceConstants?.MONTHLY_FREQUENCY &&
+                              preference?.status ===
                                 donationPreferenceConstants?.SUSPENDED && (
-                                <Link
-                                  onClick={() =>
-                                    handleOpenDialog("Resume", preference)
-                                  }
-                                  className="mr-2"
-                                  title="Resume"
-                                >
-                                  <i className="bi bi-play-circle-fill fs-5 custom-color"></i>
-                                </Link>
+                                <Tooltip title="Resume">
+                                  <Link
+                                    onClick={() =>
+                                      handleOpenDialog("Resume", preference)
+                                    }
+                                    className="mr-2"
+                                  >
+                                    <i className="bi bi-play-circle-fill fs-5 custom-color"></i>
+                                  </Link>
+                                </Tooltip>
                               )}
-                              {(!preference?.status ||
+                            {preference?.frequency ===
+                              donationPreferenceConstants?.MONTHLY_FREQUENCY &&
+                              (!preference?.status ||
                                 preference?.status ===
                                   donationPreferenceConstants?.RESUMED) && (
-                                <Link
-                                  onClick={() =>
-                                    handleOpenDialog("Suspend", preference)
-                                  }
-                                  className="mr-2"
-                                  title="Suspend"
-                                >
-                                  <i className="bi bi-pause-circle-fill fs-5 custom-color"></i>
-                                </Link>
+                                <Tooltip title="Suspend">
+                                  <Link
+                                    onClick={() =>
+                                      handleOpenDialog("Suspend", preference)
+                                    }
+                                    className="mr-2"
+                                  >
+                                    <i className="bi bi-pause-circle-fill fs-5 custom-color"></i>
+                                  </Link>
+                                </Tooltip>
                               )}
+                            {tabType !==
+                              donationPreferenceConstants.COMPLETED &&
+                              preference?.frequency ===
+                                donationPreferenceConstants?.ONCE_FREQUENCY && (
+                                <Tooltip
+                                  title={donationPreferenceConstants.REPEAT}
+                                >
+                                  <Link
+                                    onClick={() =>
+                                      handleOpenDialog(
+                                        donationPreferenceConstants.REPEAT,
+                                        preference
+                                      )
+                                    }
+                                    className="mr-2"
+                                  >
+                                    <i className="bi bi-arrow-repeat fs-5 custom-color"></i>
+                                  </Link>
+                                </Tooltip>
+                              )}
+                            {tabType !==
+                              donationPreferenceConstants.COMPLETED && (
                               <Link
                                 onClick={() =>
                                   handleOpenDialog("Delete", preference)
@@ -345,8 +395,9 @@ const ListDonationPreferences = ({ tabType, items }) => {
                               >
                                 <i className="bi bi-trash fs-5 custom-color"></i>
                               </Link>
-                            </td>
-                          )}
+                            )}
+                          </td>
+                          {/* )} */}
                         </tr>
                       ))
                   ) : (

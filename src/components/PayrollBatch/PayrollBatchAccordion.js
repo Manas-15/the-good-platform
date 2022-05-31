@@ -30,10 +30,7 @@ let accordionData;
 const PayrollBatchAccordion = (props) => {
   // let history = useHistory();
   const payrollBatches = useSelector((state) => state.payrollBatch);
-  const currentPortal = useSelector((state) => state.currentView);
-  const isOrganizationView =
-    currentPortal?.currentView ===
-    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  const currentPortal = useSelector((state) => state.currentView);  
   const batchId = props?.batchId;
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
@@ -49,6 +46,12 @@ const PayrollBatchAccordion = (props) => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const currentView = props?.viewType;
+  const isOrganizationView =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  const isBluePencilPortal =
+    currentPortal?.currentView ===
+    viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   // const [currentView, setCurrentView] = useState(props?.viewType);
 
   // Pagination
@@ -175,7 +178,7 @@ const PayrollBatchAccordion = (props) => {
                               <table>
                                 <thead className="ant-table-thead">
                                   <tr>
-                                    <th className="ant-table-cell">Sr No.</th>
+                                    {/* <th className="ant-table-cell">Sr No.</th> */}
                                     <th className="ant-table-cell">Batch id</th>
                                     {/* {currentView ===
                                       payrollConstants.CORPORATE_VIEW && (
@@ -183,26 +186,26 @@ const PayrollBatchAccordion = (props) => {
                                         Organization Id
                                       </th>
                                     )} */}
-                                    {currentView ===
-                                      payrollConstants.CORPORATE_VIEW && (
+                                    {(!isBluePencilPortal && currentView ===
+                                      payrollConstants.CORPORATE_VIEW) && (
                                       <th className="ant-table-cell">
-                                        Organization Name
+                                        Organization
                                       </th>
                                     )}
-                                    {currentView ===
+                                    {/* {currentView ===
                                       payrollConstants.ORGANIZATION_VIEW && (
                                       <th className="ant-table-cell">
                                         Corporate ID
                                       </th>
-                                    )}
+                                    )} */}
                                     {currentView ===
                                       payrollConstants.ORGANIZATION_VIEW && (
                                       <th className="ant-table-cell">
-                                        Corporate Name
+                                        Corporate
                                       </th>
                                     )}
                                     <th className="ant-table-cell">
-                                      Crated Date
+                                      Created
                                     </th>
                                     <th className="ant-table-cell">
                                       Amount (
@@ -224,14 +227,14 @@ const PayrollBatchAccordion = (props) => {
                                       key={index + 1}
                                       className="ant-table-row ant-table-row-level-0"
                                     >
-                                      <td className="ant-table-cell">
+                                      {/* <td className="ant-table-cell">
                                         {currentPage >= 2
                                           ? currentPage * pageSize -
                                             pageSize +
                                             index +
                                             1
                                           : index + 1}
-                                      </td>
+                                      </td> */}
                                       <td className="ant-table-cell">
                                         <Link
                                           onClick={() =>
@@ -249,18 +252,18 @@ const PayrollBatchAccordion = (props) => {
                                           {batch?.socialOrganizationId}
                                         </td>
                                       )} */}
-                                      {currentView ===
-                                        payrollConstants.CORPORATE_VIEW && (
+                                      {(!isBluePencilPortal && currentView ===
+                                      payrollConstants.CORPORATE_VIEW) && (
                                         <td className="ant-table-cell">
                                           {batch?.socialOrganizationName}
                                         </td>
                                       )}
-                                      {currentView ===
+                                      {/* {currentView ===
                                         payrollConstants.ORGANIZATION_VIEW && (
                                         <td className="ant-table-cell">
                                           {batch?.corporateId}
                                         </td>
-                                      )}
+                                      )} */}
                                       {currentView ===
                                         payrollConstants.ORGANIZATION_VIEW && (
                                         <td className="ant-table-cell">

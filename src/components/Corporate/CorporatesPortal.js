@@ -59,7 +59,7 @@ const CorporatesPortal = () => {
   return (
     <div>
       <div className="row mb-4">
-        <div className="col-md-4 text-center offset-md-4">
+        <div className="col-md-4 text-center offset-md-3">
           <a href="/">
             <img
               src="/assets/img/logo.png"
@@ -70,12 +70,12 @@ const CorporatesPortal = () => {
         </div>
       </div>
       <div className="row mb-4">
-        <div className="col-md-4 text-center offset-md-4">
+        <div className="col-md-4 text-center offset-md-3">
           <h4>Corporates Portal</h4>
         </div>
       </div>
       <div className="row mb-4">
-        <div className="col-md-4 offset-md-4">
+        <div className="col-md-4 offset-md-3">
           {corporates.loading && <Loader />}
           {corporates?.items && corporates?.items.length > 0 ? (
             <div className="card corporates-lunchpad">
