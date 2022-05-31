@@ -28,12 +28,12 @@ export function payrollSetting(state = {}, action) {
       return {
         ...state,
         loading: true,
-        data: action?.data?.items,
+        data: action?.data?.items?.active,
       };
     case payrollConstants.PROCESS_BATCH_SUCCESS:
-      const selectedItems = state?.data?.map((p) => p.employeePreferenceId);
-      const pendingItems = state.items.map((item) => {
-        if (selectedItems.includes(item?.employeePreferenceId)) {
+      const selectedItems = state?.data?.map?.((p) => p.employeePreferenceId);
+      const pendingItems = state?.items?.active?.map?.((item) => {
+        if (selectedItems?.includes?.(item?.employeePreferenceId)) {
           return { ...item, status: payrollConstants.PENDING_STATUS };
         }
         return item;

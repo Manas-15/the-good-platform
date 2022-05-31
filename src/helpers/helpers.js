@@ -1,6 +1,6 @@
 import { donationPreferenceConstants } from "../constants";
 export const ProcessHelper = (data, batchId) => {
-  return data?.filter(
+  return data?.filter?.(
     (preference) => preference
 
     //     batchId
