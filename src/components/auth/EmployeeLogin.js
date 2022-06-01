@@ -1,6 +1,6 @@
 import React from "react";
 import LoginForm from "./LoginForm";
-import { employeeActions } from "./../../actions";
+import { employeeActions, userActions } from "./../../actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const EmployeeLogin = (props) => {
@@ -8,7 +8,12 @@ const EmployeeLogin = (props) => {
   const loggingIn = useSelector((state) => state.employee.loggingIn);
   const login = (values) => {
     if (values.email && values.password) {
-      dispatch(employeeActions.login(values));
+      console.log("ddddddddddddddddd user", values)
+      if(values?.loginType === "Others"){
+        dispatch(userActions.login(values));
+      }else{
+        dispatch(employeeActions.login(values));
+      }
     }
   };
 

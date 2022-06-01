@@ -2,6 +2,7 @@ import { employeeConstants } from "../constants";
 import { employeeService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
+import { userActions } from "./user.actions";
 
 export const employeeActions = {
   login,
@@ -20,21 +21,28 @@ function login(data, from) {
   return (dispatch) => {
     dispatch(request({ data }));
     employeeService.login(data).then(
-      (data) => {
-        dispatch(success(data));
-        if (data?.data?.approve) {
-          const res = JSON.stringify(data?.data);
-          localStorage.setItem("user", JSON.stringify(data?.data));
-          // history.push("/dashboard");
-          // dispatch(alertActions.success("Loggedin successful"));
-          history.push("/otp");
-        } else {
-          dispatch(
-            alertActions.error(
-              "Your account is currently in review. You will soon receive an email with a link to set your password."
-            )
-          );
-        }
+      (res) => {
+        dispatch(success(res));
+        if(data?.loginType === "Others"){
+          console.log(">>>>>>>>>>>>>>>>>>>", res?.data)
+          const result = JSON.stringify(res?.data);
+          localStorage.setItem("accessToken", result);
+          dispatch(userActions.getDetail());
+        }else{
+          if (res?.data?.approve) {
+            const result = JSON.stringify(res?.data);
+            localStorage.setItem("user", JSON.stringify(res?.data));
+            // history.push("/dashboard");
+            // dispatch(alertActions.success("Loggedin successful"));
+            history.push("/otp");
+          } else {
+            dispatch(
+              alertActions.error(
+                "Your account is currently in review. You will soon receive an email with a link to set your password."
+              )
+            );
+          }
+        }        
       },
       (error) => {
         dispatch(failure(error.toString()));

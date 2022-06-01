@@ -42,7 +42,11 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
     if (selectedCharity) {
-      setSelectedAmount(selectedCharity?.unitPrice);
+      setSelectedAmount(
+        selectedCharity?.employeePreferenceId
+          ? (selectedCharity?.donationAmount ? selectedCharity?.donationAmount : selectedCharity?.unitPrice)
+          : selectedCharity?.unitPrice
+      );
     } else {
       setShowNextStep(false);
     }
@@ -63,7 +67,7 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedAmount)
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedAmount);
     preferenceForm.corporateId = employee?.corporateId;
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = selectedCharity?.charityId;
@@ -73,13 +77,14 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     preferenceForm.isConsentCheck = true;
     preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
-    if(selectedCharity?.employeePreferenceId){
-      preferenceForm.employeePreferenceId = selectedCharity?.employeePreferenceId;
-      preferenceForm.type = null
+    if (selectedCharity?.employeePreferenceId) {
+      preferenceForm.employeePreferenceId =
+        selectedCharity?.employeePreferenceId;
+      preferenceForm.type = null;
       dispatch(
         donationPreferenceActions.updateDonationPreference(preferenceForm)
       );
-    }else{      
+    } else {
       dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
     }
     const sidepanel = document.getElementById("sidepanel");

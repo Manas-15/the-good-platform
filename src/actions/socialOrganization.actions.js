@@ -11,7 +11,6 @@ function getSocialOrganizations(data) {
     dispatch(request(data));
 
     socialOrganizationService.getSocialOrganizations(data).then(
-      
       (socialOrganizations) => dispatch(success(socialOrganizations)),
 
       (error) => {
@@ -22,12 +21,21 @@ function getSocialOrganizations(data) {
   };
 
   function request(data) {
-    return { type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST, data };
+    return {
+      type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST,
+      data,
+    };
   }
   function success(socialOrganizations) {
-    return { type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS, socialOrganizations };
+    return {
+      type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS,
+      socialOrganizations,
+    };
   }
   function failure(error) {
-    return { type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_FAILURE, error };
+    return {
+      type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_FAILURE,
+      error,
+    };
   }
 }

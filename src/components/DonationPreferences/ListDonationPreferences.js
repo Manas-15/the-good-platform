@@ -18,6 +18,7 @@ import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { Progress, Tooltip, Switch } from "antd";
+import ReactHtmlParser from "react-html-parser";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -106,7 +107,7 @@ const ListDonationPreferences = ({ tabType, items }) => {
       dispatch(
         donationPreferenceActions.repeatDonationPreference(selectedPreference)
       );
-    } else {      
+    } else {
       actionInitialValues.isDeleted =
         actionType === donationPreferenceConstants.DELETE;
       actionInitialValues.isSuspended =
@@ -409,6 +410,25 @@ const ListDonationPreferences = ({ tabType, items }) => {
                   )}
                 </tbody>
               </table>
+              {items?.length > 0 && (
+                <div className="row mt-4">
+                  <div className="col-md-12 text-right">
+                    <h5>
+                      Total:&nbsp;
+                      <span className="fs-5">
+                        {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                        {items
+                          ?.reduce(
+                            (total, currentValue) =>
+                              (total = total + currentValue.donationAmount),
+                            0
+                          )
+                          .toLocaleString()}
+                      </span>
+                    </h5>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
