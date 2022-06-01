@@ -7,3 +7,4 @@ export * from "./payment.service";
 export * from "./transactionsHistory.service";
 export * from "./payroll.service";
 export * from "./socialOrganization.service";
+export * from "./user.service";

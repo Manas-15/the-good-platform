@@ -19,18 +19,7 @@ export const employeeService = {
 };
 
 async function login(data) {
-  if (data?.loginType === "Employee") {
-    return await axios.post(`${process.env.REACT_APP_API_URL}api/login/`, data);
-  } else {
-    return await axios.post(
-      `${process.env.REACT_APP_TGP_API_URL}auth/v1/auth/login`,
-      { username: data?.email, password: data?.password }
-      // {
-      //   // withCredentials: true,
-      //   headers: jwtInterceptor(),
-      // }
-    );
-  }
+  return await axios.post(`${process.env.REACT_APP_API_URL}api/login/`, data);
 }
 async function validateOtp(data) {
   return await axios.post(
