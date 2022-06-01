@@ -38,9 +38,9 @@ const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
     if (selectedCharity) {
       setActiveFrequenctTab(
         selectedCharity?.frequency ===
-          donationPreferenceConstants.ONCE_FREQUENCY
-          ? donationPreferenceConstants.ONCE
-          : donationPreferenceConstants.MONTHLY
+          donationPreferenceConstants.MONTHLY_FREQUENCY
+          ? donationPreferenceConstants.MONTHLY
+          : donationPreferenceConstants.ONCE
       );
     }
   }, [selectedCharity]);
