@@ -381,7 +381,7 @@ const CharityPrograms = (props) => {
       </div>
       {
         <div id="sidepanel" className="sidepanel">
-          <DonateHeader />
+          <DonateHeader selectedCharity={selectedCharity} />
           <div className="tab-content pt-2">
             <div className="tab-pane fade show active give-once" id="give-once">
               <Donate
