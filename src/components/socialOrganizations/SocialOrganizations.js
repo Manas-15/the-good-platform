@@ -234,11 +234,8 @@ const SocialOrganizations = () => {
             tabType={tabType}
             items={
               searchText
-                ? SearchHelper(
-                    socialOrganizations?.items?.all_programs,
-                    searchText
-                  )
-                : socialOrganizations?.items?.all_programs
+                ? SearchHelper(socialOrganizations?.items, searchText)
+                : socialOrganizations?.items
             }
           />
         )}

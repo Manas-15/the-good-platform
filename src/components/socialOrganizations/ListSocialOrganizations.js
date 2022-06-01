@@ -96,14 +96,11 @@ const ListSocialOrganizations = ({ tabType, items }) => {
     //     e.target.checked;
     // }
     const index = theArray.indexOf(id);
-    console.log("ddddddddddddddddddd checked start", theArray);
     if (index !== -1) {
       theArray.splice(index, 1);
     } else {
       theArray.push(id);
     }
-    console.log("ddddddddddddddddddd checked end", theArray);
-
     // setState({items:items, allChecked: allChecked});
   };
   return (

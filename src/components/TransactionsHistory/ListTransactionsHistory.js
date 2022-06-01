@@ -152,7 +152,7 @@ const ListTransactionsHistory = (props) => {
       transactionsHistoryActions.getTransactionsHistory({
         individualId:
           loggedInUserType === userConstants.INDIVIDUAL
-            ? employee?.user?.individual_id
+            ? employee?.user?.uuid
             : null,
         employeeId:
           loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
