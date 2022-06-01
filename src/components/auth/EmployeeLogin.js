@@ -7,11 +7,13 @@ const EmployeeLogin = (props) => {
   const dispatch = useDispatch();
   const loggingIn = useSelector((state) => state.employee.loggingIn);
   const login = (values) => {
+    console.log(">>>>>>>>>> ind ", values)
     if (values.email && values.password) {
-      console.log("ddddddddddddddddd user", values)
-      if(values?.loginType === "Others"){
+      if (values?.loginType === "Others") {
         dispatch(userActions.login(values));
-      }else{
+      } else if (values.loginType === "Individual") {
+        dispatch(employeeActions.login(values));
+      } else {
         dispatch(employeeActions.login(values));
       }
     }

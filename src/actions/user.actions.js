@@ -7,6 +7,8 @@ export const userActions = {
   login,
   getDetail,
   loggedInUser,
+  logout,
+  registerIndividual,
 };
 
 function login(data, from) {
@@ -15,10 +17,9 @@ function login(data, from) {
     userService.login(data).then(
       (res) => {
         dispatch(success(res));
-        console.log(">>>>>>>>>>>>>>>>>>>", res?.data)
         const result = JSON.stringify(res?.data?.accessToken);
         localStorage.setItem("accessToken", result);
-        dispatch(userActions.getDetail());           
+        dispatch(userActions.getDetail());
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -50,7 +51,7 @@ function getDetail() {
     userService.getDetail().then(
       (res) => {
         dispatch(success(res));
-        console.log("ssssssssssssssss user", res)
+        console.log("ssssssssssssssss user", res);
         localStorage.setItem("user", JSON.stringify(res?.data?.data));
         dispatch(loggedInUser(userConstants.CORPORATE));
         history.push("/dashboard");
@@ -74,4 +75,34 @@ function getDetail() {
 }
 function loggedInUser(view) {
   return { type: "LOGGED_IN_USER_TYPE", view };
+}
+function logout(view) {
+  return { type: "LOGOUT" };
+}
+
+function registerIndividual(individual) {
+  return (dispatch) => {
+    dispatch(request(individual));
+
+    userService.registerIndividual(individual).then(
+      (res) => {
+        dispatch(success());
+        history.push("/thank-you");
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(individual) {
+    return { type: userConstants.REGISTER_INDIVIDUAL_REQUEST, individual };
+  }
+  function success(individual) {
+    return { type: userConstants.REGISTER_INDIVIDUAL_SUCCESS, individual };
+  }
+  function failure(error) {
+    return { type: userConstants.REGISTER_INDIVIDUAL_FAILURE, error };
+  }
 }
