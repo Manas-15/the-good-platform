@@ -46,7 +46,7 @@ async function getEmployees(data) {
 }
 async function registerEmployee(data) {
   return await axios.post(
-    process.env.REACT_APP_API_URL + "api/employee_register/",
+    process.env.REACT_APP_API_URL + "api/individual_register/",
     data
   );
 }

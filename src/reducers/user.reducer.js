@@ -27,7 +27,19 @@ export function user(state = {}, action) {
     case userConstants.USER_DETAIL_FAILURE:
       return { ...state, loggingIn: false };
     case userConstants.LOGGED_IN_USER_TYPE:
-      return { ...state, loggedinUserType: userConstants.CORPORATE };
+      return { ...state, loggedinUserType: action?.view };
+    case userConstants.USER_LOGIN_REQUEST:
+      return {
+        loggingIn: true,
+      };
+    case userConstants.USER_LOGIN_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action?.data?.data,
+        otpVerified: false,
+      };
+    case userConstants.USER_LOGIN_FAILURE:
+      return { loggingIn: false };
     case userConstants.LOGOUT:
       return {};
     case userConstants.GETALL_REQUEST:
