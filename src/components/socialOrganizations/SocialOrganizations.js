@@ -26,6 +26,7 @@ const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
+  const loggedinUserType = useSelector((state) => state?.user?.loggedinUserType);
   const user = useSelector((state) => state.employee.user);
   const [open, setOpen] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
@@ -55,6 +56,7 @@ const SocialOrganizations = () => {
           : user?.corporateId,
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        loggedInUserType: loggedinUserType
       })
     );
   }, [currentPage]);

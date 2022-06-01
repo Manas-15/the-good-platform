@@ -29,6 +29,7 @@ import TermsOfService from "../components/TermsOfService/TermsOfService";
 import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 import SocialOrganizationsPortal from "../components/SocialOrganizations/SocialOrganizationsPortal";
 import SocialOrganizations from "../components/SocialOrganizations/SocialOrganizations";
+import {userConstants} from "./../constants";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -57,6 +58,7 @@ const CreateRoutes = () => {
   }
   // const user = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.employee.user);
+  const loggedInUser = useSelector((state) => state.user);
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -66,7 +68,7 @@ const CreateRoutes = () => {
   return (
     <Router history={history}>
       {/* &&  otpVerified */}
-      {user?.token && otpVerified ? (
+      {((user?.token && otpVerified) || (loggedInUser && loggedInUser?.loggedinUserType === userConstants.CORPORATE)) ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message &&

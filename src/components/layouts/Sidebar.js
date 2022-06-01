@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
@@ -188,32 +189,36 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to="/donation-preferences"
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-handbag"></i>
-                          <span className="menu-text">
-                            Donation Preferences
-                          </span>
-                        </NavLink>
-                      </span>
-                    </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to={`/employee/${user?.uuid}/account-summary`}
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-clock-history"></i>
-                          <span className="menu-text">Account Summary</span>
-                        </NavLink>
-                      </span>
-                    </li>
+                    {!corporateLoggedinUser && (
+                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                        <span className="ant-menu-title-content">
+                          <NavLink
+                            className=" "
+                            to="/donation-preferences"
+                            activeClassName="active"
+                          >
+                            <i className="bi bi-handbag"></i>
+                            <span className="menu-text">
+                              Donation Preferences
+                            </span>
+                          </NavLink>
+                        </span>
+                      </li>
+                    )}
+                    {!corporateLoggedinUser && (
+                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                        <span className="ant-menu-title-content">
+                          <NavLink
+                            className=" "
+                            to={`/employee/${user?.uuid}/account-summary`}
+                            activeClassName="active"
+                          >
+                            <i className="bi bi-clock-history"></i>
+                            <span className="menu-text">Account Summary</span>
+                          </NavLink>
+                        </span>
+                      </li>
+                    )}
                   </>
                 )}
               </>
