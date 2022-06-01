@@ -8,25 +8,27 @@ export const socialOrganizationService = {
 };
 
 async function getSocialOrganizations(data) {
-  console.log(
-    "ddddddddddddddddd corporateLoggedinUser",
-    data["loggedInUserType"]
-  );
-  if (data["loggedInUserType"] === userConstants.CORPORATE) {
-    return await axios.get(
-      process.env.REACT_APP_TGP_API_URL +
-        "social-org/v1/validator/organisations",
-      {
-        headers: authHeader(),
-      }
+  console.log("ddddddddddddddddd data?.individualId", data?.individualId)
+  if (data?.individualId) {
+    return await axios.post(
+      process.env.REACT_APP_API_URL + "remote_api/get_social_organization/"
     );
   } else {
-    return await axios.get(
-      process.env.REACT_APP_API_URL + "api/social_program_list/",
-      {
-        params: data,
-      }
-    );
+    if (data["loggedInUserType"] === userConstants.CORPORATE) {
+      return await axios.get(
+        process.env.REACT_APP_TGP_API_URL +
+          "social-org/v1/validator/organisations",
+        {
+          headers: authHeader(),
+        }
+      );
+    } else {
+      return await axios.get(
+        process.env.REACT_APP_API_URL + "api/social_program_list/",
+        {
+          params: data,
+        }
+      );
+    }
   }
-  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
