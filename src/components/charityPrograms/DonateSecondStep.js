@@ -11,7 +11,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import Payment from "./../Payment/Payment";
 import ReviewAmountBox from "./../Shared/ReviewAmountBox";
 import donationsConsent from "./../../config/donationsConsent.json";
-import { viewPortalConstants, payrollConstants } from "../../constants";
+import {
+  viewPortalConstants,
+  payrollConstants,
+  userConstants,
+} from "../../constants";
 
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -58,6 +62,9 @@ const DonateSecondStep = ({
   let charityFirstTwoChar, employeeFirstTwoChar;
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const loggedInUserType = useSelector(
+    (state) => state?.user?.loggedinUserType
+  );
   if (selectedCharity) {
     charityFirstTwoChar = selectedCharity?.charityName
       ?.slice(0, 2)
@@ -72,9 +79,12 @@ const DonateSecondStep = ({
       : Math.random().toString(36).slice(2),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
     donationAmount: selectedAmount,
-    customerId: isCorporatePortal
-      ? selectedCorporate?.corporate?.corporateId?.toString()
-      : employee?.uuid?.toString(),
+    customerId:
+      loggedInUserType === userConstants.INDIVIDUAL
+        ? employee?.individual_id.toString()
+        : isCorporatePortal
+        ? selectedCorporate?.corporate?.corporateId?.toString()
+        : employee?.uuid?.toString(),
     customerName: isCorporatePortal
       ? selectedCorporate?.corporate?.organizationName
       : employee?.name,
@@ -89,15 +99,24 @@ const DonateSecondStep = ({
     charity: selectedCharity,
     //employee: isCorporatePortal ? null : employee,
     // corporate: isCorporatePortal ? selectedCorporate : null,
-    corporateId: isCorporatePortal
-      ? selectedCorporate?.corporate?.corporateId
-      : employee?.corporateId,
-    userId: isCorporatePortal
-      ? selectedCorporate?.corporate?.corporateId?.toString()
-      : employee?.emp_id?.toString(),
-    userType: isCorporatePortal
-      ? payrollConstants.CORPORATE_VIEW
-      : payrollConstants.EMPLOYEE_VIEW,
+    corporateId:
+      loggedInUserType === userConstants.INDIVIDUAL
+        ? null
+        : isCorporatePortal
+        ? selectedCorporate?.corporate?.corporateId
+        : employee?.corporateId,
+    userId:
+      loggedInUserType === userConstants.INDIVIDUAL
+        ? employee?.individual_id
+        : isCorporatePortal
+        ? selectedCorporate?.corporate?.corporateId?.toString()
+        : employee?.emp_id?.toString(),
+    userType:
+      loggedInUserType === userConstants.INDIVIDUAL
+        ? "Individual"
+        : isCorporatePortal
+        ? payrollConstants.CORPORATE_VIEW
+        : payrollConstants.EMPLOYEE_VIEW,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
   };

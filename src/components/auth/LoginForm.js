@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { LoginSchema } from "./../Validations";
@@ -7,6 +7,7 @@ import "./../../assets/css/loginForm.scss";
 // import { Form, Input, Button, Checkbox } from 'antd';
 
 const LoginForm = ({ submit, disable }) => {
+  const [category, setCategory] = useState("Employee");
   return (
     <>
       <div className="row align-items-center authFormMargin">
@@ -23,7 +24,7 @@ const LoginForm = ({ submit, disable }) => {
           <div className="registrationContent ">
             <Formik
               enableReinitialize
-              initialValues={{ email: "", password: "", loginType: "Employee" }}
+              initialValues={{ email: "", password: "", loginType: category }}
               validationSchema={LoginSchema}
               onSubmit={(values, event) => {
                 submit(values);
@@ -49,32 +50,56 @@ const LoginForm = ({ submit, disable }) => {
                     aria-labelledby="my-radio-group"
                   >
                     <label className="mr-4">
-                      <Field type="radio" name="loginType" value="Employee" />
+                      <Field
+                        type="radio"
+                        name="employee"
+                        value="Employee"
+                        checked={category === "Employee"}
+                        onChange={(e) => setCategory(e.target.value)}
+                      />
                       <strong>
                         <span className="ml-2">Employee</span>
                       </strong>
                     </label>
-                    <label>
-                      <Field type="radio" name="loginType" value="Others" />
+                    <label className="mr-4">
+                      <Field
+                        type="radio"
+                        name="others"
+                        value="Others"
+                        checked={category === "Others"}
+                        onChange={(e) => setCategory(e.target.value)}
+                      />
                       <strong>
                         <span className="ml-2">Others</span>
                       </strong>
                     </label>
+                    <label>
+                      <Field
+                        type="radio"
+                        name="individual"
+                        value="Individual"
+                        checked={category === "Individual"}
+                        onChange={(e) => setCategory(e.target.value)}
+                      />
+                      <strong>
+                        <span className="ml-2">Individual</span>
+                      </strong>
+                    </label>
                   </div>
                   <div className="form-group m-0">
-                    <label for="email" className="has-float-label">
-                    <Field
-                      name="email"
-                      id="email"
-                      type="email"
-                      placeholder=" "
-                      className={
-                        "form-control" +
-                        (errors.email && touched.email ? " is-invalid" : "")
-                      }
-                    />
+                    <label htmlFor="email" className="has-float-label">
+                      <Field
+                        name="email"
+                        id="email"
+                        type="email"
+                        placeholder=" "
+                        className={
+                          "form-control" +
+                          (errors.email && touched.email ? " is-invalid" : "")
+                        }
+                      />
                       <span>Registered Email ID</span>
-                    </label>                    
+                    </label>
                     <ErrorMessage
                       name="email"
                       component="div"
@@ -82,21 +107,21 @@ const LoginForm = ({ submit, disable }) => {
                     />
                   </div>
                   <div className="form-group m-0">
-                    <label for="password" className="has-float-label">
-                    <Field
-                      name="password"
-                      id="password"
-                      type="password"
-                      placeholder=" "
-                      className={
-                        "form-control" +
-                        (errors.password && touched.password
-                          ? " is-invalid"
-                          : "")
-                      }
-                    />
-                    {/* <i class="bi bi-eye-slash fs-5" id="togglePassword"></i> */}
-                    <span>Password</span>
+                    <label htmlFor="password" className="has-float-label">
+                      <Field
+                        name="password"
+                        id="password"
+                        type="password"
+                        placeholder=" "
+                        className={
+                          "form-control" +
+                          (errors.password && touched.password
+                            ? " is-invalid"
+                            : "")
+                        }
+                      />
+                      {/* <i class="bi bi-eye-slash fs-5" id="togglePassword"></i> */}
+                      <span>Password</span>
                     </label>
                     <ErrorMessage
                       name="password"
@@ -140,10 +165,48 @@ const LoginForm = ({ submit, disable }) => {
                     </Link>
                   </div>
                   <p className="mt-3 text-center">
-                    A new user?{" "}
-                    <Link to="/sign-up" className="loginhere-link">
-                      Create an account
-                    </Link>
+                    A new user?&nbsp;
+                    {(() => {
+                      if (category == "Employee") {
+                        return (
+                          <Link
+                            to={{
+                              pathname: "/employees/sign-up",
+                              state: category,
+                            }}
+                            className="loginhere-link"
+                          >
+                            Create an account
+                          </Link>
+                        );
+                      } else if (category == "Others") {
+                        return (
+                          <Link
+                            to={{
+                              pathname: "/others/sign-up",
+                              state: category,
+                            }}
+                            className="loginhere-link"
+                          >
+                            Create an account
+                          </Link>
+                        );
+                      } else if (category == "Individual") {
+                        return (
+                          <Link
+                            to={{
+                              pathname: "/individual/sign-up",
+                              state: category,
+                            }}
+                            className="loginhere-link"
+                          >
+                            Create an account
+                          </Link>
+                        );
+                      }
+
+                      return null;
+                    })()}
                   </p>
                 </Form>
               )}

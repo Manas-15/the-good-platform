@@ -32,6 +32,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isEmployeePortal =
     currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isIndividualPortal =
+    currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const user = useSelector((state) => state.employee.user);
   const [actionType, setActionType] = useState("");
@@ -290,13 +292,22 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             </Tooltip>
                           )}
                           {(isCorporatePortal ||
-                            (isEmployeePortal && !charityProgram?.donated)) && (
+                            (isEmployeePortal && !charityProgram?.donated) ||
+                            (isIndividualPortal &&
+                              !charityProgram?.donated)) && (
                             <button
                               type="submit"
                               className="btn btn-sm mb-2"
                               onClick={() => openNav(charityProgram)}
                             >
-                              <Tooltip title={`${isEmployeePortal && tabType === charityProgramConstants.SPONSOR ? "Add to donation preference" : "Donate"}`}>
+                              <Tooltip
+                                title={`${
+                                  isEmployeePortal &&
+                                  tabType === charityProgramConstants.SPONSOR
+                                    ? "Add to donation preference"
+                                    : "Donate"
+                                }`}
+                              >
                                 <img
                                   src="/assets/img/donate.png"
                                   alt="donate"

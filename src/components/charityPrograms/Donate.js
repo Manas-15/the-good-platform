@@ -8,6 +8,7 @@ import { charityProgramActions } from "./../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
+  userConstants,
 } from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
@@ -26,9 +27,18 @@ const preferenceForm = {
   isConsentCheck: "",
   donationConsent: "",
 };
-const Donate = ({ frequency, selectedCharity, tabType, from }) => {
+const Donate = ({
+  frequency,
+  selectedCharity,
+  tabType,
+  from,
+  currentPortal,
+}) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
+  const loggedInUserType = useSelector(
+    (state) => state?.user?.loggedinUserType
+  );
   const [selectedAmount, setSelectedAmount] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
@@ -44,7 +54,9 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
     if (selectedCharity) {
       setSelectedAmount(
         selectedCharity?.employeePreferenceId
-          ? (selectedCharity?.donationAmount ? selectedCharity?.donationAmount : selectedCharity?.unitPrice)
+          ? selectedCharity?.donationAmount
+            ? selectedCharity?.donationAmount
+            : selectedCharity?.unitPrice
           : selectedCharity?.unitPrice
       );
     } else {
@@ -210,7 +222,8 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
               className={
                 "row mb-4 " +
                 (tabType === charityProgramConstants.SPONSOR &&
-                !isCorporatePortal
+                !isCorporatePortal &&
+                loggedInUserType !== userConstants.INDIVIDUAL
                   ? ""
                   : "mt-4")
               }
@@ -226,14 +239,16 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
                   }
                   onClick={
                     tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal
+                    !isCorporatePortal &&
+                    loggedInUserType !== userConstants.INDIVIDUAL
                       ? saveDonationPreference
                       : nextStep
                   }
                 >
                   <span className="fs-6 ml-2">
                     {tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal ? (
+                    !isCorporatePortal &&
+                    loggedInUserType !== userConstants.INDIVIDUAL ? (
                       <>
                         <span
                           className={`${
