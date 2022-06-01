@@ -66,6 +66,7 @@ const PayrollBatch = (props) => {
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  console.log(isCorporatePortal);
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
