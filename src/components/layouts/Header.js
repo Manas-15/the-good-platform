@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import { history } from "../../helpers";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { currentViewActions } from "../../actions";
-import { viewPortalConstants } from "../../constants";
+import { currentViewActions, userActions } from "../../actions";
+import { userConstants, viewPortalConstants } from "../../constants";
 
 const Header = () => {
   const location = useLocation();
@@ -12,10 +12,14 @@ const Header = () => {
   const logout = () => {
     // localStorage.removeItem("user");
     localStorage.clear();
+    dispatch(userActions.logout())
     history.push("/");
   };
   const user = useSelector((state) => state.employee.user);
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
+  const loggedInUserType = useSelector(
+    (state) => state?.user?.loggedinUserType
+  );
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
   };
@@ -123,7 +127,7 @@ const Header = () => {
                   <span>Account Settings</span>
                 </a>
               </li>
-              {!corporateLoggedinUser && (
+              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center"
@@ -137,7 +141,7 @@ const Header = () => {
                   </Link>
                 </li>
               )}
-              {!corporateLoggedinUser && (
+              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center"
@@ -153,7 +157,7 @@ const Header = () => {
                   </Link>
                 </li>
               )}
-              {!corporateLoggedinUser && (
+              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center"
