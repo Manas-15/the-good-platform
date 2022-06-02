@@ -14,7 +14,7 @@ import {
   charityProgramActions,
   selectedCharityActions,
   selectedCharityTabActions,
-} from "./../../actions";
+} from "../../actions";
 import urlSlug from "url-slug";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {

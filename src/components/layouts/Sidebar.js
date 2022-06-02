@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { history } from "./../../helpers";
+import { history } from "../../helpers";
 import { userConstants, viewPortalConstants } from "../../constants";
 import { useSelector } from "react-redux";
 
@@ -24,7 +24,7 @@ const Sidebar = () => {
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   const isOrganizationView =
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
-  
+
   return (
     <aside id="sidebar" className="sidebar">
       <ul
@@ -191,22 +191,24 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
-                    {!corporateLoggedinUser && loggedInUser?.loggedinUserType !== userConstants.INDIVIDUAL && (
-                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                        <span className="ant-menu-title-content">
-                          <NavLink
-                            className=" "
-                            to="/donation-preferences"
-                            activeClassName="active"
-                          >
-                            <i className="bi bi-handbag"></i>
-                            <span className="menu-text">
-                              Donation Preferences
-                            </span>
-                          </NavLink>
-                        </span>
-                      </li>
-                    )}
+                    {!corporateLoggedinUser &&
+                      loggedInUser?.loggedinUserType !==
+                        userConstants.INDIVIDUAL && (
+                        <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                          <span className="ant-menu-title-content">
+                            <NavLink
+                              className=" "
+                              to="/donation-preferences"
+                              activeClassName="active"
+                            >
+                              <i className="bi bi-handbag"></i>
+                              <span className="menu-text">
+                                Donation Preferences
+                              </span>
+                            </NavLink>
+                          </span>
+                        </li>
+                      )}
                     {!corporateLoggedinUser && (
                       <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                         <span className="ant-menu-title-content">

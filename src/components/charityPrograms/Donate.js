@@ -3,17 +3,17 @@ import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
-import { donationPreferenceActions } from "./../../actions";
-import { charityProgramActions } from "./../../actions";
+import { donationPreferenceActions } from "../../actions";
+import { charityProgramActions } from "../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
   userConstants,
-} from "./../../constants";
-import DonationConsent from "./../Shared/DonationConsent";
-import { charityProgramConstants } from "./../../constants";
+} from "../../constants";
+import DonationConsent from "../Shared/DonationConsent";
+import { charityProgramConstants } from "../../constants";
 import DonateSecondStep from "./DonateSecondStep";
-import donationsConsent from "./../../config/donationsConsent.json";
+import donationsConsent from "../../config/donationsConsent.json";
 import { history } from "../../helpers";
 import AddedDonationFromDetail from "./AddedDonationFromDetail";
 

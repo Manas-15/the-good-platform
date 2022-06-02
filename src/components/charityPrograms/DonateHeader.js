@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-} from "./../../constants";
+} from "../../constants";
 import { history } from "../../helpers";
 
 const preferenceForm = {
@@ -72,7 +72,11 @@ const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
         <ul className="nav nav-tabs nav-tabs-bordered">
           <li className="nav-item">
             <button
-              className={`nav-link ${activeFrequenctTab === donationPreferenceConstants.ONCE ? 'active' : ''}`}
+              className={`nav-link ${
+                activeFrequenctTab === donationPreferenceConstants.ONCE
+                  ? "active"
+                  : ""
+              }`}
               data-bs-toggle="tab"
               data-bs-target="#give-once"
               onClick={() =>
@@ -88,7 +92,11 @@ const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
           {/* {tabType === charityProgramConstants.SPONSOR && ( */}
           <li className="nav-item">
             <button
-              className={`nav-link ${activeFrequenctTab === donationPreferenceConstants.MONTHLY ? 'active' : ''}`}
+              className={`nav-link ${
+                activeFrequenctTab === donationPreferenceConstants.MONTHLY
+                  ? "active"
+                  : ""
+              }`}
               data-bs-toggle="tab"
               data-bs-target="#give-monthly"
               onClick={() =>

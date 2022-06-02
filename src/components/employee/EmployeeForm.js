@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
-import { EmployeeSchema } from "./../Validations";
+import { EmployeeSchema } from "../Validations";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { employeeActions } from "./../../actions";
+import { employeeActions } from "../../actions";
 import DatePicker from "react-datepicker";
 import * as moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";

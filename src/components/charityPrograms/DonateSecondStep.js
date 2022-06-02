@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import DonationConsent from "./../Shared/DonationConsent";
+import DonationConsent from "../Shared/DonationConsent";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { PaymentSchema } from "./../Validations";
+import { PaymentSchema } from "../Validations";
 import DatePicker from "react-datepicker";
 import * as moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import Payment from "./../Payment/Payment";
-import ReviewAmountBox from "./../Shared/ReviewAmountBox";
-import donationsConsent from "./../../config/donationsConsent.json";
+import Payment from "../Payment/Payment";
+import ReviewAmountBox from "../Shared/ReviewAmountBox";
+import donationsConsent from "../../config/donationsConsent.json";
 import {
   viewPortalConstants,
   payrollConstants,

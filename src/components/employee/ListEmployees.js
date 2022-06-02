@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
-import ConfirmationDialog from "./../Shared/ConfirmationDialog";
-import Loader from "./../Shared/Loader";
-import { alertActions } from "./../../actions";
-import Pagination from "./../Shared/Pagination";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
+import Loader from "../Shared/Loader";
+import { alertActions } from "../../actions";
+import Pagination from "../Shared/Pagination";
 import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
@@ -43,6 +43,8 @@ const ListEmployees = (props) => {
   const [importHeader, setImportHeader] = useState();
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
+  const [selectedFieldType, setSelectedFieldType] = useState([]);
+  const [goodsField, setGoodsField] = useState([]);
   const [finalData, setFinalData] = useState([]);
 
   const dispatch = useDispatch();
@@ -114,7 +116,7 @@ const ListEmployees = (props) => {
             ];
           }
         }
-        setSelectedFieldTypes(fieldType);
+        setSelectedFieldType(fieldType);
         for (let i = 1; i < allTextLines.length; i++) {
           const data = allTextLines[i].split(",");
           if (data.length === allTextLines[0].split(",")?.length) {
@@ -135,13 +137,23 @@ const ListEmployees = (props) => {
       setIsBulkUpload(true);
     }
   };
-  const addSelectedField = (event, index) => {
-    selectedFieldTypes[index] = event;
-    setSelectedFieldTypes(selectedFieldTypes);
+
+  const addSelectedField = (e, index) => {
+    console.log(e, index);
+    setSelectedFieldType[index] = e;
+    console.log(e);
   };
+  // const addSelectedField = (e, index) => {
+  //   console.log(e, index);
+  //   // selectedFieldTypes[index] = event;
+  //   // setSelectedFieldTypes(selectedFieldTypes);
+  //   setSelectedFieldTypes[index] = e;
+  //   console.log(e);
+  // };
+
   const confimUpload = () => {
     console.log(
-      "setSelectedFieldTypes confirm >>>>>>>>>>>>>>>>>>",
+      "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
       selectedFieldTypes
     );
   };
@@ -149,6 +161,14 @@ const ListEmployees = (props) => {
     setIsImportNextStep(true);
     setIsBulkUpload(false);
   };
+  const goBack = () => {
+    console.log("goBack");
+    setIsImportNextStep(false);
+    setIsBulkUpload(false);
+  };
+
+  console.log(isBulkUpload);
+  console.log(isImportNextStep);
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -339,7 +359,11 @@ const ListEmployees = (props) => {
       {isBulkUpload && (
         <div className="mt-4">
           <div className="row mt-4">
-            <div className="col-md-6">
+            <div className="col-md-6 d-flex">
+              <Link onClick={goBack}>
+                <i class="bi bi-arrow-90deg-left fs-6" />
+                &nbsp;Back &nbsp;
+              </Link>
               <h5>Map columns with fields</h5>
             </div>
             <div className="col-md-6 text-right">
@@ -371,11 +395,9 @@ const ListEmployees = (props) => {
                   </td>
                   <td>
                     <select
-                      className="form-control col-md-6"
-                      onChange={(event) =>
-                        addSelectedField(event.target.value, index)
-                      }
-                      value={selectedFieldTypes[index]}
+                      className="form-select col-md-6"
+                      onChange={(e) => addSelectedField(e.target.value, index)}
+                      value={selectedFieldType[index]}
                     >
                       {goodplatformFields.map((field, ind) => (
                         <option value={field.value} key={ind + 1}>
@@ -383,6 +405,18 @@ const ListEmployees = (props) => {
                         </option>
                       ))}
                     </select>
+                    {/* <select
+                      aria-label="Default select example"
+                      className="form-select col-md-6"
+                      onChange={(e) => addSelectedField(e.target.value, index)}
+                      value={selectedFieldTypes[index]}
+                    >
+                      {goodplatformFields.map((field, ind) => (
+                        <option value={field.value} key={ind + 1}>
+                          {field.label}
+                        </option>
+                      ))}
+                    </select> */}
                   </td>
                 </tr>
               ))}

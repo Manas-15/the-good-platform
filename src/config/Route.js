@@ -70,9 +70,9 @@ const CreateRoutes = () => {
   return (
     <Router history={history}>
       {/* &&  otpVerified */}
-      {((user?.token && otpVerified) ||
+      {(user?.token && otpVerified) ||
       (loggedInUser &&
-        loggedInUser?.loggedinUserType === userConstants.CORPORATE)) ? (
+        loggedInUser?.loggedinUserType === userConstants.CORPORATE) ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message &&
@@ -197,7 +197,11 @@ const CreateRoutes = () => {
                   component={EmployeeSignUp}
                 />
 
-                <Route exact path="/others/sign-up" component={EmployeeSignUp} />
+                <Route
+                  exact
+                  path="/others/sign-up"
+                  component={EmployeeSignUp}
+                />
                 <Route
                   exact
                   path="/individual/sign-up"
