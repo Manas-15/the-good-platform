@@ -9,7 +9,7 @@ export const employeeActions = {
   validateOtp,
   resendOtp,
   logout,
-  registerEmployee,
+  register,
   getEmployees,
   setEmployeePassword,
   setPasswordValid,
@@ -206,14 +206,18 @@ function getEmployees(data) {
     return { type: employeeConstants.GET_EMPLOYEES_FAILURE, error };
   }
 }
-function registerEmployee(employee) {
+function register(employee, userType) {
   return (dispatch) => {
     dispatch(request(employee));
 
-    employeeService.registerEmployee(employee).then(
+    employeeService.register(employee, userType).then(
       (employee) => {
         dispatch(success());
-        history.push("/thank-you");
+        history.push({
+          pathname: '/thank-you',
+          state: { userType: userType }
+      });
+        
       },
       (error) => {
         dispatch(failure(error.toString()));

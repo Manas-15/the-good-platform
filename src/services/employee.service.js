@@ -2,12 +2,13 @@
 import { jwtInterceptor } from "../helpers";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { userConstants } from "../constants";
 
 export const employeeService = {
   login,
   validateOtp,
   resendOtp,
-  registerEmployee,
+  register,
   getEmployees,
   getEmployee,
   updateEmployee,
@@ -44,11 +45,19 @@ async function getEmployees(data) {
   });
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
-async function registerEmployee(data) {
-  return await axios.post(
-    process.env.REACT_APP_API_URL + "api/individual_register/",
-    data
-  );
+async function register(data, userType) {
+  if (userType === userConstants.EMPLOYEE) {
+    return await axios.post(
+      process.env.REACT_APP_API_URL + "api/employee_register/",
+      data
+    );
+  } else if (userType === userConstants.INDIVIDUAL) {
+    return await axios.post(
+      process.env.REACT_APP_API_URL + "api/individual_register/",
+      data
+    );
+  }
+  return null;
 }
 async function getEmployee(id) {
   return await axios.post(
