@@ -197,7 +197,7 @@ const CreateRoutes = () => {
                   component={EmployeeSignUp}
                 />
 
-                <Route exact path="/others/sign-up" component={OthersSignUp} />
+                <Route exact path="/others/sign-up" component={EmployeeSignUp} />
                 <Route
                   exact
                   path="/individual/sign-up"
