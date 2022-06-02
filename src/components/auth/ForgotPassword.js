@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { Link } from "react-router-dom";
-import { LoginSchema } from "./../Validations";
+import { LoginSchema } from "../Validations";
 
 const ForgotPassword = ({ submit, disable, type }) => {
   return (

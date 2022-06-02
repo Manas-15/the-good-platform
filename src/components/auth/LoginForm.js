@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
-import { LoginSchema } from "./../Validations";
+import { LoginSchema } from "../Validations";
 import { Button } from "react-bootstrap";
 import "./../../assets/css/loginForm.scss";
 // import { Form, Input, Button, Checkbox } from 'antd';

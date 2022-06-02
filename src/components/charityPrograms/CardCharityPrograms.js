@@ -8,7 +8,7 @@ import urlSlug from "url-slug";
 import {
   selectedCharityActions,
   selectedCharityTabActions,
-} from "./../../actions";
+} from "../../actions";
 import { useDispatch } from "react-redux";
 
 const CardCharityPrograms = ({ items, setCharity, tabType }) => {

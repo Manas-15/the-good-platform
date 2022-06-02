@@ -1,5 +1,5 @@
 import React from "react";
-import EmployeeForm from "./../Employee/EmployeeForm";
+import EmployeeForm from "../Employee/EmployeeForm";
 import { useLocation, withRouter } from "react-router-dom";
 
 const EmployeeSignUp = () => {
