@@ -8,6 +8,7 @@ import {
   viewPortalConstants,
   charityProgramConstants,
   payrollConstants,
+  userConstants,
 } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
@@ -67,9 +68,10 @@ const CharityPrograms = (props) => {
             }
           : isIndividualPortal
           ? {
-              uuid: user?.uuid,
-              socialId: selectedOrganization?.id,
-              userType: payrollConstants.INDIVIDUAL_VIEW,
+              // uuid: user?.uuid,
+              // socialId: selectedOrganization?.id,
+              userType: userConstants.INDIVIDUAL,
+              orgId: selectedOrganization?.id?.toString(),
             }
           : {
               uuid: user?.uuid,
@@ -273,7 +275,7 @@ const CharityPrograms = (props) => {
           <>
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={charityPrograms?.items?.sponsored}
+                items={charityPrograms?.items}
                 setCharity={setCharity}
                 tabType={tabType}
               />
