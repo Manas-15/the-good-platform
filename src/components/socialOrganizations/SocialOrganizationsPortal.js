@@ -30,7 +30,11 @@ const SocialOrganizationsPortal = () => {
     document.getElementById("root").classList.remove("loading");
   }
   useEffect(() => {
-    dispatch(socialOrganizationActions.getSocialOrganizations({individualId: 'social'}));
+    dispatch(
+      socialOrganizationActions.getSocialOrganizations({
+        individualId: "social",
+      })
+    );
   }, []);
   const setSocialOrganization = (organization) => {
     dispatch(selectedOrganizationActions.selectedOrganization(organization));
@@ -60,18 +64,20 @@ const SocialOrganizationsPortal = () => {
           socialOrganizations?.items?.all_programs?.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
-                {socialOrganizations?.items?.all_programs?.map?.((org, index) => {
-                  return (
-                    <li key={index + 1}>
-                      <Link
-                        to={`/organizations/${org.id}/payroll-batch`}
-                        onClick={() => setSocialOrganization(org)}
-                      >
-                        {org?.name}
-                      </Link>
-                    </li>
-                  );
-                })}
+                {socialOrganizations?.items?.all_programs?.map?.(
+                  (org, index) => {
+                    return (
+                      <li key={index + 1}>
+                        <Link
+                          to={`/organizations/${org.id}/payroll-batch`}
+                          onClick={() => setSocialOrganization(org)}
+                        >
+                          {org?.name}
+                        </Link>
+                      </li>
+                    );
+                  }
+                )}
                 <li key={"logout"} className="logout">
                   <Link onClick={logout}>Logout</Link>
                 </li>

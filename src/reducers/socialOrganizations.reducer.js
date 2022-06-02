@@ -9,7 +9,7 @@ export function socialOrganizations(state = {}, action) {
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS:
       return {
         items: action?.socialOrganizations?.data?.social_organization,
-        totalCount: action?.socialOrganizations?.data?.count,
+        totalCount: action?.socialOrganizations?.data?.totalCount,
       };
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_FAILURE:
       return {

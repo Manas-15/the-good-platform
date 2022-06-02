@@ -1,5 +1,6 @@
 import { authHeader } from "../helpers";
 import axios from "axios";
+import { userConstants } from "../constants";
 
 export const charityProgramService = {
   getCharityPrograms,
@@ -13,8 +14,9 @@ function getCharityPrograms(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/social_charity_list/", {
   //   params: data,
   // });
-  if(data?.userType === "Individual"){
-    return axios.post(process.env.REACT_APP_API_URL + "remote_api/get_charity_progrms/");
+  console.log("data?.userType", data?.userType)
+  if(data?.userType === userConstants.INDIVIDUAL){
+    return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {params: data});
   }else{
     return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
       params: data,
