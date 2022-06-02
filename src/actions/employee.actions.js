@@ -113,6 +113,8 @@ function validateOtp(data, from) {
           dispatch(alertActions.error(data?.data?.msg));
         } else {
           localStorage.setItem("otpVerified", true);
+
+          console.log(">>>>>>>>>>>>>", data?.data?.user_type)
           if (data?.data?.user_type === userConstants.EMPLOYEE) {
             dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
           } else if (data?.data?.user_type === userConstants.INDIVIDUAL) {

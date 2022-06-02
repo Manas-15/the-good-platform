@@ -9,7 +9,7 @@ export const socialOrganizationService = {
 
 async function getSocialOrganizations(data) {
   console.log("ddddddddddddddddd data?.individualId", data?.individualId)
-  if (data?.individualId) {
+  if (data?.loggedInUserType === userConstants.INDIVIDUAL) {
     return await axios.post(
       process.env.REACT_APP_API_URL + "remote_api/get_social_organization/"
     );

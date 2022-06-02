@@ -35,7 +35,6 @@ const SocialOrganizationsPortal = () => {
   const setSocialOrganization = (organization) => {
     dispatch(selectedOrganizationActions.selectedOrganization(organization));
   };
-  console.log("dddddddddddddddd", socialOrganizations?.items?.all_programs)
   return (
     <div>
       <div className="row mb-4">
