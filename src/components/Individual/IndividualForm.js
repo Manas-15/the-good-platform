@@ -17,7 +17,7 @@ const initialValues = {
   lastName: "",
   email: "",
   password: "",
-  // pan: "",
+  pan: "",
   gender: "",
   contactNumber: "",
   address: "",
@@ -173,8 +173,7 @@ const IndividualForm = ({ type }) => {
                       />
                     </div>
                   </div>
-
-                  {/* <div className="row mb-4">
+                  <div className="row mb-4">
                     <div className="col-md-12">
                       <Field
                         name="pan"
@@ -193,8 +192,7 @@ const IndividualForm = ({ type }) => {
                         className="invalid-feedback"
                       />
                     </div>
-                  </div> */}
-
+                  </div>
                   <div className="row mb-4">
                     {/* <div className="col-md-4">
                 <label className="mt-1">Gender</label>

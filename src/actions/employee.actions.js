@@ -25,7 +25,6 @@ function login(data, from) {
         (res) => {
           dispatch(success(res));
           if (data?.loginType === "Others") {
-            console.log(">>>>>>>>>>>>>>>>>>>", res?.data);
             const result = JSON.stringify(res?.data);
             localStorage.setItem("accessToken", result);
             dispatch(userActions.getDetail());
@@ -114,7 +113,7 @@ function validateOtp(data, from) {
         } else {
           localStorage.setItem("otpVerified", true);
 
-          console.log(">>>>>>>>>>>>>", data?.data?.user_type)
+          console.log(">>>>>>>>>>>>>", data?.data?.user_type);
           if (data?.data?.user_type === userConstants.EMPLOYEE) {
             dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
           } else if (data?.data?.user_type === userConstants.INDIVIDUAL) {

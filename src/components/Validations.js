@@ -67,7 +67,7 @@ export const IndividualSchema = Yup.object().shape({
     .required("Email is required")
     .email("Invalid email address"),
   password: Yup.string().required("Password is required"),
-  // pan: Yup.string().required("PAN is required"),
+  pan: Yup.string().required("PAN is required"),
   gender: Yup.string().required("Please select gender"),
   contactNumber: Yup.string()
     .required("Contact number is required")

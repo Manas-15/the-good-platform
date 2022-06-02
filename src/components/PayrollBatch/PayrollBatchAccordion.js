@@ -166,6 +166,7 @@ const PayrollBatchAccordion = (props) => {
             referenceId,
             referenceNote,
             socialOrganizationName,
+            status,
           }
         ) => {
           const temp = {
@@ -179,6 +180,7 @@ const PayrollBatchAccordion = (props) => {
             referenceId: "",
             referenceNote: "",
             socialOrganizationName: "",
+            status,
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].amount += amount;
@@ -188,6 +190,7 @@ const PayrollBatchAccordion = (props) => {
           c[batchId].referenceNote = referenceNote;
           c[batchId].charityProgram = charityProgram;
           c[batchId].socialOrganizationName = socialOrganizationName;
+          c[batchId].status = status;
           return c;
         },
         {}
