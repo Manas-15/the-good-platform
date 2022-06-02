@@ -44,7 +44,6 @@ const ListEmployees = (props) => {
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
   const [selectedFieldType, setSelectedFieldType] = useState([]);
-  const [goodsField, setGoodsField] = useState([]);
   const [finalData, setFinalData] = useState([]);
 
   const dispatch = useDispatch();
@@ -116,7 +115,7 @@ const ListEmployees = (props) => {
             ];
           }
         }
-        setSelectedFieldType(fieldType);
+        setSelectedFieldTypes(fieldType);
         for (let i = 1; i < allTextLines.length; i++) {
           const data = allTextLines[i].split(",");
           if (data.length === allTextLines[0].split(",")?.length) {
@@ -140,16 +139,11 @@ const ListEmployees = (props) => {
 
   const addSelectedField = (e, index) => {
     console.log(e, index);
-    setSelectedFieldType[index] = e;
+    selectedFieldTypes[index] = e;
+    setSelectedFieldTypes(selectedFieldTypes);
+    // setSelectedFieldTypes[index] = e;
     console.log(e);
   };
-  // const addSelectedField = (e, index) => {
-  //   console.log(e, index);
-  //   // selectedFieldTypes[index] = event;
-  //   // setSelectedFieldTypes(selectedFieldTypes);
-  //   setSelectedFieldTypes[index] = e;
-  //   console.log(e);
-  // };
 
   const confimUpload = () => {
     console.log(
@@ -157,18 +151,16 @@ const ListEmployees = (props) => {
       selectedFieldTypes
     );
   };
+
   const goNext = () => {
     setIsImportNextStep(true);
     setIsBulkUpload(false);
   };
   const goBack = () => {
-    console.log("goBack");
     setIsImportNextStep(false);
     setIsBulkUpload(false);
   };
 
-  console.log(isBulkUpload);
-  console.log(isImportNextStep);
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -397,7 +389,7 @@ const ListEmployees = (props) => {
                     <select
                       className="form-select col-md-6"
                       onChange={(e) => addSelectedField(e.target.value, index)}
-                      value={selectedFieldType[index]}
+                      value={selectedFieldTypes[index]}
                     >
                       {goodplatformFields.map((field, ind) => (
                         <option value={field.value} key={ind + 1}>
@@ -427,7 +419,11 @@ const ListEmployees = (props) => {
       {isImportNextStep && (
         <div className="mt-4">
           <div className="row mt-4">
-            <div className="col-md-6">
+            <div className="col-md-6 d-flex">
+              <Link onClick={goBack}>
+                <i class="bi bi-arrow-90deg-left fs-6" />
+                &nbsp;Back &nbsp;
+              </Link>
               <h5>Customized Fields</h5>
             </div>
             <div className="col-md-6 text-right">
@@ -448,7 +444,7 @@ const ListEmployees = (props) => {
               <tr>
                 {selectedFieldTypes?.map((header, index) => (
                   <td className="ellipsis-div">
-                    <strong>{header.replace("_", " ")}</strong>
+                    <strong>{header.replace("_", " ").toUpperCase()}</strong>
                   </td>
                 ))}
               </tr>

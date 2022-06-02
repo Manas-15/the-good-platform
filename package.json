@@ -26,6 +26,7 @@
     "react-dom": "^18.0.0",
     "react-html-parser": "^2.0.2",
     "react-otp-input": "^2.4.0",
+    "react-papaparse": "^4.0.2",
     "react-redux": "^7.2.8",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
