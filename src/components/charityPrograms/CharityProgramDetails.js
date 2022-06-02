@@ -511,7 +511,7 @@ const CharityProgramDetails = (props) => {
             <div className="col-md-5 mt-4 pl-0 pr-0" id="payment-section">
               {/* <Payment selectedAmount={"200"} paymentValues={initialValues} /> */}
               {/* <div className="sidepanel is-open" id="sidepanel"> */}
-              <DonateHeader />
+              <DonateHeader selectedCharity={selectedCharity} />
               <div className="tab-content pt-2">
                 <div
                   className="tab-pane fade show active give-once"

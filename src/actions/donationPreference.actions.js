@@ -7,6 +7,7 @@ export const donationPreferenceActions = {
   saveDonationPreference,
   updateDonationPreference,
   operateActionRequest,
+  repeatDonationPreference,
 };
 
 function saveDonationPreference(data) {
@@ -137,6 +138,42 @@ function operateActionRequest(actionValues) {
   function failure(error) {
     return {
       type: donationPreferenceConstants.PREFERENCE_ACTION_FAILURE,
+      error,
+    };
+  }
+}
+
+function repeatDonationPreference(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+    donationPreferenceService.repeatDonationPreference(data).then(
+      (data) => {
+        dispatch(success());
+        dispatch(
+          alertActions.success("Repeated successfully.")
+        );
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(preference) {
+    return {
+      type: donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_REQUEST,
+      preference,
+    };
+  }
+  function success(preferences) {
+    return {
+      type: donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_SUCCESS
+    };
+  }
+  function failure(error) {
+    return {
+      type: donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_FAILURE,
       error,
     };
   }

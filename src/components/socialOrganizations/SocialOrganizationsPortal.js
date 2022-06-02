@@ -30,13 +30,12 @@ const SocialOrganizationsPortal = () => {
     document.getElementById("root").classList.remove("loading");
   }
   useEffect(() => {
-    dispatch(socialOrganizationActions.getSocialOrganizations());
+    dispatch(socialOrganizationActions.getSocialOrganizations({individualId: 'social'}));
   }, []);
   const setSocialOrganization = (organization) => {
-    console.log(">>>>>>>>>>>>>>>>> organizationId", organization);
     dispatch(selectedOrganizationActions.selectedOrganization(organization));
   };
-
+  console.log("dddddddddddddddd", socialOrganizations?.items?.all_programs)
   return (
     <div>
       <div className="row mb-4">
@@ -59,10 +58,10 @@ const SocialOrganizationsPortal = () => {
         <div className="col-md-4 offset-md-3">
           {socialOrganizations.loading && <Loader />}
           {socialOrganizations?.items &&
-          socialOrganizations?.items.length > 0 ? (
+          socialOrganizations?.items?.all_programs?.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
-                {socialOrganizations?.items.map((org, index) => {
+                {socialOrganizations?.items?.all_programs?.map?.((org, index) => {
                   return (
                     <li key={index + 1}>
                       <Link

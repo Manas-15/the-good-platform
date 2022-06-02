@@ -262,7 +262,7 @@ const PayrollSetting = (props) => {
         </div>
       </div>
       {preferences.loading && <Loader />}
-      {!preferences?.items?.active && (
+      {!preferences?.items?.active?.length === 0 && (
         <div className="card p-4 text-center mt-4">
           <strong>
             Seems like there is no donation preferences set by your employees.

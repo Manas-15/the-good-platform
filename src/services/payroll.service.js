@@ -23,7 +23,12 @@ function actionBatch(data) {
 }
 function getPayrollBatch(data) {
   return axios.get(
-    process.env.REACT_APP_API_URL + "api/fetch_batch_process_data/",
+    process.env.REACT_APP_API_URL +
+      `api/${
+        data?.userType === "BluePencilAdmin"
+          ? "social_organization_batch_view"
+          : "fetch_batch_process_data"
+      }/`,
     {
       params: data,
     }

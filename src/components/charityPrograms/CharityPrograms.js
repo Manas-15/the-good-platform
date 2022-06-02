@@ -43,6 +43,8 @@ const CharityPrograms = (props) => {
   const dispatch = useDispatch();
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isIndividualPortal =
+    currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
   };
@@ -62,6 +64,12 @@ const CharityPrograms = (props) => {
               corporateId: selectedCorporate?.corporate?.corporateId,
               socialId: selectedOrganization?.id,
               userType: payrollConstants.CORPORATE_VIEW,
+            }
+          : isIndividualPortal
+          ? {
+              uuid: user?.uuid,
+              socialId: selectedOrganization?.id,
+              userType: payrollConstants.INDIVIDUAL_VIEW,
             }
           : {
               uuid: user?.uuid,
@@ -261,105 +269,119 @@ const CharityPrograms = (props) => {
         </div>
       </div>
       <div className="ant-tabs-nav-wrap">
-        <Tabs
-          defaultActiveKey={charityProgramConstants.SPONSORED}
-          onChange={changeTab}
-        >
-          <TabPane
-            tab={
-              <span>
-                <AuditOutlined className="fs-5" />
-                {charityProgramConstants.SPONSORED} (
-                {charityPrograms?.items?.sponsored
-                  ? SearchCharityHelper(
-                      charityPrograms?.items?.sponsored,
-                      searchText
-                    ).length
-                  : 0}
-                )
-              </span>
-            }
-            key={charityProgramConstants.SPONSOR}
-          >
+        {currentPortal?.currentView === "Individual Portal" ? (
+          <>
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
-                items={
-                  searchText && tabType === charityProgramConstants.SPONSOR
-                    ? SearchCharityHelper(
-                        charityPrograms?.items?.sponsored,
-                        searchText
-                      )
-                    : charityPrograms?.items?.sponsored
-                }
+                items={charityPrograms?.items?.sponsored}
                 setCharity={setCharity}
                 tabType={tabType}
               />
             )}
-            {currentView === charityProgramConstants.PROGRESS_VIEW && (
-              <CardCharityPrograms
-                items={
-                  searchText && tabType === charityProgramConstants.SPONSOR
-                    ? SearchCharityHelper(
-                        charityPrograms?.items?.sponsored,
-                        searchText
-                      )
-                    : charityPrograms?.items?.sponsored
+          </>
+        ) : (
+          <>
+            <Tabs
+              defaultActiveKey={charityProgramConstants.SPONSORED}
+              onChange={changeTab}
+            >
+              <TabPane
+                tab={
+                  <span>
+                    <AuditOutlined className="fs-5" />
+                    {charityProgramConstants.SPONSORED} (
+                    {charityPrograms?.items?.sponsored
+                      ? SearchCharityHelper(
+                          charityPrograms?.items?.sponsored,
+                          searchText
+                        ).length
+                      : 0}
+                    )
+                  </span>
                 }
-                setCharity={setCharity}
-                tabType={tabType}
-              />
-            )}
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <RedoOutlined className="fs-5" />
-                {charityProgramConstants.OTHERS} (
-                {charityPrograms?.items?.other
-                  ? SearchCharityHelper(
-                      charityPrograms?.items?.other,
-                      searchText
-                    ).length
-                  : 0}
-                )
-              </span>
-            }
-            key={charityProgramConstants.OTHERS}
-          >
-            {currentView === charityProgramConstants.LIST_VIEW && (
-              <ListCharityPrograms
-                items={
-                  searchText && tabType === charityProgramConstants.OTHERS
-                    ? SearchCharityHelper(
-                        charityPrograms?.items?.other,
-                        searchText
-                      )
-                    : charityPrograms?.items?.other
+                key={charityProgramConstants.SPONSOR}
+              >
+                {currentView === charityProgramConstants.LIST_VIEW && (
+                  <ListCharityPrograms
+                    items={
+                      searchText && tabType === charityProgramConstants.SPONSOR
+                        ? SearchCharityHelper(
+                            charityPrograms?.items?.sponsored,
+                            searchText
+                          )
+                        : charityPrograms?.items?.sponsored
+                    }
+                    setCharity={setCharity}
+                    tabType={tabType}
+                  />
+                )}
+                {currentView === charityProgramConstants.PROGRESS_VIEW && (
+                  <CardCharityPrograms
+                    items={
+                      searchText && tabType === charityProgramConstants.SPONSOR
+                        ? SearchCharityHelper(
+                            charityPrograms?.items?.sponsored,
+                            searchText
+                          )
+                        : charityPrograms?.items?.sponsored
+                    }
+                    setCharity={setCharity}
+                    tabType={tabType}
+                  />
+                )}
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <RedoOutlined className="fs-5" />
+                    {charityProgramConstants.OTHERS} (
+                    {charityPrograms?.items?.other
+                      ? SearchCharityHelper(
+                          charityPrograms?.items?.other,
+                          searchText
+                        ).length
+                      : 0}
+                    )
+                  </span>
                 }
-                setCharity={setCharity}
-                tabType={tabType}
-              />
-            )}
-            {currentView === charityProgramConstants.PROGRESS_VIEW && (
-              <CardCharityPrograms
-                items={
-                  searchText && tabType === charityProgramConstants.OTHERS
-                    ? SearchCharityHelper(
-                        charityPrograms?.items?.other,
-                        searchText
-                      )
-                    : charityPrograms?.items?.other
-                }
-                setCharity={setCharity}
-                tabType={tabType}
-              />
-            )}
-          </TabPane>
-        </Tabs>
+                key={charityProgramConstants.OTHERS}
+              >
+                {currentView === charityProgramConstants.LIST_VIEW && (
+                  <ListCharityPrograms
+                    items={
+                      searchText && tabType === charityProgramConstants.OTHERS
+                        ? SearchCharityHelper(
+                            charityPrograms?.items?.other,
+                            searchText
+                          )
+                        : charityPrograms?.items?.other
+                    }
+                    setCharity={setCharity}
+                    tabType={tabType}
+                  />
+                )}
+                {currentView === charityProgramConstants.PROGRESS_VIEW && (
+                  <CardCharityPrograms
+                    items={
+                      searchText && tabType === charityProgramConstants.OTHERS
+                        ? SearchCharityHelper(
+                            charityPrograms?.items?.other,
+                            searchText
+                          )
+                        : charityPrograms?.items?.other
+                    }
+                    setCharity={setCharity}
+                    tabType={tabType}
+                  />
+                )}
+              </TabPane>
+            </Tabs>
+          </>
+        )}
       </div>
       {
         <div id="sidepanel" className="sidepanel">
-          <DonateHeader />
+          <DonateHeader selectedCharity={selectedCharity} />
           <div className="tab-content pt-2">
             <div className="tab-pane fade show active give-once" id="give-once">
               <Donate

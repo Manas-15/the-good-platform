@@ -11,6 +11,7 @@ import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
+  userConstants,
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -37,6 +38,9 @@ const ListTransactionsHistory = (props) => {
   const employee = useSelector((state) => state.employee);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
+  const loggedInUserType = useSelector(
+    (state) => state?.user?.loggedinUserType
+  );
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,7 +76,12 @@ const ListTransactionsHistory = (props) => {
     if (!isFilter) {
       dispatch(
         transactionsHistoryActions.getTransactionsHistory({
-          employeeId: employeeId ? employeeId : null,
+          individualId:
+            loggedInUserType === userConstants.INDIVIDUAL
+              ? employee?.user?.individual_id
+              : null,
+          employeeId:
+            loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
           corporateId: isCorporatePortal
             ? selectedCorporate?.corporate?.corporateId
             : null,
@@ -141,7 +150,12 @@ const ListTransactionsHistory = (props) => {
   const fetchResults = () => {
     dispatch(
       transactionsHistoryActions.getTransactionsHistory({
-        employeeId: employeeId ? employeeId : null,
+        individualId:
+          loggedInUserType === userConstants.INDIVIDUAL
+            ? employee?.user?.uuid
+            : null,
+        employeeId:
+          loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
         corporateId: isCorporatePortal
           ? selectedCorporate?.corporate?.corporateId
           : null,
@@ -335,7 +349,7 @@ const ListTransactionsHistory = (props) => {
                           {transaction?.transactionId}
                         </td>
                         <td className="ant-table-cell">
-                          {transaction?.amount}
+                          {transaction?.amount?.toLocaleString()}
                         </td>
                         <td className="ant-table-cell">
                           {transaction?.donationType}

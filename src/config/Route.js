@@ -29,6 +29,9 @@ import TermsOfService from "../components/TermsOfService/TermsOfService";
 import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 import SocialOrganizationsPortal from "../components/SocialOrganizations/SocialOrganizationsPortal";
 import SocialOrganizations from "../components/SocialOrganizations/SocialOrganizations";
+import IndividualSignUp from "../components/Auth/IndividualSignUp";
+import OthersSignUp from "../components/Auth/OthersSignUp";
+import { userConstants } from "./../constants";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -57,6 +60,7 @@ const CreateRoutes = () => {
   }
   // const user = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.employee.user);
+  const loggedInUser = useSelector((state) => state.user);
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
@@ -66,7 +70,9 @@ const CreateRoutes = () => {
   return (
     <Router history={history}>
       {/* &&  otpVerified */}
-      {user?.token && otpVerified ? (
+      {((user?.token && otpVerified) ||
+      (loggedInUser &&
+        loggedInUser?.loggedinUserType === userConstants.CORPORATE)) ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message &&
@@ -150,6 +156,12 @@ const CreateRoutes = () => {
               />
               <Route
                 exact
+                path="/individual/:individualId/account-summary"
+                component={ListTransactionsHistory}
+              />
+
+              <Route
+                exact
                 path="/social-organizations"
                 component={SocialOrganizations}
               />
@@ -183,6 +195,13 @@ const CreateRoutes = () => {
                   exact
                   path="/employees/sign-up"
                   component={EmployeeSignUp}
+                />
+
+                <Route exact path="/others/sign-up" component={EmployeeSignUp} />
+                <Route
+                  exact
+                  path="/individual/sign-up"
+                  component={IndividualSignUp}
                 />
                 <Route
                   exact

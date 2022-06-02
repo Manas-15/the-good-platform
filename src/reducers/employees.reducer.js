@@ -15,6 +15,18 @@ export function employee(state = initialState, action) {
       };
     case employeeConstants.EMPLOYEE_LOGIN_FAILURE:
       return { loggingIn: false };
+    case employeeConstants.INDIVIDUAL_LOGIN_REQUEST:
+      return {
+        loggingIn: true,
+      };
+    case employeeConstants.INDIVIDUAL_LOGIN_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action?.data?.data,
+        otpVerified: false,
+      };
+    case employeeConstants.INDIVIDUAL_LOGIN_FAILURE:
+      return { loggingIn: false };
     case employeeConstants.VALIDATE_OTP_REQUEST:
       return {
         validitingOtp: true,
@@ -113,7 +125,7 @@ export function employee(state = initialState, action) {
     case employeeConstants.BULK_IMPORT_REQUEST:
       return { loading: true };
     case employeeConstants.BULK_IMPORT_SUCCESS:
-      return {items: action?.data?.data?.employee};
+      return { items: action?.data?.data?.employee };
     case employeeConstants.BULK_IMPORT_FAILURE:
       return { error: action.error };
     default:

@@ -3,6 +3,7 @@ export const payrollConstants = {
   EMPLOYEE_VIEW: "Employee",
   ORGANIZATION_VIEW: "Organization",
   CORPORATE_VIEW: "Corporate",
+  INDIVIDUAL_VIEW: "Individual",
 
   PENDING: "Pending",
   COMPLETED: "Completed",

@@ -183,6 +183,11 @@ const PayrollBatchAccordion = (props) => {
           c[batchId] = c[batchId] || temp;
           c[batchId].amount += amount;
           c[batchId].batchDate = batchDate;
+          c[batchId].corporateName = corporateName;
+          c[batchId].referenceId = referenceId;
+          c[batchId].referenceNote = referenceNote;
+          c[batchId].charityProgram = charityProgram;
+          c[batchId].socialOrganizationName = socialOrganizationName;
           return c;
         },
         {}

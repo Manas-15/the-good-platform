@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import { history } from "../../helpers";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { currentViewActions } from "../../actions";
-import { viewPortalConstants } from "../../constants";
+import { currentViewActions, userActions } from "../../actions";
+import { userConstants, viewPortalConstants } from "../../constants";
 
 const Header = () => {
   const location = useLocation();
@@ -12,9 +12,14 @@ const Header = () => {
   const logout = () => {
     // localStorage.removeItem("user");
     localStorage.clear();
+    dispatch(userActions.logout())
     history.push("/");
   };
   const user = useSelector((state) => state.employee.user);
+  const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
+  const loggedInUserType = useSelector(
+    (state) => state?.user?.loggedinUserType
+  );
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
   };
@@ -75,13 +80,27 @@ const Header = () => {
                 className="rounded-circle"
               />
               <span className="d-none d-md-block dropdown-toggle ps-2 custom-color">
-                {user?.name}
+                {corporateLoggedinUser
+                  ? corporateLoggedinUser?.firstName +
+                    " " +
+                    corporateLoggedinUser?.lastName
+                  : user?.name}
               </span>
             </a>
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>{user?.name}</h6>
-                <span>{user?.email}</span>
+                <h6>
+                  {corporateLoggedinUser
+                    ? corporateLoggedinUser?.firstName +
+                      " " +
+                      corporateLoggedinUser?.lastName
+                    : user?.name}
+                </h6>
+                <span>
+                  {corporateLoggedinUser
+                    ? corporateLoggedinUser?.email
+                    : user?.email}
+                </span>
               </li>
               <li>
                 <hr className="dropdown-divider" />
@@ -108,46 +127,52 @@ const Header = () => {
                   <span>Account Settings</span>
                 </a>
               </li>
-              <li>
-                <Link
-                  className="dropdown-item d-flex align-items-center"
-                  to="/corporates"
-                  onClick={() =>
-                    setCurrentView(viewPortalConstants.CORPORATE_PORTAL)
-                  }
-                >
-                  <i className="bi bi-bookshelf"></i>
-                  <span>Corporate Portal</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="dropdown-item d-flex align-items-center"
-                  to="/account-summary"
-                  onClick={() =>
-                    setCurrentView(
-                      viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL
-                    )
-                  }
-                >
-                  <i className="bi bi-person-circle"></i>
-                  <span>Blue Pencil Admin Portal</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="dropdown-item d-flex align-items-center"
-                  to="/organizations"
-                  onClick={() =>
-                    setCurrentView(
-                      viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
-                    )
-                  }
-                >
-                  <i className="bi bi-people"></i>
-                  <span>Social Organization Portal</span>
-                </Link>
-              </li>
+              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
+                <li>
+                  <Link
+                    className="dropdown-item d-flex align-items-center"
+                    to="/corporates"
+                    onClick={() =>
+                      setCurrentView(viewPortalConstants.CORPORATE_PORTAL)
+                    }
+                  >
+                    <i className="bi bi-bookshelf"></i>
+                    <span>Corporate Portal</span>
+                  </Link>
+                </li>
+              )}
+              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
+                <li>
+                  <Link
+                    className="dropdown-item d-flex align-items-center"
+                    to="/account-summary"
+                    onClick={() =>
+                      setCurrentView(
+                        viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL
+                      )
+                    }
+                  >
+                    <i className="bi bi-person-circle"></i>
+                    <span>Blue Pencil Admin Portal</span>
+                  </Link>
+                </li>
+              )}
+              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
+                <li>
+                  <Link
+                    className="dropdown-item d-flex align-items-center"
+                    to="/organizations"
+                    onClick={() =>
+                      setCurrentView(
+                        viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
+                      )
+                    }
+                  >
+                    <i className="bi bi-people"></i>
+                    <span>Social Organization Portal</span>
+                  </Link>
+                </li>
+              )}
               <li>
                 <hr className="dropdown-divider" />
               </li>

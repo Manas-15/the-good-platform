@@ -1,18 +1,44 @@
 import { userConstants } from "../constants";
 
-export function users(state = {}, action) {
+export function user(state = {}, action) {
   switch (action.type) {
-    case userConstants.LOGIN_REQUEST:
+    case userConstants.USER_LOGIN_REQUEST:
       return {
         loggingIn: true,
-        user: action?.user,
       };
-    case userConstants.LOGIN_SUCCESS:
+    case userConstants.USER_LOGIN_SUCCESS:
+      return {
+        loggingIn: true,
+        accessToken: action?.data?.data,
+      };
+    case userConstants.USER_LOGIN_FAILURE:
+      return { loggingIn: false };
+    case userConstants.USER_DETAIL_REQUEST:
+      return {
+        ...state,
+        loggingIn: true,
+      };
+    case userConstants.USER_DETAIL_SUCCESS:
+      return {
+        ...state,
+        loggingIn: true,
+        detail: action?.data?.data?.data,
+      };
+    case userConstants.USER_DETAIL_FAILURE:
+      return { ...state, loggingIn: false };
+    case userConstants.LOGGED_IN_USER_TYPE:
+      return { ...state, loggedinUserType: action?.view };
+    case userConstants.USER_LOGIN_REQUEST:
+      return {
+        loggingIn: true,
+      };
+    case userConstants.USER_LOGIN_SUCCESS:
       return {
         loggedIn: true,
         user: action?.data?.data,
+        otpVerified: false,
       };
-    case userConstants.LOGIN_FAILURE:
+    case userConstants.USER_LOGIN_FAILURE:
       return { loggingIn: false };
     case userConstants.LOGOUT:
       return {};

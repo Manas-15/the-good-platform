@@ -8,6 +8,7 @@ import { charityProgramActions } from "./../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
+  userConstants,
 } from "./../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import { charityProgramConstants } from "./../../constants";
@@ -26,9 +27,18 @@ const preferenceForm = {
   isConsentCheck: "",
   donationConsent: "",
 };
-const Donate = ({ frequency, selectedCharity, tabType, from }) => {
+const Donate = ({
+  frequency,
+  selectedCharity,
+  tabType,
+  from,
+  currentPortal,
+}) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
+  const loggedInUserType = useSelector(
+    (state) => state?.user?.loggedinUserType
+  );
   const [selectedAmount, setSelectedAmount] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
@@ -42,7 +52,13 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
     if (selectedCharity) {
-      setSelectedAmount(selectedCharity?.unitPrice);
+      setSelectedAmount(
+        selectedCharity?.employeePreferenceId
+          ? selectedCharity?.donationAmount
+            ? selectedCharity?.donationAmount
+            : selectedCharity?.unitPrice
+          : selectedCharity?.unitPrice
+      );
     } else {
       setShowNextStep(false);
     }
@@ -63,6 +79,7 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedAmount);
     preferenceForm.corporateId = employee?.corporateId;
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = selectedCharity?.charityId;
@@ -72,7 +89,16 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     preferenceForm.isConsentCheck = true;
     preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
-    dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
+    if (selectedCharity?.employeePreferenceId) {
+      preferenceForm.employeePreferenceId =
+        selectedCharity?.employeePreferenceId;
+      preferenceForm.type = null;
+      dispatch(
+        donationPreferenceActions.updateDonationPreference(preferenceForm)
+      );
+    } else {
+      dispatch(charityProgramActions.saveDonationPreference(preferenceForm));
+    }
     const sidepanel = document.getElementById("sidepanel");
     if (sidepanel) {
       document.getElementById("sidepanel").classList.remove("is-open");
@@ -196,7 +222,8 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
               className={
                 "row mb-4 " +
                 (tabType === charityProgramConstants.SPONSOR &&
-                !isCorporatePortal
+                !isCorporatePortal &&
+                loggedInUserType !== userConstants.INDIVIDUAL
                   ? ""
                   : "mt-4")
               }
@@ -212,14 +239,16 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
                   }
                   onClick={
                     tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal
+                    !isCorporatePortal &&
+                    loggedInUserType !== userConstants.INDIVIDUAL
                       ? saveDonationPreference
                       : nextStep
                   }
                 >
                   <span className="fs-6 ml-2">
                     {tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal ? (
+                    !isCorporatePortal &&
+                    loggedInUserType !== userConstants.INDIVIDUAL ? (
                       <>
                         <span
                           className={`${
@@ -228,8 +257,8 @@ const Donate = ({ frequency, selectedCharity, tabType, from }) => {
                               : "text-white"
                           } bi-heart-fill fs-6 ml-2`}
                         ></span>
-                        &nbsp;{addedFromProgramDetail ? "Added" : "Add"}{" "}
-                        Donation Preference
+                        &nbsp;{selectedCharity?.donated ? "Update" : "Add"}{" "}
+                        Donation Preference {selectedCharity?.donated}
                       </>
                     ) : (
                       "Next"

@@ -20,10 +20,26 @@ const Otp = () => {
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
-    if (code.length === 6) {
-      dispatch(
-        employeeActions.validateOtp({ userId: user.user_id, otp: code })
-      );
+
+    {
+      (() => {
+        if (code.length === 6 && user?.user_type === 3) {
+          return dispatch(
+            employeeActions.validateOtp({
+              userId: user.user_id,
+              otp: code,
+            })
+          );
+        } else if (code.length === 6 && user?.user_type === 4) {
+          return dispatch(
+            employeeActions.validateOtp({
+              userId: user.user_id,
+              otp: code,
+            })
+          );
+        }
+        return null;
+      })();
     }
   }
   return (

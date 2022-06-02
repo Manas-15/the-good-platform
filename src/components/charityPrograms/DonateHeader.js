@@ -16,10 +16,10 @@ const preferenceForm = {
   isConsentCheck: "",
   donationConsent: "",
 };
-const DonateHeader = ({ frequency, tabType }) => {
+const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
-  const [selectedCharity, setSelectedCharity] = useState();
+  // const [selectedCharity, setSelectedCharity] = useState();
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -31,9 +31,19 @@ const DonateHeader = ({ frequency, tabType }) => {
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
-    setSelectedCharity(null);
+    // setSelectedCharity(null);
   };
   const isProgramDetail = history.location.pathname.includes("/programs/");
+  useEffect(() => {
+    if (selectedCharity) {
+      setActiveFrequenctTab(
+        selectedCharity?.frequency ===
+          donationPreferenceConstants.MONTHLY_FREQUENCY
+          ? donationPreferenceConstants.MONTHLY
+          : donationPreferenceConstants.ONCE
+      );
+    }
+  }, [selectedCharity]);
   return (
     <>
       <div
@@ -62,7 +72,7 @@ const DonateHeader = ({ frequency, tabType }) => {
         <ul className="nav nav-tabs nav-tabs-bordered">
           <li className="nav-item">
             <button
-              className="nav-link active"
+              className={`nav-link ${activeFrequenctTab === donationPreferenceConstants.ONCE ? 'active' : ''}`}
               data-bs-toggle="tab"
               data-bs-target="#give-once"
               onClick={() =>
@@ -78,7 +88,7 @@ const DonateHeader = ({ frequency, tabType }) => {
           {/* {tabType === charityProgramConstants.SPONSOR && ( */}
           <li className="nav-item">
             <button
-              className="nav-link"
+              className={`nav-link ${activeFrequenctTab === donationPreferenceConstants.MONTHLY ? 'active' : ''}`}
               data-bs-toggle="tab"
               data-bs-target="#give-monthly"
               onClick={() =>

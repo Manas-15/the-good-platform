@@ -1,7 +1,8 @@
-import { employeeConstants } from "../constants";
-import { employeeService } from "../services";
+import { employeeConstants, userConstants } from "../constants";
+import { employeeService, userService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
+import { userActions } from "./user.actions";
 
 export const employeeActions = {
   login,
@@ -17,45 +18,87 @@ export const employeeActions = {
 };
 
 function login(data, from) {
-  return (dispatch) => {
-    dispatch(request({ data }));
-    employeeService.login(data).then(
-      (data) => {
-        dispatch(success(data));
-        if (data?.data?.approve) {
-          const res = JSON.stringify(data?.data);
-          localStorage.setItem("user", JSON.stringify(data?.data));
-          // history.push("/dashboard");
-          // dispatch(alertActions.success("Loggedin successful"));
-          history.push("/otp");
-        } else {
+  if (data?.loginType === "Employee") {
+    return (dispatch) => {
+      dispatch(request({ data }));
+      employeeService.login(data).then(
+        (res) => {
+          dispatch(success(res));
+          if (data?.loginType === "Others") {
+            console.log(">>>>>>>>>>>>>>>>>>>", res?.data);
+            const result = JSON.stringify(res?.data);
+            localStorage.setItem("accessToken", result);
+            dispatch(userActions.getDetail());
+          } else {
+            if (res?.data?.approve) {
+              const result = JSON.stringify(res?.data);
+              localStorage.setItem("user", JSON.stringify(res?.data));
+              // history.push("/dashboard");
+              // dispatch(alertActions.success("Loggedin successful"));
+              // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
+              history.push("/otp");
+            } else {
+              dispatch(
+                alertActions.error(
+                  "Your account is currently in review. You will soon receive an email with a link to set your password."
+                )
+              );
+            }
+          }
+        },
+        (error) => {
+          dispatch(failure(error.toString()));
           dispatch(
             alertActions.error(
-              "Your account is currently in review. You will soon receive an email with a link to set your password."
+              error?.response?.data?.errors?.non_field_errors
+                ? error?.response?.data?.errors?.non_field_errors[0]
+                : error.toString()
             )
           );
         }
-      },
-      (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(
-          alertActions.error(
-            error?.response?.data?.errors?.non_field_errors
-              ? error?.response?.data?.errors?.non_field_errors[0]
-              : error.toString()
-          )
-        );
-      }
-    );
-  };
-  function request(data) {
-    return { type: employeeConstants.EMPLOYEE_LOGIN_REQUEST, data };
-  }
-  function success(data) {
-    return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };
-  }
-  function failure(error) {
-    return { type: employeeConstants.EMPLOYEE_LOGIN_FAILURE, error };
+      );
+    };
+    function request(data) {
+      return { type: employeeConstants.EMPLOYEE_LOGIN_REQUEST, data };
+    }
+    function success(data) {
+      return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };
+    }
+    function failure(error) {
+      return { type: employeeConstants.EMPLOYEE_LOGIN_FAILURE, error };
+    }
+  } else if (data?.loginType === "Individual") {
+    return (dispatch) => {
+      dispatch(request({ data }));
+      employeeService.login(data).then(
+        (data) => {
+          dispatch(success(data));
+          const res = JSON.stringify(data?.data);
+          localStorage.setItem("user", JSON.stringify(data?.data));
+          // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
+          history.push("/otp");
+        },
+        (error) => {
+          dispatch(failure(error.toString()));
+          dispatch(
+            alertActions.error(
+              error?.response?.data?.errors?.non_field_errors
+                ? error?.response?.data?.errors?.non_field_errors[0]
+                : error.toString()
+            )
+          );
+        }
+      );
+    };
+    function request(data) {
+      return { type: employeeConstants.INDIVIDUAL_LOGIN_REQUEST, data };
+    }
+    function success(data) {
+      return { type: employeeConstants.INDIVIDUAL_LOGIN_SUCCESS, data };
+    }
+    function failure(error) {
+      return { type: employeeConstants.INDIVIDUAL_LOGIN_FAILURE, error };
+    }
   }
 }
 function validateOtp(data, from) {
@@ -70,6 +113,11 @@ function validateOtp(data, from) {
           dispatch(alertActions.error(data?.data?.msg));
         } else {
           localStorage.setItem("otpVerified", true);
+          if (data?.data?.user_type === userConstants.EMPLOYEE) {
+            dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
+          } else if (data?.data?.user_type === userConstants.INDIVIDUAL) {
+            dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
+          }
           history.push("/");
         }
         // dispatch(alertActions.success("Loggedin successful"));
@@ -129,8 +177,9 @@ function resendOtp(data) {
   }
 }
 function logout() {
-  employeeService.logout();
-  return { type: employeeConstants.LOGOUT };
+  // userService.logout();
+  localStorage.clear();
+  return { type: userConstants.LOGOUT };
 }
 function getEmployees(data) {
   return (dispatch) => {
@@ -156,7 +205,7 @@ function getEmployees(data) {
     return { type: employeeConstants.GET_EMPLOYEES_FAILURE, error };
   }
 }
-function registerEmployee(employee, type) {
+function registerEmployee(employee) {
   return (dispatch) => {
     dispatch(request(employee));
 
