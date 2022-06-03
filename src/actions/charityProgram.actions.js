@@ -1,6 +1,7 @@
 import { charityProgramConstants } from "./../constants";
 import { charityProgramService } from "./../services";
 import { alertActions } from "./";
+import {donationPreferenceActions} from "./donationPreference.actions";
 
 export const charityProgramActions = {
   getCharityPrograms,
@@ -44,8 +45,16 @@ function saveDonationPreference(data) {
   return (dispatch) => {
     dispatch(request(data));
     charityProgramService.saveDonationPreference(data).then(
-      (data) => {
-        dispatch(success(data));
+      (res) => {
+        dispatch(success(res));
+        dispatch(
+          donationPreferenceActions.getDonationPreferences({
+            employeeId: data?.employeeId,
+            userType: "Employee",
+            pageSize: 10,
+            offset: 0,
+          })
+        );
         dispatch(
           alertActions.success("Donation preferences saved successfully.")
         );

@@ -31,6 +31,7 @@ const completeInitialValues = {
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
+  socialId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const PayrollBatch = (props) => {
@@ -40,6 +41,7 @@ const PayrollBatch = (props) => {
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
+  const selectedOrganization = useSelector((state) => state?.selectedOrganization?.organization);
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
@@ -144,6 +146,7 @@ const PayrollBatch = (props) => {
     } else if (action === "Receive Batch") {
       confirmInitialValues.batchId = item?.batchId;
       confirmInitialValues.requestType = payrollConstants.RECEIVE;
+      confirmInitialValues.socialId = isOrganizationPortal ? selectedOrganization?.id : null;
     } else {
       confirmInitialValues.batchId = item?.batchId;
       if (action === "Confirm Batch") {

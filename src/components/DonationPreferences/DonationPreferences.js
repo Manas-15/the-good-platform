@@ -67,6 +67,9 @@ const DonationPreferences = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   useEffect(() => {
+    getData();
+  }, [currentPage]);
+  const getData = () => {
     dispatch(
       donationPreferenceActions.getDonationPreferences({
         employeeId: employee?.emp_id,
@@ -75,7 +78,7 @@ const DonationPreferences = () => {
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
-  }, [currentPage]);
+  };
   const handleOpenDialog = (action, item) => {
     setOpenDialog(true);
     setActionType(action);
@@ -109,6 +112,7 @@ const DonationPreferences = () => {
     dispatch(
       donationPreferenceActions.operateActionRequest(actionInitialValues)
     );
+    getData();
   };
 
   const handleCheck = () => {

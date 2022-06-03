@@ -122,6 +122,7 @@ const PayrollSetting = (props) => {
       items: data,
     };
     dispatch(payrollSettingActions.processBatch(finalData));
+    getData();
   };
   useEffect(() => {
     batchId = props?.location?.query?.batchId;
