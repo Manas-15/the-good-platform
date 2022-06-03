@@ -249,7 +249,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                           {charityProgram?.category}
                         </td>
                         <td className="ant-table-cell text-center">
-                          {charityProgram?.unitPrice.toLocaleString()}
+                          {charityProgram?.unitPrice?.toLocaleString()}
                         </td>
                         <td className="ant-table-cell text-center">
                           {isCorporatePortal &&
@@ -334,6 +334,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                           ? ReactHtmlParser(
                               isCorporatePortal
                                 ? "No programs are promoted yet"
+                                : isIndividualPortal
+                                ? "No programs found"
                                 : "No programs are promoted by your corporate.<br/>However, you can still make donation individually by browsing the programs in other category."
                             )
                           : "No programs found"}

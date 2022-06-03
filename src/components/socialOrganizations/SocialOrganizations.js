@@ -52,15 +52,20 @@ const SocialOrganizations = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("loggedInUser?.loggedInUserType", loggedInUserType, user);
+    console.log(
+      "loggedInUser?.loggedInUserType",
+      loggedInUserType,
+      currentPage
+    );
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
+        pageNumber: currentPage,
         employeeId: isEmployeePortal ? user?.emp_id : null,
         corporateId: isCorporatePortal
           ? selectedCorporate?.corporate?.corporateId
           : user?.corporateId,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         loggedInUserType: loggedInUserType,
         individualId:
           loggedInUserType === userConstants.INDIVIDUAL ? user?.uuid : null,
@@ -230,14 +235,27 @@ const SocialOrganizations = () => {
           </Tabs>
         )}
         {loggedInUserType === userConstants.INDIVIDUAL && (
-          <ListSocialOrganizations
-            tabType={tabType}
-            items={
-              searchText
-                ? SearchHelper(socialOrganizations?.items, searchText)
-                : socialOrganizations?.items
-            }
-          />
+          <>
+            <ListSocialOrganizations
+              tabType={tabType}
+              items={
+                searchText
+                  ? SearchHelper(socialOrganizations?.items, searchText)
+                  : socialOrganizations?.items
+              }
+            />
+            <Pagination
+              className="pagination-bar mt-4"
+              currentPage={currentPage}
+              totalCount={
+                socialOrganizations?.totalCount
+                  ? socialOrganizations?.totalCount
+                  : 0
+              }
+              pageSize={pageSize}
+              onPageChange={(page) => setPage(page)}
+            />
+          </>
         )}
       </div>
     </div>

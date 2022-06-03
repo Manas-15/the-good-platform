@@ -14,6 +14,7 @@ import {
   RegionDropdown,
   CountryRegionData,
 } from "react-country-region-selector";
+import { userConstants } from "../../constants";
 
 const initialValues = {
   firstName: "",
@@ -86,13 +87,13 @@ const EmployeeForm = ({ type }) => {
   const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("India");
   const [state, setState] = useState();
-  const addingEmployee = useSelector((state) => state.employee.addingEmployee);
+  const addinguser = useSelector((state) => state.employee.addinguser);
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const employeeRegister = (values) => {
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
-      dispatch(employeeActions.registerEmployee(values, type));
+      dispatch(employeeActions.register(values, userConstants.EMPLOYEE));
     }
   };
   const selectCountry = (country) => {
@@ -269,7 +270,7 @@ const EmployeeForm = ({ type }) => {
                         name="gender"
                         as="select"
                         className={
-                          "form-control" +
+                          "form-select" +
                           (errors.gender && touched.gender ? " is-invalid" : "")
                         }
                       >
@@ -357,7 +358,7 @@ const EmployeeForm = ({ type }) => {
                       placeholder="Select State"
                       onChange={(val) => selectState(val)}
                       className={
-                        "form-control" +
+                        "form-select" +
                         (errors.country && touched.country ? " is-invalid" : "")
                       }
                     />
@@ -368,7 +369,7 @@ const EmployeeForm = ({ type }) => {
                       value={country}
                       onChange={(val) => selectCountry(val)}
                       className={
-                        "form-control" +
+                        "form-select" +
                         (errors.country && touched.country ? " is-invalid" : "")
                       }
                     />
@@ -410,9 +411,9 @@ const EmployeeForm = ({ type }) => {
                     <button
                       type="submit"
                       className="btn registrationButton"
-                      disabled={addingEmployee || !isTermsChecked}
+                      disabled={addinguser || !isTermsChecked}
                     >
-                      {addingEmployee && (
+                      {addinguser && (
                         <span className="spinner-border spinner-border-sm mr-1"></span>
                       )}
                       Create Account

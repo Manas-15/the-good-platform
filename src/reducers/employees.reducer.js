@@ -67,7 +67,7 @@ export function employee(state = initialState, action) {
         error: action.error,
       };
     case employeeConstants.ADD_EMPLOYEE_REQUEST:
-      return { addingEmployee: true };
+      return { addinguser: true };
     case employeeConstants.ADD_EMPLOYEE_SUCCESS:
       return {};
     case employeeConstants.ADD_EMPLOYEE_FAILURE:

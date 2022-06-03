@@ -33,7 +33,7 @@ const ListSocialOrganizations = ({ tabType, items }) => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   // Pagination
-  const [totalCount, setTotalCount] = useState(0);
+  // const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
@@ -55,8 +55,8 @@ const ListSocialOrganizations = ({ tabType, items }) => {
   //   setCurrentPage(page);
   // };
   // useEffect(() => {
-  //   setTotalCount(socialOrganizations?.totalCount);
-  // }, [socialOrganizations?.totalCount]);
+  //   setTotalCount(totalCount);
+  // }, [totalCount]);
   const setOrganization = (organization) => {
     dispatch(selectedOrganizationActions.selectedOrganization(organization));
   };

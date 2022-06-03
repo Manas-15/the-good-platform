@@ -11,6 +11,7 @@ import {
   RegionDropdown,
   CountryRegionData,
 } from "react-country-region-selector";
+import { userConstants } from "../../constants";
 
 const initialValues = {
   firstName: "",
@@ -38,9 +39,7 @@ const IndividualForm = ({ type }) => {
   const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("India");
   const [state, setState] = useState();
-  const addingIndividual = useSelector(
-    (state) => state.employee.addingIndividual
-  );
+  const addinguser = useSelector((state) => state.employee.addinguser);
 
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
@@ -48,7 +47,7 @@ const IndividualForm = ({ type }) => {
   const individualRegister = (values) => {
     setSubmitted(true);
     if (values.firstName && values.email) {
-      dispatch(employeeActions.registerEmployee(values, type));
+      dispatch(employeeActions.register(values, userConstants.INDIVIDUAL));
     }
   };
   const selectCountry = (country) => {
@@ -202,7 +201,7 @@ const IndividualForm = ({ type }) => {
                         name="gender"
                         as="select"
                         className={
-                          "form-control" +
+                          "form-select" +
                           (errors.gender && touched.gender ? " is-invalid" : "")
                         }
                       >
@@ -281,7 +280,7 @@ const IndividualForm = ({ type }) => {
                       placeholder="Select State"
                       onChange={(val) => selectState(val)}
                       className={
-                        "form-control" +
+                        "form-select" +
                         (errors.country && touched.country ? " is-invalid" : "")
                       }
                     />
@@ -292,7 +291,7 @@ const IndividualForm = ({ type }) => {
                       value={country}
                       onChange={(val) => selectCountry(val)}
                       className={
-                        "form-control" +
+                        "form-select" +
                         (errors.country && touched.country ? " is-invalid" : "")
                       }
                     />
@@ -334,9 +333,9 @@ const IndividualForm = ({ type }) => {
                     <button
                       type="submit"
                       className="btn registrationButton"
-                      disabled={addingIndividual || !isTermsChecked}
+                      disabled={addinguser || !isTermsChecked}
                     >
-                      {addingIndividual && (
+                      {addinguser && (
                         <span className="spinner-border spinner-border-sm mr-1"></span>
                       )}
                       Create Account
