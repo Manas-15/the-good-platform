@@ -32,15 +32,15 @@ export function payrollSetting(state = {}, action) {
       };
     case payrollConstants.PROCESS_BATCH_SUCCESS:
       const selectedItems = state?.data?.map?.((p) => p.employeePreferenceId);
-      const pendingItems = state?.items?.active?.map?.((item) => {
-        if (selectedItems?.includes?.(item?.employeePreferenceId)) {
-          return { ...item, status: payrollConstants.PENDING_STATUS };
-        }
-        return item;
+      const activeItems = state?.items?.active?.map?.((item) => {
+        // if (selectedItems?.includes(item?.employeePreferenceId)) {
+        return { ...item, status: payrollConstants.PENDING_STATUS };
+        // }
+        // return item;
       });
       return {
         // ...state,
-        items: pendingItems,
+        items: { active: activeItems, complete: state?.items?.complete },
       };
     case payrollConstants.PROCESS_BATCH_FAILURE:
       return {

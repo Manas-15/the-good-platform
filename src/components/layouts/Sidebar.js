@@ -228,6 +228,9 @@ const Sidebar = () => {
           </>
         )}
       </ul>
+      {/* <div className="left-img">
+        <img src="/assets/img/left-img.png" alt="Left Image" />
+      </div> */}
     </aside>
   );
 };

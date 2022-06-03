@@ -142,7 +142,10 @@ export function charityPrograms(state = {}, action) {
     case charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS:
       return {
         ...state,
-        selectedprogramDetail: {...action?.programDetail?.data?.data, unitPrice: 500},
+        selectedprogramDetail: {
+          ...action?.programDetail?.data?.data,
+          unitPrice: 500,
+        },
         loading: false,
       };
     case charityProgramConstants.OPERATE_DENY_FAILURE:

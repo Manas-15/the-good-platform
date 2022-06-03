@@ -27,7 +27,10 @@ export function payrollBatch(state = {}, action) {
         ...state,
         items: state.items.map((item) => {
           if (item?.batchId === state?.batchId) {
-            if (state?.requestType === payrollConstants?.COMPLETE || state?.requestType === payrollConstants?.UNCONFIRM) {
+            if (
+              state?.requestType === payrollConstants?.COMPLETE ||
+              state?.requestType === payrollConstants?.UNCONFIRM
+            ) {
               return {
                 ...item,
                 status: payrollConstants?.COMPLETED_STATUS,
@@ -51,7 +54,7 @@ export function payrollBatch(state = {}, action) {
                 status: payrollConstants?.COMPLETED_STATUS,
               };
             }
-            if (state?.requestType === payrollConstants?.RECEIVED) {
+            if (state?.requestType === payrollConstants?.RECEIVE) {
               return {
                 ...item,
                 status: payrollConstants?.RECEIVED_STATUS,
