@@ -72,25 +72,25 @@ const ListTransactionsHistory = (props) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
   }, [props, charityPrograms?.items?.sponsored, charityPrograms?.items?.other]);
-  useEffect(() => {
-    if (!isFilter) {
-      dispatch(
-        transactionsHistoryActions.getTransactionsHistory({
-          individualId:
-            loggedInUserType === userConstants.INDIVIDUAL
-              ? employee?.user?.individual_id
-              : null,
-          employeeId:
-            loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-          corporateId: isCorporatePortal
-            ? selectedCorporate?.corporate?.corporateId
-            : null,
-          pageSize: pageSize,
-          offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-        })
-      );
-    }
-  }, [currentPage]);
+  // useEffect(() => {
+  //   if (!isFilter) {
+  //     dispatch(
+  //       transactionsHistoryActions.getTransactionsHistory({
+  //         individualId:
+  //           loggedInUserType === userConstants.INDIVIDUAL
+  //             ? employee?.user?.individual_id
+  //             : null,
+  //         employeeId:
+  //           loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
+  //         corporateId: isCorporatePortal
+  //           ? selectedCorporate?.corporate?.corporateId
+  //           : null,
+  //         pageSize: pageSize,
+  //         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+  //       })
+  //     );
+  //   }
+  // }, [currentPage]);
   useEffect(() => {
     setRecords(transactions?.items);
   }, [transactions?.items]);
