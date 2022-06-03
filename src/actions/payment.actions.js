@@ -81,9 +81,7 @@ function savePaymentFailureData(data) {
       },
       (error) => {
         dispatch(failure(error.toString()));
-        dispatch(
-          alertActions.error(error.toString())
-        );
+        dispatch(alertActions.error(error.toString()));
       }
     );
   };
