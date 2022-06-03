@@ -12,7 +12,7 @@ import {
 import { useDispatch } from "react-redux";
 
 const AddedDonationFromDetail = ({ charity, selectedAmount, frequency }) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>> charity", charity, frequency)
+  console.log(">>>>>>>>>>>>>>>>>>>>>> charity", charity, frequency);
   const dispatch = useDispatch();
   return (
     <>

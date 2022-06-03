@@ -51,6 +51,7 @@ const Donate = ({
     currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
+    console.log("selectedCharity ??????????????????????", selectedCharity);
     if (selectedCharity) {
       setSelectedAmount(
         selectedCharity?.employeePreferenceId
@@ -197,7 +198,8 @@ const Donate = ({
             </div>
             {tabType === charityProgramConstants.SPONSOR &&
               !isCorporatePortal &&
-              !addedFromProgramDetail && (
+              !addedFromProgramDetail &&
+              loggedInUserType !== userConstants.INDIVIDUAL && (
                 <div className="row">
                   <div className="col-md-12">
                     <label className="m-2">
@@ -233,7 +235,7 @@ const Donate = ({
                   className="btn btn-custom w-100 rounded-pill"
                   disabled={
                     tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal
+                    !isCorporatePortal && loggedInUserType !== userConstants.INDIVIDUAL
                       ? addedFromProgramDetail || !checked
                       : false
                   }

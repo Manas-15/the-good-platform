@@ -64,19 +64,19 @@ const CharityPrograms = (props) => {
           ? {
               corporateId: selectedCorporate?.corporate?.corporateId,
               socialId: selectedOrganization?.id,
-              userType: payrollConstants.CORPORATE_VIEW,
+              userType: userConstants.CORPORATE_VIEW,
             }
           : isIndividualPortal
           ? {
               // uuid: user?.uuid,
               // socialId: selectedOrganization?.id,
-              userType: userConstants.INDIVIDUAL,
-              orgId: selectedOrganization?.id?.toString(),
+              userType: userConstants.INDIVIDUAL_VIEW,
+              // orgId: selectedOrganization?.id?.toString(),
             }
           : {
               uuid: user?.uuid,
               socialId: selectedOrganization?.id,
-              userType: payrollConstants.EMPLOYEE_VIEW,
+              userType: userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
                 : user?.corporateId,
@@ -280,6 +280,13 @@ const CharityPrograms = (props) => {
                 tabType={tabType}
               />
             )}
+            {currentView === charityProgramConstants.PROGRESS_VIEW && (
+                <CardCharityPrograms
+                  items={charityPrograms?.items}
+                  setCharity={setCharity}
+                  tabType={tabType}
+                />
+              )}
           </>
         ) : (
           <>
