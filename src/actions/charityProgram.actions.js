@@ -1,7 +1,7 @@
 import { charityProgramConstants } from "./../constants";
 import { charityProgramService } from "./../services";
 import { alertActions } from "./";
-import {donationPreferenceActions} from "./donationPreference.actions";
+import { donationPreferenceActions } from "./donationPreference.actions";
 
 export const charityProgramActions = {
   getCharityPrograms,
