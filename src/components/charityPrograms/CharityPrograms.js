@@ -281,12 +281,12 @@ const CharityPrograms = (props) => {
               />
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
-                <CardCharityPrograms
-                  items={charityPrograms?.items}
-                  setCharity={setCharity}
-                  tabType={tabType}
-                />
-              )}
+              <CardCharityPrograms
+                items={charityPrograms?.items}
+                setCharity={setCharity}
+                tabType={tabType}
+              />
+            )}
           </>
         ) : (
           <>

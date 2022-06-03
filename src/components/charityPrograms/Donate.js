@@ -26,6 +26,7 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
   donationConsent: "",
+  repeat: "",
 };
 const Donate = ({
   frequency,
@@ -33,6 +34,7 @@ const Donate = ({
   tabType,
   from,
   currentPortal,
+  repeatPreference,
 }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
@@ -83,14 +85,21 @@ const Donate = ({
     console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedAmount);
     preferenceForm.corporateId = employee?.corporateId;
     preferenceForm.employeeId = employee?.emp_id;
-    preferenceForm.charityProgramId = selectedCharity?.charityId;
-    preferenceForm.socialOrganizationId = selectedCharity?.soicalId;
+    preferenceForm.charityProgramId = repeatPreference
+      ? selectedCharity?.charityProgramId
+      : selectedCharity?.charityId;
+    preferenceForm.socialOrganizationId = repeatPreference
+      ? selectedCharity?.socialOrganizationId
+      : selectedCharity?.soicalId;
     preferenceForm.donationAmount = selectedAmount;
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     preferenceForm.isConsentCheck = true;
     preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${frequency}]`;
-    if (selectedCharity?.employeePreferenceId) {
+    if (repeatPreference) {
+      preferenceForm.repeat = true;
+    }
+    if (selectedCharity?.employeePreferenceId && !repeatPreference) {
       preferenceForm.employeePreferenceId =
         selectedCharity?.employeePreferenceId;
       preferenceForm.type = null;
@@ -104,6 +113,7 @@ const Donate = ({
     if (sidepanel) {
       document.getElementById("sidepanel").classList.remove("is-open");
     }
+    setChecked(false);
     if (from) {
       setAddedFromProgramDetail(true);
       selectedCharity.donated = true;
@@ -196,36 +206,38 @@ const Donate = ({
                 </p>
               </div>
             </div>
-            {tabType === charityProgramConstants.SPONSOR &&
+            {((tabType === charityProgramConstants.SPONSOR &&
               !isCorporatePortal &&
               !addedFromProgramDetail &&
-              loggedInUserType !== userConstants.INDIVIDUAL && (
-                <div className="row">
-                  <div className="col-md-12">
-                    <label className="m-2">
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() => setOpen(true)}
-                      />
-                      <Link
-                        className="text-dark d-inline pl-0"
-                        onClick={() => setOpen(true)}
-                      >
-                        <p className="ml-2 d-inline-block text-decoration-underline">
-                          Please select the checkbox to your consents
-                        </p>
-                      </Link>
-                    </label>
-                  </div>
+              loggedInUserType !== userConstants.INDIVIDUAL) ||
+              repeatPreference) && (
+              <div className="row">
+                <div className="col-md-12">
+                  <label className="m-2">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => setOpen(true)}
+                    />
+                    <Link
+                      className="text-dark d-inline pl-0"
+                      onClick={() => setOpen(true)}
+                    >
+                      <p className="ml-2 d-inline-block text-decoration-underline">
+                        Please select the checkbox to your consents
+                      </p>
+                    </Link>
+                  </label>
                 </div>
-              )}
+              </div>
+            )}
             <div
               className={
                 "row mb-4 " +
-                (tabType === charityProgramConstants.SPONSOR &&
-                !isCorporatePortal &&
-                loggedInUserType !== userConstants.INDIVIDUAL
+                ((tabType === charityProgramConstants.SPONSOR &&
+                  !isCorporatePortal &&
+                  loggedInUserType !== userConstants.INDIVIDUAL) ||
+                repeatPreference
                   ? ""
                   : "mt-4")
               }
@@ -234,23 +246,27 @@ const Donate = ({
                 <button
                   className="btn btn-custom w-100 rounded-pill"
                   disabled={
-                    tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal && loggedInUserType !== userConstants.INDIVIDUAL
+                    (tabType === charityProgramConstants.SPONSOR &&
+                      !isCorporatePortal &&
+                      loggedInUserType !== userConstants.INDIVIDUAL) ||
+                    repeatPreference
                       ? addedFromProgramDetail || !checked
                       : false
                   }
                   onClick={
-                    tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal &&
-                    loggedInUserType !== userConstants.INDIVIDUAL
+                    (tabType === charityProgramConstants.SPONSOR &&
+                      !isCorporatePortal &&
+                      loggedInUserType !== userConstants.INDIVIDUAL) ||
+                    repeatPreference
                       ? saveDonationPreference
                       : nextStep
                   }
                 >
                   <span className="fs-6 ml-2">
-                    {tabType === charityProgramConstants.SPONSOR &&
-                    !isCorporatePortal &&
-                    loggedInUserType !== userConstants.INDIVIDUAL ? (
+                    {(tabType === charityProgramConstants.SPONSOR &&
+                      !isCorporatePortal &&
+                      loggedInUserType !== userConstants.INDIVIDUAL) ||
+                    repeatPreference ? (
                       <>
                         <span
                           className={`${

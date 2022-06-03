@@ -25,6 +25,9 @@ let accordionData, isCorporateView;
 const PayrollBatchDetail = (props) => {
   // let history = useHistory();
   const preferences = useSelector((state) => state?.payrollSetting?.items);
+  const selectedOrganization = useSelector(
+    (state) => state?.selectedOrganization?.organization
+  );
   const batchId = props?.batchId;
   const employee = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
@@ -34,7 +37,12 @@ const PayrollBatchDetail = (props) => {
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(payrollSettingActions.getBatchDetail({ batchId: props?.batchId }));
+    dispatch(
+      payrollSettingActions.getBatchDetail({
+        batchId: props?.batchId,
+        socialId: isOrganizationView ? selectedOrganization?.id : null,
+      })
+    );
   }, [props?.batchId]);
   const groupBy = (key) => {
     return preferences?.reduce?.(function (acc, item) {
@@ -62,12 +70,11 @@ const PayrollBatchDetail = (props) => {
     setCurrentView(
       isOrganizationView
         ? payrollConstants.CORPORATE_VIEW
-        : (isCorporateView || isBluePencilPortal)
+        : isCorporateView || isBluePencilPortal
         ? payrollConstants.EMPLOYEE_VIEW
         : payrollConstants.CORPORATE_VIEW
     );
   }, [history?.location?.pathname]);
-  console.log("isCorporateView ccccccc", accordionData);
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -81,7 +88,8 @@ const PayrollBatchDetail = (props) => {
         <div className="col-md-7">
           <h1 className="ant-typography customHeading">
             Payroll Batch Detail -{" "}
-            {preferences && moment(preferences[0]?.batchDate).format("MMM YYYY")}
+            {preferences &&
+              moment(preferences[0]?.batchDate).format("MMM YYYY")}
           </h1>
         </div>
       </div>
@@ -134,7 +142,7 @@ const PayrollBatchDetail = (props) => {
               </button>
             </Link>
           )}
-          {(!isBluePencilPortal  && (!isCorporateView || isOrganizationView)) && (
+          {!isBluePencilPortal && (!isCorporateView || isOrganizationView) && (
             <Link
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}
@@ -223,9 +231,9 @@ const PayrollBatchDetail = (props) => {
                                           Employee ID
                                         </th>
                                       )}
-                                    {(isOrganizationView &&
+                                    {isOrganizationView &&
                                       currentView !==
-                                        payrollConstants.CORPORATE_VIEW) && (
+                                        payrollConstants.CORPORATE_VIEW && (
                                         <th className="ant-table-cell">
                                           Corporate Name
                                         </th>
@@ -297,9 +305,9 @@ const PayrollBatchDetail = (props) => {
                                               {preference?.employeeUid}
                                             </td>
                                           )}
-                                        {(isOrganizationView &&
+                                        {isOrganizationView &&
                                           currentView !==
-                                            payrollConstants.CORPORATE_VIEW) && (
+                                            payrollConstants.CORPORATE_VIEW && (
                                             <td className="ant-table-cell">
                                               <span className="ant-typography font-weight-bold">
                                                 {preference?.corporateName}
