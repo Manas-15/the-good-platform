@@ -149,9 +149,7 @@ function repeatDonationPreference(data) {
     donationPreferenceService.repeatDonationPreference(data).then(
       (data) => {
         dispatch(success());
-        dispatch(
-          alertActions.success("Repeated successfully.")
-        );
+        dispatch(alertActions.success("Repeated successfully."));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -168,7 +166,7 @@ function repeatDonationPreference(data) {
   }
   function success(preferences) {
     return {
-      type: donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_SUCCESS
+      type: donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_SUCCESS,
     };
   }
   function failure(error) {

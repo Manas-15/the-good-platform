@@ -8,6 +8,7 @@ export const charityProgramActions = {
   operateSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
+  getProgramDetail,
 };
 
 function getCharityPrograms(data) {
@@ -164,11 +165,43 @@ function checkBeforeUnpromote(actionValues) {
     };
   }
   function success(data) {
-    return { type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS, data };
+    return {
+      type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS,
+      data,
+    };
   }
   function failure(error) {
     return {
       type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_FAILURE,
+      error,
+    };
+  }
+}
+function getProgramDetail(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+    charityProgramService.getProgramDetail(data).then(
+      (programDetail) => dispatch(success(programDetail)),
+
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(data) {
+    return { type: charityProgramConstants.GET_PROGRAM_DETAIL_REQUEST, data };
+  }
+  function success(programDetail) {
+    return {
+      type: charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS,
+      programDetail,
+    };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.GET_PROGRAM_DETAIL_FAILURE,
       error,
     };
   }
