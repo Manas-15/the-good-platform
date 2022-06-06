@@ -214,10 +214,9 @@ function register(employee, userType) {
       (employee) => {
         dispatch(success());
         history.push({
-          pathname: '/thank-you',
-          state: { userType: userType }
-      });
-        
+          pathname: "/thank-you",
+          state: { userType: userType },
+        });
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -333,6 +332,7 @@ function employeeAccountRequest(actionValues) {
   }
 }
 function bulkImport(data) {
+  console.log(data, "bulk data");
   return (dispatch) => {
     dispatch(request(data));
 
@@ -341,8 +341,9 @@ function bulkImport(data) {
         dispatch(success());
       },
       (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
+        alert("FAiled");
+        // dispatch(failure(error.toString()));
+        // dispatch(alertActions.error(error.toString()));
       }
     );
   };

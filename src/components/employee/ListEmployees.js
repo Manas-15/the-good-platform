@@ -138,7 +138,6 @@ const ListEmployees = (props) => {
   };
 
   const addSelectedField = (e, index) => {
-    // selectedFieldTypes[index] = e;
     const data = selectedFieldTypes.map((val, idx) => {
       if (idx === index) {
         return e;
@@ -150,20 +149,32 @@ const ListEmployees = (props) => {
   };
 
   const confimUpload = () => {
+    dispatch(employeeActions.bulkImport(selectedFieldTypes, finalData));
     console.log(
       "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
-      selectedFieldTypes
+      selectedFieldTypes,
+      finalData
     );
   };
 
   const goNext = () => {
     setIsImportNextStep(true);
     setIsBulkUpload(false);
+    console.log(
+      "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
+      selectedFieldTypes,
+      finalData
+    );
   };
   const goBack = () => {
     setIsImportNextStep(false);
     setIsBulkUpload(false);
   };
+  const prvBack = () => {
+    setIsBulkUpload(true);
+  };
+
+  console.log(finalData, "finalDataaaaaaa");
 
   return (
     <div className="customContainer">
@@ -350,7 +361,7 @@ const ListEmployees = (props) => {
           <div className="row mt-4">
             <div className="col-md-6 d-flex">
               <Link onClick={goBack}>
-                <i class="bi bi-arrow-90deg-left fs-6" />
+                <i className="bi bi-arrow-90deg-left fs-6" />
                 &nbsp;Back &nbsp;
               </Link>
               <h5>Map columns with fields</h5>
@@ -406,8 +417,8 @@ const ListEmployees = (props) => {
         <div className="mt-4">
           <div className="row mt-4">
             <div className="col-md-6 d-flex">
-              <Link onClick={goBack}>
-                <i class="bi bi-arrow-90deg-left fs-6" />
+              <Link onClick={prvBack}>
+                <i className="bi bi-arrow-90deg-left fs-6" />
                 &nbsp;Back &nbsp;
               </Link>
               <h5>Customized Fields</h5>
