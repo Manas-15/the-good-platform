@@ -138,11 +138,15 @@ const ListEmployees = (props) => {
   };
 
   const addSelectedField = (e, index) => {
-    console.log(e, index);
-    selectedFieldTypes[index] = e;
-    setSelectedFieldTypes(selectedFieldTypes);
-    // setSelectedFieldTypes[index] = e;
-    console.log(e);
+    // selectedFieldTypes[index] = e;
+    const data = selectedFieldTypes.map((val, idx) => {
+      if (idx === index) {
+        return e;
+      } else {
+        return val;
+      }
+    });
+    setSelectedFieldTypes(data);
   };
 
   const confimUpload = () => {
@@ -192,13 +196,6 @@ const ListEmployees = (props) => {
               />
             </>
           )}
-          {/* <button
-            type="button"
-            className="btn"
-            onClick={() => history.push("/employees/add")}
-          >
-            Add Employee
-          </button> */}
         </div>
       </div>
       {!isBulkUpload && !isImportNextStep && (
@@ -358,6 +355,7 @@ const ListEmployees = (props) => {
               </Link>
               <h5>Map columns with fields</h5>
             </div>
+
             <div className="col-md-6 text-right">
               <Link onClick={() => isBulkUpload(false)} className="mr-3">
                 Cancel
@@ -397,18 +395,6 @@ const ListEmployees = (props) => {
                         </option>
                       ))}
                     </select>
-                    {/* <select
-                      aria-label="Default select example"
-                      className="form-select col-md-6"
-                      onChange={(e) => addSelectedField(e.target.value, index)}
-                      value={selectedFieldTypes[index]}
-                    >
-                      {goodplatformFields.map((field, ind) => (
-                        <option value={field.value} key={ind + 1}>
-                          {field.label}
-                        </option>
-                      ))}
-                    </select> */}
                   </td>
                 </tr>
               ))}
