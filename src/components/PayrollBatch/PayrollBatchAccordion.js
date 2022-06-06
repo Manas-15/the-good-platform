@@ -16,7 +16,7 @@ import ReactHtmlParser from "react-html-parser";
 import { Modal, Button } from "react-bootstrap";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import { ProcessHelper, history } from "./../../helpers";
 import { Accordion } from "react-bootstrap";
 import PayrollBatchDetail from "./PayrollBatchDetail";
@@ -112,7 +112,6 @@ const PayrollBatchAccordion = (props) => {
     setActionType(null);
   };
   const openPaidConfirmation = (item) => {
-    console.log("cccccccccccccccccccccccccc item", item);
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
   };
@@ -137,6 +136,7 @@ const PayrollBatchAccordion = (props) => {
   };
   if (props?.viewType === payrollConstants.ORGANIZATION_VIEW) {
     accordionData = groupBy("socialOrganizationName");
+    console.log(">>>>>>>>>>>> accordionData", accordionData);
   } else {
     accordionData = groupBy("corporateName");
   }
@@ -167,6 +167,8 @@ const PayrollBatchAccordion = (props) => {
             referenceNote,
             socialOrganizationName,
             status,
+            totalOrganizationCount,
+            receivedOrganizationIds,
           }
         ) => {
           const temp = {
@@ -180,7 +182,9 @@ const PayrollBatchAccordion = (props) => {
             referenceId: "",
             referenceNote: "",
             socialOrganizationName: "",
-            status,
+            status: 1,
+            totalOrganizationCount: 0,
+            receivedOrganizationIds: "",
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].amount += amount;
@@ -191,6 +195,8 @@ const PayrollBatchAccordion = (props) => {
           c[batchId].charityProgram = charityProgram;
           c[batchId].socialOrganizationName = socialOrganizationName;
           c[batchId].status = status;
+          c[batchId].totalOrganizationCount = totalOrganizationCount;
+          c[batchId].receivedOrganizationIds = receivedOrganizationIds;
           return c;
         },
         {}
@@ -336,77 +342,117 @@ const PayrollBatchAccordion = (props) => {
                                           </>
                                         )}
                                         {batch?.status ===
-                                          payrollConstants.PAID_STATUS && (
-                                          <>
-                                            <span>
-                                              {/* {payrollConstants.CONFIRMED} */}
-                                              75% (Paid to Social Organization)
-                                            </span>
-                                            <Progress
-                                              percent={75}
-                                              showInfo={false}
-                                            />
-                                          </>
-                                        )}
+                                          payrollConstants.PAID_STATUS &&
+                                          !batch?.receivedOrganizationIds && (
+                                            <>
+                                              <span>
+                                                {/* {payrollConstants.CONFIRMED} */}
+                                                75% (Paid to Social
+                                                Organization)
+                                              </span>
+                                              <Progress
+                                                percent={75}
+                                                showInfo={false}
+                                              />
+                                            </>
+                                          )}
+                                        {(batch?.status ===
+                                          payrollConstants.RECEIVED_STATUS ||
+                                          batch?.status ===
+                                            payrollConstants.PAID_STATUS) &&
+                                          batch?.receivedOrganizationIds?.split(
+                                            ","
+                                          )?.length !==
+                                            batch?.totalOrganizationCount && (
+                                            <>
+                                              <span>
+                                                {/* {payrollConstants.CONFIRMED} */}
+                                                {75 +
+                                                  Math.round(
+                                                    25 /
+                                                      batch?.totalOrganizationCount
+                                                  )}
+                                                % (Partially received by
+                                                organizations)
+                                              </span>
+                                              <Progress
+                                                percent={
+                                                  75 +
+                                                  Math.round(
+                                                    25 /
+                                                      batch?.totalOrganizationCount
+                                                  )
+                                                }
+                                                showInfo={false}
+                                              />
+                                            </>
+                                          )}
                                         {batch?.status ===
-                                          payrollConstants.RECEIVED_STATUS && (
-                                          <>
-                                            <span>
-                                              {/* {payrollConstants.CONFIRMED} */}
-                                              100% (Received by Social
-                                              Organization)
-                                            </span>
-                                            <Progress
-                                              percent={100}
-                                              showInfo={false}
-                                            />
-                                          </>
-                                        )}
+                                          payrollConstants.RECEIVED_STATUS &&
+                                          batch?.receivedOrganizationIds?.split(
+                                            ","
+                                          )?.length ===
+                                            batch?.totalOrganizationCount && (
+                                            <>
+                                              <span>
+                                                {/* {payrollConstants.CONFIRMED} */}
+                                                100% (Received by Social
+                                                Organization)
+                                              </span>
+                                              <Progress
+                                                percent={100}
+                                                showInfo={false}
+                                              />
+                                            </>
+                                          )}
                                       </td>
                                       <td className="ant-table-cell text-center">
                                         {batch?.status ===
                                         payrollConstants.CONFIRMED_STATUS ? (
                                           <>
-                                            <Link
-                                              onClick={() =>
-                                                handleOpen(
-                                                  "Unconfirm Batch",
-                                                  batch
-                                                )
-                                              }
-                                            >
-                                              <span
-                                                className="bi-arrow-counterclockwise fs-5"
-                                                title="Unconfirm"
-                                              ></span>
-                                            </Link>
-                                            <Link
-                                              onClick={() =>
-                                                openPaidConfirmation(batch)
-                                              }
-                                            >
-                                              <span
-                                                className="bi-check-square fs-5 ml-2"
-                                                title="Paid"
-                                              ></span>
-                                            </Link>
+                                            <Tooltip title="Unconfirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Unconfirm Batch",
+                                                    batch
+                                                  )
+                                                }
+                                              >
+                                                <span
+                                                  className="bi-arrow-counterclockwise fs-5"
+                                                  title="Unconfirm"
+                                                ></span>
+                                              </Link>
+                                            </Tooltip>
+                                            <Tooltip title="Paid">
+                                              <Link
+                                                onClick={() =>
+                                                  openPaidConfirmation(batch)
+                                                }
+                                              >
+                                                <span
+                                                  className="bi-check-square fs-5 ml-2"
+                                                  title="Paid"
+                                                ></span>
+                                              </Link>
+                                            </Tooltip>
                                           </>
                                         ) : (
                                           batch?.status ===
                                             payrollConstants.COMPLETED_STATUS && (
-                                            <Link
-                                              onClick={() =>
-                                                handleOpen(
-                                                  "Confirm Batch",
-                                                  batch
-                                                )
-                                              }
-                                            >
-                                              <span
-                                                className="bi-check-circle fs-5"
-                                                title="Confirm"
-                                              ></span>
-                                            </Link>
+                                            <Tooltip title="Confirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Confirm Batch",
+                                                    batch
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-check-circle fs-5"></span>
+                                              </Link>
+                                            </Tooltip>
                                           )
                                         )}
                                       </td>
