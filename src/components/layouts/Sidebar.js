@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { history } from "./../../helpers";
+import { history } from "../../helpers";
 import { userConstants, viewPortalConstants } from "../../constants";
 import { useSelector } from "react-redux";
 

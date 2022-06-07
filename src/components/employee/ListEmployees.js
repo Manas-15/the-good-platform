@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
-import ConfirmationDialog from "./../Shared/ConfirmationDialog";
-import Loader from "./../Shared/Loader";
-import { alertActions } from "./../../actions";
-import Pagination from "./../Shared/Pagination";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
+import Loader from "../Shared/Loader";
+import { alertActions } from "../../actions";
+import Pagination from "../Shared/Pagination";
 import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
@@ -41,6 +41,7 @@ const ListEmployees = (props) => {
   const [actionType, setActionType] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const [importHeader, setImportHeader] = useState();
+  const [selectedFile, setSelectedFile] = useState();
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
   const [finalData, setFinalData] = useState([]);
@@ -82,7 +83,9 @@ const ListEmployees = (props) => {
   };
   const handleChange = (event) => {
     const fileUploaded = event.target.files[0];
+    setSelectedFile(fileUploaded);
     handleFile(fileUploaded);
+    console.log(fileUploaded);
   };
   const handleFile = (file) => {
     const fileExtension = file?.name?.split(".")?.pop();
@@ -97,17 +100,18 @@ const ListEmployees = (props) => {
       reader.readAsText(file);
       let finalData = [];
       reader.onload = () => {
+        // console.log(reader?.result);
         const allTextLines = reader?.result?.split(/\n/);
+        // console.log(allTextLines);
         setImportHeader(allTextLines[0].split(","));
         setImportFirstRecord(allTextLines[1].split(","));
+
         let fieldType = [];
         for (let i = 0; i < allTextLines[0].split(",")?.length; i++) {
           if (goodplatformFields[i]) {
             fieldType.push(goodplatformFields[i].value);
-            // setSelectedFieldTypes(...selectedFieldTypes, goodplatformFields[i].value)
           } else {
             fieldType.push("select_field");
-            // setSelectedFieldTypes(...selectedFieldTypes, {"select_field":"select_field"})
             goodplatformFields = [
               ...goodplatformFields,
               { label: "Select Field", value: "select_field" },
@@ -115,6 +119,7 @@ const ListEmployees = (props) => {
           }
         }
         setSelectedFieldTypes(fieldType);
+
         for (let i = 1; i < allTextLines.length; i++) {
           const data = allTextLines[i].split(",");
           if (data.length === allTextLines[0].split(",")?.length) {
@@ -125,30 +130,59 @@ const ListEmployees = (props) => {
             finalData.push(tarr);
           }
         }
-
         setFinalData(finalData);
-        // this.uploadedRecords = this.csvData.length;
-        // this.csvPaginator.currentPage = 1;
-        // this.csvPaginator.totalItems = this.uploadedRecords;
-        // this.csvPaginator = this.baseService.calculatePaginator(this.csvPaginator);
       };
       setIsBulkUpload(true);
     }
   };
-  const addSelectedField = (event, index) => {
-    selectedFieldTypes[index] = event;
-    setSelectedFieldTypes(selectedFieldTypes);
+
+  const addSelectedField = (e, index) => {
+    const data = selectedFieldTypes.map((val, idx) => {
+      if (idx === index) {
+        return e;
+      } else {
+        return val;
+      }
+    });
+    setSelectedFieldTypes(data);
   };
-  const confimUpload = () => {
-    console.log(
-      "setSelectedFieldTypes confirm >>>>>>>>>>>>>>>>>>",
-      selectedFieldTypes
-    );
-  };
+
   const goNext = () => {
     setIsImportNextStep(true);
     setIsBulkUpload(false);
   };
+  const goBack = () => {
+    setIsImportNextStep(false);
+    setIsBulkUpload(false);
+  };
+  const prvBack = () => {
+    setIsBulkUpload(true);
+  };
+
+  const changesField = selectedFieldTypes?.reduce(function (
+    acc,
+    currVal,
+    index
+  ) {
+    acc[importHeader[index]] = currVal;
+    return acc;
+  },
+  {});
+  const confimUpload = () => {
+    console.log("ssssssssssssssssssssss selected", changesField);
+    const formData = new FormData();
+    formData.append("file", selectedFile, selectedFile?.name);
+    formData.append("tblHeader", JSON.stringify(changesField));
+
+    console.log(formData);
+    dispatch(employeeActions.bulkImport(formData));
+    console.log(
+      "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
+      changesField,
+      formData
+    );
+  };
+
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -180,13 +214,6 @@ const ListEmployees = (props) => {
               />
             </>
           )}
-          {/* <button
-            type="button"
-            className="btn"
-            onClick={() => history.push("/employees/add")}
-          >
-            Add Employee
-          </button> */}
         </div>
       </div>
       {!isBulkUpload && !isImportNextStep && (
@@ -339,11 +366,26 @@ const ListEmployees = (props) => {
       {isBulkUpload && (
         <div className="mt-4">
           <div className="row mt-4">
-            <div className="col-md-6">
+            <div className="col-md-6 d-flex">
+              <Link onClick={goBack}>
+                <i className="bi bi-arrow-90deg-left fs-6" />
+                &nbsp;Back &nbsp;
+              </Link>
               <h5>Map columns with fields</h5>
             </div>
+
             <div className="col-md-6 text-right">
               <Link onClick={() => isBulkUpload(false)} className="mr-3">
+                Cancel
+              </Link>
+              <button
+                type="button"
+                className="btn btn-custom btn-sm"
+                onClick={confimUpload}
+              >
+                Confirm
+              </button>
+              {/* <Link onClick={() => isBulkUpload(false)} className="mr-3">
                 Cancel
               </Link>
               <button
@@ -352,7 +394,7 @@ const ListEmployees = (props) => {
                 onClick={goNext}
               >
                 Next
-              </button>
+              </button> */}
             </div>
           </div>
           <table className="table preview_csv_table mt-4">
@@ -371,10 +413,8 @@ const ListEmployees = (props) => {
                   </td>
                   <td>
                     <select
-                      className="form-control col-md-6"
-                      onChange={(event) =>
-                        addSelectedField(event.target.value, index)
-                      }
+                      className="form-select col-md-6"
+                      onChange={(e) => addSelectedField(e.target.value, index)}
                       value={selectedFieldTypes[index]}
                     >
                       {goodplatformFields.map((field, ind) => (
@@ -390,10 +430,14 @@ const ListEmployees = (props) => {
           </table>
         </div>
       )}
-      {isImportNextStep && (
+      {/* {isImportNextStep && (
         <div className="mt-4">
           <div className="row mt-4">
-            <div className="col-md-6">
+            <div className="col-md-6 d-flex">
+              <Link onClick={prvBack}>
+                <i className="bi bi-arrow-90deg-left fs-6" />
+                &nbsp;Back &nbsp;
+              </Link>
               <h5>Customized Fields</h5>
             </div>
             <div className="col-md-6 text-right">
@@ -414,7 +458,7 @@ const ListEmployees = (props) => {
               <tr>
                 {selectedFieldTypes?.map((header, index) => (
                   <td className="ellipsis-div">
-                    <strong>{header.replace("_", " ")}</strong>
+                    <strong>{header.replace("_", " ").toUpperCase()}</strong>
                   </td>
                 ))}
               </tr>
@@ -432,7 +476,7 @@ const ListEmployees = (props) => {
             </tbody>
           </table>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

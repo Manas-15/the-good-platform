@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-} from "./../../constants";
+} from "../../constants";
 import { history } from "../../helpers";
 
 const preferenceForm = {

@@ -6,13 +6,13 @@ import {
   userConstants,
 } from "../../constants";
 import { Progress, Tooltip, Tabs } from "antd";
-import users from "./../../config/users.json";
+import users from "../../config/users.json";
 import { useSelector } from "react-redux";
 import { Accordion } from "react-bootstrap";
 import Donate from "./Donate";
 import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
-import { charityProgramConstants } from "./../../constants";
+import { charityProgramConstants } from "../../constants";
 import { Chart, ArcElement } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import donationsConsent from "./../../config/donationsConsent.json";

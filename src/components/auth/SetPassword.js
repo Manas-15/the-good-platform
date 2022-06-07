@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { Link, useParams } from "react-router-dom";
-import { SetPasswordSchema } from "./../Validations";
-import PasswordField from "./../Shared/PasswordField";
-import { employeeActions } from "./../../actions";
+import { SetPasswordSchema } from "../Validations";
+import PasswordField from "../Shared/PasswordField";
+import { employeeActions } from "../../actions";
 import { useDispatch } from "react-redux";
 import "./../../assets/css/loginForm.scss";
 

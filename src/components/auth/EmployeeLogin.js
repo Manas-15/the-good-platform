@@ -1,6 +1,6 @@
 import React from "react";
 import LoginForm from "./LoginForm";
-import { employeeActions, userActions } from "./../../actions";
+import { employeeActions, userActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const EmployeeLogin = (props) => {
