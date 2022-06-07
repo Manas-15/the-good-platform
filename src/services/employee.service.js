@@ -108,10 +108,14 @@ function handleResponse(response) {
     return data;
   });
 }
-async function bulkImport(data) {
+async function bulkImport(formData) {
   return await axios.post(
     process.env.REACT_APP_API_URL + "api/employee_bulk_upload/",
-    data
-    // { headers: authHeader() }
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
 }

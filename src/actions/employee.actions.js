@@ -331,28 +331,30 @@ function employeeAccountRequest(actionValues) {
     return { type: employeeConstants.EMPLOYEE_ACTION_FAILURE, error };
   }
 }
-function bulkImport(data) {
-  console.log(data, "bulk data");
+function bulkImport(formData) {
+  console.log(formData);
   return (dispatch) => {
-    dispatch(request(data));
+    dispatch(request(formData));
 
-    employeeService.bulkImport(data).then(
+    employeeService.bulkImport(formData).then(
       () => {
         dispatch(success());
       },
       (error) => {
-        alert("FAiled");
-        // dispatch(failure(error.toString()));
-        // dispatch(alertActions.error(error.toString()));
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
       }
     );
   };
 
-  function request(data) {
-    return { type: employeeConstants.BULK_IMPORT_REQUEST, data };
+  function request(formData) {
+    return {
+      type: employeeConstants.BULK_IMPORT_REQUEST,
+      formData,
+    };
   }
   function success() {
-    return { type: employeeConstants.BULK_IMPORT_SUCCESS };
+    return { type: employeeConstants.BULK_IMPORT_SUCCESS, formData };
   }
   function failure(error) {
     return { type: employeeConstants.BULK_IMPORT_FAILURE, error };
