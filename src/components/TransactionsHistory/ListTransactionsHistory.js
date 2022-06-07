@@ -265,7 +265,7 @@ const ListTransactionsHistory = (props) => {
               <input
                 placeholder="Search by Employee Name"
                 className="ant-input-search"
-                type="text"                
+                type="text"
                 onChange={(e) => search(e.target.value, "employeeName")}
               />
             </span>
