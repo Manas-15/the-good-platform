@@ -14,12 +14,34 @@ export function corporates(state = {}, action) {
       return {
         error: action.error,
       };
+
+    case corporateConstants.GET_CORPORATES_REQUEST_BY_ID:
+      return {
+        loading: true,
+      };
+    case corporateConstants.GET_CORPORATES_SUCCESS_BY_ID:
+      return {
+        items: action.corporates?.data?.corporates,
+      };
+    case corporateConstants.GET_CORPORATES_FAILURE_BY_ID:
+      return {
+        error: action.error,
+      };
+
     case corporateConstants.ADD_CORPORATE_REQUEST:
       return { addingCorporate: true };
     case corporateConstants.ADD_CORPORATE_SUCCESS:
       return {};
     case corporateConstants.ADD_CORPORATE_FAILURE:
       return {};
+
+    case corporateConstants.DELETE_CORPORATE_REQUEST:
+      return { deleteCorporate: true };
+    case corporateConstants.DELETE_CORPORATE_SUCCESS:
+      return {};
+    case corporateConstants.DELETE_CORPORATE_FAILURE:
+      return {};
+
     case corporateConstants.CORPORATE_ACTION_REQUEST:
       return {
         items: state.items,

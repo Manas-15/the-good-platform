@@ -2,11 +2,14 @@ import { corporateConstants } from "../constants";
 import { corporateService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
+import { alert } from "../reducers/alert.reducer";
 
 export const corporateActions = {
   addCorporate,
+  deleteCorporate,
   registerCorporate,
   getCorporates,
+  getCorporateById,
   corporateAccountRequest,
 };
 
@@ -19,14 +22,7 @@ function getCorporates() {
 
       (error) => {
         dispatch(failure(error.toString()));
-        dispatch(
-          alertActions.error(error.toString())
-          // alertActions.error(
-          //   error.toString() === "Error: Request failed with status code 401"
-          //     ? "Token is invalid or expired"
-          //     : error.toString()
-          // )
-        );
+        dispatch(alertActions.error(error.toString()));
       }
     );
   };
@@ -42,7 +38,35 @@ function getCorporates() {
   }
 }
 
-function addCorporate(corporate) {
+function getCorporateById(data) {
+  console.log(data, "By idddddd");
+  return (dispatch) => {
+    dispatch(request());
+
+    corporateService.getCorporateById(data).then(
+      (data) => dispatch(success(data)),
+
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: corporateConstants.GET_CORPORATES_REQUEST_BY_ID };
+  }
+  function success(data) {
+    console.log(data, "success data");
+    return { type: corporateConstants.GET_CORPORATES_SUCCESS_BY_ID, data };
+  }
+  function failure(error) {
+    return { type: corporateConstants.GET_CORPORATES_FAILURE_BY_ID, error };
+  }
+}
+
+function addCorporate(corporate, type) {
+  console.log(corporate, type, "corporate actions");
   return (dispatch) => {
     dispatch(request(corporate));
 
@@ -67,6 +91,35 @@ function addCorporate(corporate) {
   }
   function failure(error) {
     return { type: corporateConstants.ADD_CORPORATE_FAILURE, error };
+  }
+}
+
+function deleteCorporate(data) {
+  console.log(data, "delete idddddd");
+  return (dispatch) => {
+    dispatch(request(data));
+
+    corporateService.deleteCorporate(data).then(
+      (data) => {
+        dispatch(success(data));
+        history.pusg("/list-corporates");
+        dispatch(alertActions.success("Corporate deleted successfully"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(data) {
+    return { type: corporateConstants.DELETE_CORPORATE_REQUEST, data };
+  }
+  function success(data) {
+    return { type: corporateConstants.DELETE_CORPORATE_SUCCESS, data };
+  }
+  function failure(error) {
+    return { type: corporateConstants.DELETE_CORPORATE_FAILURE, error };
   }
 }
 function registerCorporate(corporate, type) {

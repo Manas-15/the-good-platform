@@ -5,18 +5,20 @@ import axios from "axios";
 
 export const corporateService = {
   addCorporate,
+  deleteCorporate,
   registerCorporate,
   getCorporates,
+  getCorporateById,
   corporateAccountRequest,
 };
 
 function getCorporates() {
-  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
   return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list");
 }
 
-function addCorporate(data) {
-  return axios.post("/api/corporate_register/", data).then(handleResponse);
+function getCorporateById(id) {
+  console.log(id, "api page data");
+  return axios.get(process.env.REACT_APP_API_URL + `api/corporate_list/${id}`);
 }
 function registerCorporate(data) {
   return axios.post(
@@ -24,6 +26,19 @@ function registerCorporate(data) {
     data
   );
 }
+function deleteCorporate(id) {
+  console.log(id, "delete id in service page");
+  return axios.delete(
+    process.env.REACT_APP_API_URL + `api/corporate_register/${id}`
+  );
+}
+function addCorporate(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporate_register/",
+    data
+  );
+}
+
 function corporateAccountRequest(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporate_account_request/",
