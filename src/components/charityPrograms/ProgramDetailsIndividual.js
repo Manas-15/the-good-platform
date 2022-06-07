@@ -22,7 +22,6 @@ const TabPane = Tabs.TabPane;
 Chart.register(ArcElement);
 
 const ProgramDetailsIndividual = (props) => {
-  console.log("dddddddddddddddd programId", props?.programId);
   let charityFirstTwoChar, employeeFirstTwoChar;
   const dispatch = useDispatch();
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
