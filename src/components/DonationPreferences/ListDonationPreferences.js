@@ -389,14 +389,15 @@ const ListDonationPreferences = ({ tabType, items }) => {
                               )}
                             {tabType !==
                               donationPreferenceConstants.COMPLETED && (
-                              <Link
-                                onClick={() =>
-                                  handleOpenDialog("Delete", preference)
-                                }
-                                title="Delete"
-                              >
-                                <i className="bi bi-trash fs-5 custom-color"></i>
-                              </Link>
+                              <Tooltip title={"Delete"}>
+                                <Link
+                                  onClick={() =>
+                                    handleOpenDialog("Delete", preference)
+                                  }
+                                >
+                                  <i className="bi bi-trash fs-5 custom-color"></i>
+                                </Link>
+                              </Tooltip>
                             )}
                           </td>
                           {/* )} */}

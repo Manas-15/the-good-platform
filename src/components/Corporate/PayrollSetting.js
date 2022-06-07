@@ -150,6 +150,7 @@ const PayrollSetting = (props) => {
         // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })
     );
+    // setIsGenerating(false);
   };
   return (
     <div className="customContainer">
