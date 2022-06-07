@@ -52,6 +52,7 @@ const ListTransactionsHistory = (props) => {
   const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
   const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
+  const [selectedRange, setSelectedRange] = useState([]);
 
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -144,10 +145,9 @@ const ListTransactionsHistory = (props) => {
     } else if (type === "amount") {
       setSearchByAmount(value);
     }
-
     // }
   };
-  const fetchResults = () => {
+  const fetchResults = (dateRange) => {
     dispatch(
       transactionsHistoryActions.getTransactionsHistory({
         individualId:
@@ -164,25 +164,29 @@ const ListTransactionsHistory = (props) => {
         searchByEmployeeName: searchByEmployeeName,
         searchByProgramName: searchByProgramName,
         searchByAmount: searchByAmount,
+        startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
+        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null,
       })
     );
   };
   useEffect(() => {
-    fetchResults();
+    fetchResults("");
   }, [searchByProgramName]);
   useEffect(() => {
-    fetchResults();
+    fetchResults("");
   }, [searchByEmployeeName]);
   useEffect(() => {
-    fetchResults();
+    fetchResults("");
   }, [searchByAmount]);
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
     key: "selection",
   };
-  const handleSelect = (ranges) => {
-    console.log(ranges);
+  const fetchData = (ranges) => {
+    setSelectedRange(ranges);
+    console.log("sssssssssssssss", ranges);
+    fetchResults(ranges);
     // setIsDateRangeFilter(false);
     // {
     //   selection: {
@@ -194,13 +198,16 @@ const ListTransactionsHistory = (props) => {
   return (
     <div className="customContainer">
       <div className="row mt-3">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <h1 className="ant-typography customHeading">Account Summary</h1>
         </div>
-        {/* <div className="col-md-4 text-center">
-        <DateRangePicker appearance="default" />
-        </div> */}
-        <div className="col-md-6 text-right">
+        <div className="col-md-4 text-center">
+          <DateRangePicker
+            appearance="default"
+            onOk={(value) => fetchData(value)}
+          />
+        </div>
+        <div className="col-md-4 text-right">
           <div className="row mb-4">
             <div className="col-md-6">
               <h6 className="mt-2">Filter By</h6>
@@ -248,7 +255,7 @@ const ListTransactionsHistory = (props) => {
             </span>
           </div>
         </div>
-        {/* <div className="ant-col-6  searchContainer ml-3">
+        <div className="ant-col-6  searchContainer ml-3">
           <div className="ant-input-affix-wrapper inputFilterInput">
             <span className="ant-input-prefix">
               <i className="bi bi-search"></i>
@@ -277,7 +284,7 @@ const ListTransactionsHistory = (props) => {
               />
             </span>
           </div>
-        </div> */}
+        </div>
       </div>
       {transactions.loading && <Loader />}
       <div className="ant-row">

@@ -440,6 +440,7 @@ const PayrollBatch = (props) => {
                                   payrollConstants.RECEIVED_STATUS ||
                                   batch?.status ===
                                     payrollConstants.PAID_STATUS) &&
+                                  batch?.receivedOrganizationIds &&
                                   batch?.receivedOrganizationIds?.split(",")
                                     ?.length !==
                                     batch?.totalOrganizationCount && (
@@ -525,7 +526,7 @@ const PayrollBatch = (props) => {
                                         </Tooltip>
                                       </>
                                     ) : (
-                                      <Tooltip title="Confirm">
+                                      <Tooltip title="Confirm Payment Receipt">
                                         <Link
                                           onClick={() =>
                                             handleOpen("Confirm Batch", batch)
@@ -540,7 +541,7 @@ const PayrollBatch = (props) => {
                                 {isOrganizationPortal &&
                                   batch?.status !==
                                     payrollConstants.RECEIVED_STATUS && (
-                                    <Tooltip title="Receive">
+                                    <Tooltip title="Confirm Payment Receive">
                                       <Link
                                         onClick={() =>
                                           handleOpen("Receive Batch", batch)
