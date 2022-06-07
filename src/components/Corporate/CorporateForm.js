@@ -32,11 +32,14 @@ const sizeOptions = [
   { value: ">1000", label: ">1000" },
 ];
 const CorporateForm = ({ type }) => {
+  console.log(type, "mmmmmmmmm");
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
   const addingCorporate = useSelector(
     (state) => state.corporates.addingCorporate
   );
+
+  console.log(addingCorporate);
   if (type === "admin") {
     initialValues.userType = 1;
   } else if (type === "corporate") {
@@ -46,7 +49,7 @@ const CorporateForm = ({ type }) => {
   const corporateRegister = (values) => {
     setSubmitted(true);
     if (values.organizationName && values.email && values.regdNumber) {
-      dispatch(corporateActions.registerCorporate(values, type));
+      dispatch(corporateActions.addCorporate(values, type));
     }
   };
 
@@ -167,7 +170,7 @@ const CorporateForm = ({ type }) => {
                   name="organizationSize"
                   as="select"
                   className={
-                    "form-control" +
+                    "form-select" +
                     (errors.organizationSize && touched.organizationSize
                       ? " is-invalid"
                       : "")
@@ -359,7 +362,7 @@ const CorporateForm = ({ type }) => {
             </div>
             <div className="text-center">
               <div className="row">
-                <div className="col-md-4 offset-md-4">
+                <div className="col-md-4 offset-md-4 ">
                   <button
                     type="submit"
                     className="btn btn-custom btn-block"

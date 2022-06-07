@@ -134,6 +134,18 @@ const Sidebar = () => {
                     </NavLink>
                   </span>
                 </li>
+                <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                  <span className="ant-menu-title-content">
+                    <NavLink
+                      className=" "
+                      to="/list-corporates"
+                      activeClassName="active"
+                    >
+                      <i className="bi bi-hdd-stack"></i>
+                      <span className="menu-text">Corporates</span>
+                    </NavLink>
+                  </span>
+                </li>
               </>
             ) : (
               <>

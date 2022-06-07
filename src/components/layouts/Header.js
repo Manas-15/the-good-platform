@@ -185,7 +185,7 @@ const Header = () => {
               <li>
                 <a
                   className="dropdown-item d-flex align-items-center"
-                  href="javascript:;"
+                  href="#"
                   onClick={logout}
                 >
                   <i className="bi bi-box-arrow-right"></i>
