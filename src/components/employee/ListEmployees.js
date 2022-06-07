@@ -41,6 +41,7 @@ const ListEmployees = (props) => {
   const [actionType, setActionType] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(Object);
   const [importHeader, setImportHeader] = useState();
+  const [selectedFile, setSelectedFile] = useState();
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
   const [finalData, setFinalData] = useState([]);
@@ -82,6 +83,7 @@ const ListEmployees = (props) => {
   };
   const handleChange = (event) => {
     const fileUploaded = event.target.files[0];
+    setSelectedFile(fileUploaded);
     handleFile(fileUploaded);
     console.log(fileUploaded);
   };
@@ -157,10 +159,6 @@ const ListEmployees = (props) => {
     setIsBulkUpload(true);
   };
 
-  console.log(finalData, "finalDataaaaaaa");
-  console.log(importHeader);
-  console.log(selectedFieldTypes);
-
   const changesField = selectedFieldTypes?.reduce(function (
     acc,
     currVal,
@@ -171,12 +169,12 @@ const ListEmployees = (props) => {
   },
   {});
   const confimUpload = () => {
-    console.log(changesField);
+    console.log("ssssssssssssssssssssss selected", changesField);
     const formData = new FormData();
-  formData.append("file", finalData);
-  formData.append("tblHeader", Object.entries(changesField));
+    formData.append("file", selectedFile, selectedFile?.name);
+    formData.append("tblHeader", JSON.stringify(changesField));
 
-  console.log(formData);
+    console.log(formData);
     dispatch(employeeActions.bulkImport(formData));
     console.log(
       "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
@@ -377,7 +375,7 @@ const ListEmployees = (props) => {
             </div>
 
             <div className="col-md-6 text-right">
-            <Link onClick={() => isBulkUpload(false)} className="mr-3">
+              <Link onClick={() => isBulkUpload(false)} className="mr-3">
                 Cancel
               </Link>
               <button
