@@ -368,7 +368,17 @@ const ListEmployees = (props) => {
             </div>
 
             <div className="col-md-6 text-right">
-              <Link onClick={() => isBulkUpload(false)} className="mr-3">
+            <Link onClick={() => isBulkUpload(false)} className="mr-3">
+                Cancel
+              </Link>
+              <button
+                type="button"
+                className="btn btn-custom btn-sm"
+                onClick={confimUpload}
+              >
+                Confirm
+              </button>
+              {/* <Link onClick={() => isBulkUpload(false)} className="mr-3">
                 Cancel
               </Link>
               <button
@@ -377,7 +387,7 @@ const ListEmployees = (props) => {
                 onClick={goNext}
               >
                 Next
-              </button>
+              </button> */}
             </div>
           </div>
           <table className="table preview_csv_table mt-4">
@@ -413,7 +423,7 @@ const ListEmployees = (props) => {
           </table>
         </div>
       )}
-      {isImportNextStep && (
+      {/* {isImportNextStep && (
         <div className="mt-4">
           <div className="row mt-4">
             <div className="col-md-6 d-flex">
@@ -459,7 +469,7 @@ const ListEmployees = (props) => {
             </tbody>
           </table>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
