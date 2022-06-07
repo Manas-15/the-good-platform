@@ -62,6 +62,12 @@ const DonateSecondStep = ({
   let charityFirstTwoChar, employeeFirstTwoChar;
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedOrganization = useSelector(
+    (state) => state?.selectedOrganization?.organization
+  );
+  const individualSelectedCharity = useSelector(
+    (state) => state?.selectedCharity?.charity
+  );
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
@@ -96,7 +102,17 @@ const DonateSecondStep = ({
       : employee?.phone,
     customerDob: isCorporatePortal ? "" : employee?.dob,
     customerPan: isCorporatePortal ? "" : employee?.pan,
-    charity: selectedCharity,
+    charity:
+      loggedInUserType === userConstants.INDIVIDUAL
+        ? {
+            charityName: individualSelectedCharity?.name,
+            id: individualSelectedCharity?.id?.toString(),
+            organisationId: individualSelectedCharity?.organisationId,
+            soicalName: selectedOrganization?.name,
+            status: individualSelectedCharity?.status,
+            unitPrice: 500,
+          }
+        : selectedCharity,
     //employee: isCorporatePortal ? null : employee,
     // corporate: isCorporatePortal ? selectedCorporate : null,
     corporateId:
@@ -223,6 +239,7 @@ const DonateSecondStep = ({
                     <Field
                       name="customerPhone"
                       type="text"
+                      maxLength={10}
                       className={
                         "form-control" +
                         (errors.customerPhone && touched.customerPhone

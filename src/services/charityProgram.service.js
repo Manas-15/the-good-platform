@@ -8,6 +8,7 @@ export const charityProgramService = {
   operateSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
+  getProgramDetail,
 };
 
 function getCharityPrograms(data) {
@@ -15,7 +16,7 @@ function getCharityPrograms(data) {
   //   params: data,
   // });
   console.log("data?.userType", data?.userType)
-  if(data?.userType === userConstants.INDIVIDUAL){
+  if(data?.userType === userConstants.INDIVIDUAL_VIEW){
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {params: data});
   }else{
     return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
@@ -44,6 +45,14 @@ function operateDenyRequest(data) {
 function checkBeforeUnpromote(data) {
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
+    {
+      params: data,
+    }
+  );
+}
+function getProgramDetail(data) {
+  return axios.get(
+    process.env.REACT_APP_API_URL + "remote_api/charity_details/",
     {
       params: data,
     }

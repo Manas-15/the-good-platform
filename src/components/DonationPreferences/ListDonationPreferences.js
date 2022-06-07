@@ -19,6 +19,8 @@ import donationsConsent from "./../../config/donationsConsent.json";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { Progress, Tooltip, Switch } from "antd";
 import ReactHtmlParser from "react-html-parser";
+import DonateHeader from "./../CharityPrograms/DonateHeader";
+import Donate from "./../CharityPrograms/Donate";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -49,6 +51,7 @@ const ListDonationPreferences = ({ tabType, items }) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [repeatCharity, setRepeatCharity] = useState();
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
@@ -83,7 +86,10 @@ const ListDonationPreferences = ({ tabType, items }) => {
       }"</strong>?`
     );
   };
-
+  const openNav = (charity) => {
+    document.getElementById("sidepanel").classList.add("is-open");
+    setRepeatCharity(charity);
+  };
   const setDuration = (value) => {
     if (actionType === donationPreferenceConstants.SUSPEND) {
       actionInitialValues.suspendDuration = moment(new Date()).add(
@@ -374,12 +380,7 @@ const ListDonationPreferences = ({ tabType, items }) => {
                                   title={donationPreferenceConstants.REPEAT}
                                 >
                                   <Link
-                                    onClick={() =>
-                                      handleOpenDialog(
-                                        donationPreferenceConstants.REPEAT,
-                                        preference
-                                      )
-                                    }
+                                    onClick={() => openNav(preference)}
                                     className="mr-2"
                                   >
                                     <i className="bi bi-arrow-repeat fs-5 custom-color"></i>
@@ -433,13 +434,13 @@ const ListDonationPreferences = ({ tabType, items }) => {
           </div>
         </div>
       </div>
-      <Pagination
+      {/* <Pagination
         className="pagination-bar mt-4"
         currentPage={currentPage}
         totalCount={totalCount ? totalCount : 0}
         pageSize={pageSize}
         onPageChange={(page) => setPage(page)}
-      />
+      /> */}
       {openDialog && (
         <ConfirmationDialog
           open={true}
@@ -484,6 +485,29 @@ const ListDonationPreferences = ({ tabType, items }) => {
           closeCheck={() => closeCheck(selectedPreference)}
         />
       )}
+      {
+        <div id="sidepanel" className="sidepanel">
+          <DonateHeader selectedCharity={repeatCharity} />
+          <div className="tab-content pt-2">
+            <div className="tab-pane fade show active give-once" id="give-once">
+              <Donate
+                frequency={donationPreferenceConstants.ONCE}
+                selectedCharity={repeatCharity}
+                tabType={tabType}
+                repeatPreference={true}
+              />
+            </div>
+            <div className="tab-pane fade show give-monthly" id="give-monthly">
+              <Donate
+                frequency={donationPreferenceConstants.MONTHLY}
+                selectedCharity={repeatCharity}
+                tabType={tabType}
+                repeatPreference={true}
+              />
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };

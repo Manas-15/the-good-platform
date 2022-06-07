@@ -68,20 +68,19 @@ export function donationPreferences(state = {}, action) {
         actionRequest: false,
         items: {
           complete:
-          state?.requestType === donationPreferenceConstants?.DELETE
-          ? 
-            state?.items?.active?.map?.((item) => {
-              if (item?.employeePreferenceId === state?.preferenceId){
-                return {
-                  ...item,
-                  isDeleted:
-                    state?.requestType === donationPreferenceConstants?.DELETE,
-                };
-              }
-              return item;
-            })
-          :
-            state?.requestType === donationPreferenceConstants?.SUSPEND
+            state?.requestType === donationPreferenceConstants?.DELETE
+              ? state?.items?.active?.map?.((item) => {
+                  if (item?.employeePreferenceId === state?.preferenceId) {
+                    return {
+                      ...item,
+                      isDeleted:
+                        state?.requestType ===
+                        donationPreferenceConstants?.DELETE,
+                    };
+                  }
+                  return item;
+                })
+              : state?.requestType === donationPreferenceConstants?.SUSPEND
               ? state?.items?.["complete"]
                 ? [...state?.items?.["complete"], suspendPreference[0]]
                 : [suspendPreference[0]]
@@ -92,20 +91,19 @@ export function donationPreferences(state = {}, action) {
                   );
                 }),
           active:
-          state?.requestType === donationPreferenceConstants?.DELETE
-          ? 
-            state?.items?.active?.map?.((item) => {
-              if (item?.employeePreferenceId === state?.preferenceId){
-                return {
-                  ...item,
-                  isDeleted:
-                    state?.requestType === donationPreferenceConstants?.DELETE,
-                };
-              }
-              return item;
-            })
-          :
-            state?.requestType === donationPreferenceConstants?.RESUME
+            state?.requestType === donationPreferenceConstants?.DELETE
+              ? state?.items?.active?.map?.((item) => {
+                  if (item?.employeePreferenceId === state?.preferenceId) {
+                    return {
+                      ...item,
+                      isDeleted:
+                        state?.requestType ===
+                        donationPreferenceConstants?.DELETE,
+                    };
+                  }
+                  return item;
+                })
+              : state?.requestType === donationPreferenceConstants?.RESUME
               ? state?.items?.["active"]
                 ? [...state?.items?.["active"], resumePreference[0]]
                 : [resumePreference[0]]
@@ -145,19 +143,24 @@ export function donationPreferences(state = {}, action) {
         items: state.items,
         error: action.error,
       };
-      case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_REQUEST:
-        console.log(">>>>>>>>>>>>>>>>>>>>>> action?.data", action?.preference)
+    case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_REQUEST:
+      console.log(">>>>>>>>>>>>>>>>>>>>>> action?.data", action?.preference);
       return {
         ...state,
         loading: true,
-        preference: action?.preference
+        preference: action?.preference,
       };
     case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_SUCCESS:
-      console.log(">>>>>>>>>>>>>>>>>>>>>> state?.preference", state?.preference)
+      console.log(
+        ">>>>>>>>>>>>>>>>>>>>>> state?.preference",
+        state?.preference
+      );
       return {
         ...state,
         items: {
-          active: state?.items?.["active"] ? [...state?.items?.["active"], state?.preference] : [state?.preference],
+          active: state?.items?.["active"]
+            ? [...state?.items?.["active"], state?.preference]
+            : [state?.preference],
           complete: state?.items?.["complete"],
         },
         loading: false,

@@ -35,6 +35,9 @@ const ListTransactionsHistory = (props) => {
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedOrganization = useSelector(
+    (state) => state?.selectedOrganization?.organization
+  );
   const employee = useSelector((state) => state.employee);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
@@ -52,6 +55,7 @@ const ListTransactionsHistory = (props) => {
   const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
   const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
+  const [selectedRange, setSelectedRange] = useState([]);
 
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -72,25 +76,25 @@ const ListTransactionsHistory = (props) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
   }, [props, charityPrograms?.items?.sponsored, charityPrograms?.items?.other]);
-  useEffect(() => {
-    if (!isFilter) {
-      dispatch(
-        transactionsHistoryActions.getTransactionsHistory({
-          individualId:
-            loggedInUserType === userConstants.INDIVIDUAL
-              ? employee?.user?.individual_id
-              : null,
-          employeeId:
-            loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-          corporateId: isCorporatePortal
-            ? selectedCorporate?.corporate?.corporateId
-            : null,
-          pageSize: pageSize,
-          offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-        })
-      );
-    }
-  }, [currentPage]);
+  // useEffect(() => {
+  //   if (!isFilter) {
+  //     dispatch(
+  //       transactionsHistoryActions.getTransactionsHistory({
+  //         individualId:
+  //           loggedInUserType === userConstants.INDIVIDUAL
+  //             ? employee?.user?.individual_id
+  //             : null,
+  //         employeeId:
+  //           loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
+  //         corporateId: isCorporatePortal
+  //           ? selectedCorporate?.corporate?.corporateId
+  //           : null,
+  //         pageSize: pageSize,
+  //         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+  //       })
+  //     );
+  //   }
+  // }, [currentPage]);
   useEffect(() => {
     setRecords(transactions?.items);
   }, [transactions?.items]);
@@ -144,10 +148,9 @@ const ListTransactionsHistory = (props) => {
     } else if (type === "amount") {
       setSearchByAmount(value);
     }
-
     // }
   };
-  const fetchResults = () => {
+  const fetchResults = (dateRange) => {
     dispatch(
       transactionsHistoryActions.getTransactionsHistory({
         individualId:
@@ -159,30 +162,34 @@ const ListTransactionsHistory = (props) => {
         corporateId: isCorporatePortal
           ? selectedCorporate?.corporate?.corporateId
           : null,
+        socialId: isOrganizationView ? selectedOrganization?.id : null,
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         searchByEmployeeName: searchByEmployeeName,
         searchByProgramName: searchByProgramName,
         searchByAmount: searchByAmount,
+        startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
+        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null,
       })
     );
   };
   useEffect(() => {
-    fetchResults();
+    fetchResults("");
   }, [searchByProgramName]);
   useEffect(() => {
-    fetchResults();
+    fetchResults("");
   }, [searchByEmployeeName]);
   useEffect(() => {
-    fetchResults();
+    fetchResults("");
   }, [searchByAmount]);
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
     key: "selection",
   };
-  const handleSelect = (ranges) => {
-    console.log(ranges);
+  const fetchData = (ranges) => {
+    setSelectedRange(ranges);
+    fetchResults(ranges);
     // setIsDateRangeFilter(false);
     // {
     //   selection: {
@@ -194,13 +201,16 @@ const ListTransactionsHistory = (props) => {
   return (
     <div className="customContainer">
       <div className="row mt-3">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <h1 className="ant-typography customHeading">Account Summary</h1>
         </div>
-        {/* <div className="col-md-4 text-center">
-        <DateRangePicker appearance="default" />
-        </div> */}
-        <div className="col-md-6 text-right">
+        <div className="col-md-4 text-center">
+          <DateRangePicker
+            appearance="default"
+            onOk={(value) => fetchData(value)}
+          />
+        </div>
+        <div className="col-md-4 text-right">
           <div className="row mb-4">
             <div className="col-md-6">
               <h6 className="mt-2">Filter By</h6>
@@ -222,7 +232,7 @@ const ListTransactionsHistory = (props) => {
                 onChange={(e) => filter("status", e.target.value)}
               >
                 <option value={""} key={"default"} disabled>
-                  Payment Status
+                  Status
                 </option>
                 {paymentStatusOption.map((status, index) => (
                   <option value={status.value} key={index}>
@@ -248,7 +258,7 @@ const ListTransactionsHistory = (props) => {
             </span>
           </div>
         </div>
-        {/* <div className="ant-col-6  searchContainer ml-3">
+        <div className="ant-col-6  searchContainer ml-3">
           <div className="ant-input-affix-wrapper inputFilterInput">
             <span className="ant-input-prefix">
               <i className="bi bi-search"></i>
@@ -277,7 +287,7 @@ const ListTransactionsHistory = (props) => {
               />
             </span>
           </div>
-        </div> */}
+        </div>
       </div>
       {transactions.loading && <Loader />}
       <div className="ant-row">

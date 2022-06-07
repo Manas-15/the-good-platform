@@ -75,6 +75,7 @@ function login(data, from) {
           const res = JSON.stringify(data?.data);
           localStorage.setItem("user", JSON.stringify(data?.data));
           // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
+
           history.push("/otp");
         },
         (error) => {
@@ -211,12 +212,17 @@ function register(employee, userType) {
     dispatch(request(employee));
 
     employeeService.register(employee, userType).then(
-      (employee) => {
+      (data) => {
         dispatch(success());
-        history.push({
-          pathname: "/thank-you",
-          state: { userType: userType },
-        });
+        console.log("ddddddddddddddddd data", data?.data?.email);
+        if (data?.data?.email) {
+          dispatch(alertActions.error(data?.data?.email[0]));
+        } else {
+          history.push({
+            pathname: "/thank-you",
+            state: { userType: userType },
+          });
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));

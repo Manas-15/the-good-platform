@@ -59,12 +59,12 @@ const SocialOrganizations = () => {
     );
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
-        pageNumber: currentPage,
+        pageNumber: currentPage.toString(),
         employeeId: isEmployeePortal ? user?.emp_id : null,
         corporateId: isCorporatePortal
           ? selectedCorporate?.corporate?.corporateId
           : user?.corporateId,
-        pageSize: pageSize,
+        pageSize: pageSize.toString(),
         // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         loggedInUserType: loggedInUserType,
         individualId:
@@ -244,7 +244,7 @@ const SocialOrganizations = () => {
                   : socialOrganizations?.items
               }
             />
-            <Pagination
+            {/* <Pagination
               className="pagination-bar mt-4"
               currentPage={currentPage}
               totalCount={
@@ -254,7 +254,7 @@ const SocialOrganizations = () => {
               }
               pageSize={pageSize}
               onPageChange={(page) => setPage(page)}
-            />
+            /> */}
           </>
         )}
       </div>

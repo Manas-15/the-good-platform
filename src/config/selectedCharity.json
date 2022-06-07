@@ -1,0 +1,58 @@
+{
+  "data": {
+      "id": "8a8b855f80fa62290180ffadd1ed0025",
+      "active": true,
+      "deleted": false,
+      "createdAt": 1653557023213,
+      "modifiedAt": 1653557418318,
+      "createdBy": "49987348-9d8b-4796-9b6b-b6a082b7a92b",
+      "lastModifiedBy": "e7582d98-237a-4418-bdba-ac06b12e326e",
+      "name": "Immunization for Children Under 6 years",
+      "organisationId": "8a8b855f7fd989200180176022af02bf",
+      "description": "test",
+      "durationFrom": null,
+      "durationTo": null,
+      "duration": 6,
+      "durationIn": "Years",
+      "logoUrl": "string",
+      "minAge": 1,
+      "maxAge": 7,
+      "totalNumberOfBeneficiaries": 100,
+      "problemFacedByTarget": "test",
+      "uniqueProgramApproach": "test",
+      "typesOfBeneficiaries": [
+          "Children"
+      ],
+      "geographyModel": [
+          {
+              "city": "Agrahara",
+              "state": "Karnataka",
+              "latitude": null,
+              "longitude": null,
+              "taluk": "Sira",
+              "district": "Tumkur",
+              "postalCode": "572113"
+          }
+      ],
+      "highlights": [],
+      "locationType": "Urban",
+      "peerApprovalStatus": "APPROVED",
+      "status": "APPROVED",
+      "isImmunizationProject": true,
+      "isCowinRegistered": true,
+      "vaccinationDetails": [
+          {
+              "vaccinationId": "b2ace1dc-8c13-4909-8ad4-e4c1f29743db",
+              "vaccinationName": "Rota Virus Vaccine"
+          },
+          {
+              "vaccinationId": "bb6a3d7b-5a6e-4084-b7ed-a1af3b860418",
+              "vaccinationName": "BCG"
+          }
+      ]
+  },
+  "message": "Fetched project basic details successfully",
+  "success": true,
+  "errorCode": null,
+  "path": null
+}

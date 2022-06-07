@@ -159,7 +159,11 @@ const CreateRoutes = () => {
                 path="/individual/:individualId/account-summary"
                 component={ListTransactionsHistory}
               />
-
+              <Route
+                exact
+                path="/organization-account-summary"
+                component={ListTransactionsHistory}
+              />
               <Route
                 exact
                 path="/social-organizations"

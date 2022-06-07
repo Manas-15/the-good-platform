@@ -8,7 +8,14 @@ export function charityPrograms(state = {}, action) {
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
       return {
-        items: action?.charityPrograms?.data?.charity_list,
+        items: action?.charityPrograms?.data?.charity_list.length
+          ? action?.charityPrograms?.data?.charity_list?.map?.((item) => {
+              if (item?.unitPrice === undefined) {
+                return { ...item, unitPrice: 500 };
+              }
+              return item;
+            })
+          : action?.charityPrograms?.data?.charity_list,
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_FAILURE:
       return {
@@ -108,24 +115,45 @@ export function charityPrograms(state = {}, action) {
     case charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS:
       return {
         ...state,
-        items: {
-          other: state?.items?.["other"],
-          sponsored: state?.items?.["sponsored"]?.map((item) => {
-            if (item?.charityId === state?.programId) {
-              return {
-                ...item,
-                employeeCount: action?.data?.data?.count,
-              };
-            }
-            return item;
-          }),
-        },
+        employeeCount: action?.data?.data?.count,
+        // items: {
+        //   other: state?.items?.["other"],
+        //   sponsored: state?.items?.["sponsored"]?.map((item) => {
+        //     if (item?.charityId === state?.programId) {
+        //       return {
+        //         ...item,
+        //         employeeCount: action?.data?.data?.count,
+        //       };
+        //     }
+        //     return item;
+        //   }),
+        // },
         loading: false,
       };
     case charityProgramConstants.CHECK_BEFORE_UNPROMOTE_FAILURE:
       return {
         error: action.error,
         loading: false,
+      };
+    case charityProgramConstants.GET_PROGRAM_DETAIL_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS:
+      return {
+        ...state,
+        selectedprogramDetail: {
+          ...action?.programDetail?.data?.data,
+          unitPrice: 500,
+        },
+        loading: false,
+      };
+    case charityProgramConstants.OPERATE_DENY_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
       };
     default:
       return state;

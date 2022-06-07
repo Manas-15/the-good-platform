@@ -23,6 +23,13 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
+  const charityPrograms = useSelector((state) => state?.charityPrograms?.items);
+  const employeeCount = useSelector(
+    (state) => state?.charityPrograms?.employeeCount
+  );
+  const selectedCharity = useSelector(
+    (state) => state?.selectedCharity?.charity
+  );
   const currentPortal = useSelector((state) => state.currentView);
   const beforeUnrpomoteMsg = useSelector(
     (state) => state?.charityPrograms?.checkBeforeUnpromoteMsg
@@ -48,12 +55,17 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setActionType(action);
     setSelectedProgram(item);
     setActionTitle(`${action} Confirmation`);
-
+    setSelectedCharity(item);
     if (action === charityProgramConstants.UNPROMOTE) {
-      console.log("dddddddddddddddddddd selectedProgram", selectedProgram);
+      // const program = charityPrograms["sponsored"]?.filter((item) => item?.charityId === item?.charityId)[0];
+      console.log(
+        "dddddddddddddddddddd selectedProgram",
+        selectedCharity,
+        item
+      );
       setActionContent(
-        selectedProgram?.employeeCount > 0
-          ? `Are you sure you want to unpromote?.<br/><br/>Doing this would remove all the donation preferences set for the programs by the employees.<br/><br/>Total ${selectedProgram?.employeeCount} employees have set donation preference for the programs.`
+        employeeCount > 0
+          ? `Are you sure you want to unpromote?.<br/><br/>Doing this would remove all the donation preferences set for the programs by the employees.<br/><br/>Total ${employeeCount} employees have set donation preference for the programs.`
           : `Are you sure you want to unpromote?.`
       );
     } else {
@@ -65,6 +77,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     }
   };
   const confirm = () => {
+    console.log("selectedProgram >>>>>>>>>>>>>>>>", selectedProgram);
+    console.log("selectedCharity >>>>>>>>>>>>>>>>", selectedCharity);
     handleClose();
     dispatch(
       actionType === charityProgramConstants.UNPROMOTE
@@ -126,10 +140,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     dispatch(selectedCharityTabActions.selectedTabType(tabType));
   };
   const checkBeforeUnpromote = async (item) => {
-    setSelectedProgram(item);
+    setActionType(charityProgramConstants.UNPROMOTE);
     await dispatch(
       charityProgramActions.checkBeforeUnpromote({
-        corporateId: selectedCorporate?.corporate?.corporateId,
         socialId: item?.soicalId,
         programId: item?.charityId,
         corporateId: isCorporatePortal
@@ -137,7 +150,16 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
           : user?.corporateId,
       })
     );
+    setSelectedProgram(item);
+    setOpen(true);
   };
+  useEffect(() => {
+    if (actionType === charityProgramConstants.UNPROMOTE) {
+      setOpen(true);
+      handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
+    }
+    // setSelectedCharity
+  }, [employeeCount]);
   // useEffect(() => {
   //   console.log(
   //     "beforeUnrpomoteMsg >>>>>>>>>>>>>>>",
@@ -258,11 +280,12 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 title={charityProgramConstants.UNPROMOTE}
                               >
                                 <Link
-                                  onClick={() =>
-                                    handleOpen(
-                                      charityProgramConstants.UNPROMOTE,
-                                      charityProgram
-                                    )
+                                  onClick={
+                                    () => checkBeforeUnpromote(charityProgram)
+                                    // handleOpen(
+                                    //   charityProgramConstants.UNPROMOTE,
+                                    //   charityProgram
+                                    // )
                                   }
                                 >
                                   <i className="bi-heart-fill fs-6 custom-color mr-1"></i>

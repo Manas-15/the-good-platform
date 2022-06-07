@@ -16,10 +16,10 @@ import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
 // import payrollBatch from "./../../config/payrollBatch.json";
 import { Modal, Button } from "react-bootstrap";
+import { Progress, Tooltip } from "antd";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
-import { Progress } from "antd";
 import PayrollBatchAccordion from "./PayrollBatchAccordion";
 
 const completeInitialValues = {
@@ -31,6 +31,7 @@ const completeInitialValues = {
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
+  socialId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const PayrollBatch = (props) => {
@@ -40,6 +41,9 @@ const PayrollBatch = (props) => {
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
+  const selectedOrganization = useSelector(
+    (state) => state?.selectedOrganization?.organization
+  );
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
@@ -144,6 +148,9 @@ const PayrollBatch = (props) => {
     } else if (action === "Receive Batch") {
       confirmInitialValues.batchId = item?.batchId;
       confirmInitialValues.requestType = payrollConstants.RECEIVE;
+      confirmInitialValues.socialId = isOrganizationPortal
+        ? selectedOrganization?.id
+        : null;
     } else {
       confirmInitialValues.batchId = item?.batchId;
       if (action === "Confirm Batch") {
@@ -419,104 +426,142 @@ const PayrollBatch = (props) => {
                                   </>
                                 )}
                                 {batch?.status ===
-                                  payrollConstants.PAID_STATUS && (
-                                  <>
-                                    <span>
-                                      {/* {payrollConstants.CONFIRMED} */}
-                                      75% (Paid to Social Organization)
-                                    </span>
-                                    <Progress percent={75} showInfo={false} />
-                                  </>
-                                )}
+                                  payrollConstants.PAID_STATUS &&
+                                  !batch?.receivedOrganizationIds && (
+                                    <>
+                                      <span>
+                                        {/* {payrollConstants.CONFIRMED} */}
+                                        75% (Paid to Social Organization)
+                                      </span>
+                                      <Progress percent={75} showInfo={false} />
+                                    </>
+                                  )}
+                                {(batch?.status ===
+                                  payrollConstants.RECEIVED_STATUS ||
+                                  batch?.status ===
+                                    payrollConstants.PAID_STATUS) &&
+                                  batch?.receivedOrganizationIds &&
+                                  batch?.receivedOrganizationIds?.split(",")
+                                    ?.length !==
+                                    batch?.totalOrganizationCount && (
+                                    <>
+                                      <span>
+                                        {/* {payrollConstants.CONFIRMED} */}
+                                        {75 +
+                                          Math.round(
+                                            25 / batch?.totalOrganizationCount
+                                          )}
+                                        % (Partially received by organizations)
+                                      </span>
+                                      <Progress
+                                        percent={
+                                          75 +
+                                          Math.round(
+                                            25 / batch?.totalOrganizationCount
+                                          )
+                                        }
+                                        showInfo={false}
+                                      />
+                                    </>
+                                  )}
                                 {batch?.status ===
-                                  payrollConstants.RECEIVED_STATUS && (
-                                  <>
-                                    <span>
-                                      {/* {payrollConstants.CONFIRMED} */}
-                                      100% (Received by Social Organization)
-                                    </span>
-                                    <Progress percent={100} showInfo={false} />
-                                  </>
-                                )}
+                                  payrollConstants.RECEIVED_STATUS &&
+                                  batch?.receivedOrganizationIds?.split(",")
+                                    ?.length ===
+                                    batch?.totalOrganizationCount && (
+                                    <>
+                                      <span>
+                                        {/* {payrollConstants.CONFIRMED} */}
+                                        100% (Received by Social Organization)
+                                      </span>
+                                      <Progress
+                                        percent={100}
+                                        showInfo={false}
+                                      />
+                                    </>
+                                  )}
                               </td>
                               <td className="ant-table-cell text-center">
                                 {corporateId &&
                                   batch?.status ===
                                     payrollConstants.PENDING_STATUS && (
-                                    <Link
-                                      onClick={() =>
-                                        handleOpen("Complete Batch", batch)
-                                      }
-                                    >
-                                      <span
-                                        className="bi-check-circle fs-5"
-                                        title="Complete"
-                                      ></span>
-                                    </Link>
+                                    <Tooltip title="Complete">
+                                      <Link
+                                        onClick={() =>
+                                          handleOpen("Complete Batch", batch)
+                                        }
+                                      >
+                                        <span
+                                          className="bi-check-circle fs-5"
+                                          title="Complete"
+                                        ></span>
+                                      </Link>
+                                    </Tooltip>
                                   )}
                                 {!corporateId && !isOrganizationPortal && (
                                   <>
                                     {batch?.status ===
                                     payrollConstants.CONFIRMED_STATUS ? (
                                       <>
-                                        <Link
-                                          onClick={() =>
-                                            handleOpen("Unconfirm Batch", batch)
-                                          }
-                                        >
-                                          <span
-                                            className="bi-arrow-counterclockwise fs-5"
-                                            title="Unconfirm"
-                                          ></span>
-                                        </Link>
-                                        <Link
-                                          onClick={() =>
-                                            handleOpen("Paid", batch)
-                                          }
-                                        >
-                                          <span
-                                            className="bi-box2-heart fs-5 ml-2"
-                                            title="Paid"
-                                          ></span>
-                                        </Link>
+                                        <Tooltip title="Unconfirm">
+                                          <Link
+                                            onClick={() =>
+                                              handleOpen(
+                                                "Unconfirm Batch",
+                                                batch
+                                              )
+                                            }
+                                          >
+                                            <span className="bi-arrow-counterclockwise fs-5"></span>
+                                          </Link>
+                                        </Tooltip>
+                                        <Tooltip title="Paid">
+                                          <Link
+                                            onClick={() =>
+                                              handleOpen("Paid", batch)
+                                            }
+                                          >
+                                            <span className="bi-box2-heart fs-5 ml-2"></span>
+                                          </Link>
+                                        </Tooltip>
                                       </>
                                     ) : (
-                                      <Link
-                                        onClick={() =>
-                                          handleOpen("Confirm Batch", batch)
-                                        }
-                                      >
-                                        <span
-                                          className="bi-check-circle fs-5"
-                                          title="Confirm"
-                                        ></span>
-                                      </Link>
+                                      <Tooltip title="Confirm Payment Receipt">
+                                        <Link
+                                          onClick={() =>
+                                            handleOpen("Confirm Batch", batch)
+                                          }
+                                        >
+                                          <span className="bi-check-circle fs-5"></span>
+                                        </Link>
+                                      </Tooltip>
                                     )}
                                   </>
                                 )}
                                 {isOrganizationPortal &&
                                   batch?.status !==
                                     payrollConstants.RECEIVED_STATUS && (
-                                    <Link
-                                      onClick={() =>
-                                        handleOpen("Receive Batch", batch)
-                                      }
-                                    >
-                                      <img
-                                        src="/assets/img/receive.svg"
-                                        alt="Receive"
-                                        title="Receive"
-                                        height={20}
-                                        className="custom-color"
-                                      />
-                                    </Link>
+                                    <Tooltip title="Confirm Payment Receive">
+                                      <Link
+                                        onClick={() =>
+                                          handleOpen("Receive Batch", batch)
+                                        }
+                                      >
+                                        <img
+                                          src="/assets/img/receive.svg"
+                                          alt="Receive"
+                                          height={20}
+                                          className="custom-color"
+                                        />
+                                      </Link>
+                                    </Tooltip>
                                   )}
                                 {isOrganizationPortal &&
                                   batch?.status ===
                                     payrollConstants.RECEIVED_STATUS && (
-                                    <button className="btn btn-sm btn-success">
-                                      Received
-                                    </button>
+                                    <Tooltip title="Received">
+                                      <span className="bi-check-square-fill fs-5"></span>
+                                    </Tooltip>
                                   )}
                               </td>
                             </tr>

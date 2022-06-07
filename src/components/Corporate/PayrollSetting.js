@@ -122,6 +122,7 @@ const PayrollSetting = (props) => {
       items: data,
     };
     dispatch(payrollSettingActions.processBatch(finalData));
+    getData();
   };
   useEffect(() => {
     batchId = props?.location?.query?.batchId;
@@ -416,7 +417,8 @@ const PayrollSetting = (props) => {
                                           disabled={true}
                                         />
                                       </td>
-                                      {!preferences?.items?.active?.[0]?.batchId &&
+                                      {!preferences?.items?.active?.[0]
+                                        ?.batchId &&
                                         !batchId && (
                                           <td className="ant-table-cell text-center">
                                             <Link
@@ -481,7 +483,9 @@ const PayrollSetting = (props) => {
                 moment(generateMonthYear).isAfter(moment())
               }
             >
-              {preferences?.items?.active?.[0]?.batchId ? "Processed" : "Process Batch"}
+              {preferences?.items?.active?.[0]?.batchId
+                ? "Processed"
+                : "Process Batch"}
             </button>
           </div>
         )}

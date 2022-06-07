@@ -163,6 +163,18 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/organization-account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
                   </>
                 )}
                 {!isOrganizationView && (
@@ -230,6 +242,9 @@ const Sidebar = () => {
           </>
         )}
       </ul>
+      {/* <div className="left-img">
+        <img src="/assets/img/left-img.png" alt="Left Image" />
+      </div> */}
     </aside>
   );
 };
