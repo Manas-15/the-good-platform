@@ -46,7 +46,9 @@ const AddedDonationFromDetail = ({ charity, selectedAmount, frequency }) => {
             <div className="col-md-5 pr-0">
               <strong>Amount:</strong>
             </div>
-            <div className="col-md-7 pl-0">&#8377;{selectedAmount?.toLocaleString()}</div>
+            <div className="col-md-7 pl-0">
+              &#8377;{selectedAmount?.toLocaleString()}
+            </div>
           </div>
           <div className="row mb-3">
             <div className="col-md-5 pr-0">
