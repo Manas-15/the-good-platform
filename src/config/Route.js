@@ -14,6 +14,9 @@ import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
 import CorporatesPortal from "../components/Corporate/CorporatesPortal";
 import ListEmployees from "../components/Employee/ListEmployees";
+import ListCorporates from "../components/Corporate/ListCorporates";
+import AddCorporate from "../components/Corporate/AddCorporate";
+import EditCorporate from "../components/Corporate/EditCorporate";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
 import ListTransactionsHistory from "../components/TransactionsHistory/ListTransactionsHistory";
 import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
@@ -88,7 +91,7 @@ const CreateRoutes = () => {
                 <Route exact path="/" component={Dashboard} />
               )}
               <Route exact path="/profile" component={Profile} />
-              {/* {!isEmployeeView && ( */}
+
               <Route
                 exact
                 path="/social-organizations/:slug"
@@ -99,7 +102,7 @@ const CreateRoutes = () => {
                 path="/social-organizations/programs/:slug"
                 component={CharityProgramDetails}
               />
-              {/* )} */}
+
               {!isEmployeeView && (
                 <Route
                   exact
@@ -134,6 +137,13 @@ const CreateRoutes = () => {
                 path="/admin-payroll-batch"
                 component={PayrollBatch}
               />
+              <Route exact path="/list-corporates" component={ListCorporates} />
+              <Route exact path="/corporates/add" component={AddCorporate} />
+              <Route
+                exact
+                path="/corporates/edit/:corporateId"
+                component={EditCorporate}
+              />
               <Route
                 exact
                 path="/corporates/:corporateId/payroll-batch"
@@ -165,11 +175,7 @@ const CreateRoutes = () => {
                 path="/social-organizations"
                 component={SocialOrganizations}
               />
-              {/* <Route
-                exact
-                path="/social-organizations/account-summary"
-                component={ListTransactionsHistory}
-              /> */}
+
               <Route
                 exact
                 path="/social-organizations/payroll-batch"

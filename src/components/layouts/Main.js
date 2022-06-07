@@ -6,11 +6,9 @@ import AddCorporate from "../Corporate/AddCorporate";
 const Main = () => (
   <main id="main" className="main">
     <section className="section dashboard">
-      {/* <ListCorporates /> */}
-      {/* <AddCorporate /> */}
       <Switch>
-        <Route exact path="/corporates" component={ListCorporates} />
-        <Route exact path="/corporates/add" component={AddCorporate} />
+        {/* <Route exact path="/corporates" component={ListCorporates} />
+        <Route exact path="/corporates/add" component={AddCorporate} /> */}
       </Switch>
     </section>
   </main>

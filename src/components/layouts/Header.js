@@ -12,7 +12,7 @@ const Header = () => {
   const logout = () => {
     // localStorage.removeItem("user");
     localStorage.clear();
-    dispatch(userActions.logout())
+    dispatch(userActions.logout());
     history.push("/");
   };
   const user = useSelector((state) => state.employee.user);
@@ -127,52 +127,55 @@ const Header = () => {
                   <span>Account Settings</span>
                 </a>
               </li>
-              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    to="/corporates"
-                    onClick={() =>
-                      setCurrentView(viewPortalConstants.CORPORATE_PORTAL)
-                    }
-                  >
-                    <i className="bi bi-bookshelf"></i>
-                    <span>Corporate Portal</span>
-                  </Link>
-                </li>
-              )}
-              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    to="/account-summary"
-                    onClick={() =>
-                      setCurrentView(
-                        viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL
-                      )
-                    }
-                  >
-                    <i className="bi bi-person-circle"></i>
-                    <span>Blue Pencil Admin Portal</span>
-                  </Link>
-                </li>
-              )}
-              {!corporateLoggedinUser && loggedInUserType !== userConstants.INDIVIDUAL && (
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    to="/organizations"
-                    onClick={() =>
-                      setCurrentView(
-                        viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
-                      )
-                    }
-                  >
-                    <i className="bi bi-people"></i>
-                    <span>Social Organization Portal</span>
-                  </Link>
-                </li>
-              )}
+              {!corporateLoggedinUser &&
+                loggedInUserType !== userConstants.INDIVIDUAL && (
+                  <li>
+                    <Link
+                      className="dropdown-item d-flex align-items-center"
+                      to="/corporates"
+                      onClick={() =>
+                        setCurrentView(viewPortalConstants.CORPORATE_PORTAL)
+                      }
+                    >
+                      <i className="bi bi-bookshelf"></i>
+                      <span>Corporate Portal</span>
+                    </Link>
+                  </li>
+                )}
+              {!corporateLoggedinUser &&
+                loggedInUserType !== userConstants.INDIVIDUAL && (
+                  <li>
+                    <Link
+                      className="dropdown-item d-flex align-items-center"
+                      to="/account-summary"
+                      onClick={() =>
+                        setCurrentView(
+                          viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL
+                        )
+                      }
+                    >
+                      <i className="bi bi-person-circle"></i>
+                      <span>Blue Pencil Admin Portal</span>
+                    </Link>
+                  </li>
+                )}
+              {!corporateLoggedinUser &&
+                loggedInUserType !== userConstants.INDIVIDUAL && (
+                  <li>
+                    <Link
+                      className="dropdown-item d-flex align-items-center"
+                      to="/organizations"
+                      onClick={() =>
+                        setCurrentView(
+                          viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
+                        )
+                      }
+                    >
+                      <i className="bi bi-people"></i>
+                      <span>Social Organization Portal</span>
+                    </Link>
+                  </li>
+                )}
               <li>
                 <hr className="dropdown-divider" />
               </li>
@@ -182,7 +185,7 @@ const Header = () => {
               <li>
                 <a
                   className="dropdown-item d-flex align-items-center"
-                  href="javascript:;"
+                  href="#"
                   onClick={logout}
                 >
                   <i className="bi bi-box-arrow-right"></i>
