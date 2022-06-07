@@ -71,7 +71,7 @@ export function employee(state = initialState, action) {
     case employeeConstants.ADD_EMPLOYEE_SUCCESS:
       return {};
     case employeeConstants.ADD_EMPLOYEE_FAILURE:
-      console.log("eeeeeeeeeeeeeeee error")
+      console.log("eeeeeeeeeeeeeeee error");
       return {};
     case employeeConstants.GET_EMPLOYEE_REQUEST:
       return { updatingEmployee: true };
