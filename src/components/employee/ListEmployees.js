@@ -170,15 +170,13 @@ const ListEmployees = (props) => {
     return acc;
   },
   {});
-  console.log(changesField);
-
-  const formData = new FormData();
+  const confimUpload = () => {
+    console.log(changesField);
+    const formData = new FormData();
   formData.append("file", finalData);
   formData.append("tblHeader", Object.entries(changesField));
 
   console.log(formData);
-
-  const confimUpload = () => {
     dispatch(employeeActions.bulkImport(formData));
     console.log(
       "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",

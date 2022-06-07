@@ -359,7 +359,7 @@ function bulkImport(formData) {
       formData,
     };
   }
-  function success() {
+  function success(formData) {
     return { type: employeeConstants.BULK_IMPORT_SUCCESS, formData };
   }
   function failure(error) {
