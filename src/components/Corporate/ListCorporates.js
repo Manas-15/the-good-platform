@@ -1,16 +1,23 @@
 import React, { useEffect, useState, createRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
+import { EditFilled } from "@ant-design/icons";
+import { DeleteFilled } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+
 // import corporates from "./../../config/corporates.json";
 const actionInitialValues = {
   userId: "",
   requestType: "",
 };
 const ListCorporates = () => {
+  let { id } = useParams();
+  console.log(id);
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
+  console.log(corporates);
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -36,16 +43,30 @@ const ListCorporates = () => {
     dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
   };
   const handleClose = () => setOpen(false);
+
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
+
+  const getCorporateByID = (id) => {
+    console.log(id, "iddddd");
+    dispatch(corporateActions.getCorporateById(id));
+  };
+
+  const handleDelete = (id) => {
+    console.log(id, "handle delete");
+    dispatch(corporateActions.deleteCorporate(id));
+  };
 
   return (
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h4>Corporates</h4>
+          <h2 className="ant-typography customHeading">
+            Corporate Lists MAnas
+          </h2>
         </div>
+
         <div className="col-md-6" style={{ textAlign: "right" }}>
           <button
             type="button"
@@ -57,127 +78,76 @@ const ListCorporates = () => {
         </div>
       </div>
       {corporates.loading && <em>Loading corporates...</em>}
-      <table className="table table-striped">
-        <thead>
-          <tr className="table-active">
-            <th>Sl#</th>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Type</th>
-            <th>Address</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {corporates?.items && corporates?.items.length > 0 ? (
-            corporates?.items.map((corporate, index) => {
-              const ref = createRef();
-              // const handleClick = () =>
-              // index > 6 && ref.current.scrollIntoView({
-              //   behavior: 'smooth',
-              // });
-              return (
-                <tr key={index + 1} ref={ref}>
-                  <td>{index + 1}</td>
-                  <td>{corporate?.organizationName}</td>
-                  <td>{corporate?.organizationSize}</td>
-                  <td>{corporate?.organizationType}</td>
-                  <td>
-                    {corporate?.address}
-                    <br />
-                    {corporate?.city}
-                    <br />
-                    {corporate?.state}
-                    <br />
-                    {corporate?.country}
-                  </td>
-                  <td className="text-center">
-                    <a className="icon" href="#" data-bs-toggle="dropdown">
-                      <span className="bi-three-dots"></span>
-                    </a>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow actions">
-                      {!corporate?.isApprove ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Approve", corporate)}
+      <div className="ant-row">
+        <div className="ant-col ant-col-24 mt-2">
+          <div className="ant-table-wrapper">
+            <div className="ant-table">
+              <table className="">
+                <thead className="ant-table-thead">
+                  <tr>
+                    <th className="ant-table-cell">Sl No.</th>
+                    <th className="ant-table-cell">Name</th>
+                    <th className="ant-table-cell">Employees</th>
+                    <th className="ant-table-cell">Date Added</th>
+                    <th className="ant-table-cell">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="ant-table-tbody">
+                  {corporates?.items && corporates?.items.length > 0 ? (
+                    corporates?.items.map((corporate, index) => {
+                      return (
+                        <tr
+                          className="ant-table-row ant-table-row-level-0"
+                          key={index}
                         >
-                          <span className="bi-check-circle"> Approve</span>
-                        </li>
-                      ) : null}
-                      {corporate?.isApprove === null ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Reject", corporate)}
-                        >
-                          <span className="bi-x-circle"> Reject</span>
-                        </li>
-                      ) : null}
-                      {corporate?.isApprove && !corporate?.isActive ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Activate", corporate)}
-                        >
-                          <span className="bi-power"> Activate</span>
-                        </li>
-                      ) : null}
-                      {corporate?.isApprove && corporate?.isActive ? (
-                        <li
-                          className="dropdown-header text-start"
-                          onClick={() => handleOpen("Inactivate", corporate)}
-                        >
-                          <span className="bi-slash-circle"> Inactivate</span>
-                        </li>
-                      ) : null}
-                    </ul>
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td colSpan="6" className="text-center">
-                No corporates found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      {/* <div className="row mb-4">
-        <div className="col-md-6">
-          <p>Showing 1 to 10 of 20 records</p>
+                          <td className="ant-table-cell">{index + 1}</td>
+                          <td className="ant-table-cell">
+                            <span className="ant-typography font-weight-bold">
+                              {corporate?.organizationName}
+                            </span>
+                          </td>
+                          <td className="ant-table-cell">--</td>
+                          <td className="ant-table-cell">--</td>
+
+                          <td className="ant-table-cell d-flex ">
+                            <div className="ms-3">
+                              <Link
+                                className="text-black"
+                                to={`/corporates/edit/${corporate.corporateId}`}
+                                onClick={() =>
+                                  getCorporateByID(corporate.corporateId)
+                                }
+                              >
+                                <EditFilled className="me-3" />
+                              </Link>
+                              <Link
+                                className="text-black"
+                                to="#"
+                                onClick={() =>
+                                  handleDelete(corporate.corporateId)
+                                }
+                              >
+                                <DeleteFilled className="ms-2 " />
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        No employees found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <div className="col-md-6" style={{ textAlign: "right" }}>
-          <nav aria-label="Page navigation example" className="d-inline-block">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div> */}
+      </div>
+
       {open && (
         <ConfirmationDialog
           open={true}
