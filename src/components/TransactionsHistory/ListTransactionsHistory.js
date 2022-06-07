@@ -35,6 +35,9 @@ const ListTransactionsHistory = (props) => {
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedOrganization = useSelector(
+    (state) => state?.selectedOrganization?.organization
+  );
   const employee = useSelector((state) => state.employee);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
@@ -159,6 +162,7 @@ const ListTransactionsHistory = (props) => {
         corporateId: isCorporatePortal
           ? selectedCorporate?.corporate?.corporateId
           : null,
+        socialId: isOrganizationView ? selectedOrganization?.id : null,
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         searchByEmployeeName: searchByEmployeeName,
@@ -185,7 +189,6 @@ const ListTransactionsHistory = (props) => {
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
-    console.log("sssssssssssssss", ranges);
     fetchResults(ranges);
     // setIsDateRangeFilter(false);
     // {
@@ -229,7 +232,7 @@ const ListTransactionsHistory = (props) => {
                 onChange={(e) => filter("status", e.target.value)}
               >
                 <option value={""} key={"default"} disabled>
-                  Payment Status
+                  Status
                 </option>
                 {paymentStatusOption.map((status, index) => (
                   <option value={status.value} key={index}>
