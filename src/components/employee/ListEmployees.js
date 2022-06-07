@@ -43,7 +43,6 @@ const ListEmployees = (props) => {
   const [importHeader, setImportHeader] = useState();
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
-  const [selectedFieldType, setSelectedFieldType] = useState([]);
   const [finalData, setFinalData] = useState([]);
 
   const dispatch = useDispatch();
@@ -84,6 +83,7 @@ const ListEmployees = (props) => {
   const handleChange = (event) => {
     const fileUploaded = event.target.files[0];
     handleFile(fileUploaded);
+    console.log(fileUploaded);
   };
   const handleFile = (file) => {
     const fileExtension = file?.name?.split(".")?.pop();
@@ -98,17 +98,18 @@ const ListEmployees = (props) => {
       reader.readAsText(file);
       let finalData = [];
       reader.onload = () => {
+        // console.log(reader?.result);
         const allTextLines = reader?.result?.split(/\n/);
+        // console.log(allTextLines);
         setImportHeader(allTextLines[0].split(","));
         setImportFirstRecord(allTextLines[1].split(","));
+
         let fieldType = [];
         for (let i = 0; i < allTextLines[0].split(",")?.length; i++) {
           if (goodplatformFields[i]) {
             fieldType.push(goodplatformFields[i].value);
-            // setSelectedFieldTypes(...selectedFieldTypes, goodplatformFields[i].value)
           } else {
             fieldType.push("select_field");
-            // setSelectedFieldTypes(...selectedFieldTypes, {"select_field":"select_field"})
             goodplatformFields = [
               ...goodplatformFields,
               { label: "Select Field", value: "select_field" },
@@ -116,6 +117,7 @@ const ListEmployees = (props) => {
           }
         }
         setSelectedFieldTypes(fieldType);
+
         for (let i = 1; i < allTextLines.length; i++) {
           const data = allTextLines[i].split(",");
           if (data.length === allTextLines[0].split(",")?.length) {
@@ -126,12 +128,7 @@ const ListEmployees = (props) => {
             finalData.push(tarr);
           }
         }
-
         setFinalData(finalData);
-        // this.uploadedRecords = this.csvData.length;
-        // this.csvPaginator.currentPage = 1;
-        // this.csvPaginator.totalItems = this.uploadedRecords;
-        // this.csvPaginator = this.baseService.calculatePaginator(this.csvPaginator);
       };
       setIsBulkUpload(true);
     }
@@ -148,23 +145,9 @@ const ListEmployees = (props) => {
     setSelectedFieldTypes(data);
   };
 
-  const confimUpload = () => {
-    dispatch(employeeActions.bulkImport(selectedFieldTypes, finalData));
-    console.log(
-      "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
-      selectedFieldTypes,
-      finalData
-    );
-  };
-
   const goNext = () => {
     setIsImportNextStep(true);
     setIsBulkUpload(false);
-    console.log(
-      "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
-      selectedFieldTypes,
-      finalData
-    );
   };
   const goBack = () => {
     setIsImportNextStep(false);
@@ -175,6 +158,34 @@ const ListEmployees = (props) => {
   };
 
   console.log(finalData, "finalDataaaaaaa");
+  console.log(importHeader);
+  console.log(selectedFieldTypes);
+
+  const changesField = selectedFieldTypes?.reduce(function (
+    acc,
+    currVal,
+    index
+  ) {
+    acc[importHeader[index]] = currVal;
+    return acc;
+  },
+  {});
+  console.log(changesField);
+
+  const formData = new FormData();
+  formData.append("file", finalData);
+  formData.append("tblHeader", Object.entries(changesField));
+
+  console.log(formData);
+
+  const confimUpload = () => {
+    dispatch(employeeActions.bulkImport(formData));
+    console.log(
+      "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
+      changesField,
+      formData
+    );
+  };
 
   return (
     <div className="customContainer">
