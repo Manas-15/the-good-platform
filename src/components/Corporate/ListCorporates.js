@@ -1,46 +1,43 @@
-import React, { useEffect, useState, createRef } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
-import { EditFilled } from "@ant-design/icons";
-import { DeleteFilled } from "@ant-design/icons";
+// import { EditFilled } from "@ant-design/icons";
+// import { DeleteFilled } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-// import corporates from "./../../config/corporates.json";
-const actionInitialValues = {
-  userId: "",
-  requestType: "",
-};
+// const actionInitialValues = {
+//   userId: "",
+//   requestType: "",
+// };
 const ListCorporates = () => {
-  let { id } = useParams();
-  console.log(id);
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
-  console.log(corporates);
-  const user = useSelector((state) => state.employee.user);
+  // const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
-  const [actionType, setActionType] = useState("");
-  const [selectedCorporate, setSelectedCorporate] = useState(Object);
-  const handleOpen = (action, item) => {
+  const [actionId, setActionId] = useState("");
+
+  // const [actionType, setActionType] = useState("");
+  // const [selectedCorporate, setSelectedCorporate] = useState(Object);
+
+  const handleOpenDialog = (action, item, id) => {
+    // console.log(action, item, id);
     setOpen(true);
-    setActionType(action);
-    setSelectedCorporate(item);
+    // setActionType(action);
+    // setSelectedCorporate(item);
     setActionTitle(`${action} Confirmation`);
+    setActionId(id);
     setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${
-        item.organizationName
-      }"</strong>?`
+      `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong>?`
     );
   };
   const confirm = () => {
     handleClose();
-    actionInitialValues.userId = selectedCorporate.userId;
-    actionInitialValues.requestType = actionType;
-    dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+    dispatch(corporateActions.deleteCorporate({ corporateId: actionId }));
   };
   const handleClose = () => setOpen(false);
 
@@ -48,23 +45,16 @@ const ListCorporates = () => {
     dispatch(corporateActions.getCorporates());
   }, []);
 
-  const getCorporateByID = (id) => {
-    console.log(id, "iddddd");
-    dispatch(corporateActions.getCorporateById(id));
-  };
-
-  const handleDelete = (id) => {
-    console.log(id, "handle delete");
-    dispatch(corporateActions.deleteCorporate(id));
-  };
+  // const getCorporateByID = (id) => {
+  //   console.log(id, "iddddd");
+  //   dispatch(corporateActions.getCorporateById(id));
+  // };
 
   return (
     <div>
       <div className="row mb-4">
         <div className="col-md-6">
-          <h2 className="ant-typography customHeading">
-            Corporate Lists MAnas
-          </h2>
+          <h2 className="ant-typography customHeading">Corporate Lists</h2>
         </div>
 
         <div className="col-md-6" style={{ textAlign: "right" }}>
@@ -92,48 +82,63 @@ const ListCorporates = () => {
                     <th className="ant-table-cell">Actions</th>
                   </tr>
                 </thead>
+
                 <tbody className="ant-table-tbody">
                   {corporates?.items && corporates?.items.length > 0 ? (
-                    corporates?.items.map((corporate, index) => {
-                      return (
-                        <tr
-                          className="ant-table-row ant-table-row-level-0"
-                          key={index}
-                        >
-                          <td className="ant-table-cell">{index + 1}</td>
-                          <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
-                              {corporate?.organizationName}
-                            </span>
-                          </td>
-                          <td className="ant-table-cell">--</td>
-                          <td className="ant-table-cell">--</td>
+                    corporates?.items
+                      ?.filter((val) => {
+                        return val?.isActive === true;
+                      })
+                      .map((corporate, index) => {
+                        return (
+                          <tr
+                            className="ant-table-row ant-table-row-level-0"
+                            key={index}
+                          >
+                            <td className="ant-table-cell">{index + 1}</td>
+                            <td className="ant-table-cell">
+                              <span className="ant-typography font-weight-bold">
+                                {corporate?.organizationName}
+                              </span>
+                            </td>
+                            <td className="ant-table-cell">--</td>
+                            <td className="ant-table-cell">--</td>
 
-                          <td className="ant-table-cell d-flex ">
-                            <div className="ms-3">
-                              <Link
-                                className="text-black"
-                                to={`/corporates/edit/${corporate.corporateId}`}
-                                onClick={() =>
-                                  getCorporateByID(corporate.corporateId)
-                                }
-                              >
-                                <EditFilled className="me-3" />
-                              </Link>
-                              <Link
-                                className="text-black"
-                                to="#"
-                                onClick={() =>
-                                  handleDelete(corporate.corporateId)
-                                }
-                              >
-                                <DeleteFilled className="ms-2 " />
-                              </Link>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
+                            <td className="ant-table-cell d-flex ">
+                              <div className="ms-3">
+                                <Link
+                                  className="text-black"
+                                  to={{
+                                    pathname: `/corporates/edit/${corporate.corporateId}`,
+                                    state: corporate.corporateId,
+                                  }}
+                                  // onClick={() =>
+                                  //   getCorporateByID(corporate.corporateId)
+                                  // }
+                                >
+                                  <i
+                                    className="bi bi-pencil me-3"
+                                    style={{ fontSize: "17px" }}
+                                  ></i>
+                                </Link>
+                                <Link
+                                  className="text-black"
+                                  to="#"
+                                  onClick={() =>
+                                    handleOpenDialog(
+                                      "Delete",
+                                      corporate?.organizationName,
+                                      corporate?.corporateId
+                                    )
+                                  }
+                                >
+                                  <i className="bi bi-trash fs-5 custom-color ms-2"></i>
+                                </Link>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
                   ) : (
                     <tr>
                       <td colSpan="6" className="text-center">
