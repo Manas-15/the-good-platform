@@ -29,12 +29,13 @@ export function corporates(state = {}, action) {
       };
 
     case corporateConstants.ADD_CORPORATE_REQUEST:
-      return { addingCorporate: true };
+      return { ...state, addingCorporate: true };
     case corporateConstants.ADD_CORPORATE_SUCCESS:
-      return {};
+      console.log("111111111111111111111111111111111")
+      return {...state, addingCorporate: false};
     case corporateConstants.ADD_CORPORATE_FAILURE:
-      return {};
-
+      console.log("2222222222222222222222222222222222")
+      return {...state, addingCorporate: false};
     case corporateConstants.UPDATE_CORPORATE_REQUEST:
       return { updateCorporate: true };
     case corporateConstants.UPDATE_CORPORATE_SUCCESS:

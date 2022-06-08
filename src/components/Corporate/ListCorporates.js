@@ -7,6 +7,7 @@ import ConfirmationDialog from "./../Shared/ConfirmationDialog";
 // import { DeleteFilled } from "@ant-design/icons";
 import { Progress, Tooltip, Switch } from "antd";
 import { Link } from "react-router-dom";
+import * as moment from "moment";
 
 // const actionInitialValues = {
 //   userId: "",
@@ -100,9 +101,12 @@ const ListCorporates = () => {
                                 {corporate?.organizationName}
                               </span>
                             </td>
-                            <td className="ant-table-cell">--</td>
-                            <td className="ant-table-cell">--</td>
-
+                            <td className="ant-table-cell">
+                              {corporate?.employeeCount}
+                            </td>
+                            <td className="ant-table-cell">
+                              {moment(corporate?.createdDate).format("DD MMM, YYYY")}
+                            </td>
                             <td className="ant-table-cell d-flex ">
                               <div className="ms-3">
                                 <Tooltip title="Edit">

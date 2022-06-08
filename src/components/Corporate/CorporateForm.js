@@ -39,7 +39,7 @@ const CorporateForm = ({ type, id }) => {
   const corporates = useSelector((state) => state.corporates);
 
   const addingCorporate = useSelector(
-    (state) => state.corporates.addingCorporate
+    (state) => state?.corporates?.addingCorporate
   );
   // console.log(addingCorporate);
 
@@ -170,6 +170,7 @@ const CorporateForm = ({ type, id }) => {
               <div className="col-md-8">
                 <Field
                   name="email"
+                  disabled={id}
                   type="email"
                   className={
                     "form-control" +

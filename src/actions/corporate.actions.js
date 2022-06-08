@@ -73,10 +73,14 @@ function addCorporate(corporate, type) {
     dispatch(request(corporate));
 
     corporateService.addCorporate(corporate).then(
-      (corporate) => {
-        dispatch(success(corporate));
-        history.push("/corporates");
-        dispatch(alertActions.success("Corporate added successfully"));
+      (res) => {
+        dispatch(success(res));
+        if(res?.data?.email){
+          dispatch(alertActions.error(res?.data?.email?.[0]));
+        }else{
+          history.push("/list-corporates");
+          dispatch(alertActions.success("Corporate added successfully"));
+        }        
       },
       (error) => {
         dispatch(failure(error.toString()));
