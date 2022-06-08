@@ -2,11 +2,13 @@ import { corporateConstants } from "../constants";
 import { corporateService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
-import { alert } from "../reducers/alert.reducer";
+import { handleInputChange } from "react-select/dist/declarations/src/utils";
+// import { alert } from "../reducers/alert.reducer";
 
 export const corporateActions = {
   addCorporate,
   deleteCorporate,
+  updateCorporate,
   registerCorporate,
   getCorporates,
   getCorporateById,
@@ -39,7 +41,7 @@ function getCorporates() {
 }
 
 function getCorporateById(data) {
-  console.log(data, "By idddddd");
+  // console.log(data, "By idddddd");
   return (dispatch) => {
     dispatch(request());
 
@@ -57,7 +59,7 @@ function getCorporateById(data) {
     return { type: corporateConstants.GET_CORPORATES_REQUEST_BY_ID };
   }
   function success(data) {
-    console.log(data, "success data");
+    // console.log(data, "success data");
     return { type: corporateConstants.GET_CORPORATES_SUCCESS_BY_ID, data };
   }
   function failure(error) {
@@ -66,7 +68,7 @@ function getCorporateById(data) {
 }
 
 function addCorporate(corporate, type) {
-  console.log(corporate, type, "corporate actions");
+  // console.log(corporate, type, "corporate actions");
   return (dispatch) => {
     dispatch(request(corporate));
 
@@ -78,7 +80,7 @@ function addCorporate(corporate, type) {
       },
       (error) => {
         dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
+        // dispatch(alertActions.error(error.toString()));
       }
     );
   };
@@ -94,15 +96,46 @@ function addCorporate(corporate, type) {
   }
 }
 
-function deleteCorporate(data) {
-  console.log(data, "delete idddddd");
+function updateCorporate(corporate, type) {
+  // console.log(corporate, type, "update corporate request");
   return (dispatch) => {
-    dispatch(request(data));
+    dispatch(request(corporate));
 
-    corporateService.deleteCorporate(data).then(
-      (data) => {
-        dispatch(success(data));
-        history.pusg("/list-corporates");
+    corporateService.updateCorporate(corporate).then(
+      (corporate) => {
+        dispatch(success(corporate));
+        history.push("/corporates");
+        dispatch(alertActions.success("Corporate Updated Successfully"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+  function request(corporate) {
+    return { type: corporateConstants.UPDATE_CORPORATE_REQUEST, corporate };
+  }
+  function success(corporate) {
+    return {
+      type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
+      corporate,
+    };
+  }
+  function failure(error) {
+    return { type: corporateConstants.UPDATE_CORPORATE_FAILURE, error };
+  }
+}
+
+function deleteCorporate(corporateId) {
+  // console.log(corporateId, "delete idddddd");
+  return (dispatch) => {
+    dispatch(request(corporateId));
+
+    corporateService.deleteCorporate(corporateId).then(
+      (corporateId) => {
+        dispatch(success(corporateId));
+        // history.push("/list-corporates");
         dispatch(alertActions.success("Corporate deleted successfully"));
       },
       (error) => {
@@ -112,11 +145,11 @@ function deleteCorporate(data) {
     );
   };
 
-  function request(data) {
-    return { type: corporateConstants.DELETE_CORPORATE_REQUEST, data };
+  function request(corporateId) {
+    return { type: corporateConstants.DELETE_CORPORATE_REQUEST, corporateId };
   }
-  function success(data) {
-    return { type: corporateConstants.DELETE_CORPORATE_SUCCESS, data };
+  function success(corporateId) {
+    return { type: corporateConstants.DELETE_CORPORATE_SUCCESS, corporateId };
   }
   function failure(error) {
     return { type: corporateConstants.DELETE_CORPORATE_FAILURE, error };

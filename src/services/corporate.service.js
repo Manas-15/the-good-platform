@@ -6,6 +6,7 @@ import axios from "axios";
 export const corporateService = {
   addCorporate,
   deleteCorporate,
+  updateCorporate,
   registerCorporate,
   getCorporates,
   getCorporateById,
@@ -17,7 +18,7 @@ function getCorporates() {
 }
 
 function getCorporateById(id) {
-  console.log(id, "api page data");
+  // console.log(id, "api page data");
   return axios.get(process.env.REACT_APP_API_URL + `api/corporate_list/${id}`);
 }
 function registerCorporate(data) {
@@ -26,10 +27,14 @@ function registerCorporate(data) {
     data
   );
 }
-function deleteCorporate(id) {
-  console.log(id, "delete id in service page");
-  return axios.delete(
-    process.env.REACT_APP_API_URL + `api/corporate_register/${id}`
+function updateCorporate(corporate) {
+  return axios.put(process.env.REACT_APP_API_URL + "api/update", corporate);
+}
+function deleteCorporate(corporateId) {
+  // console.log(corporateId, "delete id in service page");
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/removeCorporate/",
+    corporateId
   );
 }
 function addCorporate(data) {
