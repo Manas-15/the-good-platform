@@ -150,6 +150,7 @@ const PayrollSetting = (props) => {
         // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })
     );
+    // setIsGenerating(false);
   };
   return (
     <div className="customContainer">
@@ -263,7 +264,7 @@ const PayrollSetting = (props) => {
         </div>
       </div>
       {preferences.loading && <Loader />}
-      {!preferences?.items?.active?.length === 0 && (
+      {!preferences?.items && (
         <div className="card p-4 text-center mt-4">
           <strong>
             Seems like there is no donation preferences set by your employees.

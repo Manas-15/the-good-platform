@@ -360,6 +360,7 @@ const PayrollBatchAccordion = (props) => {
                                           payrollConstants.RECEIVED_STATUS ||
                                           batch?.status ===
                                             payrollConstants.PAID_STATUS) &&
+                                          batch?.receivedOrganizationIds &&
                                           batch?.receivedOrganizationIds?.split(
                                             ","
                                           )?.length !==
@@ -419,10 +420,7 @@ const PayrollBatchAccordion = (props) => {
                                                   )
                                                 }
                                               >
-                                                <span
-                                                  className="bi-arrow-counterclockwise fs-5"
-                                                  title="Unconfirm"
-                                                ></span>
+                                                <span className="bi-arrow-counterclockwise fs-5"></span>
                                               </Link>
                                             </Tooltip>
                                             <Tooltip title="Paid">
@@ -431,10 +429,7 @@ const PayrollBatchAccordion = (props) => {
                                                   openPaidConfirmation(batch)
                                                 }
                                               >
-                                                <span
-                                                  className="bi-check-square fs-5 ml-2"
-                                                  title="Paid"
-                                                ></span>
+                                                <span className="bi-check-square fs-5 ml-2"></span>
                                               </Link>
                                             </Tooltip>
                                           </>

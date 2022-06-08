@@ -281,6 +281,7 @@ const ListTransactionsHistory = (props) => {
                 type="number"
                 pattern="[0-9]*"
                 maxLength={15}
+                min={0}
                 onChange={(e) => {
                   search(e.target.value, "amount");
                 }}

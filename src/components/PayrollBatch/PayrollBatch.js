@@ -491,10 +491,7 @@ const PayrollBatch = (props) => {
                                           handleOpen("Complete Batch", batch)
                                         }
                                       >
-                                        <span
-                                          className="bi-check-circle fs-5"
-                                          title="Complete"
-                                        ></span>
+                                        <span className="bi-check-circle fs-5"></span>
                                       </Link>
                                     </Tooltip>
                                   )}

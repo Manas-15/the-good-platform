@@ -26,6 +26,8 @@ export function charityPrograms(state = {}, action) {
         ...state,
         loading: true,
         charityId: action?.data?.charityProgramId,
+        donationAmount: action?.data?.donationAmount,
+        frequency: action?.data?.frequency,
       };
     case charityProgramConstants.SAVE_DONATION_PREFERENCE_SUCCESS:
       return {
@@ -33,7 +35,12 @@ export function charityPrograms(state = {}, action) {
         items: {
           sponsored: state?.items["sponsored"]?.map((charity) =>
             charity.charityId === state.charityId
-              ? { ...charity, donated: true }
+              ? {
+                  ...charity,
+                  donated: true,
+                  donationAmount: state?.donationAmount,
+                  frequency: state?.frequency,
+                }
               : charity
           ),
           other: state?.items["other"]?.map((charity) =>
@@ -42,6 +49,9 @@ export function charityPrograms(state = {}, action) {
               : charity
           ),
         },
+        charityId: null,
+        donationAmount: null,
+        frequency: null,
         loading: false,
       };
     case charityProgramConstants.SAVE_DONATION_PREFERENCE_FAILURE:
