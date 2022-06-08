@@ -41,14 +41,24 @@ export function corporates(state = {}, action) {
       return { items: action.corporates?.data?.corporates };
     case corporateConstants.UPDATE_CORPORATE_FAILURE:
       return {};
-
     case corporateConstants.DELETE_CORPORATE_REQUEST:
-      return { deleteCorporate: true };
+      return {
+        ...state,
+        deleteCorporate: true,
+        corporateId: action?.corporateId?.corporateId,
+      };
     case corporateConstants.DELETE_CORPORATE_SUCCESS:
-      return { response: action.corporateId?.data?.msg };
+      return {
+        items: state?.items?.map((item) => {
+          if (item.corporateId === state.corporateId) {
+            item.isActive = false;
+          }
+          return item;
+        }),
+        response: action.corporateId?.data?.msg,
+      };
     case corporateConstants.DELETE_CORPORATE_FAILURE:
       return {};
-
     case corporateConstants.CORPORATE_ACTION_REQUEST:
       return {
         items: state.items,
@@ -58,7 +68,7 @@ export function corporates(state = {}, action) {
       };
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
       return {
-        items: state.items.map((item) => {
+        items: state?.items?.map((item) => {
           if (item.userId === state.corporateId) {
             if (
               state.requestType === "Approve" ||

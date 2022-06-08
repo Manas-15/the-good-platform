@@ -96,8 +96,9 @@ function addCorporate(corporate, type) {
   }
 }
 
-function updateCorporate(corporate, type) {
-  // console.log(corporate, type, "update corporate request");
+function updateCorporate(corporate) {
+  console.log(corporate, "update corporate request");
+  
   return (dispatch) => {
     dispatch(request(corporate));
 

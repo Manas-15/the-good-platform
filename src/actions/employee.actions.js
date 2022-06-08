@@ -29,7 +29,7 @@ function login(data, from) {
             localStorage.setItem("accessToken", result);
             dispatch(userActions.getDetail());
           } else if (!res?.data?.active) {
-            dispatch(alertActions.error("Your account is currently Inactive."));
+            dispatch(alertActions.error("Your account is currently inactive."));
           } else {
             if (res?.data?.approve) {
               const result = JSON.stringify(res?.data);

@@ -43,22 +43,23 @@ const CorporateForm = ({ type, id }) => {
   );
   // console.log(addingCorporate);
 
-  if (type === "admin") {
-    initialValues.userType = 1;
-  } else if (type === "corporate") {
-    initialValues.userType = 2;
-  }
+  // if (type === "admin") {
+  //   initialValues.userType = 1;
+  // } else if (type === "corporate") {
+  initialValues.userType = 2;
+  // }
 
   const dispatch = useDispatch();
   const corporateRegister = (values) => {
     setSubmitted(true);
     if (values.organizationName && values.email && values.regdNumber) {
       // if (
-      //   id
-      //     ? dispatch(corporateActions.updateCorporate(values, type))
-      //     : dispatch(corporateActions.addCorporate(values, type))
-      // )
-      dispatch(corporateActions.addCorporate(values, type));
+      id
+        ? dispatch(corporateActions.updateCorporate(values, type))
+        : dispatch(corporateActions.addCorporate(values, type));
+      // )else{
+      //   dispatch(corporateActions.addCorporate(values, type));
+      // }
     }
   };
 

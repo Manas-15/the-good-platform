@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
 // import { EditFilled } from "@ant-design/icons";
 // import { DeleteFilled } from "@ant-design/icons";
+import { Progress, Tooltip, Switch } from "antd";
 import { Link } from "react-router-dom";
 
 // const actionInitialValues = {
@@ -56,7 +57,6 @@ const ListCorporates = () => {
         <div className="col-md-6">
           <h2 className="ant-typography customHeading">Corporate Lists</h2>
         </div>
-
         <div className="col-md-6" style={{ textAlign: "right" }}>
           <button
             type="button"
@@ -82,7 +82,6 @@ const ListCorporates = () => {
                     <th className="ant-table-cell">Actions</th>
                   </tr>
                 </thead>
-
                 <tbody className="ant-table-tbody">
                   {corporates?.items && corporates?.items.length > 0 ? (
                     corporates?.items
@@ -106,34 +105,38 @@ const ListCorporates = () => {
 
                             <td className="ant-table-cell d-flex ">
                               <div className="ms-3">
-                                <Link
-                                  className="text-black"
-                                  to={{
-                                    pathname: `/corporates/edit/${corporate.corporateId}`,
-                                    state: corporate.corporateId,
-                                  }}
-                                  // onClick={() =>
-                                  //   getCorporateByID(corporate.corporateId)
-                                  // }
-                                >
-                                  <i
-                                    className="bi bi-pencil me-3"
-                                    style={{ fontSize: "17px" }}
-                                  ></i>
-                                </Link>
-                                <Link
-                                  className="text-black"
-                                  to="#"
-                                  onClick={() =>
-                                    handleOpenDialog(
-                                      "Delete",
-                                      corporate?.organizationName,
-                                      corporate?.corporateId
-                                    )
-                                  }
-                                >
-                                  <i className="bi bi-trash fs-5 custom-color ms-2"></i>
-                                </Link>
+                                <Tooltip title="Edit">
+                                  <Link
+                                    className="text-black"
+                                    to={{
+                                      pathname: `/corporates/edit/${corporate.corporateId}`,
+                                      state: corporate.corporateId,
+                                    }}
+                                    // onClick={() =>
+                                    //   getCorporateByID(corporate.corporateId)
+                                    // }
+                                  >
+                                    <i
+                                      className="bi bi-pencil fs-5 me-1"
+                                      style={{ fontSize: "17px" }}
+                                    ></i>
+                                  </Link>
+                                </Tooltip>
+                                <Tooltip title="Delete">
+                                  <Link
+                                    className="text-black"
+                                    to="#"
+                                    onClick={() =>
+                                      handleOpenDialog(
+                                        "Delete",
+                                        corporate?.organizationName,
+                                        corporate?.corporateId
+                                      )
+                                    }
+                                  >
+                                    <i className="bi bi-trash fs-5 custom-color ms-2"></i>
+                                  </Link>
+                                </Tooltip>
                               </div>
                             </td>
                           </tr>
