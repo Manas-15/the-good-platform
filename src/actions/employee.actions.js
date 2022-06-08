@@ -28,6 +28,8 @@ function login(data, from) {
             const result = JSON.stringify(res?.data);
             localStorage.setItem("accessToken", result);
             dispatch(userActions.getDetail());
+          } else if (!res?.data?.active) {
+            dispatch(alertActions.error("Your account is currently Inactive."));
           } else {
             if (res?.data?.approve) {
               const result = JSON.stringify(res?.data);
