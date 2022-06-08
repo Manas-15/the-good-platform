@@ -16,7 +16,6 @@ import CorporatesPortal from "../components/Corporate/CorporatesPortal";
 import ListEmployees from "../components/Employee/ListEmployees";
 import ListCorporates from "../components/Corporate/ListCorporates";
 import AddCorporate from "../components/Corporate/AddCorporate";
-import EditCorporate from "../components/Corporate/EditCorporate";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
 import ListTransactionsHistory from "../components/TransactionsHistory/ListTransactionsHistory";
 import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
@@ -142,7 +141,7 @@ const CreateRoutes = () => {
               <Route
                 exact
                 path="/corporates/edit/:corporateId"
-                component={EditCorporate}
+                component={AddCorporate}
               />
               <Route
                 exact

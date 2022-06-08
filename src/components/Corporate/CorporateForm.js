@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { CorporateSchema } from "./../Validations";
@@ -31,27 +31,84 @@ const sizeOptions = [
   { value: "500-1000", label: "500-1000" },
   { value: ">1000", label: ">1000" },
 ];
-const CorporateForm = ({ type }) => {
-  console.log(type, "mmmmmmmmm");
+const CorporateForm = ({ type, id }) => {
+  // console.log(type, id, "mmmmmmmmm");
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
+  const [editCorpData, setEditCorpData] = useState();
+  const corporates = useSelector((state) => state.corporates);
+
   const addingCorporate = useSelector(
     (state) => state.corporates.addingCorporate
   );
+  // console.log(addingCorporate);
 
-  console.log(addingCorporate);
   if (type === "admin") {
     initialValues.userType = 1;
   } else if (type === "corporate") {
     initialValues.userType = 2;
   }
+
   const dispatch = useDispatch();
   const corporateRegister = (values) => {
     setSubmitted(true);
     if (values.organizationName && values.email && values.regdNumber) {
+      // if (
+      //   id
+      //     ? dispatch(corporateActions.updateCorporate(values, type))
+      //     : dispatch(corporateActions.addCorporate(values, type))
+      // )
       dispatch(corporateActions.addCorporate(values, type));
     }
   };
+
+  const filteredCorporateData = (id) => {
+    const filteredCorpData = corporates?.items?.filter((val) => {
+      return val.corporateId === id;
+    });
+    // console.log(filteredCorpData[0]);
+    setEditCorpData(filteredCorpData[0]);
+  };
+
+  useEffect(() => {
+    if (id) {
+      filteredCorporateData(id);
+    }
+  }, []);
+
+  if (id) {
+    initialValues.organizationName = editCorpData?.organizationName;
+    initialValues.email = editCorpData?.email;
+    initialValues.website = editCorpData?.website;
+    initialValues.regdNumber = editCorpData?.regdNumber;
+    initialValues.organizationSize = editCorpData?.organizationSize;
+    initialValues.organizationType = editCorpData?.organizationType;
+    initialValues.corporatePan = editCorpData?.corporatePan;
+    initialValues.gstn = editCorpData?.gstn;
+    initialValues.contactNumber = editCorpData?.contactNumber;
+    initialValues.contactPerson = editCorpData?.contactPerson;
+    initialValues.address = editCorpData?.address;
+    initialValues.city = editCorpData?.city;
+    initialValues.state = editCorpData?.state;
+    initialValues.country = editCorpData?.country;
+    initialValues.city = editCorpData?.city;
+  } else {
+    initialValues.organizationName = "";
+    initialValues.email = "";
+    initialValues.website = "";
+    initialValues.regdNumber = "";
+    initialValues.organizationSize = "";
+    initialValues.organizationType = "";
+    initialValues.corporatePan = "";
+    initialValues.gstn = "";
+    initialValues.contactNumber = "";
+    initialValues.contactPerson = "";
+    initialValues.address = "";
+    initialValues.city = "";
+    initialValues.state = "";
+    initialValues.country = "";
+    initialValues.city = "";
+  }
 
   return (
     <div style={{ width: "650px" }}>
@@ -74,7 +131,13 @@ const CorporateForm = ({ type }) => {
           /* and other goodies */
         }) => (
           <Form>
-            <h3>{type === "admin" ? "Add Corporate" : "Corporate Register"}</h3>
+            <h3>
+              {id
+                ? "Edit Corporate"
+                : type === "admin"
+                ? "Add Corporate"
+                : "Corporate Register"}
+            </h3>
             <hr />
             <h6>Basic Information</h6>
             <div className="row mb-4">
@@ -371,7 +434,7 @@ const CorporateForm = ({ type }) => {
                     {addingCorporate && (
                       <span className="spinner-border spinner-border-sm mr-1"></span>
                     )}
-                    {type === "admin" ? "Add" : "Register"}
+                    {id ? "Update" : type === "admin" ? "Add" : "Register"}
                   </button>
                 </div>
               </div>
