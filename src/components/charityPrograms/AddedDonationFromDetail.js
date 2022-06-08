@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import "./../../assets/css/charityProgramsList.scss";
-import { donationPreferenceConstants } from "../../constants";
-import ReactHtmlParser from "react-html-parser";
-import { Progress, Tooltip } from "antd";
-import { Link } from "react-router-dom";
-import urlSlug from "url-slug";
-import {
-  selectedCharityActions,
-  selectedCharityTabActions,
-} from "../../actions";
+// import { donationPreferenceConstants } from "../../constants";
+// import ReactHtmlParser from "react-html-parser";
+// import { Progress, Tooltip } from "antd";
+// import { Link } from "react-router-dom";
+// import urlSlug from "url-slug";
+// import {
+//   selectedCharityActions,
+//   selectedCharityTabActions,
+// } from "../../actions";
 import { useDispatch } from "react-redux";
 
 const AddedDonationFromDetail = ({ charity, selectedAmount, frequency }) => {
   console.log(">>>>>>>>>>>>>>>>>>>>>> charity", charity, frequency);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   return (
     <>
       <div className="row">

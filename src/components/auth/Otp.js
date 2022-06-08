@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import OtpInput from "react-otp-input";
-import OtpTimer from "otp-timer";
+// import OtpTimer from "otp-timer";
 import { employeeActions } from "../../actions";
-import { Link, useLocation } from "react-router-dom";
+// import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Form } from "formik";
+// import { Form } from "formik";
 
 const Otp = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -13,10 +13,10 @@ const Otp = () => {
   const [code, setCode] = useState("");
   const handleChange = (code) => setCode(code);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const handleClick = () => {
-    //desired function to be performed on clicking resend button
-  };
+  // const location = useLocation();
+  // const handleClick = () => {
+  //   //desired function to be performed on clicking resend button
+  // };
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
