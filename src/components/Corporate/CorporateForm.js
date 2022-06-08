@@ -68,7 +68,7 @@ const CorporateForm = ({ type, id }) => {
       return val.corporateId === id;
     });
     // console.log(filteredCorpData[0]);
-    setEditCorpData(filteredCorpData[0]);
+    setEditCorpData(filteredCorpData?.[0]);
   };
 
   useEffect(() => {
@@ -78,6 +78,7 @@ const CorporateForm = ({ type, id }) => {
   }, []);
 
   if (id) {
+    initialValues.corporateId = id;
     initialValues.organizationName = editCorpData?.organizationName;
     initialValues.email = editCorpData?.email;
     initialValues.website = editCorpData?.website;
@@ -92,7 +93,6 @@ const CorporateForm = ({ type, id }) => {
     initialValues.city = editCorpData?.city;
     initialValues.state = editCorpData?.state;
     initialValues.country = editCorpData?.country;
-    initialValues.city = editCorpData?.city;
   } else {
     initialValues.organizationName = "";
     initialValues.email = "";
@@ -328,6 +328,8 @@ const CorporateForm = ({ type, id }) => {
                 <Field
                   name="contactNumber"
                   type="text"
+                  placeholder="Contact Number"
+                  maxLength={10}
                   className={
                     "form-control" +
                     (errors.contactNumber && touched.contactNumber

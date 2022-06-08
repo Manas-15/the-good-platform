@@ -80,18 +80,22 @@ const CorporatesPortal = () => {
           {corporates?.items && corporates?.items.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
-                {corporates?.items.map((corporate, index) => {
-                  return (
-                    <li key={index + 1}>
-                      <Link
-                        to={`/corporates/${corporate.corporateId}/employees`}
-                        onClick={() => setCorporate(corporate)}
-                      >
-                        {corporate?.organizationName}
-                      </Link>
-                    </li>
-                  );
-                })}
+                {corporates?.items
+                  ?.filter((val) => {
+                    return val?.isActive === true;
+                  })
+                  ?.map((corporate, index) => {
+                    return (
+                      <li key={index + 1}>
+                        <Link
+                          to={`/corporates/${corporate.corporateId}/employees`}
+                          onClick={() => setCorporate(corporate)}
+                        >
+                          {corporate?.organizationName}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 <li key={"logout"} className="logout">
                   <Link onClick={logout}>Logout</Link>
                 </li>

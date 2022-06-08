@@ -96,16 +96,14 @@ function addCorporate(corporate, type) {
   }
 }
 
-function updateCorporate(corporate) {
-  console.log(corporate, "update corporate request");
-  
+function updateCorporate(corporate) {  
   return (dispatch) => {
     dispatch(request(corporate));
 
     corporateService.updateCorporate(corporate).then(
       (corporate) => {
         dispatch(success(corporate));
-        history.push("/corporates");
+        history.push("/list-corporates");
         dispatch(alertActions.success("Corporate Updated Successfully"));
       },
       (error) => {

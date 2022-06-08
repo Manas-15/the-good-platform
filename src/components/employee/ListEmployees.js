@@ -119,7 +119,6 @@ const ListEmployees = (props) => {
           }
         }
         setSelectedFieldTypes(fieldType);
-
         for (let i = 1; i < allTextLines.length; i++) {
           const data = allTextLines[i].split(",");
           if (data.length === allTextLines[0].split(",")?.length) {
@@ -135,7 +134,6 @@ const ListEmployees = (props) => {
       setIsBulkUpload(true);
     }
   };
-
   const addSelectedField = (e, index) => {
     const data = selectedFieldTypes.map((val, idx) => {
       if (idx === index) {
@@ -146,7 +144,6 @@ const ListEmployees = (props) => {
     });
     setSelectedFieldTypes(data);
   };
-
   const goNext = () => {
     setIsImportNextStep(true);
     setIsBulkUpload(false);
@@ -158,7 +155,6 @@ const ListEmployees = (props) => {
   const prvBack = () => {
     setIsBulkUpload(true);
   };
-
   const changesField = selectedFieldTypes?.reduce(function (
     acc,
     currVal,

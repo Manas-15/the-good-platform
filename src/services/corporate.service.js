@@ -28,7 +28,7 @@ function registerCorporate(data) {
   );
 }
 function updateCorporate(corporate) {
-  return axios.put(process.env.REACT_APP_API_URL + "api/update", corporate);
+  return axios.post(process.env.REACT_APP_API_URL + "api/editCorporate/", corporate);
 }
 function deleteCorporate(corporateId) {
   // console.log(corporateId, "delete id in service page");
