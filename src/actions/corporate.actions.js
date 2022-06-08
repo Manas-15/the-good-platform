@@ -2,7 +2,7 @@ import { corporateConstants } from "../constants";
 import { corporateService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
-import { handleInputChange } from "react-select/dist/declarations/src/utils";
+// import { handleInputChange } from "react-select/dist/declarations/src/utils";
 // import { alert } from "../reducers/alert.reducer";
 
 export const corporateActions = {
