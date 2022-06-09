@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { history } from "../../helpers";
+// import { history } from "../../helpers";
 import { userConstants, viewPortalConstants } from "../../constants";
 import { useSelector } from "react-redux";
 
@@ -12,16 +12,17 @@ const Sidebar = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-  console.log(
-    "selectedCorporateselectedCorporate",
-    selectedCorporate,
-    selectedOrganization
-  );
+  // console.log(
+  //   "selectedCorporateselectedCorporate",
+  //   selectedCorporate,
+  //   selectedOrganization
+  // );
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+  console.log(isSuperadminView);
   const isOrganizationView =
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
 
@@ -114,11 +115,14 @@ const Sidebar = () => {
                   <span className="ant-menu-title-content">
                     <NavLink
                       className=" "
-                      to="/account-summary"
+                      to={{
+                        pathname: "/list-corporates",
+                        state: { isSuperadminView },
+                      }}
                       activeClassName="active"
                     >
-                      <i className="bi bi-clock-history"></i>
-                      <span className="menu-text">Account Summary</span>
+                      <i className="bi bi-hdd-stack"></i>
+                      <span className="menu-text">Corporates</span>
                     </NavLink>
                   </span>
                 </li>
@@ -130,7 +134,7 @@ const Sidebar = () => {
                       activeClassName="active"
                     >
                       <i className="bi bi-hdd-stack"></i>
-                      <span className="menu-text">Payroll Batch</span>
+                      <span className="menu-text">Payroll Batch </span>
                     </NavLink>
                   </span>
                 </li>
@@ -138,11 +142,11 @@ const Sidebar = () => {
                   <span className="ant-menu-title-content">
                     <NavLink
                       className=" "
-                      to="/list-corporates"
+                      to="/account-summary"
                       activeClassName="active"
                     >
-                      <i className="bi bi-hdd-stack"></i>
-                      <span className="menu-text">Corporates</span>
+                      <i className="bi bi-clock-history"></i>
+                      <span className="menu-text">Account Summary</span>
                     </NavLink>
                   </span>
                 </li>
