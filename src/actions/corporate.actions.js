@@ -75,12 +75,12 @@ function addCorporate(corporate, type) {
     corporateService.addCorporate(corporate).then(
       (res) => {
         dispatch(success(res));
-        if(res?.data?.email){
+        if (res?.data?.email) {
           dispatch(alertActions.error(res?.data?.email?.[0]));
-        }else{
+        } else {
           history.push("/list-corporates");
           dispatch(alertActions.success("Corporate added successfully"));
-        }        
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -100,7 +100,7 @@ function addCorporate(corporate, type) {
   }
 }
 
-function updateCorporate(corporate) {  
+function updateCorporate(corporate) {
   return (dispatch) => {
     dispatch(request(corporate));
 
@@ -161,7 +161,6 @@ function deleteCorporate(corporateId) {
 function registerCorporate(corporate, type) {
   return (dispatch) => {
     dispatch(request(corporate));
-
     corporateService.registerCorporate(corporate).then(
       (corporate) => {
         dispatch(success());
@@ -198,7 +197,6 @@ function registerCorporate(corporate, type) {
 function corporateAccountRequest(actionValues) {
   return (dispatch) => {
     dispatch(request(actionValues));
-
     corporateService.corporateAccountRequest(actionValues).then(
       (msg) => {
         dispatch(success(msg));
