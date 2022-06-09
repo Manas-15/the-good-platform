@@ -519,7 +519,7 @@ const PayrollBatchAccordion = (props) => {
                               <strong>Amount:</strong>
                             </div>
                             <div className="col-md-8">
-                              {selectedBatch?.amount}
+                              {selectedBatch?.amount?.toLocaleString()}
                             </div>
                           </div>
                           <div className="row mb-2">
