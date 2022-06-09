@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -24,7 +24,11 @@ let goodplatformFields = [
   { label: "Status", value: "status" },
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
+
 const ListEmployees = (props) => {
+  let location = useLocation();
+  const isSuperadminView = location.state;
+  console.log(isSuperadminView);
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
   const hiddenFileInput = useRef(null);
@@ -35,7 +39,7 @@ const ListEmployees = (props) => {
   const [open, setOpen] = useState(false);
   const [isBulkUpload, setIsBulkUpload] = useState(false);
   const [isImportNextStep, setIsImportNextStep] = useState(false);
-  const [formatBulkData, setFormatBulkData] = useState(false);
+  // const [formatBulkData, setFormatBulkData] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
@@ -85,7 +89,7 @@ const ListEmployees = (props) => {
     const fileUploaded = event.target.files[0];
     setSelectedFile(fileUploaded);
     handleFile(fileUploaded);
-    console.log(fileUploaded);
+    // console.log(fileUploaded);
   };
   const handleFile = (file) => {
     const fileExtension = file?.name?.split(".")?.pop();
@@ -144,17 +148,15 @@ const ListEmployees = (props) => {
     });
     setSelectedFieldTypes(data);
   };
-  const goNext = () => {
-    setIsImportNextStep(true);
-    setIsBulkUpload(false);
-  };
+  // const goNext = () => {
+  //   setIsImportNextStep(true);
+  //   setIsBulkUpload(false);
+  // };
   const goBack = () => {
     setIsImportNextStep(false);
     setIsBulkUpload(false);
   };
-  const prvBack = () => {
-    setIsBulkUpload(true);
-  };
+
   const changesField = selectedFieldTypes?.reduce(function (
     acc,
     currVal,
@@ -165,18 +167,18 @@ const ListEmployees = (props) => {
   },
   {});
   const confimUpload = () => {
-    console.log("ssssssssssssssssssssss selected", changesField);
+    // console.log("ssssssssssssssssssssss selected", changesField);
     const formData = new FormData();
     formData.append("file", selectedFile, selectedFile?.name);
     formData.append("tblHeader", JSON.stringify(changesField));
 
-    console.log(formData);
+    // console.log(formData);
     dispatch(employeeActions.bulkImport(formData));
-    console.log(
-      "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
-      changesField,
-      formData
-    );
+    // console.log(
+    //   "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
+    //   changesField,
+    //   formData
+    // );
   };
 
   return (
@@ -186,31 +188,39 @@ const ListEmployees = (props) => {
           <h1 className="ant-typography customHeading">
             <Link to="/corporates" className="text-decoration-underline">
               <span className="custom-color">Corporates</span>
-            </Link>{" "}
+            </Link>
             / Employees
           </h1>
         </div>
-        <div className="col-md-6" style={{ textAlign: "right" }}>
-          {!isBulkUpload && !isImportNextStep && (
-            <>
-              <button
-                type="button"
-                className="btn btn-custom"
-                onClick={chooseFile}
-              >
-                <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-                Import Bulk Employee
-              </button>
-              <input
-                type="file"
-                accept=".xlsx, .xls, .csv"
-                ref={hiddenFileInput}
-                onChange={handleChange}
-                style={{ display: "none" }}
-              />
-            </>
-          )}
-        </div>
+        {isSuperadminView === false ? (
+          <> </>
+        ) : isSuperadminView === true ? (
+          <> </>
+        ) : (
+          isSuperadminView === undefined && (
+            <div className="col-md-6" style={{ textAlign: "right" }}>
+              {!isBulkUpload && !isImportNextStep && (
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-custom"
+                    onClick={chooseFile}
+                  >
+                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                    Import Bulk Employee
+                  </button>
+                  <input
+                    type="file"
+                    accept=".xlsx, .xls, .csv"
+                    ref={hiddenFileInput}
+                    onChange={handleChange}
+                    style={{ display: "none" }}
+                  />
+                </>
+              )}
+            </div>
+          )
+        )}
       </div>
       {!isBulkUpload && !isImportNextStep && (
         <>
@@ -224,7 +234,7 @@ const ListEmployees = (props) => {
                       placeholder="Search by Name"
                       className="ant-input-search"
                       type="text"
-                      value=""
+                      // value=""
                     />
                   </span>
                 </div>
@@ -304,7 +314,6 @@ const ListEmployees = (props) => {
                                     }
                                   >
                                     <span className="bi-check-circle">
-                                      {" "}
                                       Approve
                                     </span>
                                   </li>
