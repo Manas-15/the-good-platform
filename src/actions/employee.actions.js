@@ -307,6 +307,7 @@ function setEmployeePassword(data) {
 
 function employeeAccountRequest(actionValues) {
   return (dispatch) => {
+    console.log(actionValues, "mmmmmmmmmmmmmmmmmmmm");
     dispatch(request(actionValues));
 
     employeeService.employeeAccountRequest(actionValues).then(

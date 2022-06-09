@@ -31,17 +31,19 @@ export function corporates(state = {}, action) {
     case corporateConstants.ADD_CORPORATE_REQUEST:
       return { ...state, addingCorporate: true };
     case corporateConstants.ADD_CORPORATE_SUCCESS:
-      console.log("111111111111111111111111111111111")
-      return {...state, addingCorporate: false};
+      console.log("111111111111111111111111111111111");
+      return { ...state, addingCorporate: false };
     case corporateConstants.ADD_CORPORATE_FAILURE:
-      console.log("2222222222222222222222222222222222")
-      return {...state, addingCorporate: false};
+      console.log("2222222222222222222222222222222222");
+      return { ...state, addingCorporate: false };
+
     case corporateConstants.UPDATE_CORPORATE_REQUEST:
       return { updateCorporate: true };
     case corporateConstants.UPDATE_CORPORATE_SUCCESS:
       return { items: action.corporates?.data?.corporates };
     case corporateConstants.UPDATE_CORPORATE_FAILURE:
       return {};
+
     case corporateConstants.DELETE_CORPORATE_REQUEST:
       return {
         ...state,
@@ -60,11 +62,12 @@ export function corporates(state = {}, action) {
       };
     case corporateConstants.DELETE_CORPORATE_FAILURE:
       return {};
+
     case corporateConstants.CORPORATE_ACTION_REQUEST:
       return {
         items: state.items,
         actionRequest: true,
-        corporateId: action.corporate.userId,
+        corporateId: action.corporate.corporateId,
         requestType: action.corporate.requestType,
       };
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
