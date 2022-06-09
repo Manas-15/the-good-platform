@@ -195,7 +195,14 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   //       `Are you sure you want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total ${selectedProgram?.employeeCount} employees have set donation preference for the programs.`
   //     );
   // }, [selectedProgram?.employeeCount]);
-
+  const addIconClass = (e) => {
+    e.target.classList.remove("bi-heart", "custom-color");
+    e.target.classList.add("bi-heart-fill", "red-color");
+  }
+  const removeIconClass = (e) => {
+    e.target.classList.add("bi-heart", "custom-color");
+    e.target.classList.remove("bi-heart-fill", "red-color");
+  }
   return (
     <>
       <div className="ant-row">
@@ -288,7 +295,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                     // )
                                   }
                                 >
-                                  <i className="bi-heart-fill fs-6 custom-color mr-1"></i>
+                                  <i className="bi-heart-fill fs-6 red-color mr-1" onMouseOver={(e) => removeIconClass(e)} onMouseOut={(e) => addIconClass(e)}></i>
                                 </Link>
                               </Tooltip>
                             )}
@@ -303,7 +310,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                     )
                                   }
                                 >
-                                  <i className="bi-heart fs-6 custom-color"></i>
+                                  <i className="bi-heart fs-6 custom-color" onMouseOver={(e) => addIconClass(e)} onMouseOut={(e) => removeIconClass(e)}></i>
                                 </Link>
                               </Tooltip>
                             )}

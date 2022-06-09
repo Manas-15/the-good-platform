@@ -306,6 +306,9 @@ ul.dropdown-menu.actions li:hover {
 a .custom-color {
   color: #39364f;
 }
+a .red-color {
+  color: #E52B2B;
+}
 .accordion-button {
   background-color: #39364f !important;
 }
