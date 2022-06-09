@@ -288,7 +288,7 @@ const Donate = ({
             {open && (
               <DonationConsent
                 open={open}
-                amount={selectedAmount.toLocaleString()}
+                amount={selectedAmount?.toLocaleString()}
                 selectedCharity={selectedCharity}
                 employee={employee}
                 frequency={frequency}
