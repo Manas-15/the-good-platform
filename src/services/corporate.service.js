@@ -9,7 +9,7 @@ export const corporateService = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  getCorporateById,
+  // getCorporateById,
   corporateAccountRequest,
 };
 
@@ -17,10 +17,10 @@ function getCorporates() {
   return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list");
 }
 
-function getCorporateById(id) {
-  // console.log(id, "api page data");
-  return axios.get(process.env.REACT_APP_API_URL + `api/corporate_list/${id}`);
-}
+// function getCorporateById(id) {
+//   // console.log(id, "api page data");
+//   return axios.get(process.env.REACT_APP_API_URL + `api/corporate_list/${id}`);
+// }
 function registerCorporate(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporate_register/",
@@ -28,7 +28,10 @@ function registerCorporate(data) {
   );
 }
 function updateCorporate(corporate) {
-  return axios.post(process.env.REACT_APP_API_URL + "api/editCorporate/", corporate);
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/editCorporate/",
+    corporate
+  );
 }
 function deleteCorporate(corporateId) {
   // console.log(corporateId, "delete id in service page");

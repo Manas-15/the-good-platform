@@ -10,7 +10,6 @@ const Header = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const logout = () => {
-    // localStorage.removeItem("user");
     localStorage.clear();
     dispatch(userActions.logout());
     history.push("/");
@@ -24,19 +23,20 @@ const Header = () => {
     document.body.classList.toggle("toggle-sidebar");
   };
   const setCurrentView = (view) => {
-    console.log("dddddddddddddddddd 33333333333 currentView", view);
     dispatch(currentViewActions.currentView(view));
     // handleClose();
-    // actionInitialValues.userId = selectedCorporate.userId;
-    // actionInitialValues.requestType = actionType;
-    // dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
   };
   const currentView = useSelector((state) => state.currentView);
+  console.log(currentView);
+  const isSuperadminView =
+    currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-  console.log("dddddddddddddddddd currentView", currentView);
+
+  console.log(isSuperadminView);
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -150,12 +150,15 @@ const Header = () => {
                   <li>
                     <Link
                       className="dropdown-item d-flex align-items-center"
-                      to="/account-summary"
                       onClick={() =>
                         setCurrentView(
                           viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL
                         )
                       }
+                      to={{
+                        pathname: "/list-corporates",
+                        state: { isSuperadminView },
+                      }}
                     >
                       <i className="bi bi-person-circle"></i>
                       <span>Blue Pencil Admin Portal</span>

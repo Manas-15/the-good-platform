@@ -11,7 +11,7 @@ export const corporateActions = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  getCorporateById,
+  // getCorporateById,
   corporateAccountRequest,
 };
 
@@ -40,32 +40,32 @@ function getCorporates() {
   }
 }
 
-function getCorporateById(data) {
-  // console.log(data, "By idddddd");
-  return (dispatch) => {
-    dispatch(request());
+// function getCorporateById(data) {
+//   // console.log(data, "By idddddd");
+//   return (dispatch) => {
+//     dispatch(request());
 
-    corporateService.getCorporateById(data).then(
-      (data) => dispatch(success(data)),
+//     corporateService.getCorporateById(data).then(
+//       (data) => dispatch(success(data)),
 
-      (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
-      }
-    );
-  };
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//         dispatch(alertActions.error(error.toString()));
+//       }
+//     );
+//   };
 
-  function request() {
-    return { type: corporateConstants.GET_CORPORATES_REQUEST_BY_ID };
-  }
-  function success(data) {
-    // console.log(data, "success data");
-    return { type: corporateConstants.GET_CORPORATES_SUCCESS_BY_ID, data };
-  }
-  function failure(error) {
-    return { type: corporateConstants.GET_CORPORATES_FAILURE_BY_ID, error };
-  }
-}
+//   function request() {
+//     return { type: corporateConstants.GET_CORPORATES_REQUEST_BY_ID };
+//   }
+//   function success(data) {
+//     // console.log(data, "success data");
+//     return { type: corporateConstants.GET_CORPORATES_SUCCESS_BY_ID, data };
+//   }
+//   function failure(error) {
+//     return { type: corporateConstants.GET_CORPORATES_FAILURE_BY_ID, error };
+//   }
+// }
 
 function addCorporate(corporate, type) {
   // console.log(corporate, type, "corporate actions");
@@ -138,7 +138,6 @@ function deleteCorporate(corporateId) {
     corporateService.deleteCorporate(corporateId).then(
       (corporateId) => {
         dispatch(success(corporateId));
-        // history.push("/list-corporates");
         dispatch(alertActions.success("Corporate deleted successfully"));
       },
       (error) => {
@@ -196,6 +195,7 @@ function registerCorporate(corporate, type) {
 }
 function corporateAccountRequest(actionValues) {
   return (dispatch) => {
+    console.log(actionValues, "actyon typeeeee");
     dispatch(request(actionValues));
     corporateService.corporateAccountRequest(actionValues).then(
       (msg) => {
@@ -203,8 +203,8 @@ function corporateAccountRequest(actionValues) {
         dispatch(
           alertActions.success(
             `Corporate ${
-              actionValues.requestType === "Reject"
-                ? "rejected"
+              actionValues.requestType === "Inactive"
+                ? "inactivated"
                 : actionValues.requestType.toLowerCase() + "d"
             } successfully`
           )

@@ -1,35 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { corporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmationDialog from "./../Shared/ConfirmationDialog";
-// import { EditFilled } from "@ant-design/icons";
-// import { DeleteFilled } from "@ant-design/icons";
-import { Progress, Tooltip, Switch } from "antd";
+import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 
-// const actionInitialValues = {
-//   userId: "",
-//   requestType: "",
-// };
+const actionInitialValues = {
+  corporateId: "",
+  requestType: "",
+};
 const ListCorporates = () => {
+  let location = useLocation();
+  const data = location.state;
+  console.log(data);
+
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
-  // const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionId, setActionId] = useState("");
 
-  // const [actionType, setActionType] = useState("");
-  // const [selectedCorporate, setSelectedCorporate] = useState(Object);
+  const [actionType, setActionType] = useState("");
 
   const handleOpenDialog = (action, item, id) => {
     // console.log(action, item, id);
     setOpen(true);
-    // setActionType(action);
+    setActionType(action);
     // setSelectedCorporate(item);
     setActionTitle(`${action} Confirmation`);
     setActionId(id);
@@ -37,20 +37,24 @@ const ListCorporates = () => {
       `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong>?`
     );
   };
+  // console.log(actionType);
+
   const confirm = () => {
     handleClose();
-    dispatch(corporateActions.deleteCorporate({ corporateId: actionId }));
+    actionInitialValues.corporateId = actionId;
+    actionInitialValues.requestType = actionType;
+
+    if (actionType === "Delete") {
+      dispatch(corporateActions.deleteCorporate({ corporateId: actionId }));
+    } else {
+      dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+    }
   };
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
-
-  // const getCorporateByID = (id) => {
-  //   console.log(id, "iddddd");
-  //   dispatch(corporateActions.getCorporateById(id));
-  // };
 
   return (
     <div>
@@ -86,9 +90,10 @@ const ListCorporates = () => {
                 <tbody className="ant-table-tbody">
                   {corporates?.items && corporates?.items.length > 0 ? (
                     corporates?.items
-                      ?.filter((val) => {
-                        return val?.isActive === true;
-                      })
+                      // ?.filter((val) => {
+                      //   return val?.isActive === true;
+                      // })
+                      // ?
                       .map((corporate, index) => {
                         return (
                           <tr
@@ -98,17 +103,28 @@ const ListCorporates = () => {
                             <td className="ant-table-cell">{index + 1}</td>
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
-                                {corporate?.organizationName}
+                                <Link
+                                  className="text-black"
+                                  to={{
+                                    pathname: `/corporates/${corporate.corporateId}/employees`,
+                                    state: data?.isSuperadminView,
+                                  }}
+                                >
+                                  {corporate?.organizationName}
+                                </Link>
                               </span>
                             </td>
                             <td className="ant-table-cell">
                               {corporate?.employeeCount}
                             </td>
                             <td className="ant-table-cell">
-                              {moment(corporate?.createdDate).format("DD MMM, YYYY")}
+                              {moment(corporate?.createdDate).format(
+                                "DD MMM, YYYY"
+                              )}
                             </td>
-                            <td className="ant-table-cell d-flex ">
-                              <div className="ms-3">
+
+                            <td className="ant-table-cell">
+                              <div className="ms-2">
                                 <Tooltip title="Edit">
                                   <Link
                                     className="text-black"
@@ -116,9 +132,6 @@ const ListCorporates = () => {
                                       pathname: `/corporates/edit/${corporate.corporateId}`,
                                       state: corporate.corporateId,
                                     }}
-                                    // onClick={() =>
-                                    //   getCorporateByID(corporate.corporateId)
-                                    // }
                                   >
                                     <i
                                       className="bi bi-pencil fs-5 me-1"
@@ -126,9 +139,42 @@ const ListCorporates = () => {
                                     ></i>
                                   </Link>
                                 </Tooltip>
+
+                                {corporate?.isActive ? (
+                                  <Tooltip title="Active">
+                                    <Link
+                                      to="#"
+                                      onClick={() =>
+                                        handleOpenDialog(
+                                          "Inactive",
+                                          corporate?.organizationName,
+                                          corporate?.corporateId
+                                        )
+                                      }
+                                    >
+                                      <i className="bi bi-check-circle custom-color text-success fs-5 ms-2"></i>
+                                    </Link>
+                                  </Tooltip>
+                                ) : null}
+                                {!corporate?.isActive ? (
+                                  <Tooltip title="Inactive">
+                                    <Link
+                                      to="#"
+                                      onClick={() =>
+                                        handleOpenDialog(
+                                          "Active",
+                                          corporate?.organizationName,
+                                          corporate?.corporateId
+                                        )
+                                      }
+                                    >
+                                      <i class="bi bi-x-circle custom-color text-danger fs-5 ms-2"></i>
+                                    </Link>
+                                  </Tooltip>
+                                ) : null}
+
                                 <Tooltip title="Delete">
                                   <Link
-                                    className="text-black"
                                     to="#"
                                     onClick={() =>
                                       handleOpenDialog(
