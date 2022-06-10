@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import { CompleteBatchSchema } from "./../Validations";
 import {
   donationPreferenceConstants,
@@ -59,9 +59,14 @@ const PayrollBatch = (props) => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [records, setRecords] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [allRecords, setAllRecords] = useState(records);
+  const [selected, setSelected] = useState();
+
   const [currentView, setCurrentView] = useState(
     payrollConstants?.CORPORATE_VIEW
   );
+
   const isOrganizationPortal =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
@@ -109,6 +114,9 @@ const PayrollBatch = (props) => {
   useEffect(() => {
     setRecords(payrollBatches?.items);
   }, [payrollBatches?.items]);
+  useEffect(() => {
+    setAllRecords(records);
+  }, [records]);
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -201,6 +209,37 @@ const PayrollBatch = (props) => {
       setRecords(payrollBatches?.items);
     }
   };
+
+  const onSearchChange = (e, selected) => {
+    console.log(selected);
+    const keyword = e.target.value;
+    console.log(keyword);
+
+    if (keyword !== "") {
+      const results = records.filter((rec) => {
+        if (selected === "batchId") {
+          rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
+        } else if (selected === "corporateName") {
+          rec?.corporateName.toLowerCase().startsWith(keyword.toLowerCase());
+        } else {
+          rec?.referenceId.toLowerCase().startsWith(keyword.toLowerCase());
+        }
+      });
+      setAllRecords(results);
+    } else {
+      setAllRecords(records);
+    }
+    setSearchValue(keyword);
+  };
+  const onHandleChange = (e) => {
+    console.log("fired");
+    setSelected(e.target.value);
+  };
+
+  console.log(selected);
+  console.log(records, "reeeeeeeeeeeeeeeeee");
+
+  console.log(allRecords);
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -292,6 +331,7 @@ const PayrollBatch = (props) => {
               )}
             </div>
           </div>
+
           {payrollBatches.loading && <Loader />}
           {!payrollBatches?.items && (
             <div className="card p-4 text-center">
@@ -324,6 +364,63 @@ const PayrollBatch = (props) => {
               organizationId ||
               currentView === payrollConstants.TABLE_VIEW) && (
               <>
+                <div className="row g-2">
+                  <div className="col-md d-flex">
+                    <div className="col-md-4">
+                      <div>
+                        <select
+                          className="form-select"
+                          value={selected}
+                          onChange={(e) => onHandleChange(e)}
+                        >
+                          <option defaultValue>Select Payroll</option>
+                          <option value="batchId">BATCH ID</option>
+                          <option value="corporateName">CORPORATE NAME</option>
+                          <option value="refId">REF ID</option>
+                        </select>
+                      </div>
+                    </div>
+                    {selected === "batchId" && (
+                      <div className="col-md-4">
+                        <div>
+                          <input
+                            type="name"
+                            className="form-control"
+                            placeholder="Search by Batch Id"
+                            onChange={(e) => onSearchChange(e, selected)}
+                            // value=""
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {selected === "corporateName" && (
+                      <div className="col-md-4">
+                        <div>
+                          <input
+                            type="name"
+                            className="form-control"
+                            placeholder="Search by Corporate Name"
+                            onChange={(e) => onSearchChange(e, selected)}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {selected === "refId" && (
+                      <div className="col-md-4">
+                        <div>
+                          <input
+                            type="name"
+                            className="form-control"
+                            placeholder="Search by Ref Id"
+                            onChange={(e) => onSearchChange(e, selected)}
+                            // value=""
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <div className="ant-row">
                   <div className="ant-col ant-col-24 mt-2">
                     <div className="ant-table-wrapper">
@@ -331,29 +428,21 @@ const PayrollBatch = (props) => {
                         <table>
                           <thead className="ant-table-thead">
                             <tr>
-                              {/* <th className="ant-table-cell">Sr No.</th> */}
-                              <th className="ant-table-cell">Batch id</th>
-                              {/* {currentView ===
-                              payrollConstants.ORGANIZATION_VIEW && (
-                              <th className="ant-table-cell">
-                                Organization Id
-                              </th>
-                            )} */}
+                              <th className="ant-table-cell">Batch id manas</th>
+
                               {currentView ===
                                 payrollConstants.ORGANIZATION_VIEW && (
                                 <th className="ant-table-cell">
                                   Organization Name
                                 </th>
                               )}
-                              {/* {!corporateId && (
-                              <th className="ant-table-cell">Corporate ID</th>
-                            )} */}
+
                               {!corporateId && (
                                 <th className="ant-table-cell">
-                                  Corporate Name
+                                  Corporate Name m
                                 </th>
                               )}
-                              <th className="ant-table-cell">Crated Date</th>
+                              <th className="ant-table-cell">Crated Date m</th>
                               <th className="ant-table-cell">
                                 Amount (
                                 {ReactHtmlParser(
@@ -369,7 +458,7 @@ const PayrollBatch = (props) => {
                             </tr>
                           </thead>
                           <tbody className="ant-table-tbody">
-                            {records?.map((batch, index) => (
+                            {allRecords?.map((batch, index) => (
                               <tr
                                 key={index + 1}
                                 className="ant-table-row ant-table-row-level-0"
@@ -621,6 +710,7 @@ const PayrollBatch = (props) => {
             pageSize={pageSize}
             onPageChange={(page) => setPage(page)}
           />
+
           {open && (
             <Modal show={open} onHide={handleClose} backdrop="static">
               <Modal.Header closeButton>
