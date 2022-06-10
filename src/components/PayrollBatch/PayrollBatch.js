@@ -209,7 +209,7 @@ const PayrollBatch = (props) => {
   };
 
   const groupByBatchData = groupByBatch();
-  // console.log("dddddddddddddddddddd groupByBatch", groupByBatchData);
+  console.log("dddddddddddddddddddd groupByBatch", groupByBatchData);
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -259,7 +259,7 @@ const PayrollBatch = (props) => {
                             : ""
                         } btn btn-sm btn-outline-primary btn-outline-custom`}
                       >
-                        Table View
+                        List View
                       </button>
                     </Link>
                   )}
@@ -660,7 +660,7 @@ const PayrollBatch = (props) => {
                                 )
                               )}
 
-                            {!isBluePencilPortal &&
+                            {!isBluePencilPortal  &&
                               records?.map((batch, index) => (
                                 <tr
                                   key={index + 1}

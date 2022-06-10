@@ -249,7 +249,7 @@ const PayrollBatchAccordion = (props) => {
                                         Corporate
                                       </th>
                                     )}
-                                    <th className="ant-table-cell">Created</th>
+                                    <th className="ant-table-cell">Month</th>
                                     <th className="ant-table-cell">
                                       Amount (
                                       {ReactHtmlParser(
