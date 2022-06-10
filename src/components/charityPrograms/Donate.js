@@ -8,7 +8,7 @@ import { charityProgramActions } from "../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import DonationConsent from "../Shared/DonationConsent";
 import { charityProgramConstants } from "../../constants";
@@ -26,7 +26,7 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
   donationConsent: "",
-  repeat: ""
+  repeat: "",
 };
 const Donate = ({
   frequency,
@@ -34,7 +34,7 @@ const Donate = ({
   tabType,
   from,
   currentPortal,
-  repeatPreference
+  repeatPreference,
 }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
@@ -53,6 +53,7 @@ const Donate = ({
     currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
+    console.log("selectedCharity ??????????????????????", selectedCharity);
     if (selectedCharity) {
       setSelectedAmount(
         selectedCharity?.employeePreferenceId
@@ -141,18 +142,15 @@ const Donate = ({
             <div className="row mb-4">
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
-                  isActive={
-                    selectedAmount &&
-                    selectedAmount === selectedCharity?.unitPrice * 1
-                  }
-                  amount={500 * 1}
+                  isActive={selectedAmount === selectedCharity?.unitPrice * 1}
+                  amount={selectedCharity?.unitPrice * 1}
                   setSelectedAmount={setAmount}
                 />
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 2}
-                  amount={500 * 2}
+                  amount={selectedCharity?.unitPrice * 2}
                   setSelectedAmount={setAmount}
                 />
               </div>
@@ -161,14 +159,14 @@ const Donate = ({
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 3}
-                  amount={500 * 3}
+                  amount={selectedCharity?.unitPrice * 3}
                   setSelectedAmount={setAmount}
                 />
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 4}
-                  amount={500 * 4}
+                  amount={selectedCharity?.unitPrice * 4}
                   setSelectedAmount={setAmount}
                 />
               </div>

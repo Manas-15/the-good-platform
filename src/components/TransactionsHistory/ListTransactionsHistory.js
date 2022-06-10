@@ -11,7 +11,7 @@ import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -22,12 +22,12 @@ let charityProgramsOption = [];
 const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
@@ -116,7 +116,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -140,7 +140,6 @@ const ListTransactionsHistory = (props) => {
   };
   const search = (value, type) => {
     // if (value.length > 3) {
-    console.log("----------- search inside", value, type);
     if (type === "employeeName") {
       setSearchByEmployeeName(value);
     } else if (type === "programName") {
@@ -169,7 +168,7 @@ const ListTransactionsHistory = (props) => {
         searchByProgramName: searchByProgramName,
         searchByAmount: searchByAmount,
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
-        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null,
+        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null
       })
     );
   };
@@ -185,7 +184,7 @@ const ListTransactionsHistory = (props) => {
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: "selection"
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -299,7 +298,7 @@ const ListTransactionsHistory = (props) => {
                 <thead className="ant-table-thead">
                   <tr>
                     {/* <th className="ant-table-cell">SR No.</th> */}
-                    {isCorporatePortal && (
+                    {!isEmployeePortal && (
                       <th className="ant-table-cell">Donor</th>
                     )}
                     <th className="ant-table-cell">Program</th>
@@ -312,7 +311,7 @@ const ListTransactionsHistory = (props) => {
                     <th className="ant-table-cell">Transaction ID</th>
                     <th className="ant-table-cell">Donation</th>
                     <th className="ant-table-cell">Donation Type</th>
-                    <th className="ant-table-cell">Payment Mode</th>
+                    {/* <th className="ant-table-cell">Payment Mode</th> */}
                     <th className="ant-table-cell">Payment Status</th>
                     <th className="ant-table-cell">Payment Date</th>
                     {(employeeId || isCorporatePortal) && (
@@ -332,7 +331,7 @@ const ListTransactionsHistory = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
-                        {isCorporatePortal && (
+                        {!isEmployeePortal && (
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
                               {transaction?.employeeName}
@@ -365,16 +364,22 @@ const ListTransactionsHistory = (props) => {
                         <td className="ant-table-cell">
                           {transaction?.donationType}
                         </td>
-                        <td className="ant-table-cell">
+                        {/* <td className="ant-table-cell">
                           {transaction?.paymentMethod &&
                             transaction?.paymentMethod.replace(/_/g, " ")}
-                        </td>
+                        </td> */}
                         <td className="ant-table-cell text-uppercase">
                           {transaction?.paymentStatus ===
-                          paymentConstants.PAYMENT_SUCCESS ? (
+                            paymentConstants.PAYMENT_SUCCESS && (
                             <span className="text-success">Success</span>
-                          ) : (
+                          )}
+                          {transaction?.paymentStatus ===
+                            paymentConstants.PAYMENT_FAILURE && (
                             <span className="text-danger">Failed</span>
+                          )}
+                          {transaction?.paymentStatus ===
+                            paymentConstants.PAYMENT_PENDING && (
+                            <span className="text-warning">Pending</span>
                           )}
                         </td>
                         <td className="ant-table-cell">
@@ -454,7 +459,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

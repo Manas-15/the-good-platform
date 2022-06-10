@@ -33,4 +33,5 @@ export const paymentConstants = {
   // payment_response
   PAYMENT_SUCCESS: 2,
   PAYMENT_FAILURE: 1,
+  PAYMENT_PENDING: 3,
 };
