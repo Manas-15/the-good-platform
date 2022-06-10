@@ -31,12 +31,9 @@ export function corporates(state = {}, action) {
     case corporateConstants.ADD_CORPORATE_REQUEST:
       return { ...state, addingCorporate: true };
     case corporateConstants.ADD_CORPORATE_SUCCESS:
-      console.log("111111111111111111111111111111111");
       return { ...state, addingCorporate: false };
     case corporateConstants.ADD_CORPORATE_FAILURE:
-      console.log("2222222222222222222222222222222222");
       return { ...state, addingCorporate: false };
-
     case corporateConstants.UPDATE_CORPORATE_REQUEST:
       return { updateCorporate: true };
     case corporateConstants.UPDATE_CORPORATE_SUCCESS:
@@ -67,13 +64,15 @@ export function corporates(state = {}, action) {
       return {
         items: state.items,
         actionRequest: true,
-        corporateId: action.corporate.corporateId,
-        requestType: action.corporate.requestType,
+        corporateId: action?.corporate?.corporateId,
+        requestType: action?.corporate?.requestType,
+        userId: action?.corporate?.userId,
       };
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
+      console.log("state.requestType>>>>>>>>>>>>", state.requestType, state.userId)
       return {
         items: state?.items?.map((item) => {
-          if (item.userId === state.corporateId) {
+          if (item.userId === state.userId) {
             if (
               state.requestType === "Approve" ||
               state.requestType === "Reject"

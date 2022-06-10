@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import * as moment from "moment";
 
 const actionInitialValues = {
-  corporateId: "",
+  userId: "",
   requestType: "",
 };
 const ListCorporates = () => {
@@ -41,7 +41,7 @@ const ListCorporates = () => {
 
   const confirm = () => {
     handleClose();
-    actionInitialValues.corporateId = actionId;
+    actionInitialValues.userId = actionId;
     actionInitialValues.requestType = actionType;
 
     if (actionType === "Delete") {
@@ -140,35 +140,35 @@ const ListCorporates = () => {
                                   </Link>
                                 </Tooltip>
 
-                                {corporate?.isActive ? (
-                                  <Tooltip title="Active">
+                                {!corporate?.isActive ? (
+                                  <Tooltip title="Activate">
                                     <Link
                                       to="#"
                                       onClick={() =>
                                         handleOpenDialog(
-                                          "Inactive",
+                                          "Activate",
                                           corporate?.organizationName,
-                                          corporate?.corporateId
+                                          corporate?.userId
                                         )
                                       }
                                     >
-                                      <i className="bi bi-check-circle custom-color text-success fs-5 ms-2"></i>
+                                      <i className="bi bi-check-circle custom-color fs-5 ms-2"></i>
                                     </Link>
                                   </Tooltip>
                                 ) : null}
-                                {!corporate?.isActive ? (
-                                  <Tooltip title="Inactive">
+                                {corporate?.isActive ? (
+                                  <Tooltip title="Inactivate">
                                     <Link
                                       to="#"
                                       onClick={() =>
                                         handleOpenDialog(
-                                          "Active",
+                                          "Inactivate",
                                           corporate?.organizationName,
-                                          corporate?.corporateId
+                                          corporate?.userId
                                         )
                                       }
                                     >
-                                      <i class="bi bi-x-circle custom-color text-danger fs-5 ms-2"></i>
+                                      <i class="bi bi-x-circle custom-color fs-5 ms-2"></i>
                                     </Link>
                                   </Tooltip>
                                 ) : null}
