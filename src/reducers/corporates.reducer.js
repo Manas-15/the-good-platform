@@ -4,28 +4,28 @@ export function corporates(state = {}, action) {
   switch (action.type) {
     case corporateConstants.GET_CORPORATES_REQUEST:
       return {
-        loading: true,
+        loading: true
       };
     case corporateConstants.GET_CORPORATES_SUCCESS:
       return {
-        items: action.corporates?.data?.corporates,
+        items: action.corporates?.data?.corporates
       };
     case corporateConstants.GET_CORPORATES_FAILURE:
       return {
-        error: action.error,
+        error: action.error
       };
 
     case corporateConstants.GET_CORPORATES_REQUEST_BY_ID:
       return {
-        loading: true,
+        loading: true
       };
     case corporateConstants.GET_CORPORATES_SUCCESS_BY_ID:
       return {
-        items: action.corporates?.data?.corporates,
+        items: action.corporates?.data?.corporates
       };
     case corporateConstants.GET_CORPORATES_FAILURE_BY_ID:
       return {
-        error: action.error,
+        error: action.error
       };
 
     case corporateConstants.ADD_CORPORATE_REQUEST:
@@ -45,7 +45,7 @@ export function corporates(state = {}, action) {
       return {
         ...state,
         deleteCorporate: true,
-        corporateId: action?.corporateId?.corporateId,
+        corporateId: action?.corporateId?.corporateId
       };
     case corporateConstants.DELETE_CORPORATE_SUCCESS:
       return {
@@ -55,7 +55,7 @@ export function corporates(state = {}, action) {
           }
           return item;
         }),
-        response: action.corporateId?.data?.msg,
+        response: action.corporateId?.data?.msg
       };
     case corporateConstants.DELETE_CORPORATE_FAILURE:
       return {};
@@ -66,10 +66,9 @@ export function corporates(state = {}, action) {
         actionRequest: true,
         corporateId: action?.corporate?.corporateId,
         requestType: action?.corporate?.requestType,
-        userId: action?.corporate?.userId,
+        userId: action?.corporate?.userId
       };
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
-      console.log("state.requestType>>>>>>>>>>>>", state.requestType, state.userId)
       return {
         items: state?.items?.map((item) => {
           if (item.userId === state.userId) {
@@ -79,6 +78,9 @@ export function corporates(state = {}, action) {
             ) {
               return { ...item, isApprove: state.requestType === "Approve" };
             }
+            if (state.requestType === "Delete") {
+              return { ...item, isDeleted: true };
+            }
             if (
               state.requestType === "Activate" ||
               state.requestType === "Inactivate"
@@ -87,7 +89,7 @@ export function corporates(state = {}, action) {
             }
           }
           return item;
-        }),
+        })
       };
     case corporateConstants.CORPORATE_ACTION_FAILURE:
       return { items: state.items, error: action.error };

@@ -9,7 +9,7 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const ListCorporates = () => {
   let location = useLocation();
@@ -34,7 +34,7 @@ const ListCorporates = () => {
     setActionTitle(`${action} Confirmation`);
     setActionId(id);
     setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong>?`
+      `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong> corporate?`
     );
   };
   // console.log(actionType);
@@ -44,11 +44,11 @@ const ListCorporates = () => {
     actionInitialValues.userId = actionId;
     actionInitialValues.requestType = actionType;
 
-    if (actionType === "Delete") {
-      dispatch(corporateActions.deleteCorporate({ corporateId: actionId }));
-    } else {
-      dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
-    }
+    // if (actionType === "Delete") {
+    //   dispatch(corporateActions.deleteCorporate({ corporateId: actionId }));
+    // } else {
+    dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
+    // }
   };
   const handleClose = () => setOpen(false);
 
@@ -90,11 +90,10 @@ const ListCorporates = () => {
                 <tbody className="ant-table-tbody">
                   {corporates?.items && corporates?.items.length > 0 ? (
                     corporates?.items
-                      // ?.filter((val) => {
-                      //   return val?.isActive === true;
-                      // })
-                      // ?
-                      .map((corporate, index) => {
+                      ?.filter((val) => {
+                        return !val?.isDeleted;
+                      })
+                      ?.map((corporate, index) => {
                         return (
                           <tr
                             className="ant-table-row ant-table-row-level-0"
@@ -107,7 +106,7 @@ const ListCorporates = () => {
                                   className="text-black"
                                   to={{
                                     pathname: `/corporates/${corporate.corporateId}/employees`,
-                                    state: data?.isSuperadminView,
+                                    state: data?.isSuperadminView
                                   }}
                                 >
                                   {corporate?.organizationName}
@@ -122,7 +121,6 @@ const ListCorporates = () => {
                                 "DD MMM, YYYY"
                               )}
                             </td>
-
                             <td className="ant-table-cell">
                               <div className="ms-2">
                                 <Tooltip title="Edit">
@@ -130,7 +128,7 @@ const ListCorporates = () => {
                                     className="text-black"
                                     to={{
                                       pathname: `/corporates/edit/${corporate.corporateId}`,
-                                      state: corporate.corporateId,
+                                      state: corporate.corporateId
                                     }}
                                   >
                                     <i
@@ -139,7 +137,6 @@ const ListCorporates = () => {
                                     ></i>
                                   </Link>
                                 </Tooltip>
-
                                 {!corporate?.isActive ? (
                                   <Tooltip title="Activate">
                                     <Link

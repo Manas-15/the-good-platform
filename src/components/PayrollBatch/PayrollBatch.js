@@ -7,7 +7,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -26,12 +26,12 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const PayrollBatch = (props) => {
@@ -101,7 +101,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     filter("All");
@@ -121,7 +121,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" },
+    { label: "Processed", value: "10" }
   ];
   const handleOpen = (action, item) => {
     setOpen(true);
@@ -660,7 +660,7 @@ const PayrollBatch = (props) => {
                                 )
                               )}
 
-                            {!isBluePencilPortal  &&
+                            {!isBluePencilPortal &&
                               records?.map((batch, index) => (
                                 <tr
                                   key={index + 1}
@@ -947,7 +947,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
