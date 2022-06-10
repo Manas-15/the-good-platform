@@ -22,6 +22,8 @@ import ListDonationPreferences from "./ListDonationPreferences";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import { SearchDonationPreferenceHelper } from "../../helpers";
+import DonateHeader from "./../CharityPrograms/DonateHeader";
+import Donate from "./../CharityPrograms/Donate";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -55,6 +57,7 @@ const DonationPreferences = () => {
   const [actionContent, setActionContent] = useState("");
   const [tabType, setTabType] = useState(donationPreferenceConstants.ACTIVE);
   const [searchText, setSearchText] = useState("");
+  const [getRepeatCharity, setGetRepeatCharity] = useState();
 
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
@@ -185,6 +188,15 @@ const DonationPreferences = () => {
     //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
     // }
   };
+  const setRepeatCharity = (charity) => {
+    console.log(
+      "ddddddddddddddfffff",
+      document.getElementsByClassName("sidepanel")
+    );
+    document.getElementsByClassName("sidepanel")[0].classList.add("is-open");
+    setGetRepeatCharity(charity);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>> repeat charity", charity);
+  };
   return (
     <div className="customContainer program-list">
       <div className="row mb-4">
@@ -241,6 +253,7 @@ const DonationPreferences = () => {
                     )
                   : preferences?.items?.active
               }
+              repeatCharity={(e) => setRepeatCharity(e)}
             />
           </TabPane>
           <TabPane
@@ -269,6 +282,7 @@ const DonationPreferences = () => {
                     )
                   : preferences?.items?.complete
               }
+              repeatCharity={(e) => setRepeatCharity(e)}
             />
           </TabPane>
         </Tabs>
@@ -317,6 +331,29 @@ const DonationPreferences = () => {
           closeCheck={() => closeCheck(selectedPreference)}
         />
       )}
+      {
+        <div id="sidepanel" className="sidepanel">
+          <DonateHeader selectedCharity={getRepeatCharity} />
+          <div className="tab-content pt-2">
+            <div className="tab-pane fade show active give-once" id="give-once">
+              <Donate
+                frequency={donationPreferenceConstants.ONCE}
+                selectedCharity={getRepeatCharity}
+                tabType={tabType}
+                repeatPreference={true}
+              />
+            </div>
+            <div className="tab-pane fade show give-monthly" id="give-monthly">
+              <Donate
+                frequency={donationPreferenceConstants.MONTHLY}
+                selectedCharity={getRepeatCharity}
+                tabType={tabType}
+                repeatPreference={true}
+              />
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };

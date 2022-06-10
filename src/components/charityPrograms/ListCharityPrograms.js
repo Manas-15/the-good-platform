@@ -16,6 +16,8 @@ import {
   selectedCharityTabActions,
 } from "../../actions";
 import urlSlug from "url-slug";
+import DonateHeader from "./../CharityPrograms/DonateHeader";
+import Donate from "./../CharityPrograms/Donate";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const dispatch = useDispatch();
@@ -195,7 +197,14 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   //       `Are you sure you want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total ${selectedProgram?.employeeCount} employees have set donation preference for the programs.`
   //     );
   // }, [selectedProgram?.employeeCount]);
-
+  const addIconClass = (e) => {
+    e.target.classList.remove("bi-heart", "custom-color");
+    e.target.classList.add("bi-heart-fill", "red-color");
+  };
+  const removeIconClass = (e) => {
+    e.target.classList.add("bi-heart", "custom-color");
+    e.target.classList.remove("bi-heart-fill", "red-color");
+  };
   return (
     <>
       <div className="ant-row">
@@ -288,7 +297,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                     // )
                                   }
                                 >
-                                  <i className="bi-heart-fill fs-6 custom-color mr-1"></i>
+                                  <i
+                                    className="bi-heart-fill fs-6 red-color mr-1"
+                                    onMouseOver={(e) => removeIconClass(e)}
+                                    onMouseOut={(e) => addIconClass(e)}
+                                  ></i>
                                 </Link>
                               </Tooltip>
                             )}
@@ -303,7 +316,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                     )
                                   }
                                 >
-                                  <i className="bi-heart fs-6 custom-color"></i>
+                                  <i
+                                    className="bi-heart fs-6 custom-color"
+                                    onMouseOver={(e) => addIconClass(e)}
+                                    onMouseOut={(e) => removeIconClass(e)}
+                                  ></i>
                                 </Link>
                               </Tooltip>
                             )}
@@ -434,6 +451,35 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                 }}
               />
             )}
+            {
+              <div id="sidepanel" className="sidepanel">
+                <DonateHeader selectedCharity={setCharity} />
+                <div className="tab-content pt-2">
+                  <div
+                    className="tab-pane fade show active give-once"
+                    id="give-once"
+                  >
+                    <Donate
+                      frequency={donationPreferenceConstants.ONCE}
+                      selectedCharity={setCharity}
+                      tabType={tabType}
+                      repeatPreference={true}
+                    />
+                  </div>
+                  <div
+                    className="tab-pane fade show give-monthly"
+                    id="give-monthly"
+                  >
+                    <Donate
+                      frequency={donationPreferenceConstants.MONTHLY}
+                      selectedCharity={setCharity}
+                      tabType={tabType}
+                      repeatPreference={true}
+                    />
+                  </div>
+                </div>
+              </div>
+            }
           </div>
         </div>
       </div>

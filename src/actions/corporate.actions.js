@@ -160,7 +160,6 @@ function deleteCorporate(corporateId) {
 function registerCorporate(corporate, type) {
   return (dispatch) => {
     dispatch(request(corporate));
-
     corporateService.registerCorporate(corporate).then(
       (corporate) => {
         dispatch(success());
@@ -198,7 +197,6 @@ function corporateAccountRequest(actionValues) {
   return (dispatch) => {
     console.log(actionValues, "actyon typeeeee");
     dispatch(request(actionValues));
-
     corporateService.corporateAccountRequest(actionValues).then(
       (msg) => {
         dispatch(success(msg));

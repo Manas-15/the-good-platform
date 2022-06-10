@@ -58,6 +58,9 @@ const Header = () => {
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
             ? " - " + selectedCorporate?.corporate?.organizationName
             : ""}
+          {currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
+            ? " - " + selectedOrganization?.organization?.name
+            : ""}
         </h4>
         <ul className="d-flex align-items-center">
           <li className="nav-item d-block d-lg-none">

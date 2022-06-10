@@ -353,7 +353,7 @@ const PayrollBatchDetail = (props) => {
                                             type="text"
                                             size="4"
                                             maxLength={10}
-                                            value={preference?.donationAmount.toLocaleString()}
+                                            value={preference?.donationAmount?.toLocaleString()}
                                             className="form-control"
                                             disabled={true}
                                           />

@@ -19,8 +19,8 @@ import donationsConsent from "./../../config/donationsConsent.json";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { Progress, Tooltip, Switch } from "antd";
 import ReactHtmlParser from "react-html-parser";
-import DonateHeader from "./../CharityPrograms/DonateHeader";
-import Donate from "./../CharityPrograms/Donate";
+// import DonateHeader from "./../CharityPrograms/DonateHeader";
+// import Donate from "./../CharityPrograms/Donate";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -38,7 +38,7 @@ const actionInitialValues = {
   preferenceId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
-const ListDonationPreferences = ({ tabType, items }) => {
+const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
@@ -51,7 +51,7 @@ const ListDonationPreferences = ({ tabType, items }) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
-  const [repeatCharity, setRepeatCharity] = useState();
+  // const [repeatCharity, setRepeatCharity] = useState();
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
@@ -86,9 +86,12 @@ const ListDonationPreferences = ({ tabType, items }) => {
       }"</strong>?`
     );
   };
-  const openNav = (charity) => {
-    document.getElementById("sidepanel").classList.add("is-open");
-    setRepeatCharity(charity);
+  // const openNav = (charity, type) => {
+  //   document.getElementsByClassName("sidepanel").classList.add("is-open");
+  //   setRepeatCharity(charity);
+  // };
+  const setRepeatCharity = (charity) => {
+    repeatCharity(charity);
   };
   const setDuration = (value) => {
     if (actionType === donationPreferenceConstants.SUSPEND) {
@@ -372,21 +375,19 @@ const ListDonationPreferences = ({ tabType, items }) => {
                                   </Link>
                                 </Tooltip>
                               )}
-                            {tabType !==
-                              donationPreferenceConstants.COMPLETED &&
-                              preference?.frequency ===
-                                donationPreferenceConstants?.ONCE_FREQUENCY && (
-                                <Tooltip
-                                  title={donationPreferenceConstants.REPEAT}
+                            {preference?.frequency ===
+                              donationPreferenceConstants?.ONCE_FREQUENCY && (
+                              <Tooltip
+                                title={donationPreferenceConstants.REPEAT}
+                              >
+                                <Link
+                                  onClick={() => setRepeatCharity(preference)}
+                                  className="mr-2"
                                 >
-                                  <Link
-                                    onClick={() => openNav(preference)}
-                                    className="mr-2"
-                                  >
-                                    <i className="bi bi-arrow-repeat fs-5 custom-color"></i>
-                                  </Link>
-                                </Tooltip>
-                              )}
+                                  <i className="bi bi-arrow-repeat fs-5 custom-color"></i>
+                                </Link>
+                              </Tooltip>
+                            )}
                             {tabType !==
                               donationPreferenceConstants.COMPLETED && (
                               <Tooltip title={"Delete"}>
@@ -486,29 +487,6 @@ const ListDonationPreferences = ({ tabType, items }) => {
           closeCheck={() => closeCheck(selectedPreference)}
         />
       )}
-      {
-        <div id="sidepanel" className="sidepanel">
-          <DonateHeader selectedCharity={repeatCharity} />
-          <div className="tab-content pt-2">
-            <div className="tab-pane fade show active give-once" id="give-once">
-              <Donate
-                frequency={donationPreferenceConstants.ONCE}
-                selectedCharity={repeatCharity}
-                tabType={tabType}
-                repeatPreference={true}
-              />
-            </div>
-            <div className="tab-pane fade show give-monthly" id="give-monthly">
-              <Donate
-                frequency={donationPreferenceConstants.MONTHLY}
-                selectedCharity={repeatCharity}
-                tabType={tabType}
-                repeatPreference={true}
-              />
-            </div>
-          </div>
-        </div>
-      }
     </div>
   );
 };

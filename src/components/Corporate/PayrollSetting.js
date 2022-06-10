@@ -41,6 +41,8 @@ const PayrollSetting = (props) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
+  const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
   const [currentView, setCurrentView] = useState(
     payrollConstants.EMPLOYEE_VIEW
   );
@@ -71,6 +73,20 @@ const PayrollSetting = (props) => {
         }"</strong>?`
       );
     } else {
+      const totalEmployee = [];
+      const totalProgram = [];
+      preferences?.items?.active?.map((item) => {
+        var findEmployee = totalEmployee.find(
+          (x) => x.employeeId === item.employeeId
+        );
+        var findProgram = totalProgram.find(
+          (x) => x.charityProgramId === item.charityProgramId
+        );
+        if (!findEmployee) totalEmployee.push(item);
+        if (!findProgram) totalProgram.push(item);
+      });
+      setTotalEmployeeInBatch(totalEmployee?.length);
+      setTotalProgramInBatch(totalProgram?.length);
       setActionContent(`Are you sure to process this batch?`);
     }
   };
@@ -496,6 +512,19 @@ const PayrollSetting = (props) => {
           actionType={actionType}
           title={actionTitle}
           content={actionContent}
+          totalEmployee={totalEmployeeInBatch}
+          totalProgram={totalProgramInBatch}
+          totalAmount={
+            preferences?.items?.active
+              ? preferences?.items?.active
+                  ?.reduce(
+                    (total, currentValue) =>
+                      (total = total + currentValue.donationAmount),
+                    0
+                  )
+                  .toLocaleString()
+              : 0
+          }
           handleConfirm={() => {
             confirm();
           }}

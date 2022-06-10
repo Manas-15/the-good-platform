@@ -14,6 +14,9 @@ export default function ConfirmationDialog({
   open,
   handleCancel,
   duration,
+  totalEmployee,
+  totalProgram,
+  totalAmount,
 }) {
   const [isDisabled, setIsDisabled] = useState(
     actionType === donationPreferenceConstants.SUSPEND
@@ -34,6 +37,27 @@ export default function ConfirmationDialog({
         </Modal.Header>
         <Modal.Body style={{ fontSize: "18" }}>
           {ReactHtmlParser(content)}
+          {totalEmployee && (
+            <>
+              <p className="mt-4">
+                <strong>Total employees donating:</strong>&nbsp;{totalEmployee}
+              </p>
+            </>
+          )}
+          {totalProgram && (
+            <>
+              <p>
+                <strong>Total programs benefits:</strong>&nbsp;{totalProgram}
+              </p>
+            </>
+          )}
+          {totalAmount && (
+            <>
+              <p>
+                <strong>Total amount:</strong>&nbsp;{totalAmount}
+              </p>
+            </>
+          )}
           {actionType === donationPreferenceConstants.SUSPEND && (
             <div className="mt-3">
               <select
