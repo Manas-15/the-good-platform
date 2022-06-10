@@ -218,11 +218,15 @@ const PayrollBatch = (props) => {
     if (keyword !== "") {
       const results = records.filter((rec) => {
         if (selected === "batchId") {
-          rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
+          return rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
         } else if (selected === "corporateName") {
-          rec?.corporateName.toLowerCase().startsWith(keyword.toLowerCase());
+          return rec?.corporateName
+            .toLowerCase()
+            .startsWith(keyword.toLowerCase());
         } else {
-          rec?.referenceId.toLowerCase().startsWith(keyword.toLowerCase());
+          return rec?.referenceId
+            .toLowerCase()
+            .startsWith(keyword.toLowerCase());
         }
       });
       setAllRecords(results);
@@ -428,7 +432,7 @@ const PayrollBatch = (props) => {
                         <table>
                           <thead className="ant-table-thead">
                             <tr>
-                              <th className="ant-table-cell">Batch id manas</th>
+                              <th className="ant-table-cell">Batch id</th>
 
                               {currentView ===
                                 payrollConstants.ORGANIZATION_VIEW && (
@@ -439,10 +443,10 @@ const PayrollBatch = (props) => {
 
                               {!corporateId && (
                                 <th className="ant-table-cell">
-                                  Corporate Name m
+                                  Corporate Name
                                 </th>
                               )}
-                              <th className="ant-table-cell">Crated Date m</th>
+                              <th className="ant-table-cell">Crated Date</th>
                               <th className="ant-table-cell">
                                 Amount (
                                 {ReactHtmlParser(
