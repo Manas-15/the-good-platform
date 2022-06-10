@@ -203,7 +203,7 @@ function corporateAccountRequest(actionValues) {
         dispatch(
           alertActions.success(
             `Corporate ${
-              actionValues.requestType === "Inactive"
+              actionValues.requestType === "Inactivate"
                 ? "inactivated"
                 : actionValues.requestType.toLowerCase() + "d"
             } successfully`
@@ -220,8 +220,8 @@ function corporateAccountRequest(actionValues) {
   function request(corporate) {
     return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
   }
-  function success() {
-    return { type: corporateConstants.CORPORATE_ACTION_SUCCESS };
+  function success(data) {
+    return { type: corporateConstants.CORPORATE_ACTION_SUCCESS, data };
   }
   function failure(error) {
     return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };

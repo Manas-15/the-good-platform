@@ -53,7 +53,6 @@ const Donate = ({
     currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
-    console.log("selectedCharity ??????????????????????", selectedCharity);
     if (selectedCharity) {
       setSelectedAmount(
         selectedCharity?.employeePreferenceId
@@ -142,15 +141,15 @@ const Donate = ({
             <div className="row mb-4">
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
-                  isActive={selectedAmount === selectedCharity?.unitPrice * 1}
-                  amount={selectedCharity?.unitPrice * 1}
+                  isActive={selectedAmount && selectedAmount === selectedCharity?.unitPrice * 1}
+                  amount={500 * 1}
                   setSelectedAmount={setAmount}
                 />
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 2}
-                  amount={selectedCharity?.unitPrice * 2}
+                  amount={500 * 2}
                   setSelectedAmount={setAmount}
                 />
               </div>
@@ -159,14 +158,14 @@ const Donate = ({
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 3}
-                  amount={selectedCharity?.unitPrice * 3}
+                  amount={500 * 3}
                   setSelectedAmount={setAmount}
                 />
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 4}
-                  amount={selectedCharity?.unitPrice * 4}
+                  amount={500 * 4}
                   setSelectedAmount={setAmount}
                 />
               </div>
