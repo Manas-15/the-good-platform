@@ -113,7 +113,7 @@ const CharityPrograms = (props) => {
       <div className="row mb-4">
         <div className="col-md-12">
           <h1 className="ant-typography customHeading">
-            Social Organizations/Charity Programs
+            Social Organizations/Charity Programs manas
           </h1>
         </div>
       </div>

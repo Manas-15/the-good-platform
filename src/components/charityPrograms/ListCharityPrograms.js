@@ -18,14 +18,18 @@ import {
 import urlSlug from "url-slug";
 import DonateHeader from "./../CharityPrograms/DonateHeader";
 import Donate from "./../CharityPrograms/Donate";
+// import { handleInputChange } from "react-select/dist/declarations/src/utils";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
+  console.log(items);
+
   const dispatch = useDispatch();
   const openNav = (charity) => {
     document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
   const charityPrograms = useSelector((state) => state?.charityPrograms?.items);
+
   const employeeCount = useSelector(
     (state) => state?.charityPrograms?.employeeCount
   );
@@ -44,6 +48,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  console.log(selectedCorporate);
   const user = useSelector((state) => state.employee.user);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
@@ -51,8 +56,10 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [selectedProgram, setSelectedProgram] = useState(Object);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const [checkList, setCheckList] = useState();
+  const [allItems, setAllItems] = useState([]);
 
   const handleOpen = (action, item) => {
+    console.log(action, item);
     setOpen(true);
     setActionType(action);
     setSelectedProgram(item);
@@ -83,7 +90,13 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     console.log("selectedCharity >>>>>>>>>>>>>>>>", selectedCharity);
     handleClose();
     dispatch(
-      actionType === charityProgramConstants.UNPROMOTE
+      actionType === charityProgramConstants.BULK_UNPROMOTE
+        ? charityProgramActions.operateDenyRequest({
+            corporateId: selectedCorporate?.corporate?.corporateId,
+            socialId: selectedProgram?.map((item) => item.soicalId),
+            programId: selectedProgram?.map((item) => item.charityId),
+          })
+        : actionType === charityProgramConstants.UNPROMOTE
         ? charityProgramActions.operateDenyRequest({
             corporateId: selectedCorporate?.corporate?.corporateId,
             socialId: selectedProgram?.soicalId,
@@ -162,6 +175,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     }
     // setSelectedCharity
   }, [employeeCount]);
+  useEffect(() => {
+    setAllItems(items);
+  }, [items]);
   // useEffect(() => {
   //   console.log(
   //     "beforeUnrpomoteMsg >>>>>>>>>>>>>>>",
@@ -205,6 +221,20 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     e.target.classList.add("bi-heart", "custom-color");
     e.target.classList.remove("bi-heart-fill", "red-color");
   };
+  const handleCheck = (e) => {
+    const { name, checked } = e.target;
+    if (name === "allSelect") {
+      let tempUser = allItems?.map((item) => {
+        return { ...item, isChecked: checked };
+      });
+      setAllItems(tempUser);
+    } else {
+      let tempUser = allItems?.map((item) =>
+        item.charityName === name ? { ...item, isChecked: checked } : item
+      );
+      setAllItems(tempUser);
+    }
+  };
   return (
     <>
       <div className="ant-row">
@@ -214,17 +244,43 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
               <table>
                 <thead className="ant-table-thead">
                   <tr>
-                    <th>
-                      {/* <CheckBox
-                        name="select-all"
-                        tick={isSelectedAll}
-                        onCheck={(e) =>
-                          onCheckBoxChange("all", e.target.checked)
-                        }
-                      /> */}
+                    <th className="d-flex">
+                      <div className="form-check me-2">
+                        <input
+                          type="checkbox"
+                          name="allSelect"
+                          checked={
+                            allItems?.filter(
+                              (charityProgram) =>
+                                charityProgram?.isChecked !== true
+                            ).length < 1
+                          }
+                          className="form-check-input"
+                          onChange={handleCheck}
+                        />
+                      </div>
+
+                      <Tooltip title={charityProgramConstants.UNPROMOTE}>
+                        <Link
+                          to="#"
+                          onClick={
+                            () => checkBeforeUnpromote(allItems)
+                            // () =>
+                            // handleOpen(
+                            //   charityProgramConstants.UNPROMOTE,
+                            //   allItems
+                            // )
+                          }
+                        >
+                          <i
+                            className="bi-heart-fill fs-6 red-color mr-1"
+                            onMouseOver={(e) => removeIconClass(e)}
+                            onMouseOut={(e) => addIconClass(e)}
+                          ></i>
+                        </Link>
+                      </Tooltip>
                     </th>
-                    {/* <th className="ant-table-cell">Sr No.</th> */}
-                    <th className="ant-table-cell">Program</th>
+                    <th className="ant-table-cell">Program manas</th>
                     <th className="ant-table-cell">Organization</th>
                     <th className="ant-table-cell">Category</th>
                     <th className="ant-table-cell text-center">
@@ -235,22 +291,24 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {items?.length > 0 ? (
-                    items?.map((charityProgram, index) => (
+                  {allItems?.length > 0 ? (
+                    allItems?.map((charityProgram, index) => (
                       <tr
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"
                       >
                         <td>
-                          {/* <CheckBox
-                            name="select-all"
-                            tick={isSelectedAll || null}
-                            onCheck={(e) =>
-                              onCheckBoxChange("", e.target.checked)
-                            }
-                          /> */}
+                          <div className="form-check">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              name={charityProgram?.charityName}
+                              checked={charityProgram?.isChecked || false}
+                              onChange={handleCheck}
+                            />
+                          </div>
                         </td>
-                        {/* <td className="ant-table-cell">{index + 1}</td> */}
+
                         <td className="ant-table-cell">
                           <Tooltip title={charityProgram?.charityName}>
                             <Link
@@ -289,6 +347,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 title={charityProgramConstants.UNPROMOTE}
                               >
                                 <Link
+                                  to="#"
                                   onClick={
                                     () => checkBeforeUnpromote(charityProgram)
                                     // handleOpen(
@@ -309,6 +368,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             tabType === charityProgramConstants.OTHERS && (
                               <Tooltip title={charityProgramConstants.PROMOTE}>
                                 <Link
+                                  to="#"
                                   onClick={() =>
                                     handleOpen(
                                       charityProgramConstants.PROMOTE,
@@ -326,7 +386,10 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             )}
                           {isEmployeePortal && charityProgram?.donated && (
                             <Tooltip title="Edit">
-                              <Link onClick={() => openNav(charityProgram)}>
+                              <Link
+                                to="#"
+                                onClick={() => openNav(charityProgram)}
+                              >
                                 <i className="bi-pencil-square fs-5 custom-color"></i>
                               </Link>
                             </Tooltip>

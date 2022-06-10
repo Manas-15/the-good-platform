@@ -59,11 +59,7 @@ const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
           </div>
           {!isProgramDetail && (
             <div className="col-md-2">
-              <a
-                href="javascript:void(0)"
-                className="closebtn"
-                onClick={closeNav}
-              >
+              <a href="#" className="closebtn" onClick={closeNav}>
                 ×
               </a>
             </div>
