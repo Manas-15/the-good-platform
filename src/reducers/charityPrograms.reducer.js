@@ -145,6 +145,36 @@ export function charityPrograms(state = {}, action) {
         error: action.error,
         loading: false,
       };
+    case charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        programId: action?.program?.programId,
+      };
+    case charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_SUCCESS:
+      return {
+        ...state,
+        employeeCount: action?.data?.data?.count,
+        // items: {
+        //   other: state?.items?.["other"],
+        //   sponsored: state?.items?.["sponsored"]?.map((item) => {
+        //     if (item?.charityId === state?.programId) {
+        //       return {
+        //         ...item,
+        //         employeeCount: action?.data?.data?.count,
+        //       };
+        //     }
+        //     return item;
+        //   }),
+        // },
+        loading: false,
+      };
+    case charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_FAILURE:
+      return {
+        error: action.error,
+        loading: false,
+      };
+
     case charityProgramConstants.GET_PROGRAM_DETAIL_REQUEST:
       return {
         ...state,
