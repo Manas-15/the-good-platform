@@ -31,10 +31,16 @@ const initialValues = {
 };
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
+  console.log(records);
+  const [selected, setSelected] = useState();
+  const [searchValue, setSearchValue] = useState("");
+  const [allRecords, setAllRecords] = useState(records);
+
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
@@ -101,6 +107,43 @@ const ListTransactionsHistory = (props) => {
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
   }, [transactions?.totalCount]);
+
+  useEffect(() => {
+    setAllRecords(records);
+  }, [records]);
+
+  const onSearchChange = (e, selected) => {
+    console.log(selected);
+    const keyword = e.target.value;
+    console.log(keyword);
+
+    if (keyword !== "") {
+      const results = records.filter((rec) => {
+        if (selected === "programName") {
+          return rec?.charityName
+            .toLowerCase()
+            .startsWith(keyword.toLowerCase());
+        } else if (selected === "employeeName") {
+          return rec?.employeeName
+            .toLowerCase()
+            .startsWith(keyword.toLowerCase());
+        } else if (selected === "amount") {
+          return rec?.amount.startsWith(keyword);
+        } else {
+          return null;
+        }
+      });
+      setAllRecords(results);
+    } else {
+      setAllRecords(records);
+    }
+    setSearchValue(keyword);
+  };
+  const onHandleChange = (e) => {
+    console.log("fired");
+    setSelected(e.target.value);
+  };
+
   const filter = (type, value) => {
     setIsFilter(true);
     if (value && value !== "0") {
@@ -202,7 +245,9 @@ const ListTransactionsHistory = (props) => {
     <div className="customContainer">
       <div className="row mt-3">
         <div className="col-md-4">
-          <h1 className="ant-typography customHeading">Account Summary</h1>
+          <h1 className="ant-typography customHeading">
+            Account Summary Manas
+          </h1>
         </div>
         <div className="col-md-4 text-center">
           <DateRangePicker
@@ -245,32 +290,85 @@ const ListTransactionsHistory = (props) => {
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
-        <div className="ant-col-6 searchContainer">
-          <div className="ant-input-affix-wrapper inputFilterInput">
-            <span className="ant-input-prefix">
-              <i className="bi bi-search"></i>
-              <input
-                placeholder="Search by Program Name"
-                className="ant-input-search"
-                type="text"
-                onChange={(e) => search(e.target.value, "programName")}
-              />
-            </span>
+        <div className="col-md d-flex">
+          <div className="col-md-4">
+            <div>
+              <select
+                className="form-select"
+                value={selected}
+                onChange={(e) => onHandleChange(e)}
+              >
+                <option defaultValue>Select</option>
+                <option value="programName">Program Name</option>
+                {isCorporatePortal && (
+                  <option value="employeeName">Employee Name</option>
+                )}
+
+                <option value="amount">Amount</option>
+              </select>
+            </div>
           </div>
+          {selected === "programName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Program Name"
+                      onChange={(e) => onSearchChange(e, selected)}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "employeeName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Employee Name"
+                      onChange={(e) => onSearchChange(e, selected)}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "amount" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="number"
+                      pattern="[0-9]*"
+                      maxLength={15}
+                      min={0}
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Amount"
+                      onChange={(e) => onSearchChange(e, selected)}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="ant-col-6  searchContainer ml-3">
-          <div className="ant-input-affix-wrapper inputFilterInput">
-            <span className="ant-input-prefix">
-              <i className="bi bi-search"></i>
-              <input
-                placeholder="Search by Employee Name"
-                className="ant-input-search"
-                type="text"
-                onChange={(e) => search(e.target.value, "employeeName")}
-              />
-            </span>
-          </div>
-        </div>
+
+        {/* 
+        
         <div className="ant-col-6  searchContainer ml-3">
           <div className="ant-input-affix-wrapper inputFilterInput">
             <span className="ant-input-prefix">
@@ -288,7 +386,7 @@ const ListTransactionsHistory = (props) => {
               />
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
       {transactions.loading && <Loader />}
       <div className="ant-row">
@@ -321,8 +419,8 @@ const ListTransactionsHistory = (props) => {
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {records?.length > 0 ? (
-                    records?.map((transaction, index) => (
+                  {allRecords?.length > 0 ? (
+                    allRecords?.map((transaction, index) => (
                       <tr
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"
