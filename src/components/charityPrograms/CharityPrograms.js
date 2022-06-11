@@ -8,7 +8,7 @@ import {
   viewPortalConstants,
   charityProgramConstants,
   payrollConstants,
-  userConstants,
+  userConstants
 } from "./../../constants";
 import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
@@ -64,13 +64,13 @@ const CharityPrograms = (props) => {
           ? {
               corporateId: selectedCorporate?.corporate?.corporateId,
               socialId: selectedOrganization?.id,
-              userType: userConstants.CORPORATE_VIEW,
+              userType: userConstants.CORPORATE_VIEW
             }
           : isIndividualPortal
           ? {
               // uuid: user?.uuid,
               // socialId: selectedOrganization?.id,
-              userType: userConstants.INDIVIDUAL_VIEW,
+              userType: userConstants.INDIVIDUAL_VIEW
               // orgId: selectedOrganization?.id?.toString(),
             }
           : {
@@ -79,13 +79,15 @@ const CharityPrograms = (props) => {
               userType: userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
-                : user?.corporateId,
+                : user?.corporateId
             }
       )
     );
   }, []);
   const setCharity = (charity) => {
+    console.log("dddddddddddddddddddddd inside", charity);
     setSelectedCharity(charity);
+    openNav();
   };
   const setType = (type) => {
     setTabType(type);

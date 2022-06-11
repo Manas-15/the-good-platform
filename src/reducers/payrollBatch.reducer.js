@@ -10,6 +10,7 @@ export function payrollBatch(state = {}, action) {
       return {
         items: action?.batches?.data?.batch,
         totalCount: action?.batches?.data?.count,
+        loading: false,
       };
     case payrollConstants.GET_PAYROLL_BATCH_FAILURE:
       return {
@@ -23,6 +24,7 @@ export function payrollBatch(state = {}, action) {
         requestType: action?.data?.requestType,
       };
     case payrollConstants.UPDATE_BATCH_STATUS_SUCCESS:
+      console.log("dddddddddddddddddddd reducer", state?.requestType, state?.requestType)
       return {
         ...state,
         items: state.items.map((item) => {

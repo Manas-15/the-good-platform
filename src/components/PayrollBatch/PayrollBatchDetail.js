@@ -69,8 +69,8 @@ const PayrollBatchDetail = (props) => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
     setCurrentView(
       isOrganizationView
-        ? payrollConstants.CORPORATE_VIEW
-        : isCorporateView || isBluePencilPortal
+        ? payrollConstants.EMPLOYEE_VIEW
+        : isCorporateView
         ? payrollConstants.EMPLOYEE_VIEW
         : payrollConstants.CORPORATE_VIEW
     );
@@ -142,7 +142,7 @@ const PayrollBatchDetail = (props) => {
               </button>
             </Link>
           )}
-          {!isBluePencilPortal && (!isCorporateView || isOrganizationView) && (
+          {!isOrganizationView && !isBluePencilPortal && (!isCorporateView || isOrganizationView) && (
             <Link
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}

@@ -260,18 +260,19 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                             <form
                               id={`amount${preference?.employeePreferenceId}`}
                             >
+                              
                               <input
                                 name="amount"
                                 type="text"
                                 size="4"
                                 maxLength={10}
-                                defaultValue={preference?.donationAmount.toLocaleString()}
+                                defaultValue={preference?.donationAmount?.toLocaleString()}
                                 className="form-control"
                                 onBlur={() =>
-                                  showConsent(
+                                  (updatedValue && updateType === donationPreferenceConstants.AMOUNT) ? showConsent(
                                     preference,
                                     donationPreferenceConstants.AMOUNT
-                                  )
+                                  ) : null
                                 }
                                 onInput={(e) => setUpdatedValue(e.target.value)}
                                 id={`amount${preference?.employeePreferenceId}`}

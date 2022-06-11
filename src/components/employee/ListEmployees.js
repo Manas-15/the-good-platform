@@ -9,7 +9,7 @@ import Pagination from "../Shared/Pagination";
 import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 let goodplatformFields = [
   { label: "First Name", value: "firstName" },
@@ -21,7 +21,7 @@ let goodplatformFields = [
   { label: "PAN", value: "pan" },
   { label: "Joining Date", value: "joiningDate" },
   { label: "Country", value: "country" },
-  { label: "Status", value: "status" },
+  { label: "Status", value: "status" }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -56,7 +56,7 @@ const ListEmployees = (props) => {
       employeeActions.getEmployees({
         corporateId: corporateId,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   }, [currentPage]);
@@ -118,7 +118,7 @@ const ListEmployees = (props) => {
             fieldType.push("select_field");
             goodplatformFields = [
               ...goodplatformFields,
-              { label: "Select Field", value: "select_field" },
+              { label: "Select Field", value: "select_field" }
             ];
           }
         }
@@ -314,7 +314,7 @@ const ListEmployees = (props) => {
                                     }
                                   >
                                     <span className="bi-check-circle">
-                                      Approve
+                                      &nbsp;Approve
                                     </span>
                                   </li>
                                 ) : null}
@@ -326,7 +326,9 @@ const ListEmployees = (props) => {
                                       handleOpen("Reject", employee)
                                     }
                                   >
-                                    <span className="bi-x-circle"> Reject</span>
+                                    <span className="bi-x-circle">
+                                      &nbsp;Reject
+                                    </span>
                                   </li>
                                 ) : null}
                               </ul>

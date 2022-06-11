@@ -5,7 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -23,7 +23,7 @@ import PayrollBatchDetail from "./PayrollBatchDetail";
 
 const confirmInitialValues = {
   batchId: "",
-  requestType: "",
+  requestType: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 let accordionData;
@@ -144,7 +144,7 @@ const PayrollBatchAccordion = (props) => {
     dispatch(
       payrollBatchActions.updateBatchStatus({
         batchId: selectedBatch?.batchId,
-        requestType: payrollConstants.PAID,
+        requestType: payrollConstants.PAID
       })
     );
     hidePaidSimulator();
@@ -168,7 +168,7 @@ const PayrollBatchAccordion = (props) => {
             socialOrganizationName,
             status,
             totalOrganizationCount,
-            receivedOrganizationIds,
+            receivedOrganizationIds
           }
         ) => {
           const temp = {
@@ -184,7 +184,7 @@ const PayrollBatchAccordion = (props) => {
             socialOrganizationName: "",
             status: 1,
             totalOrganizationCount: 0,
-            receivedOrganizationIds: "",
+            receivedOrganizationIds: ""
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].amount += amount;
@@ -249,7 +249,7 @@ const PayrollBatchAccordion = (props) => {
                                         Corporate
                                       </th>
                                     )}
-                                    <th className="ant-table-cell">Created</th>
+                                    <th className="ant-table-cell">Month</th>
                                     <th className="ant-table-cell">
                                       Amount (
                                       {ReactHtmlParser(
@@ -491,7 +491,7 @@ const PayrollBatchAccordion = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -519,6 +519,9 @@ const PayrollBatchAccordion = (props) => {
                               <strong>Amount:</strong>
                             </div>
                             <div className="col-md-8">
+                              {ReactHtmlParser(
+                                donationPreferenceConstants?.CURRENCY
+                              )}
                               {selectedBatch?.amount?.toLocaleString()}
                             </div>
                           </div>

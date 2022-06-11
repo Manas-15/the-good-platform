@@ -429,7 +429,7 @@ const PayrollSetting = (props) => {
                                           type="text"
                                           size="4"
                                           maxLength={10}
-                                          defaultValue={preference?.donationAmount.toLocaleString()}
+                                          defaultValue={preference?.donationAmount?.toLocaleString()}
                                           className="form-control"
                                           disabled={true}
                                         />

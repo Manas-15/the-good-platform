@@ -4,39 +4,36 @@ export function corporates(state = {}, action) {
   switch (action.type) {
     case corporateConstants.GET_CORPORATES_REQUEST:
       return {
-        loading: true,
+        loading: true
       };
     case corporateConstants.GET_CORPORATES_SUCCESS:
       return {
-        items: action.corporates?.data?.corporates,
+        items: action.corporates?.data?.corporates
       };
     case corporateConstants.GET_CORPORATES_FAILURE:
       return {
-        error: action.error,
+        error: action.error
       };
 
     case corporateConstants.GET_CORPORATES_REQUEST_BY_ID:
       return {
-        loading: true,
+        loading: true
       };
     case corporateConstants.GET_CORPORATES_SUCCESS_BY_ID:
       return {
-        items: action.corporates?.data?.corporates,
+        items: action.corporates?.data?.corporates
       };
     case corporateConstants.GET_CORPORATES_FAILURE_BY_ID:
       return {
-        error: action.error,
+        error: action.error
       };
 
     case corporateConstants.ADD_CORPORATE_REQUEST:
       return { ...state, addingCorporate: true };
     case corporateConstants.ADD_CORPORATE_SUCCESS:
-      console.log("111111111111111111111111111111111");
       return { ...state, addingCorporate: false };
     case corporateConstants.ADD_CORPORATE_FAILURE:
-      console.log("2222222222222222222222222222222222");
       return { ...state, addingCorporate: false };
-
     case corporateConstants.UPDATE_CORPORATE_REQUEST:
       return { updateCorporate: true };
     case corporateConstants.UPDATE_CORPORATE_SUCCESS:
@@ -48,7 +45,7 @@ export function corporates(state = {}, action) {
       return {
         ...state,
         deleteCorporate: true,
-        corporateId: action?.corporateId?.corporateId,
+        corporateId: action?.corporateId?.corporateId
       };
     case corporateConstants.DELETE_CORPORATE_SUCCESS:
       return {
@@ -58,7 +55,7 @@ export function corporates(state = {}, action) {
           }
           return item;
         }),
-        response: action.corporateId?.data?.msg,
+        response: action.corporateId?.data?.msg
       };
     case corporateConstants.DELETE_CORPORATE_FAILURE:
       return {};
@@ -67,18 +64,22 @@ export function corporates(state = {}, action) {
       return {
         items: state.items,
         actionRequest: true,
-        corporateId: action.corporate.corporateId,
-        requestType: action.corporate.requestType,
+        corporateId: action?.corporate?.corporateId,
+        requestType: action?.corporate?.requestType,
+        userId: action?.corporate?.userId
       };
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
       return {
         items: state?.items?.map((item) => {
-          if (item.userId === state.corporateId) {
+          if (item.userId === state.userId) {
             if (
               state.requestType === "Approve" ||
               state.requestType === "Reject"
             ) {
               return { ...item, isApprove: state.requestType === "Approve" };
+            }
+            if (state.requestType === "Delete") {
+              return { ...item, isDeleted: true };
             }
             if (
               state.requestType === "Activate" ||
@@ -88,7 +89,7 @@ export function corporates(state = {}, action) {
             }
           }
           return item;
-        }),
+        })
       };
     case corporateConstants.CORPORATE_ACTION_FAILURE:
       return { items: state.items, error: action.error };
