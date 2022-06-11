@@ -112,32 +112,30 @@ const ListTransactionsHistory = (props) => {
     setAllRecords(records);
   }, [records]);
 
-  const onSearchChange = (e, selected) => {
-    console.log(selected);
-    const keyword = e.target.value;
-    console.log(keyword);
-
-    if (keyword !== "") {
-      const results = records.filter((rec) => {
+  const onSearchChange = (value, selected) => {
+    // const keyword = e.target.value;
+console.log("???????????????????",value,selected)
+    if (value !== "") {
+      // const results = records.filter((rec) => {
         if (selected === "programName") {
-          return rec?.charityName
-            .toLowerCase()
-            .startsWith(keyword.toLowerCase());
+          setSearchByProgramName(value);
+          // return rec?.charityName
+          //   .toLowerCase()
+          //   .startsWith(keyword.toLowerCase());
         } else if (selected === "employeeName") {
-          return rec?.employeeName
-            .toLowerCase()
-            .startsWith(keyword.toLowerCase());
+          setSearchByEmployeeName(value);
+          // return rec?.employeeName
+          //   .toLowerCase()
+          //   .startsWith(keyword.toLowerCase());
         } else if (selected === "amount") {
-          return rec?.amount.startsWith(keyword);
+          setSearchByAmount(value);
+          // console.log(">>>>>>>>>>>>>>>> keyword", keyword)
+          // return allRecords.includes(keyword);
         } else {
           return null;
         }
-      });
-      setAllRecords(results);
-    } else {
-      setAllRecords(records);
+      // });
     }
-    setSearchValue(keyword);
   };
   const onHandleChange = (e) => {
     console.log("fired");
@@ -246,13 +244,16 @@ const ListTransactionsHistory = (props) => {
       <div className="row mt-3">
         <div className="col-md-4">
           <h1 className="ant-typography customHeading">
-            Account Summary Manas
+            Account Summary
           </h1>
         </div>
         <div className="col-md-4 text-center">
           <DateRangePicker
             appearance="default"
             onOk={(value) => fetchData(value)}
+            placeholder={`${moment().add(-30, 'days').format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
+            format={'dd/MM/yyyy'}
+            cleanable={true}
           />
         </div>
         <div className="col-md-4 text-right">
@@ -290,7 +291,7 @@ const ListTransactionsHistory = (props) => {
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
-        <div className="col-md d-flex">
+        <div className="col-md d-flex pl-0">
           <div className="col-md-4">
             <div>
               <select
@@ -319,7 +320,7 @@ const ListTransactionsHistory = (props) => {
                       // className="form-control"
                       className="ant-input-search"
                       placeholder="Search by Program Name"
-                      onChange={(e) => onSearchChange(e, selected)}
+                      onChange={(e) => onSearchChange(e.target.value, "programName")}
                     />
                   </span>
                 </div>
@@ -337,7 +338,7 @@ const ListTransactionsHistory = (props) => {
                       // className="form-control"
                       className="ant-input-search"
                       placeholder="Search by Employee Name"
-                      onChange={(e) => onSearchChange(e, selected)}
+                      onChange={(e) => onSearchChange(e.target.value, "employeeName")}
                     />
                   </span>
                 </div>
@@ -358,7 +359,7 @@ const ListTransactionsHistory = (props) => {
                       // className="form-control"
                       className="ant-input-search"
                       placeholder="Search by Amount"
-                      onChange={(e) => onSearchChange(e, selected)}
+                      onChange={(e) => onSearchChange(e.target.value, "amount")}
                     />
                   </span>
                 </div>
