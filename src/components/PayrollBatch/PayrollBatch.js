@@ -400,7 +400,7 @@ const PayrollBatch = (props) => {
               organizationId ||
               currentView === payrollConstants.LIST_VIEW) && (
               <>
-                <div className="row g-2">
+                {/* <div className="row g-2">
                   <div className="col-md d-flex">
                     <div className="col-md-4">
                       <div>
@@ -455,7 +455,7 @@ const PayrollBatch = (props) => {
                       </div>
                     )}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="ant-row">
                   <div className="ant-col ant-col-24 mt-2">
