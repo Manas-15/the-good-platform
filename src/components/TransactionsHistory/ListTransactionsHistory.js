@@ -114,28 +114,28 @@ const ListTransactionsHistory = (props) => {
 
   const onSearchChange = (value, selected) => {
     // const keyword = e.target.value;
-console.log("???????????????????",value,selected)
-    if (value !== "") {
-      // const results = records.filter((rec) => {
-        if (selected === "programName") {
-          setSearchByProgramName(value);
-          // return rec?.charityName
-          //   .toLowerCase()
-          //   .startsWith(keyword.toLowerCase());
-        } else if (selected === "employeeName") {
-          setSearchByEmployeeName(value);
-          // return rec?.employeeName
-          //   .toLowerCase()
-          //   .startsWith(keyword.toLowerCase());
-        } else if (selected === "amount") {
-          setSearchByAmount(value);
-          // console.log(">>>>>>>>>>>>>>>> keyword", keyword)
-          // return allRecords.includes(keyword);
-        } else {
-          return null;
-        }
-      // });
+    console.log("???????????????????", value, selected);
+    // if (value !== "") {
+    // const results = records.filter((rec) => {
+    if (selected === "programName") {
+      setSearchByProgramName(value);
+      // return rec?.charityName
+      //   .toLowerCase()
+      //   .startsWith(keyword.toLowerCase());
+    } else if (selected === "employeeName") {
+      setSearchByEmployeeName(value);
+      // return rec?.employeeName
+      //   .toLowerCase()
+      //   .startsWith(keyword.toLowerCase());
+    } else if (selected === "amount") {
+      setSearchByAmount(value);
+      // console.log(">>>>>>>>>>>>>>>> keyword", keyword)
+      // return allRecords.includes(keyword);
+    } else {
+      return null;
     }
+    // });
+    // }
   };
   const onHandleChange = (e) => {
     console.log("fired");
@@ -242,16 +242,16 @@ console.log("???????????????????",value,selected)
     <div className="customContainer">
       <div className="row mt-3">
         <div className="col-md-4">
-          <h1 className="ant-typography customHeading">
-            Account Summary
-          </h1>
+          <h1 className="ant-typography customHeading">Account Summary</h1>
         </div>
         <div className="col-md-4 text-center">
           <DateRangePicker
             appearance="default"
             onOk={(value) => fetchData(value)}
-            placeholder={`${moment().add(-30, 'days').format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
-            format={'dd/MM/yyyy'}
+            placeholder={`${moment()
+              .add(-30, "days")
+              .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
+            format={"dd/MM/yyyy"}
             cleanable={true}
           />
         </div>
@@ -300,9 +300,9 @@ console.log("???????????????????",value,selected)
               >
                 <option defaultValue>Select</option>
                 <option value="programName">Program Name</option>
-                {isCorporatePortal && (
-                  <option value="employeeName">Employee Name</option>
-                )}
+                {/* {isCorporatePortal && ( */}
+                <option value="employeeName">Donor</option>
+                {/* )} */}
 
                 <option value="amount">Amount</option>
               </select>
@@ -319,7 +319,9 @@ console.log("???????????????????",value,selected)
                       // className="form-control"
                       className="ant-input-search"
                       placeholder="Search by Program Name"
-                      onChange={(e) => onSearchChange(e.target.value, "programName")}
+                      onChange={(e) =>
+                        onSearchChange(e.target.value, "programName")
+                      }
                     />
                   </span>
                 </div>
@@ -336,8 +338,10 @@ console.log("???????????????????",value,selected)
                       type="text"
                       // className="form-control"
                       className="ant-input-search"
-                      placeholder="Search by Employee Name"
-                      onChange={(e) => onSearchChange(e.target.value, "employeeName")}
+                      placeholder="Search by Donor"
+                      onChange={(e) =>
+                        onSearchChange(e.target.value, "employeeName")
+                      }
                     />
                   </span>
                 </div>
@@ -351,10 +355,10 @@ console.log("???????????????????",value,selected)
                   <span className="ant-input-prefix">
                     <i className="bi bi-search"></i>
                     <input
-                      type="number"
-                      pattern="[0-9]*"
-                      maxLength={15}
-                      min={0}
+                      type="text"
+                      // pattern="[0-9]*"
+                      // maxLength={15}
+                      // min={0}
                       // className="form-control"
                       className="ant-input-search"
                       placeholder="Search by Amount"
