@@ -78,7 +78,7 @@ const PayrollBatchAccordion = (props) => {
   };
 
   const handleOpen = (action, item) => {
-    console.log("ddddddddddddd", item)
+    console.log("ddddddddddddd", item);
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
