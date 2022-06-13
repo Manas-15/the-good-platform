@@ -15,7 +15,6 @@ function getPayrollBatch(data) {
     dispatch(request());
     payrollService.getPayrollBatch(data).then(
       (batches) => dispatch(success(batches)),
-
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
