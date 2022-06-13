@@ -244,9 +244,10 @@ const PayrollBatch = (props) => {
 
   const onSearchChange = (e, selected) => {
     const keyword = e.target.value;
-    if (keyword !== "") {
-      const results = records.filter((rec) => {
+    // if (keyword !== "") {
+      const results = payrollBatches?.items?.filter((rec) => {
         if (selected === "batchId") {
+          console.log("dddddddddddddd asera", keyword)
           return rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
         } else if (selected === "corporateName") {
           return rec?.corporateName
@@ -258,10 +259,12 @@ const PayrollBatch = (props) => {
             .startsWith(keyword.toLowerCase());
         }
       });
+      console.log("resultsaaaaaaaaaaa", results)
       setAllRecords(results);
-    } else {
-      setAllRecords(records);
-    }
+      groupByBatchData = groupByBatch(results);
+    // } else {
+    //   setAllRecords(records);
+    // }
     setSearchValue(keyword);
   };
   const onHandleChange = (e) => {
@@ -275,14 +278,14 @@ const PayrollBatch = (props) => {
       return a;
     }, []);
   };
-  const groupByBatch = () => {
-    return payrollBatches?.items?.reduce(function (acc, item) {
+  const groupByBatch = (data) => {
+    return data?.reduce(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
       return acc;
     }, {});
   };
   if (isBluePencilPortal || isOrganizationPortal) {
-    groupByBatchData = groupByBatch();
+    groupByBatchData = groupByBatch(payrollBatches?.items);
   }
   return (
     <div className="customContainer">
@@ -410,8 +413,8 @@ const PayrollBatch = (props) => {
               organizationId ||
               currentView === payrollConstants.LIST_VIEW) && (
               <>
-                {/* <div className="row g-2">
-                  <div className="col-md d-flex">
+                <div className="row g-2">
+                  {/* <div className="col-md d-flex">
                     <div className="col-md-4">
                       <div>
                         <select
@@ -419,7 +422,7 @@ const PayrollBatch = (props) => {
                           value={selected}
                           onChange={(e) => onHandleChange(e)}
                         >
-                          <option defaultValue>Select Payroll</option>
+                          <option defaultValue>Search By</option>
                           <option value="batchId">BATCH ID</option>
                           <option value="corporateName">CORPORATE NAME</option>
                           <option value="refId">REF ID</option>
@@ -464,8 +467,8 @@ const PayrollBatch = (props) => {
                         </div>
                       </div>
                     )}
-                  </div>
-                </div> */}
+                  </div> */}
+                </div>
                 <div className="ant-row">
                   <div className="ant-col ant-col-24 mt-2">
                     <div className="ant-tabs-nav-wrap program-list">
