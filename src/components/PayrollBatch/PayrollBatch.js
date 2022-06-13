@@ -245,23 +245,21 @@ const PayrollBatch = (props) => {
   const onSearchChange = (e, selected) => {
     const keyword = e.target.value;
     // if (keyword !== "") {
-      const results = payrollBatches?.items?.filter((rec) => {
-        if (selected === "batchId") {
-          console.log("dddddddddddddd asera", keyword)
-          return rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
-        } else if (selected === "corporateName") {
-          return rec?.corporateName
-            .toLowerCase()
-            .startsWith(keyword.toLowerCase());
-        } else {
-          return rec?.referenceId
-            .toLowerCase()
-            .startsWith(keyword.toLowerCase());
-        }
-      });
-      console.log("resultsaaaaaaaaaaa", results)
-      setAllRecords(results);
-      groupByBatchData = groupByBatch(results);
+    const results = payrollBatches?.items?.filter((rec) => {
+      if (selected === "batchId") {
+        console.log("dddddddddddddd asera", keyword);
+        return rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
+      } else if (selected === "corporateName") {
+        return rec?.corporateName
+          .toLowerCase()
+          .startsWith(keyword.toLowerCase());
+      } else {
+        return rec?.referenceId.toLowerCase().startsWith(keyword.toLowerCase());
+      }
+    });
+    console.log("resultsaaaaaaaaaaa", results);
+    setAllRecords(results);
+    groupByBatchData = groupByBatch(results);
     // } else {
     //   setAllRecords(records);
     // }

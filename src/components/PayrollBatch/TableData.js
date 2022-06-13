@@ -35,6 +35,12 @@ const confirmInitialValues = {
   requestType: "",
   socialId: ""
 };
+const paidInitialValues = {
+  batchId: "",
+  requestType: "",
+  referenceId: "",
+  referenceNote: ""
+};
 const TableData = ({
   corporateId,
   organizationId,
@@ -124,11 +130,13 @@ const TableData = ({
   const hidePaidSimulator = () => {
     setOpenPaidSimulator(false);
   };
-  const confirmPaid = () => {
+  const confirmPaid = (values) => {
     dispatch(
       payrollBatchActions.updateBatchStatus({
         batchId: selectedBatch?.batchId,
-        requestType: payrollConstants.PAID
+        requestType: payrollConstants.PAID,
+        referenceId: values?.referenceId,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -631,8 +639,8 @@ const TableData = ({
                     type="submit"
                     disabled={
                       isSubmitting ||
-                      (corporateId &&
-                        (!values.referenceId || !values.referenceNote))
+                      !values.referenceId ||
+                      !values.referenceNote
                     }
                   >
                     Yes
@@ -671,40 +679,79 @@ const TableData = ({
           <Modal.Header closeButton>
             <Modal.Title>Paid Confirmation</Modal.Title>
           </Modal.Header>
-          {/* <Formik
-                initialValues={null}
-                validationSchema={null}
-                onSubmit={(values) => {
-                  console.log("<<<<<<<<<<<<<<<<<<< Confirm batch >>>>>>>>>>>>>>>>>")
-                }}
-              >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                }) => (
-                  <Form> */}
-          <Modal.Body style={{ fontSize: "18" }}>
-            <p>
-              This is a simulating service. Click on the respective button to
-              send the response.
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button type="submit" variant="success" onClick={confirmPaid}>
-              Simulate Success
-            </Button>
-            <Button variant="danger" onClick={hidePaidSimulator}>
-              Simulate Failure
-            </Button>
-          </Modal.Footer>
-          {/* </Form>
-                )}
-              </Formik> */}
+          <Formik
+            initialValues={paidInitialValues}
+            validationSchema={CompleteBatchSchema}
+            onSubmit={(values) => {
+              confirmPaid(values);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting
+            }) => (
+              <Form>
+                <Modal.Body style={{ fontSize: "18" }}>
+                  <p>
+                    This is a simulating service. Click on the respective button
+                    to send the response.
+                  </p>
+                  <div className="form-group mt-0">
+                    <label>
+                      <strong>Reference ID*</strong>
+                    </label>
+                    <input
+                      type="text"
+                      name="referenceId"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      maxLength={50}
+                      placeholder="Enter reference ID"
+                      className="form-control"
+                    />
+                    <span className="error">
+                      {errors.referenceId &&
+                        touched.referenceId &&
+                        errors.referenceId}
+                    </span>
+                  </div>
+                  <div className="form-group">
+                    <label>
+                      <strong>Reference Note*</strong>
+                    </label>
+                    <textarea
+                      rows="3"
+                      name="referenceNote"
+                      value={values?.referenceNote}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      maxLength={500}
+                      placeholder="Enter reference note"
+                      className="form-control"
+                    />
+                    <span className="error">
+                      {errors.referenceNote &&
+                        touched.referenceNote &&
+                        errors.referenceNote}
+                    </span>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button type="submit" variant="success">
+                    Simulate Success
+                  </Button>
+                  <Button variant="danger" onClick={hidePaidSimulator}>
+                    Simulate Failure
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
         </Modal>
       )}
     </>
