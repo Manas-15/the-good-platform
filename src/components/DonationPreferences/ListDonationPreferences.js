@@ -6,7 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -28,14 +28,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
@@ -79,12 +79,33 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     setActionType(action);
     setSelectedPreference(item);
     actionInitialValues.suspendDuration = "";
-    setActionTitle(`${action} Confirmation`);
-    setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${
-        item?.charityProgram
-      }"</strong>?`
-    );
+    if (action === "Delete") {
+      setActionTitle(`Remove Confirmation`);
+      setActionContent(
+        `Are you sure want to remove from your donation preferences?<p class="mt-4"><strong>Organization:</strong> ${
+          item?.socialOrganization
+        }</p><p><strong>Program:</strong> ${
+          item?.charityProgram
+        }</p><p><strong>Category:</strong> ${
+          item?.category
+        }</p><p><strong>Amount:</strong> ${ReactHtmlParser(
+          donationPreferenceConstants?.CURRENCY
+        )}${item?.donationAmount}</p><p><strong>Frequency:</strong> ${
+          item?.frequency === donationPreferenceConstants.ONCE_FREQUENCY
+            ? donationPreferenceConstants.ONCE
+            : donationPreferenceConstants.MONTHLY
+        }</p><p><strong>Added On:</strong> ${moment(item?.createdDate).format(
+          "DD MMM, YYYY"
+        )}</p>`
+      );
+    } else {
+      setActionTitle(`${action} Confirmation`);
+      setActionContent(
+        `Are you sure to ${action.toLowerCase()} <strong>"${
+          item?.charityProgram
+        }"</strong>?`
+      );
+    }
   };
   // const openNav = (charity, type) => {
   //   document.getElementsByClassName("sidepanel").classList.add("is-open");
@@ -260,7 +281,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                             <form
                               id={`amount${preference?.employeePreferenceId}`}
                             >
-                              
                               <input
                                 name="amount"
                                 type="text"
@@ -269,10 +289,14 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
                                 className="form-control"
                                 onBlur={() =>
-                                  (updatedValue && updateType === donationPreferenceConstants.AMOUNT) ? showConsent(
-                                    preference,
+                                  updatedValue &&
+                                  updateType ===
                                     donationPreferenceConstants.AMOUNT
-                                  ) : null
+                                    ? showConsent(
+                                        preference,
+                                        donationPreferenceConstants.AMOUNT
+                                      )
+                                    : null
                                 }
                                 onInput={(e) => setUpdatedValue(e.target.value)}
                                 id={`amount${preference?.employeePreferenceId}`}
