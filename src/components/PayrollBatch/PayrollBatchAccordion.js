@@ -142,7 +142,6 @@ const PayrollBatchAccordion = (props) => {
   };
   if (props?.viewType === payrollConstants.ORGANIZATION_VIEW) {
     accordionData = groupBy("socialOrganizationName");
-    console.log(">>>>>>>>>>>> accordionData", accordionData);
   } else {
     accordionData = groupBy("corporateName");
   }

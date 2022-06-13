@@ -48,7 +48,6 @@ const TableData = ({
   isBatchDetail,
   index
 }) => {
-  console.log(">>>>>>>>>>>>>> groupByBatchData", groupByBatchData?.length);
   // let history = useHistory();
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
@@ -124,6 +123,9 @@ const TableData = ({
     { label: "Processed", value: "10" }
   ];
   const openPaidConfirmation = (item) => {
+    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+      "MMMM"
+    )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
   };
@@ -158,6 +160,9 @@ const TableData = ({
             : ""
         }`
       );
+      completeInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+        "MMMM"
+      )} - ${item?.corporateName}`;
       setActionContent(
         `Are you sure want to ${
           corporateId
@@ -206,7 +211,6 @@ const TableData = ({
     setActionType(null);
   };
   const showBatchDetail = (batchId) => {
-    console.log("ddddddddddd");
     isBatchDetail(batchId);
     setBatchDetail(true);
     // setIsBatchDetail(true);
@@ -233,7 +237,6 @@ const TableData = ({
       setRecords(payrollBatches?.items);
     }
   };
-
   const onSearchChange = (e, selected) => {
     const keyword = e.target.value;
     if (keyword !== "") {
@@ -639,8 +642,8 @@ const TableData = ({
                     type="submit"
                     disabled={
                       isSubmitting ||
-                      !values.referenceId ||
-                      !values.referenceNote
+                      (!values.referenceId &&
+                      !values.referenceNote)
                     }
                   >
                     Yes
@@ -659,17 +662,7 @@ const TableData = ({
           <Modal.Title>Reference Note</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
-      </Modal>
-      {!corporateId &&
-        !isOrganizationPortal &&
-        (currentView === payrollConstants.ORGANIZATION_VIEW ||
-          currentView === payrollConstants.CORPORATE_VIEW) && (
-          <PayrollBatchAccordion
-            viewType={currentView}
-            showBatchDetail={(e) => showBatchDetail(e)}
-            hideBatchDetail={hideBatchDetail}
-          />
-        )}
+      </Modal>     
       {openPaidSimulator && (
         <Modal
           show={openPaidSimulator}
@@ -681,7 +674,8 @@ const TableData = ({
           </Modal.Header>
           <Formik
             initialValues={paidInitialValues}
-            validationSchema={CompleteBatchSchema}
+            validationSchema={null}
+            // validationSchema={CompleteBatchSchema}
             onSubmit={(values) => {
               confirmPaid(values);
             }}
@@ -701,7 +695,7 @@ const TableData = ({
                     This is a simulating service. Click on the respective button
                     to send the response.
                   </p>
-                  <div className="form-group mt-0">
+                  {/* <div className="form-group mt-0">
                     <label>
                       <strong>Reference ID*</strong>
                     </label>
@@ -727,9 +721,9 @@ const TableData = ({
                     <textarea
                       rows="3"
                       name="referenceNote"
-                      value={values?.referenceNote}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      value={values?.referenceNote}
                       maxLength={500}
                       placeholder="Enter reference note"
                       className="form-control"
@@ -739,10 +733,14 @@ const TableData = ({
                         touched.referenceNote &&
                         errors.referenceNote}
                     </span>
-                  </div>
+                  </div> */}
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button type="submit" variant="success">
+                  <Button
+                    type="submit"
+                    variant="success"
+                    // disabled={!values?.referenceId || !values?.referenceNote}
+                  >
                     Simulate Success
                   </Button>
                   <Button variant="danger" onClick={hidePaidSimulator}>

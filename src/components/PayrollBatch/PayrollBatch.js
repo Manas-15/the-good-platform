@@ -18,6 +18,7 @@ import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import ReactHtmlParser from "react-html-parser";
 import TableData from "./TableData";
 import { getLengthHelper } from "../../helpers";
+import PayrollBatchAccordion from "./PayrollBatchAccordion";
 const TabPane = Tabs.TabPane;
 
 const completeInitialValues = {
@@ -150,7 +151,7 @@ const PayrollBatch = (props) => {
     );
     hidePaidSimulator();
   };
-  const handleOpen = (action, item) => {
+  const handleOpen = (action, item) => {    
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
@@ -177,10 +178,7 @@ const PayrollBatch = (props) => {
         } for this batch?`
       );
     }
-    if (action === "Complete Batch") {
-      completeInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
-        "MMMM"
-      )} - ${item?.corporateName}`;
+    if (action === "Complete Batch") {      
       completeInitialValues.batchId = item?.batchId;
       completeInitialValues.requestType = payrollConstants.COMPLETE;
     } else if (action === "Receive Batch") {
@@ -215,10 +213,8 @@ const PayrollBatch = (props) => {
     setActionType(null);
   };
   const showBatchDetail = (batchId) => {
-    console.log("ddddddddddddddddd showBatchDetail", isBatchDetail);
     setIsBatchDetail(true);
     setSelectedBatchId(batchId);
-    console.log("vvvvvvvvvvvvvvvvvbbbbbbbbb showBatchDetail", isBatchDetail);
   };
   const hideBatchDetail = (status) => {
     setIsBatchDetail(status);
@@ -247,7 +243,6 @@ const PayrollBatch = (props) => {
     // if (keyword !== "") {
     const results = payrollBatches?.items?.filter((rec) => {
       if (selected === "batchId") {
-        console.log("dddddddddddddd asera", keyword);
         return rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
       } else if (selected === "corporateName") {
         return rec?.corporateName
@@ -257,7 +252,6 @@ const PayrollBatch = (props) => {
         return rec?.referenceId.toLowerCase().startsWith(keyword.toLowerCase());
       }
     });
-    console.log("resultsaaaaaaaaaaa", results);
     setAllRecords(results);
     groupByBatchData = groupByBatch(results);
     // } else {
@@ -470,7 +464,7 @@ const PayrollBatch = (props) => {
                 <div className="ant-row">
                   <div className="ant-col ant-col-24 mt-2">
                     <div className="ant-tabs-nav-wrap program-list">
-                      <Tabs defaultActiveKey={"active"}>
+                      {currentView === payrollConstants.LIST_VIEW && <Tabs defaultActiveKey={"active"}>
                         <TabPane
                           tab={
                             <span>
@@ -651,18 +645,13 @@ const PayrollBatch = (props) => {
                                             )}
                                         </>
                                       )
-                                    )}
-                                  {!groupByBatchData && (
-                                    <tr>
-                                      <td colSpan={9}>No data found</td>
-                                    </tr>
-                                  )}
+                                    )}                                 
                                 </tbody>
                               </table>
                             </div>
                           </div>
                         </TabPane>
-                      </Tabs>
+                      </Tabs>}                      
                     </div>
                   </div>
                 </div>
@@ -675,6 +664,15 @@ const PayrollBatch = (props) => {
             pageSize={pageSize}
             onPageChange={(page) => setPage(page)}
           />
+          {!corporateId &&
+            (currentView === payrollConstants.ORGANIZATION_VIEW ||
+              currentView === payrollConstants.CORPORATE_VIEW) && (
+              <PayrollBatchAccordion
+                viewType={currentView}
+                showBatchDetail={(e) => showBatchDetail(e)}
+                hideBatchDetail={hideBatchDetail}
+              />
+            )}
         </>
       )}
       {isBatchDetail && (
