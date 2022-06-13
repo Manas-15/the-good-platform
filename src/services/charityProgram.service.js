@@ -54,6 +54,7 @@ function checkBeforeUnpromote(data) {
   );
 }
 function checkBeforeBulkUnpromote(data) {
+  console.log(data);
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
