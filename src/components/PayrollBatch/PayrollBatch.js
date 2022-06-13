@@ -7,7 +7,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -26,14 +26,15 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
+let groupByBatchData;
 const PayrollBatch = (props) => {
   // let history = useHistory();
   const corporateId = props?.match?.params?.corporateId;
@@ -41,6 +42,14 @@ const PayrollBatch = (props) => {
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const employee = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
+  const isOrganizationPortal =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  const isBluePencilPortal =
+    currentPortal?.currentView ===
+    viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
@@ -63,19 +72,13 @@ const PayrollBatch = (props) => {
   const [allRecords, setAllRecords] = useState(records);
   const [selected, setSelected] = useState();
 
+  const [openPaidSimulator, setOpenPaidSimulator] = useState(false);
   const [currentView, setCurrentView] = useState(
-    payrollConstants?.CORPORATE_VIEW
+    isBluePencilPortal
+      ? payrollConstants?.LIST_VIEW
+      : payrollConstants?.CORPORATE_VIEW
   );
 
-  const isOrganizationPortal =
-    currentPortal?.currentView ===
-    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
-  const isBluePencilPortal =
-    currentPortal?.currentView ===
-    viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  console.log(isCorporatePortal);
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -106,13 +109,14 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     filter("All");
   }, [currentPage]);
   useEffect(() => {
     setRecords(payrollBatches?.items);
+    groupByBatchData = groupByBatch();
   }, [payrollBatches?.items]);
   useEffect(() => {
     setAllRecords(records);
@@ -129,8 +133,24 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" },
+    { label: "Processed", value: "10" }
   ];
+  const openPaidConfirmation = (item) => {
+    setOpenPaidSimulator(true);
+    setSelectedBatch(item);
+  };
+  const hidePaidSimulator = () => {
+    setOpenPaidSimulator(false);
+  };
+  const confirmPaid = () => {
+    dispatch(
+      payrollBatchActions.updateBatchStatus({
+        batchId: selectedBatch?.batchId,
+        requestType: payrollConstants.PAID
+      })
+    );
+    hidePaidSimulator();
+  };
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
@@ -139,18 +159,19 @@ const PayrollBatch = (props) => {
       setActionTitle("Confirm Payment Receipt");
       setActionContent(`Are you sure want to receive this batch payments?`);
     } else {
-      setActionTitle(`${action} ${corporateId ? "Confirmation" : ""}`);
+      setActionTitle(`${(!(isBluePencilPortal && action === "Confirm Batch") ? action : "")} ${corporateId ? "Confirmation" : ((isBluePencilPortal && action === "Confirm Batch") ? "Confirm Payment Receipt" : "")}`);
       setActionContent(
-        `Are you sure to ${
+        `Are you sure want to ${
           corporateId
             ? "complete"
             : action == "Confirm Batch"
-            ? "confirm"
+            ? "confirm payment receipt"
             : "unconfirm"
-        } this batch?`
+        } for this batch?`
       );
     }
     if (action === "Complete Batch") {
+      completeInitialValues.referenceNote = `Process batch for the month of ${moment().format('MMMM')} - ${item?.corporateName}`
       completeInitialValues.batchId = item?.batchId;
       completeInitialValues.requestType = payrollConstants.COMPLETE;
     } else if (action === "Receive Batch") {
@@ -244,6 +265,17 @@ const PayrollBatch = (props) => {
   console.log(records, "reeeeeeeeeeeeeeeeee");
 
   console.log(allRecords);
+  const groupByBatch = () => {
+    console.log("payrollBatches?.itemssss", payrollBatches?.items);
+    return payrollBatches?.items?.reduce(function (acc, item) {
+      (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
+      return acc;
+    }, {});
+  };
+  if (isBluePencilPortal || isOrganizationPortal) {
+    groupByBatchData = groupByBatch();
+    console.log("dddddddddddddddddddd groupByBatch", groupByBatchData);
+  }
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -281,39 +313,39 @@ const PayrollBatch = (props) => {
                   {isBluePencilPortal && (
                     <Link
                       className="fs-6 text-decoration-underline mr-3"
+                      onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
+                    >
+                      <button
+                        type="button"
+                        className={`${
+                          currentView === payrollConstants.LIST_VIEW
+                            ? "active"
+                            : ""
+                        } btn btn-sm btn-outline-primary btn-outline-custom`}
+                      >
+                        List View
+                      </button>
+                    </Link>
+                  )}
+                  {!isOrganizationPortal && (
+                    <Link
+                      className="fs-6 text-decoration-underline mr-3"
                       onClick={() =>
-                        setCurrentView(payrollConstants.TABLE_VIEW)
+                        setCurrentView(payrollConstants.CORPORATE_VIEW)
                       }
                     >
                       <button
                         type="button"
                         className={`${
-                          currentView === payrollConstants.TABLE_VIEW
+                          currentView === payrollConstants.CORPORATE_VIEW
                             ? "active"
                             : ""
                         } btn btn-sm btn-outline-primary btn-outline-custom`}
                       >
-                        Table View
+                        Corporate View
                       </button>
                     </Link>
                   )}
-                  <Link
-                    className="fs-6 text-decoration-underline mr-3"
-                    onClick={() =>
-                      setCurrentView(payrollConstants.CORPORATE_VIEW)
-                    }
-                  >
-                    <button
-                      type="button"
-                      className={`${
-                        currentView === payrollConstants.CORPORATE_VIEW
-                          ? "active"
-                          : ""
-                      } btn btn-sm btn-outline-primary btn-outline-custom`}
-                    >
-                      Corporate View
-                    </button>
-                  </Link>
                   <Link
                     className="fs-6 text-decoration-underline mr-3"
                     onClick={() =>
@@ -366,9 +398,9 @@ const PayrollBatch = (props) => {
           {records &&
             (corporateId ||
               organizationId ||
-              currentView === payrollConstants.TABLE_VIEW) && (
+              currentView === payrollConstants.LIST_VIEW) && (
               <>
-                <div className="row g-2">
+                {/* <div className="row g-2">
                   <div className="col-md d-flex">
                     <div className="col-md-4">
                       <div>
@@ -423,7 +455,7 @@ const PayrollBatch = (props) => {
                       </div>
                     )}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="ant-row">
                   <div className="ant-col ant-col-24 mt-2">
@@ -446,7 +478,7 @@ const PayrollBatch = (props) => {
                                   Corporate Name
                                 </th>
                               )}
-                              <th className="ant-table-cell">Crated Date</th>
+                              <th className="ant-table-cell">Month</th>
                               <th className="ant-table-cell">
                                 Amount (
                                 {ReactHtmlParser(
@@ -462,236 +494,536 @@ const PayrollBatch = (props) => {
                             </tr>
                           </thead>
                           <tbody className="ant-table-tbody">
-                            {allRecords?.map((batch, index) => (
-                              <tr
-                                key={index + 1}
-                                className="ant-table-row ant-table-row-level-0"
-                              >
-                                {/* <td className="ant-table-cell">
-                                {currentPage >= 2
-                                  ? currentPage * pageSize -
-                                    pageSize +
-                                    index +
-                                    1
-                                  : index + 1}
-                              </td> */}
-                                <td className="ant-table-cell">
-                                  <Link
-                                    onClick={() =>
-                                      showBatchDetail(batch?.batchId)
-                                    }
+                            {(isBluePencilPortal || isOrganizationPortal) &&
+                              groupByBatchData &&
+                              Object.keys(groupByBatchData)?.map(
+                                (type, index) => (
+                                  <tr
+                                    key={index + 1}
+                                    className="ant-table-row ant-table-row-level-0"
                                   >
-                                    {batch?.batchId}
-                                  </Link>
-                                </td>
-                                {/* {currentView ===
-                                  payrollConstants.ORGANIZATION_VIEW && (
-                                  <td className="ant-table-cell">
-                                    {batch?.socialOrganizationId}
-                                  </td>
-                                )} */}
-                                {currentView ===
-                                  payrollConstants.ORGANIZATION_VIEW && (
-                                  <td className="ant-table-cell">
-                                    {batch?.socialOrganizationName}
-                                  </td>
-                                )}
-                                {/* {!corporateId && (
-                                <td className="ant-table-cell">
-                                  {batch?.corporateId}
-                                </td>
-                              )} */}
-                                {!corporateId && (
-                                  <td className="ant-table-cell">
-                                    {batch?.corporateName}
-                                  </td>
-                                )}
-                                <td className="ant-table-cell">
-                                  {moment(batch?.createdDate).format(
-                                    "MMM, YYYY"
-                                  )}
-                                </td>
-                                <td className="ant-table-cell">
-                                  {batch?.amount?.toLocaleString()}
-                                </td>
-                                <td className="ant-table-cell">
-                                  <Link
-                                    onClick={() =>
-                                      showReferenceNote(batch?.referenceNote)
-                                    }
-                                  >
-                                    {batch?.referenceId}
-                                  </Link>
-                                </td>
-                                <td className="ant-table-cell">
-                                  {batch?.status ===
-                                    payrollConstants.COMPLETED_STATUS && (
-                                    <>
-                                      <span>
-                                        {/* {payrollConstants.CONFIRMED} */}
-                                        25% (Batch created)
-                                      </span>
-                                      <Progress percent={25} showInfo={false} />
-                                    </>
-                                  )}
-                                  {batch?.status ===
-                                    payrollConstants.CONFIRMED_STATUS && (
-                                    <>
-                                      <span>
-                                        {/* {payrollConstants.CONFIRMED} */}
-                                        50% (Confirmed by Bluepencil)
-                                      </span>
-                                      <Progress percent={50} showInfo={false} />
-                                    </>
-                                  )}
-                                  {batch?.status ===
-                                    payrollConstants.PAID_STATUS &&
-                                    !batch?.receivedOrganizationIds && (
-                                      <>
-                                        <span>
-                                          {/* {payrollConstants.CONFIRMED} */}
-                                          75% (Paid to Social Organization)
-                                        </span>
-                                        <Progress
-                                          percent={75}
-                                          showInfo={false}
-                                        />
-                                      </>
+                                    {/* <td className="ant-table-cell">
+                            {currentPage >= 2
+                              ? currentPage * pageSize -
+                                pageSize +
+                                index +
+                                1
+                              : index + 1}
+                          </td> */}
+                                    <td className="ant-table-cell">
+                                      <Link
+                                        onClick={() =>
+                                          showBatchDetail(
+                                            groupByBatchData[type][0]?.batchId
+                                          )
+                                        }
+                                      >
+                                        {groupByBatchData[type][0]?.batchId}
+                                      </Link>
+                                    </td>
+                                    {/* {currentView ===
+                              payrollConstants.ORGANIZATION_VIEW && (
+                              <td className="ant-table-cell">
+                                {batch?.socialOrganizationId}
+                              </td>
+                            )} */}
+                                    {currentView ===
+                                      payrollConstants.ORGANIZATION_VIEW && (
+                                      <td className="ant-table-cell">
+                                        {
+                                          groupByBatchData[type][0]
+                                            .socialOrganizationName
+                                        }
+                                      </td>
                                     )}
-                                  {(batch?.status ===
-                                    payrollConstants.RECEIVED_STATUS ||
-                                    batch?.status ===
-                                      payrollConstants.PAID_STATUS) &&
-                                    batch?.receivedOrganizationIds &&
-                                    batch?.receivedOrganizationIds?.split(",")
-                                      ?.length !==
-                                      batch?.totalOrganizationCount && (
-                                      <>
-                                        <span>
-                                          {/* {payrollConstants.CONFIRMED} */}
-                                          {75 +
-                                            Math.round(
-                                              25 / batch?.totalOrganizationCount
-                                            )}
-                                          % (Partially received by
-                                          organizations)
-                                        </span>
-                                        <Progress
-                                          percent={
-                                            75 +
-                                            Math.round(
-                                              25 / batch?.totalOrganizationCount
+                                    {/* {!corporateId && (
+                            <td className="ant-table-cell">
+                              {batch?.corporateId}
+                            </td>
+                          )} */}
+                                    {!corporateId && (
+                                      <td className="ant-table-cell">
+                                        {
+                                          groupByBatchData[type][0]
+                                            .corporateName
+                                        }
+                                      </td>
+                                    )}
+                                    <td className="ant-table-cell">
+                                      {moment(
+                                        groupByBatchData[type][0].createdDate
+                                      ).format("MMM, YYYY")}
+                                    </td>
+                                    <td className="ant-table-cell">
+                                      {ReactHtmlParser(
+                                        donationPreferenceConstants?.CURRENCY
+                                      )}
+                                      {groupByBatchData[type]
+                                        ? groupByBatchData[type]
+                                            ?.reduce(
+                                              (total, currentValue) =>
+                                                (total =
+                                                  total + currentValue.amount),
+                                              0
                                             )
-                                          }
-                                          showInfo={false}
-                                        />
-                                      </>
-                                    )}
-                                  {batch?.status ===
-                                    payrollConstants.RECEIVED_STATUS &&
-                                    batch?.receivedOrganizationIds?.split(",")
-                                      ?.length ===
-                                      batch?.totalOrganizationCount && (
-                                      <>
-                                        <span>
-                                          {/* {payrollConstants.CONFIRMED} */}
-                                          100% (Received by Social Organization)
-                                        </span>
-                                        <Progress
-                                          percent={100}
-                                          showInfo={false}
-                                        />
-                                      </>
-                                    )}
-                                </td>
-                                <td className="ant-table-cell text-center">
-                                  {corporateId &&
-                                    batch?.status ===
-                                      payrollConstants.PENDING_STATUS && (
-                                      <Tooltip title="Complete">
-                                        <Link
-                                          onClick={() =>
-                                            handleOpen("Complete Batch", batch)
-                                          }
-                                        >
-                                          <span className="bi-check-circle fs-5"></span>
-                                        </Link>
-                                      </Tooltip>
-                                    )}
-                                  {!corporateId && !isOrganizationPortal && (
-                                    <>
-                                      {batch?.status ===
-                                      payrollConstants.CONFIRMED_STATUS ? (
+                                            .toLocaleString()
+                                        : 0}
+                                    </td>
+                                    <td className="ant-table-cell">
+                                      <Link
+                                        onClick={() =>
+                                          showReferenceNote(
+                                            groupByBatchData[type][0]
+                                              .referenceNote
+                                          )
+                                        }
+                                      >
+                                        {groupByBatchData[type][0].referenceId}
+                                      </Link>
+                                    </td>
+                                    <td className="ant-table-cell">
+                                      {groupByBatchData[type][0].status ===
+                                        payrollConstants.COMPLETED_STATUS && (
                                         <>
-                                          <Tooltip title="Unconfirm">
-                                            <Link
-                                              onClick={() =>
-                                                handleOpen(
-                                                  "Unconfirm Batch",
-                                                  batch
+                                          <span>
+                                            {/* {payrollConstants.CONFIRMED} */}
+                                            25% (Batch created)
+                                          </span>
+                                          <Progress
+                                            percent={25}
+                                            showInfo={false}
+                                          />
+                                        </>
+                                      )}
+                                      {groupByBatchData[type][0].status ===
+                                        payrollConstants.CONFIRMED_STATUS && (
+                                        <>
+                                          <span>
+                                            {/* {payrollConstants.CONFIRMED} */}
+                                            50% (Confirmed by Bluepencil)
+                                          </span>
+                                          <Progress
+                                            percent={50}
+                                            showInfo={false}
+                                          />
+                                        </>
+                                      )}
+                                      {groupByBatchData[type][0].status ===
+                                        payrollConstants.PAID_STATUS &&
+                                        !groupByBatchData[type][0]
+                                          .receivedOrganizationIds && (
+                                          <>
+                                            <span>
+                                              {/* {payrollConstants.CONFIRMED} */}
+                                              75% (Paid to Social Organization)
+                                            </span>
+                                            <Progress
+                                              percent={75}
+                                              showInfo={false}
+                                            />
+                                          </>
+                                        )}
+                                      {(groupByBatchData[type][0].status ===
+                                        payrollConstants.RECEIVED_STATUS ||
+                                        groupByBatchData[type][0].status ===
+                                          payrollConstants.PAID_STATUS) &&
+                                        groupByBatchData[type][0]
+                                          .receivedOrganizationIds &&
+                                        groupByBatchData[
+                                          type
+                                        ][0].receivedOrganizationIds?.split(",")
+                                          ?.length !==
+                                          groupByBatchData[type][0]
+                                            .totalOrganizationCount && (
+                                          <>
+                                            <span>
+                                              {/* {payrollConstants.CONFIRMED} */}
+                                              {75 +
+                                                Math.round(
+                                                  25 /
+                                                    groupByBatchData[type][0]
+                                                      .totalOrganizationCount
+                                                )}
+                                              % (Partially received by
+                                              organizations)
+                                            </span>
+                                            <Progress
+                                              percent={
+                                                75 +
+                                                Math.round(
+                                                  25 /
+                                                    groupByBatchData[type][0]
+                                                      .totalOrganizationCount
                                                 )
                                               }
-                                            >
-                                              <span className="bi-arrow-counterclockwise fs-5"></span>
-                                            </Link>
-                                          </Tooltip>
-                                          <Tooltip title="Paid">
-                                            <Link
-                                              onClick={() =>
-                                                handleOpen("Paid", batch)
-                                              }
-                                            >
-                                              <span className="bi-box2-heart fs-5 ml-2"></span>
-                                            </Link>
-                                          </Tooltip>
-                                        </>
-                                      ) : (
-                                        batch?.status ===
-                                          payrollConstants.COMPLETED_STATUS && (
-                                          <Tooltip title="Confirm">
+                                              showInfo={false}
+                                            />
+                                          </>
+                                        )}
+                                      {groupByBatchData[type][0].status ===
+                                        payrollConstants.RECEIVED_STATUS &&
+                                        groupByBatchData[
+                                          type
+                                        ][0].receivedOrganizationIds?.split(",")
+                                          ?.length ===
+                                          groupByBatchData[type][0]
+                                            .totalOrganizationCount && (
+                                          <>
+                                            <span>
+                                              {/* {payrollConstants.CONFIRMED} */}
+                                              100% (Received by Social
+                                              Organization)
+                                            </span>
+                                            <Progress
+                                              percent={100}
+                                              showInfo={false}
+                                            />
+                                          </>
+                                        )}
+                                    </td>
+                                    <td className="ant-table-cell text-center">
+                                      {corporateId &&
+                                        groupByBatchData[type][0].status ===
+                                          payrollConstants.PENDING_STATUS && (
+                                          <Tooltip title="Complete">
                                             <Link
                                               onClick={() =>
                                                 handleOpen(
-                                                  "Confirm Batch",
-                                                  batch
+                                                  "Complete Batch",
+                                                  groupByBatchData[type][0]
                                                 )
                                               }
                                             >
                                               <span className="bi-check-circle fs-5"></span>
                                             </Link>
                                           </Tooltip>
-                                        )
+                                        )}
+                                      {!corporateId && !isOrganizationPortal && (
+                                        <>
+                                          {groupByBatchData[type][0].status ===
+                                          payrollConstants.CONFIRMED_STATUS ? (
+                                            <>
+                                              <Tooltip title="Unconfirm">
+                                                <Link
+                                                  onClick={() =>
+                                                    handleOpen(
+                                                      "Unconfirm Batch",
+                                                      groupByBatchData[type][0]
+                                                    )
+                                                  }
+                                                >
+                                                  <span className="bi-arrow-counterclockwise fs-5"></span>
+                                                </Link>
+                                              </Tooltip>
+                                              <Tooltip title="Paid">
+                                                <Link
+                                                  onClick={() =>
+                                                    openPaidConfirmation(
+                                                      groupByBatchData[type][0]
+                                                    )
+                                                  }
+                                                >
+                                                  <span className="bi-check-square fs-5 ml-2"></span>
+                                                </Link>
+                                              </Tooltip>
+                                            </>
+                                          ) : (
+                                            groupByBatchData[type][0].status ===
+                                              payrollConstants.COMPLETED_STATUS && (
+                                              <Tooltip title="Confirm">
+                                                <Link
+                                                  onClick={() =>
+                                                    handleOpen(
+                                                      "Confirm Batch",
+                                                      groupByBatchData[type][0]
+                                                    )
+                                                  }
+                                                >
+                                                  <span className="bi-check-circle fs-5"></span>
+                                                </Link>
+                                              </Tooltip>
+                                            )
+                                          )}
+                                        </>
                                       )}
-                                    </>
+                                      {isOrganizationPortal &&
+                                        groupByBatchData[type][0].status !==
+                                          payrollConstants.RECEIVED_STATUS && (
+                                          <Tooltip title="Confirm Payment Receipt">
+                                            <Link
+                                              onClick={() =>
+                                                handleOpen(
+                                                  "Receive Batch",
+                                                  groupByBatchData[type][0]
+                                                )
+                                              }
+                                            >
+                                              <img
+                                                src="/assets/img/receive.svg"
+                                                alt="Receive"
+                                                height={20}
+                                                className="custom-color"
+                                              />
+                                            </Link>
+                                          </Tooltip>
+                                        )}
+                                      {isOrganizationPortal &&
+                                        groupByBatchData[type][0].status ===
+                                          payrollConstants.RECEIVED_STATUS && (
+                                          <Tooltip title="Received">
+                                            <span className="bi-check-square-fill fs-5"></span>
+                                          </Tooltip>
+                                        )}
+                                    </td>
+                                  </tr>
+                                )
+                              )}
+
+                            {!isBluePencilPortal &&
+                              !isOrganizationPortal &&
+                              records?.map((batch, index) => (
+                                <tr
+                                  key={index + 1}
+                                  className="ant-table-row ant-table-row-level-0"
+                                >
+                                  {/* <td className="ant-table-cell">
+                            {currentPage >= 2
+                              ? currentPage * pageSize -
+                                pageSize +
+                                index +
+                                1
+                              : index + 1}
+                          </td> */}
+                                  <td className="ant-table-cell">
+                                    <Link
+                                      onClick={() =>
+                                        showBatchDetail(batch?.batchId)
+                                      }
+                                    >
+                                      {batch?.batchId}
+                                    </Link>
+                                  </td>
+                                  {/* {currentView ===
+                              payrollConstants.ORGANIZATION_VIEW && (
+                              <td className="ant-table-cell">
+                                {batch?.socialOrganizationId}
+                              </td>
+                            )} */}
+                                  {currentView ===
+                                    payrollConstants.ORGANIZATION_VIEW && (
+                                    <td className="ant-table-cell">
+                                      {batch.socialOrganizationName}
+                                    </td>
                                   )}
-                                  {isOrganizationPortal &&
-                                    batch?.status !==
-                                      payrollConstants.RECEIVED_STATUS && (
-                                      <Tooltip title="Confirm Payment Receipt">
-                                        <Link
-                                          onClick={() =>
-                                            handleOpen("Receive Batch", batch)
-                                          }
-                                        >
-                                          <img
-                                            src="/assets/img/receive.svg"
-                                            alt="Receive"
-                                            height={20}
-                                            className="custom-color"
+                                  {/* {!corporateId && (
+                            <td className="ant-table-cell">
+                              {batch?.corporateId}
+                            </td>
+                          )} */}
+                                  {!corporateId && (
+                                    <td className="ant-table-cell">
+                                      {batch.corporateName}
+                                    </td>
+                                  )}
+                                  <td className="ant-table-cell">
+                                    {moment(batch.createdDate).format(
+                                      "MMM, YYYY"
+                                    )}
+                                  </td>
+                                  <td className="ant-table-cell">
+                                    {batch?.amount?.toLocaleString()}
+                                  </td>
+                                  <td className="ant-table-cell">
+                                    <Link
+                                      onClick={() =>
+                                        showReferenceNote(batch?.referenceNote)
+                                      }
+                                    >
+                                      {batch.referenceId}
+                                    </Link>
+                                  </td>
+                                  <td className="ant-table-cell">
+                                    {batch.status ===
+                                      payrollConstants.COMPLETED_STATUS && (
+                                      <>
+                                        <span>
+                                          {/* {payrollConstants.CONFIRMED} */}
+                                          25% (Batch created)
+                                        </span>
+                                        <Progress
+                                          percent={25}
+                                          showInfo={false}
+                                        />
+                                      </>
+                                    )}
+                                    {batch.status ===
+                                      payrollConstants.CONFIRMED_STATUS && (
+                                      <>
+                                        <span>
+                                          {/* {payrollConstants.CONFIRMED} */}
+                                          50% (Confirmed by Bluepencil)
+                                        </span>
+                                        <Progress
+                                          percent={50}
+                                          showInfo={false}
+                                        />
+                                      </>
+                                    )}
+                                    {batch?.status ===
+                                      payrollConstants.PAID_STATUS &&
+                                      !batch?.receivedOrganizationIds && (
+                                        <>
+                                          <span>
+                                            {/* {payrollConstants.CONFIRMED} */}
+                                            75% (Paid to Social Organization)
+                                          </span>
+                                          <Progress
+                                            percent={75}
+                                            showInfo={false}
                                           />
-                                        </Link>
-                                      </Tooltip>
+                                        </>
+                                      )}
+                                    {(batch?.status ===
+                                      payrollConstants.RECEIVED_STATUS ||
+                                      batch.status ===
+                                        payrollConstants.PAID_STATUS) &&
+                                      batch?.receivedOrganizationIds &&
+                                      batch?.receivedOrganizationIds?.split(",")
+                                        ?.length !==
+                                        batch.totalOrganizationCount && (
+                                        <>
+                                          <span>
+                                            {/* {payrollConstants.CONFIRMED} */}
+                                            {75 +
+                                              Math.round(
+                                                25 /
+                                                  batch?.totalOrganizationCount
+                                              )}
+                                            % (Partially received by
+                                            organizations)
+                                          </span>
+                                          <Progress
+                                            percent={
+                                              75 +
+                                              Math.round(
+                                                25 /
+                                                  batch?.totalOrganizationCount
+                                              )
+                                            }
+                                            showInfo={false}
+                                          />
+                                        </>
+                                      )}
+                                    {batch.status ===
+                                      payrollConstants.RECEIVED_STATUS &&
+                                      batch?.receivedOrganizationIds?.split(",")
+                                        ?.length ===
+                                        batch?.totalOrganizationCount && (
+                                        <>
+                                          <span>
+                                            {/* {payrollConstants.CONFIRMED} */}
+                                            100% (Received by Social
+                                            Organization)
+                                          </span>
+                                          <Progress
+                                            percent={100}
+                                            showInfo={false}
+                                          />
+                                        </>
+                                      )}
+                                  </td>
+                                  <td className="ant-table-cell text-center">
+                                    {corporateId &&
+                                      batch?.status ===
+                                        payrollConstants.PENDING_STATUS && (
+                                        <Tooltip title="Complete">
+                                          <Link
+                                            onClick={() =>
+                                              handleOpen(
+                                                "Complete Batch",
+                                                batch
+                                              )
+                                            }
+                                          >
+                                            <span className="bi-check-circle fs-5"></span>
+                                          </Link>
+                                        </Tooltip>
+                                      )}
+                                    {!corporateId && !isOrganizationPortal && (
+                                      <>
+                                        {batch?.status ===
+                                        payrollConstants.CONFIRMED_STATUS ? (
+                                          <>
+                                            <Tooltip title="Unconfirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Unconfirm Batch",
+                                                    batch
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-arrow-counterclockwise fs-5"></span>
+                                              </Link>
+                                            </Tooltip>
+                                            <Tooltip title="Paid">
+                                              <Link
+                                                onClick={() =>
+                                                  openPaidConfirmation(batch)
+                                                }
+                                              >
+                                                <span className="bi-check-square fs-5 ml-2"></span>
+                                              </Link>
+                                            </Tooltip>
+                                          </>
+                                        ) : (
+                                          batch?.status ===
+                                            payrollConstants.COMPLETED_STATUS && (
+                                            <Tooltip title="Confirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Confirm Batch",
+                                                    batch
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-check-circle fs-5"></span>
+                                              </Link>
+                                            </Tooltip>
+                                          )
+                                        )}
+                                      </>
                                     )}
-                                  {isOrganizationPortal &&
-                                    batch?.status ===
-                                      payrollConstants.RECEIVED_STATUS && (
-                                      <Tooltip title="Received">
-                                        <span className="bi-check-square-fill fs-5"></span>
-                                      </Tooltip>
-                                    )}
-                                </td>
-                              </tr>
-                            ))}
+                                    {isOrganizationPortal &&
+                                      batch?.status !==
+                                        payrollConstants.RECEIVED_STATUS && (
+                                        <Tooltip title="Confirm Payment Receipt">
+                                          <Link
+                                            onClick={() =>
+                                              handleOpen("Receive Batch", batch)
+                                            }
+                                          >
+                                            <img
+                                              src="/assets/img/receive.svg"
+                                              alt="Receive"
+                                              height={20}
+                                              className="custom-color"
+                                            />
+                                          </Link>
+                                        </Tooltip>
+                                      )}
+                                    {isOrganizationPortal &&
+                                      batch.status ===
+                                        payrollConstants.RECEIVED_STATUS && (
+                                        <Tooltip title="Received">
+                                          <span className="bi-check-square-fill fs-5"></span>
+                                        </Tooltip>
+                                      )}
+                                  </td>
+                                </tr>
+                              ))}
+
                             {records?.length === 0 && (
                               <tr>
                                 <td className="text-center" colSpan={9}>
@@ -736,7 +1068,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -764,6 +1096,7 @@ const PayrollBatch = (props) => {
                               <strong>Amount:</strong>
                             </div>
                             <div className="col-md-8">
+                            {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                               {selectedBatch?.amount?.toLocaleString()}
                             </div>
                           </div>
@@ -797,7 +1130,18 @@ const PayrollBatch = (props) => {
                       )}
                       {actionType === payrollConstants.COMPLETE_BATCH && (
                         <>
-                          <div className="form-group">
+                          <div className="mt-3 mb-0">
+                            <strong>Batch ID:</strong>&nbsp;
+                            {selectedBatch?.batchId}
+                          </div>
+                          <div className="mt-3 mb-0">
+                            <strong>Total Amount:</strong>&nbsp;
+                            {ReactHtmlParser(
+                              donationPreferenceConstants?.CURRENCY
+                            )}
+                            {selectedBatch?.amount?.toLocaleString()}
+                          </div>
+                          <div className="form-group mt-0">
                             <label>
                               <strong>Reference ID*</strong>
                             </label>
@@ -823,6 +1167,7 @@ const PayrollBatch = (props) => {
                             <textarea
                               rows="3"
                               name="referenceNote"
+                              value={values?.referenceNote}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               maxLength={500}
@@ -877,6 +1222,51 @@ const PayrollBatch = (props) => {
             )}
         </>
       )}
+      {openPaidSimulator && (
+            <Modal
+              show={openPaidSimulator}
+              onHide={hidePaidSimulator}
+              backdrop="static"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Paid Confirmation</Modal.Title>
+              </Modal.Header>
+              {/* <Formik
+                initialValues={null}
+                validationSchema={null}
+                onSubmit={(values) => {
+                  console.log("<<<<<<<<<<<<<<<<<<< Confirm batch >>>>>>>>>>>>>>>>>")
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <Form> */}
+              <Modal.Body style={{ fontSize: "18" }}>
+                <p>
+                  This is a simulating service. Click on the respective button
+                  to send the response.
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button type="submit" variant="success" onClick={confirmPaid}>
+                  Simulate Success
+                </Button>
+                <Button variant="danger" onClick={hidePaidSimulator}>
+                  Simulate Failure
+                </Button>
+              </Modal.Footer>
+              {/* </Form>
+                )}
+              </Formik> */}
+            </Modal>
+          )}
       {isBatchDetail && (
         <PayrollBatchDetail
           batchId={selectedBatchId}

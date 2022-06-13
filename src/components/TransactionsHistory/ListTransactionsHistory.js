@@ -11,7 +11,7 @@ import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -22,19 +22,25 @@ let charityProgramsOption = [];
 const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
+  console.log(records);
+  const [selected, setSelected] = useState();
+  const [searchValue, setSearchValue] = useState("");
+  const [allRecords, setAllRecords] = useState(records);
+
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
@@ -101,6 +107,41 @@ const ListTransactionsHistory = (props) => {
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
   }, [transactions?.totalCount]);
+
+  useEffect(() => {
+    setAllRecords(records);
+  }, [records]);
+
+  const onSearchChange = (value, selected) => {
+    // const keyword = e.target.value;
+    console.log("???????????????????", value, selected);
+    // if (value !== "") {
+    // const results = records.filter((rec) => {
+    if (selected === "programName") {
+      setSearchByProgramName(value);
+      // return rec?.charityName
+      //   .toLowerCase()
+      //   .startsWith(keyword.toLowerCase());
+    } else if (selected === "employeeName") {
+      setSearchByEmployeeName(value);
+      // return rec?.employeeName
+      //   .toLowerCase()
+      //   .startsWith(keyword.toLowerCase());
+    } else if (selected === "amount") {
+      setSearchByAmount(value);
+      // console.log(">>>>>>>>>>>>>>>> keyword", keyword)
+      // return allRecords.includes(keyword);
+    } else {
+      return null;
+    }
+    // });
+    // }
+  };
+  const onHandleChange = (e) => {
+    console.log("fired");
+    setSelected(e.target.value);
+  };
+
   const filter = (type, value) => {
     setIsFilter(true);
     if (value && value !== "0") {
@@ -116,7 +157,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -140,7 +181,6 @@ const ListTransactionsHistory = (props) => {
   };
   const search = (value, type) => {
     // if (value.length > 3) {
-    console.log("----------- search inside", value, type);
     if (type === "employeeName") {
       setSearchByEmployeeName(value);
     } else if (type === "programName") {
@@ -169,7 +209,7 @@ const ListTransactionsHistory = (props) => {
         searchByProgramName: searchByProgramName,
         searchByAmount: searchByAmount,
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
-        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null,
+        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null
       })
     );
   };
@@ -185,7 +225,7 @@ const ListTransactionsHistory = (props) => {
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: "selection"
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -208,6 +248,11 @@ const ListTransactionsHistory = (props) => {
           <DateRangePicker
             appearance="default"
             onOk={(value) => fetchData(value)}
+            placeholder={`${moment()
+              .add(-30, "days")
+              .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
+            format={"dd/MM/yyyy"}
+            cleanable={true}
           />
         </div>
         <div className="col-md-4 text-right">
@@ -245,32 +290,89 @@ const ListTransactionsHistory = (props) => {
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
-        <div className="ant-col-6 searchContainer">
-          <div className="ant-input-affix-wrapper inputFilterInput">
-            <span className="ant-input-prefix">
-              <i className="bi bi-search"></i>
-              <input
-                placeholder="Search by Program Name"
-                className="ant-input-search"
-                type="text"
-                onChange={(e) => search(e.target.value, "programName")}
-              />
-            </span>
+        <div className="col-md d-flex pl-0">
+          <div className="col-md-4">
+            <div>
+              <select
+                className="form-select"
+                value={selected}
+                onChange={(e) => onHandleChange(e)}
+              >
+                <option defaultValue>Select</option>
+                <option value="programName">Program Name</option>
+                {/* {isCorporatePortal && ( */}
+                <option value="employeeName">Donor</option>
+                {/* )} */}
+
+                <option value="amount">Amount</option>
+              </select>
+            </div>
           </div>
+          {selected === "programName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Program Name"
+                      onChange={(e) =>
+                        onSearchChange(e.target.value, "programName")
+                      }
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "employeeName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Donor"
+                      onChange={(e) =>
+                        onSearchChange(e.target.value, "employeeName")
+                      }
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "amount" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // pattern="[0-9]*"
+                      // maxLength={15}
+                      // min={0}
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Amount"
+                      onChange={(e) => onSearchChange(e.target.value, "amount")}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="ant-col-6  searchContainer ml-3">
-          <div className="ant-input-affix-wrapper inputFilterInput">
-            <span className="ant-input-prefix">
-              <i className="bi bi-search"></i>
-              <input
-                placeholder="Search by Employee Name"
-                className="ant-input-search"
-                type="text"
-                onChange={(e) => search(e.target.value, "employeeName")}
-              />
-            </span>
-          </div>
-        </div>
+
+        {/* 
+        
         <div className="ant-col-6  searchContainer ml-3">
           <div className="ant-input-affix-wrapper inputFilterInput">
             <span className="ant-input-prefix">
@@ -288,7 +390,7 @@ const ListTransactionsHistory = (props) => {
               />
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
       {transactions.loading && <Loader />}
       <div className="ant-row">
@@ -299,7 +401,7 @@ const ListTransactionsHistory = (props) => {
                 <thead className="ant-table-thead">
                   <tr>
                     {/* <th className="ant-table-cell">SR No.</th> */}
-                    {isCorporatePortal && (
+                    {!isEmployeePortal && (
                       <th className="ant-table-cell">Donor</th>
                     )}
                     <th className="ant-table-cell">Program</th>
@@ -312,7 +414,7 @@ const ListTransactionsHistory = (props) => {
                     <th className="ant-table-cell">Transaction ID</th>
                     <th className="ant-table-cell">Donation</th>
                     <th className="ant-table-cell">Donation Type</th>
-                    <th className="ant-table-cell">Payment Mode</th>
+                    {/* <th className="ant-table-cell">Payment Mode</th> */}
                     <th className="ant-table-cell">Payment Status</th>
                     <th className="ant-table-cell">Payment Date</th>
                     {(employeeId || isCorporatePortal) && (
@@ -321,8 +423,8 @@ const ListTransactionsHistory = (props) => {
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {records?.length > 0 ? (
-                    records?.map((transaction, index) => (
+                  {allRecords?.length > 0 ? (
+                    allRecords?.map((transaction, index) => (
                       <tr
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"
@@ -332,7 +434,7 @@ const ListTransactionsHistory = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
-                        {isCorporatePortal && (
+                        {!isEmployeePortal && (
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
                               {transaction?.employeeName}
@@ -365,16 +467,22 @@ const ListTransactionsHistory = (props) => {
                         <td className="ant-table-cell">
                           {transaction?.donationType}
                         </td>
-                        <td className="ant-table-cell">
+                        {/* <td className="ant-table-cell">
                           {transaction?.paymentMethod &&
                             transaction?.paymentMethod.replace(/_/g, " ")}
-                        </td>
+                        </td> */}
                         <td className="ant-table-cell text-uppercase">
                           {transaction?.paymentStatus ===
-                          paymentConstants.PAYMENT_SUCCESS ? (
+                            paymentConstants.PAYMENT_SUCCESS && (
                             <span className="text-success">Success</span>
-                          ) : (
+                          )}
+                          {transaction?.paymentStatus ===
+                            paymentConstants.PAYMENT_FAILURE && (
                             <span className="text-danger">Failed</span>
+                          )}
+                          {transaction?.paymentStatus ===
+                            paymentConstants.PAYMENT_PENDING && (
+                            <span className="text-warning">Pending</span>
                           )}
                         </td>
                         <td className="ant-table-cell">
@@ -454,7 +562,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

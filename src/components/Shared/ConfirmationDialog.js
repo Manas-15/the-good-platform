@@ -16,7 +16,7 @@ export default function ConfirmationDialog({
   duration,
   totalEmployee,
   totalProgram,
-  totalAmount,
+  totalAmount
 }) {
   const [isDisabled, setIsDisabled] = useState(
     actionType === donationPreferenceConstants.SUSPEND
@@ -54,7 +54,9 @@ export default function ConfirmationDialog({
           {totalAmount && (
             <>
               <p>
-                <strong>Total amount:</strong>&nbsp;{totalAmount}
+                <strong>Total amount:</strong>&nbsp;
+                {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                {totalAmount}
               </p>
             </>
           )}

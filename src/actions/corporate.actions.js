@@ -12,7 +12,7 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   // getCorporateById,
-  corporateAccountRequest,
+  corporateAccountRequest
 };
 
 function getCorporates() {
@@ -122,7 +122,7 @@ function updateCorporate(corporate) {
   function success(corporate) {
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate,
+      corporate
     };
   }
   function failure(error) {
@@ -203,7 +203,7 @@ function corporateAccountRequest(actionValues) {
         dispatch(
           alertActions.success(
             `Corporate ${
-              actionValues.requestType === "Inactive"
+              actionValues.requestType === "Inactivate"
                 ? "inactivated"
                 : actionValues.requestType.toLowerCase() + "d"
             } successfully`
@@ -220,8 +220,8 @@ function corporateAccountRequest(actionValues) {
   function request(corporate) {
     return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
   }
-  function success() {
-    return { type: corporateConstants.CORPORATE_ACTION_SUCCESS };
+  function success(data) {
+    return { type: corporateConstants.CORPORATE_ACTION_SUCCESS, data };
   }
   function failure(error) {
     return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };
