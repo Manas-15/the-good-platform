@@ -110,7 +110,7 @@ function handleResponse(response) {
 }
 async function bulkImport(formData) {
   return await axios.post(
-    process.env.REACT_APP_API_URL + "api/employee_bulk_upload/",
+    process.env.REACT_APP_API_URL + "api/fileUpload/",
     formData,
     {
       headers: {

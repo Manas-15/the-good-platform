@@ -197,29 +197,27 @@ const ListEmployees = (props) => {
         ) : isSuperadminView === true ? (
           <> </>
         ) : (
-          isSuperadminView === undefined && (
-            <div className="col-md-6" style={{ textAlign: "right" }}>
-              {!isBulkUpload && !isImportNextStep && (
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-custom"
-                    onClick={chooseFile}
-                  >
-                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-                    Import Bulk Employee
-                  </button>
-                  <input
-                    type="file"
-                    accept=".xlsx, .xls, .csv"
-                    ref={hiddenFileInput}
-                    onChange={handleChange}
-                    style={{ display: "none" }}
-                  />
-                </>
-              )}
-            </div>
-          )
+          <div className="col-md-6" style={{ textAlign: "right" }}>
+            {!isBulkUpload && !isImportNextStep && (
+              <>
+                <button
+                  type="button"
+                  className="btn btn-custom"
+                  onClick={chooseFile}
+                >
+                  <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                  Import Bulk Employee
+                </button>
+                <input
+                  type="file"
+                  accept=".xlsx, .xls, .csv"
+                  ref={hiddenFileInput}
+                  onChange={handleChange}
+                  style={{ display: "none" }}
+                />
+              </>
+            )}
+          </div>
         )}
       </div>
       {!isBulkUpload && !isImportNextStep && (

@@ -298,7 +298,7 @@ const ListTransactionsHistory = (props) => {
                 value={selected}
                 onChange={(e) => onHandleChange(e)}
               >
-                <option defaultValue>Select</option>
+                <option defaultValue>Search by</option>
                 <option value="programName">Program Name</option>
                 {/* {isCorporatePortal && ( */}
                 <option value="employeeName">Donor</option>

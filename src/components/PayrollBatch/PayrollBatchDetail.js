@@ -68,7 +68,7 @@ const PayrollBatchDetail = (props) => {
   useEffect(() => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
     setCurrentView(
-      isOrganizationView
+      isOrganizationView || isBluePencilPortal
         ? payrollConstants.EMPLOYEE_VIEW
         : isCorporateView
         ? payrollConstants.EMPLOYEE_VIEW

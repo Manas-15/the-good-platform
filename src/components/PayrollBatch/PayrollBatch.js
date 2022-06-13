@@ -152,6 +152,7 @@ const PayrollBatch = (props) => {
     hidePaidSimulator();
   };
   const handleOpen = (action, item) => {
+    console.log("ddddddddddddd aaaaaaaaa", item);
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
@@ -159,7 +160,15 @@ const PayrollBatch = (props) => {
       setActionTitle("Confirm Payment Receipt");
       setActionContent(`Are you sure want to receive this batch payments?`);
     } else {
-      setActionTitle(`${(!(isBluePencilPortal && action === "Confirm Batch") ? action : "")} ${corporateId ? "Confirmation" : ((isBluePencilPortal && action === "Confirm Batch") ? "Confirm Payment Receipt" : "")}`);
+      setActionTitle(
+        `${!(isBluePencilPortal && action === "Confirm Batch") ? action : ""} ${
+          corporateId
+            ? "Confirmation"
+            : isBluePencilPortal && action === "Confirm Batch"
+            ? "Confirm Payment Receipt"
+            : ""
+        }`
+      );
       setActionContent(
         `Are you sure want to ${
           corporateId
@@ -171,7 +180,9 @@ const PayrollBatch = (props) => {
       );
     }
     if (action === "Complete Batch") {
-      completeInitialValues.referenceNote = `Process batch for the month of ${moment().format('MMMM')} - ${item?.corporateName}`
+      completeInitialValues.referenceNote = `Process batch for the month of ${moment().format(
+        "MMMM"
+      )} - ${item?.corporateName}`;
       completeInitialValues.batchId = item?.batchId;
       completeInitialValues.requestType = payrollConstants.COMPLETE;
     } else if (action === "Receive Batch") {
@@ -261,10 +272,6 @@ const PayrollBatch = (props) => {
     setSelected(e.target.value);
   };
 
-  console.log(selected);
-  console.log(records, "reeeeeeeeeeeeeeeeee");
-
-  console.log(allRecords);
   const groupByBatch = () => {
     console.log("payrollBatches?.itemssss", payrollBatches?.items);
     return payrollBatches?.items?.reduce(function (acc, item) {
@@ -346,23 +353,25 @@ const PayrollBatch = (props) => {
                       </button>
                     </Link>
                   )}
-                  <Link
-                    className="fs-6 text-decoration-underline mr-3"
-                    onClick={() =>
-                      setCurrentView(payrollConstants.ORGANIZATION_VIEW)
-                    }
-                  >
-                    <button
-                      type="button"
-                      className={`${
-                        currentView === payrollConstants.ORGANIZATION_VIEW
-                          ? "active"
-                          : ""
-                      } btn btn-sm btn-outline-primary btn-outline-custom`}
+                  {!isBluePencilPortal && (
+                    <Link
+                      className="fs-6 text-decoration-underline mr-3"
+                      onClick={() =>
+                        setCurrentView(payrollConstants.ORGANIZATION_VIEW)
+                      }
                     >
-                      Organization View
-                    </button>
-                  </Link>
+                      <button
+                        type="button"
+                        className={`${
+                          currentView === payrollConstants.ORGANIZATION_VIEW
+                            ? "active"
+                            : ""
+                        } btn btn-sm btn-outline-primary btn-outline-custom`}
+                      >
+                        Organization View
+                      </button>
+                    </Link>
+                  )}
                 </>
               )}
             </div>
@@ -1096,8 +1105,16 @@ const PayrollBatch = (props) => {
                               <strong>Amount:</strong>
                             </div>
                             <div className="col-md-8">
-                            {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
-                              {selectedBatch?.amount?.toLocaleString()}
+                              {ReactHtmlParser(
+                                donationPreferenceConstants?.CURRENCY
+                              )}
+                              {payrollBatches?.items
+                                ?.reduce(
+                                  (total, currentValue) =>
+                                    (total = total + currentValue.amount),
+                                  0
+                                )
+                                .toLocaleString()}
                             </div>
                           </div>
                           <div className="row mb-2">
@@ -1139,7 +1156,13 @@ const PayrollBatch = (props) => {
                             {ReactHtmlParser(
                               donationPreferenceConstants?.CURRENCY
                             )}
-                            {selectedBatch?.amount?.toLocaleString()}
+                            {payrollBatches?.items
+                              ?.reduce(
+                                (total, currentValue) =>
+                                  (total = total + currentValue.amount),
+                                0
+                              )
+                              .toLocaleString()}
                           </div>
                           <div className="form-group mt-0">
                             <label>
@@ -1223,15 +1246,15 @@ const PayrollBatch = (props) => {
         </>
       )}
       {openPaidSimulator && (
-            <Modal
-              show={openPaidSimulator}
-              onHide={hidePaidSimulator}
-              backdrop="static"
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Paid Confirmation</Modal.Title>
-              </Modal.Header>
-              {/* <Formik
+        <Modal
+          show={openPaidSimulator}
+          onHide={hidePaidSimulator}
+          backdrop="static"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Paid Confirmation</Modal.Title>
+          </Modal.Header>
+          {/* <Formik
                 initialValues={null}
                 validationSchema={null}
                 onSubmit={(values) => {
@@ -1248,25 +1271,25 @@ const PayrollBatch = (props) => {
                   isSubmitting,
                 }) => (
                   <Form> */}
-              <Modal.Body style={{ fontSize: "18" }}>
-                <p>
-                  This is a simulating service. Click on the respective button
-                  to send the response.
-                </p>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button type="submit" variant="success" onClick={confirmPaid}>
-                  Simulate Success
-                </Button>
-                <Button variant="danger" onClick={hidePaidSimulator}>
-                  Simulate Failure
-                </Button>
-              </Modal.Footer>
-              {/* </Form>
+          <Modal.Body style={{ fontSize: "18" }}>
+            <p>
+              This is a simulating service. Click on the respective button to
+              send the response.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button type="submit" variant="success" onClick={confirmPaid}>
+              Simulate Success
+            </Button>
+            <Button variant="danger" onClick={hidePaidSimulator}>
+              Simulate Failure
+            </Button>
+          </Modal.Footer>
+          {/* </Form>
                 )}
               </Formik> */}
-            </Modal>
-          )}
+        </Modal>
+      )}
       {isBatchDetail && (
         <PayrollBatchDetail
           batchId={selectedBatchId}
