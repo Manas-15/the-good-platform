@@ -7,6 +7,7 @@ import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
 import { Modal, Button } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import format from 'date-fns/format';
 import {
   paymentConstants,
   paginationConstants,
@@ -30,6 +31,7 @@ const initialValues = {
   email: "",
   transactionId: "",
 };
+const { afterToday } = DateRangePicker;
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
   console.log(records);
@@ -117,8 +119,6 @@ const ListTransactionsHistory = (props) => {
   }, [records]);
 
   const onSearchChange = (value, selected) => {
-    console.log("???????????????????", value, selected);
-
     if (selected === "programName") {
       setSearchByProgramName(value);
     } else if (selected === "employeeName") {
@@ -238,6 +238,7 @@ const ListTransactionsHistory = (props) => {
     setSelectedAccount(item);
     console.log("aaaaaaaaaaaaa item", item);
   };
+  const date = new Date();
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -252,8 +253,13 @@ const ListTransactionsHistory = (props) => {
               .add(-30, "days")
               .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
             format={"dd/MM/yyyy"}
-            // value = {[moment().add(-30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]}
+            // defaultValue={selectedRange}
+            // defaultValue={[date.setDate(date.getDate() - 30), new Date()]}
+            // renderValue={value => {
+            //   return format(value[0], 'dd/MM/yyyy') + ' ~ ' + format(value[1], 'dd/MM/yyyy');
+            // }}
             cleanable={true}
+            disabledDate={afterToday()}
           />
         </div>
         <div className="col-md-4 text-right">
