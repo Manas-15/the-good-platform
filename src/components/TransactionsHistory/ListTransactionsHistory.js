@@ -21,6 +21,7 @@ import "rsuite/dist/rsuite.min.css";
 let charityProgramsOption = [];
 const paymentStatusOption = [
   { label: "All", value: 0 },
+  { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
   { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
@@ -262,6 +263,7 @@ const ListTransactionsHistory = (props) => {
               .add(-30, "days")
               .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
             format={"dd/MM/yyyy"}
+            // value = {[moment().add(-30, "days").format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")]}
             cleanable={true}
           />
         </div>
@@ -654,7 +656,7 @@ const ListTransactionsHistory = (props) => {
             <Modal.Title>Account Detail</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ fontSize: "18" }}>
-            {!isEmployeePortal && selectedAccount?.employeeName  && (
+            {!isEmployeePortal && selectedAccount?.employeeName && (
               <div className="row mb-2">
                 <div className="col-md-4">
                   <strong>Donor:</strong>

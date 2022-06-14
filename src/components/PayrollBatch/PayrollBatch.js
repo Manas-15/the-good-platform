@@ -592,12 +592,11 @@ const PayrollBatch = (props) => {
                                       <Link
                                         onClick={() =>
                                           showReferenceNote(
-                                            groupByBatchData[type][0]
-                                              .referenceNote
+                                            isOrganizationPortal ? groupByBatchData[type][0]?.adminreferenceNote : groupByBatchData[type][0]?.referenceNote
                                           )
                                         }
                                       >
-                                        {groupByBatchData[type][0].referenceId}
+                                        {isOrganizationPortal ? groupByBatchData[type][0]?.adminreferenceId : groupByBatchData[type][0]?.referenceId}
                                       </Link>
                                     </td>
                                     <td className="ant-table-cell">
