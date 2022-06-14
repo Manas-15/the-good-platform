@@ -56,6 +56,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [actionContent, setActionContent] = useState("");
   const [selectedProgram, setSelectedProgram] = useState(Object);
   // const [socialId, setSocialId] = useState();
+  const [checked, setChecked] = useState();
   const [checkedProgram, setCheckedProgram] = useState({
     programId: [],
     corporateId: "",
@@ -69,6 +70,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const handleOpen = (action, item) => {
     console.log(action, item, "aaaaaaaaaaaaaaaaaaaaa");
     setOpen(true);
+    setSelectedProgram(item);
     setActionTitle(`${action} Confirmation`);
     setSelectedCharity(item);
     if (action === charityProgramConstants.UNPROMOTE) {
@@ -252,6 +254,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     console.log(name, value, checked);
     const { programId } = checkedProgram;
     let socialId = charityProgram?.soicalId;
+    setChecked(checked);
 
     if (checked) {
       setCheckedProgram({
@@ -309,25 +312,25 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                           onChange={handleCheck}
                         />
                       </div>
-                      <Tooltip title={charityProgramConstants.UNPROMOTE}>
-                        <Link
-                          to="#"
-                          disabled={true}
-                          onClick={() =>
-                            checkBeforeUnpromote(
-                              charityProgramConstants.BULK_UNPROMOTE,
-                              checkedProgram
-                            )
-                          }
-                        >
-                          <i
-                            disabled={true}
-                            className="bi-heart-fill fs-6 red-color mr-1"
-                            onMouseOver={(e) => removeIconClass(e)}
-                            onMouseOut={(e) => addIconClass(e)}
-                          ></i>
-                        </Link>
-                      </Tooltip>
+                      {checked && (
+                        <Tooltip title={charityProgramConstants.UNPROMOTE}>
+                          <Link
+                            to="#"
+                            onClick={() =>
+                              checkBeforeUnpromote(
+                                charityProgramConstants.BULK_UNPROMOTE,
+                                checkedProgram
+                              )
+                            }
+                          >
+                            <i
+                              className="bi-heart-fill fs-6 red-color mr-1"
+                              onMouseOver={(e) => removeIconClass(e)}
+                              onMouseOut={(e) => addIconClass(e)}
+                            ></i>
+                          </Link>
+                        </Tooltip>
+                      )}
                     </th>
                     <th className="ant-table-cell">Program manas</th>
                     <th className="ant-table-cell">Organization</th>
