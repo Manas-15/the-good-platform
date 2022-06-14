@@ -5,13 +5,17 @@ const SearchHelper = (data, searchText) => {
       : item
   );
 };
-const SearchDonationPreferenceHelper = (data, searchText) => {
+const SearchDonationPreferenceHelper = (data, searchText, selected) => {
+  console.log(data, searchText, selected);
   const lowerSearchText = searchText.toLowerCase();
   return data?.filter((item) =>
     searchText
-      ? item?.employeeName?.toLowerCase()?.includes?.(lowerSearchText) ||
-        item?.donationAmount.toString() === lowerSearchText ||
-        item?.charityProgram?.toLowerCase()?.includes?.(lowerSearchText)
+      ? selected === "programName"
+        ? item?.charityProgram?.toLowerCase()?.includes?.(lowerSearchText)
+        : selected === "organizationName"
+        ? item?.socialOrganization?.toLowerCase()?.includes?.(lowerSearchText)
+        : selected === "amount" &&
+          item?.donationAmount.toString() === lowerSearchText
       : item
   );
 };

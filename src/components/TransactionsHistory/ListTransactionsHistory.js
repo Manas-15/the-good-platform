@@ -11,7 +11,7 @@ import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -23,12 +23,12 @@ const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: ""
+  transactionId: "",
 };
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
@@ -76,6 +76,7 @@ const ListTransactionsHistory = (props) => {
   const isBluePencilView =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+
   useEffect(() => {
     setCurrentPage(1);
     charityPrograms?.items?.sponsored?.forEach((e) => {
@@ -116,29 +117,17 @@ const ListTransactionsHistory = (props) => {
   }, [records]);
 
   const onSearchChange = (value, selected) => {
-    // const keyword = e.target.value;
     console.log("???????????????????", value, selected);
-    // if (value !== "") {
-    // const results = records.filter((rec) => {
+
     if (selected === "programName") {
       setSearchByProgramName(value);
-      // return rec?.charityName
-      //   .toLowerCase()
-      //   .startsWith(keyword.toLowerCase());
     } else if (selected === "employeeName") {
       setSearchByEmployeeName(value);
-      // return rec?.employeeName
-      //   .toLowerCase()
-      //   .startsWith(keyword.toLowerCase());
     } else if (selected === "amount") {
       setSearchByAmount(value);
-      // console.log(">>>>>>>>>>>>>>>> keyword", keyword)
-      // return allRecords.includes(keyword);
     } else {
       return null;
     }
-    // });
-    // }
   };
   const onHandleChange = (e) => {
     console.log("fired");
@@ -160,7 +149,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId
+        transactionId: transactionId,
       })
     );
   };
@@ -215,7 +204,7 @@ const ListTransactionsHistory = (props) => {
         searchByProgramName: searchByProgramName,
         searchByAmount: searchByAmount,
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
-        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null
+        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null,
       })
     );
   };
@@ -231,7 +220,7 @@ const ListTransactionsHistory = (props) => {
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection"
+    key: "selection",
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -312,10 +301,13 @@ const ListTransactionsHistory = (props) => {
               >
                 <option defaultValue>Search by</option>
                 <option value="programName">Program Name</option>
-                {/* {isCorporatePortal && ( */}
-                <option value="employeeName">Donor</option>
-                {/* )} */}
+                {isBluePencilView && (
+                  <option value="corporate">Corporate</option>
+                )}
 
+                {!isEmployeePortal && (
+                  <option value="employeeName">Donor</option>
+                )}
                 <option value="amount">Amount</option>
               </select>
             </div>
@@ -328,7 +320,6 @@ const ListTransactionsHistory = (props) => {
                     <i className="bi bi-search"></i>
                     <input
                       type="text"
-                      // className="form-control"
                       className="ant-input-search"
                       placeholder="Search by Program Name"
                       onChange={(e) =>
@@ -368,10 +359,6 @@ const ListTransactionsHistory = (props) => {
                     <i className="bi bi-search"></i>
                     <input
                       type="text"
-                      // pattern="[0-9]*"
-                      // maxLength={15}
-                      // min={0}
-                      // className="form-control"
                       className="ant-input-search"
                       placeholder="Search by Amount"
                       onChange={(e) => onSearchChange(e.target.value, "amount")}
@@ -382,27 +369,6 @@ const ListTransactionsHistory = (props) => {
             </div>
           )}
         </div>
-
-        {/* 
-        
-        <div className="ant-col-6  searchContainer ml-3">
-          <div className="ant-input-affix-wrapper inputFilterInput">
-            <span className="ant-input-prefix">
-              <i className="bi bi-search"></i>
-              <input
-                placeholder="Search by Amount"
-                className="ant-input-search"
-                type="number"
-                pattern="[0-9]*"
-                maxLength={15}
-                min={0}
-                onChange={(e) => {
-                  search(e.target.value, "amount");
-                }}
-              />
-            </span>
-          </div>
-        </div> */}
       </div>
       {transactions.loading && <Loader />}
       <div className="ant-row">
@@ -607,7 +573,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

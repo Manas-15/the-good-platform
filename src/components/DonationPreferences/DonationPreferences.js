@@ -2,28 +2,29 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
+// import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
-import { Link } from "react-router-dom";
-import Pagination from "./../Shared/Pagination";
+// import { Link } from "react-router-dom";
+// import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
-import { Switch } from "antd";
+// import { Switch } from "antd";
 import { BellOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import ListDonationPreferences from "./ListDonationPreferences";
 import { Tabs, Icon } from "antd";
-import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
+// import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import { SearchDonationPreferenceHelper } from "../../helpers";
 import DonateHeader from "./../CharityPrograms/DonateHeader";
 import Donate from "./../CharityPrograms/Donate";
+// import { selectedCorporate } from "../../reducers/selectedCorporate.reducer";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -31,14 +32,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: ""
+  donationConsent: "",
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: ""
+  preferenceId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -58,6 +59,7 @@ const DonationPreferences = () => {
   const [tabType, setTabType] = useState(donationPreferenceConstants.ACTIVE);
   const [searchText, setSearchText] = useState("");
   const [getRepeatCharity, setGetRepeatCharity] = useState();
+  const [selected, setSelected] = useState("");
 
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
@@ -78,7 +80,7 @@ const DonationPreferences = () => {
         employeeId: employee?.emp_id,
         userType: "Employee",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
   };
@@ -116,6 +118,24 @@ const DonationPreferences = () => {
       donationPreferenceActions.operateActionRequest(actionInitialValues)
     );
     getData();
+  };
+
+  // const onSearchChange = (value, selected) => {
+  //   console.log("???????????????????", value, selected);
+
+  //   if (selected === "programName") {
+  //     setSearchByProgramName(value);
+  //   } else if (selected === "employeeName") {
+  //     setSearchByEmployeeName(value);
+  //   } else if (selected === "amount") {
+  //     setSearchByAmount(value);
+  //   } else {
+  //     return null;
+  //   }
+  // };
+  const onHandleChange = (e) => {
+    console.log("fired");
+    setSelected(e.target.value);
   };
 
   const handleCheck = () => {
@@ -180,13 +200,11 @@ const DonationPreferences = () => {
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
-  const search = (value) => {
-    console.log("fffffffffffffffffffffff", tabType, value);
+  console.log(selected, "selecteddddddddd");
+  const search = (value, selected) => {
+    console.log("fffffffffffffffffffffff", tabType, value, selected);
     setSearchText(value);
-    // if(tabType === socialOrganizationConstants.SPONSORED){
-    //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
-    // }
+    setSelected(selected);
   };
   const setRepeatCharity = (charity) => {
     console.log(
@@ -205,6 +223,80 @@ const DonationPreferences = () => {
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+        <div className="col-md d-flex pl-0">
+          <div className="col-md-4">
+            <div>
+              <select
+                className="form-select"
+                value={selected}
+                onChange={(e) => onHandleChange(e)}
+              >
+                <option defaultValue>Search by</option>
+                <option value="programName">Program Name</option>
+                {isEmployeePortal && (
+                  <option value="organizationName">Organization Name</option>
+                )}
+                <option value="amount">Amount</option>
+              </select>
+            </div>
+          </div>
+          {selected === "programName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      className="ant-input-search"
+                      placeholder="Search by Program Name"
+                      onChange={(e) => search(e.target.value, "programName")}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "organizationName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Organization Name"
+                      onChange={(e) =>
+                        search(e.target.value, "organizationName")
+                      }
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "amount" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      className="ant-input-search"
+                      placeholder="Search by Amount"
+                      onChange={(e) => search(e.target.value, "amount")}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      {/* <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
         <div className="ant-col ant-col-24  searchContainer">
           <div className="ant-col ant-col-12">
             <div className="ant-input-affix-wrapper inputFilterInput">
@@ -220,7 +312,7 @@ const DonationPreferences = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {preferences.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
         <Tabs
@@ -235,7 +327,8 @@ const DonationPreferences = () => {
                 {preferences?.items?.active
                   ? SearchDonationPreferenceHelper(
                       preferences?.items?.active,
-                      searchText
+                      searchText,
+                      selected
                     ).length
                   : 0}
                 )
@@ -249,7 +342,8 @@ const DonationPreferences = () => {
                 searchText && tabType === donationPreferenceConstants.ACTIVE
                   ? SearchDonationPreferenceHelper(
                       preferences?.items?.active,
-                      searchText
+                      searchText,
+                      selected
                     )
                   : preferences?.items?.active
               }
