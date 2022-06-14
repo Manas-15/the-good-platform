@@ -1,30 +1,24 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
-// import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
-// import { Link } from "react-router-dom";
-// import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
-// import { Switch } from "antd";
 import { BellOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import ListDonationPreferences from "./ListDonationPreferences";
-import { Tabs, Icon } from "antd";
-// import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
+import { Tabs } from "antd";
 import { SearchDonationPreferenceHelper } from "../../helpers";
 import DonateHeader from "./../CharityPrograms/DonateHeader";
 import Donate from "./../CharityPrograms/Donate";
-// import { selectedCorporate } from "../../reducers/selectedCorporate.reducer";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -32,14 +26,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -80,7 +74,7 @@ const DonationPreferences = () => {
         employeeId: employee?.emp_id,
         userType: "Employee",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   };

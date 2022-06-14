@@ -1,21 +1,18 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
-import { Link } from "react-router-dom";
 import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
-import ReactHtmlParser from "react-html-parser";
 import ListDonationPreferences from "../DonationPreferences/ListDonationPreferences";
-import { Tabs, Icon } from "antd";
+import { Tabs } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import { SearchDonationPreferenceHelper } from "../../helpers";
 
@@ -24,14 +21,14 @@ const preferenceForm = {
   type: "",
   donationAmount: "",
   frequency: "",
-  isConsentCheck: "",
+  isConsentCheck: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -67,7 +64,7 @@ const EmployeeDonationPreferences = () => {
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Preference",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   }, [currentPage]);

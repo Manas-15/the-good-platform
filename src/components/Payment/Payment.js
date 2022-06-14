@@ -20,7 +20,7 @@ const Payment = ({ paymentValues }) => {
     "card",
     "upi",
     "app",
-    "netbanking",
+    "netbanking"
     // "paylater",
     // "credicardemi",
   ]);
@@ -36,7 +36,7 @@ const Payment = ({ paymentValues }) => {
     // alert("cbf: " + data.order.errorText);
     console.log("dddddd error payment ........... 1111111", {
       ...data,
-      ...paymentValues,
+      ...paymentValues
     });
     setPaymentStatus(paymentConstants.ERROR);
     setPaymentSuccessErrorData(data);
@@ -73,7 +73,7 @@ const Payment = ({ paymentValues }) => {
       onSuccess: cbs,
       onFailure: cbf,
       components,
-      style,
+      style
     });
   };
   return (

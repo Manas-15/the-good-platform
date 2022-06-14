@@ -3,12 +3,12 @@ import React from "react";
 const PasswordStrengthIndicator = ({
   validity: { minChar, upperChar, number, specialChar },
   isComplete,
-  name,
+  name
 }) => {
   let count = minChar + upperChar + number + specialChar;
   const strengthClass = [
     "password-meter text-left mb-4",
-    count < 4 ? "d-block" : "d-none",
+    count < 4 ? "d-block" : "d-none"
   ]
     .join(" ")
     .trim();

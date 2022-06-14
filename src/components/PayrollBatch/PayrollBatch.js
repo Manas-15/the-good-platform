@@ -236,7 +236,6 @@ const PayrollBatch = (props) => {
     setSelectedBatchId(null);
   };
   const filter = (value) => {
-    console.log("allRecords", records, searchValue);
     if (value && value === payrollConstants.PENDING_STATUS.toString()) {
       setAllRecords(
         records?.filter(

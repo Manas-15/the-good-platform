@@ -1,30 +1,30 @@
 export const DropinComponents = [
   {
     name: "Order Details",
-    id: "order-details",
+    id: "order-details"
   },
   {
     name: "Card",
-    id: "card",
+    id: "card"
   },
   {
     name: "UPI",
-    id: "upi",
+    id: "upi"
   },
   {
     name: "Wallets",
-    id: "app",
+    id: "app"
   },
   {
     name: "Netbanking",
-    id: "netbanking",
+    id: "netbanking"
   },
   {
     name: "Paylater",
-    id: "paylater",
+    id: "paylater"
   },
   {
     name: "Credit Card EMI",
-    id: "credicardemi",
-  },
+    id: "credicardemi"
+  }
 ];
