@@ -32,6 +32,7 @@ const initialValues = {
   transactionId: "",
 };
 const { afterToday } = DateRangePicker;
+const date = new Date();
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
   console.log(records);
@@ -67,9 +68,9 @@ const ListTransactionsHistory = (props) => {
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
-  const [value, setValue] = React.useState([
-    new Date("2017-02-01"),
-    new Date("2017-05-20"),
+  const [value, setValue] = useState([
+    new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD")),
   ]);
 
   const isOrganizationView =
@@ -254,7 +255,7 @@ const ListTransactionsHistory = (props) => {
             appearance="default"
             value={value}
             onChange={setValue}
-            // onOk={(value) => fetchData(value)}
+            onOk={(value) => fetchData(value)}
             placeholder={`${moment()
               .add(-30, "days")
               .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
