@@ -22,7 +22,7 @@ const initialValues = {
   email: "",
   employeeId: "",
   pan: "",
-  corporateProfileId: 2,
+  corporateProfileId: 1,
   organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
