@@ -61,6 +61,8 @@ const ListTransactionsHistory = (props) => {
   const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
   const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
+  const [openAccountDetail, setOpenAccountDetail] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
 
   const isOrganizationView =
@@ -172,6 +174,9 @@ const ListTransactionsHistory = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloseDetail = () => {
+    setOpenAccountDetail(false);
+  };
   const setEmailSend = (transactionId) => {
     setOpen(true);
     initialValues.email = isCorporatePortal
@@ -237,6 +242,11 @@ const ListTransactionsHistory = (props) => {
     //     endDate: [native Date Object],
     //   }
     // }
+  };
+  const showAccountDetail = (item) => {
+    setOpenAccountDetail(true);
+    setSelectedAccount(item);
+    console.log("aaaaaaaaaaaaa item", item);
   };
   return (
     <div className="customContainer">
@@ -437,25 +447,58 @@ const ListTransactionsHistory = (props) => {
                         {!isEmployeePortal && (
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
-                              {transaction?.employeeName}
+                              <Tooltip title="Show detail">
+                                <Link
+                                  onClick={() => showAccountDetail(transaction)}
+                                >
+                                  <span className="custom-color">
+                                    {transaction?.employeeName}
+                                  </span>
+                                </Link>
+                              </Tooltip>
                             </span>
                           </td>
                         )}
                         <td className="ant-table-cell">
                           <span className="ant-typography font-weight-bold">
-                            {transaction?.charityName}
+                            <Tooltip title="Show detail">
+                              <Link
+                                onClick={() => showAccountDetail(transaction)}
+                              >
+                                {" "}
+                                <span className="custom-color">
+                                  {transaction?.charityName}
+                                </span>
+                              </Link>
+                            </Tooltip>
                           </span>
                         </td>
                         {!isOrganizationView && (
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
-                              {transaction?.socialOrg}
+                              <Tooltip title="Show detail">
+                                <Link
+                                  onClick={() => showAccountDetail(transaction)}
+                                >
+                                  <span className="custom-color">
+                                    {transaction?.socialOrg}
+                                  </span>
+                                </Link>
+                              </Tooltip>
                             </span>
                           </td>
                         )}
                         {!employeeId && !isCorporatePortal && (
                           <td className="ant-table-cell">
-                            {transaction?.corporateName}
+                            <Tooltip title="Show detail">
+                              <Link
+                                onClick={() => showAccountDetail(transaction)}
+                              >
+                                <span className="custom-color">
+                                  {transaction?.corporateName}
+                                </span>
+                              </Link>
+                            </Tooltip>
                           </td>
                         )}
                         <td className="ant-table-cell">
@@ -599,6 +642,85 @@ const ListTransactionsHistory = (props) => {
               </Form>
             )}
           </Formik>
+        </Modal>
+      )}
+      {openAccountDetail && (
+        <Modal
+          show={openAccountDetail}
+          onHide={handleCloseDetail}
+          backdrop="static"
+        >
+          <Modal.Header closeButton className="fs-5">
+            <Modal.Title>Account Detail</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ fontSize: "18" }}>
+            {!isEmployeePortal && selectedAccount?.employeeName  && (
+              <div className="row mb-2">
+                <div className="col-md-4">
+                  <strong>Donor:</strong>
+                </div>
+                <div className="col-md-8">{selectedAccount?.employeeName}</div>
+              </div>
+            )}
+            <div className="row mb-2">
+              <div className="col-md-4">
+                <strong>Corporate:</strong>
+              </div>
+              <div className="col-md-8">{selectedAccount?.corporateName}</div>
+            </div>
+            <div className="row mb-2">
+              <div className="col-md-4">
+                <strong>Organization:</strong>
+              </div>
+              <div className="col-md-8">{selectedAccount?.socialOrg}</div>
+            </div>
+            <div className="row mb-2">
+              <div className="col-md-4">
+                <strong>Program:</strong>
+              </div>
+              <div className="col-md-8">{selectedAccount?.charityName}</div>
+            </div>
+            <div className="row mb-2">
+              <div className="col-md-4">
+                <strong>Donation Type:</strong>
+              </div>
+              <div className="col-md-8">{selectedAccount?.donationType}</div>
+            </div>
+            <div className="row mb-2">
+              <div className="col-md-4">
+                <strong>Payment Date:</strong>
+              </div>
+              <div className="col-md-8">
+                {moment(selectedAccount?.paymentDate).format(
+                  "DD/MM/YY, h:mm A"
+                )}
+              </div>
+            </div>
+            <div className="row mb-2">
+              <div className="col-md-4">
+                <strong>Status:</strong>
+              </div>
+              <div className="col-md-8">
+                {selectedAccount?.paymentStatus ===
+                  paymentConstants.PAYMENT_SUCCESS && (
+                  <span className="text-success">Success</span>
+                )}
+                {selectedAccount?.paymentStatus ===
+                  paymentConstants.PAYMENT_FAILURE && (
+                  <span className="text-danger">Failed</span>
+                )}
+                {selectedAccount?.paymentStatus ===
+                  paymentConstants.PAYMENT_PENDING && (
+                  <span className="text-warning">Pending</span>
+                )}
+              </div>
+            </div>
+          </Modal.Body>
+          {/* <Modal.Footer>
+            <button className="btn btn-custom" onClick={handleClose}>
+              Cancel
+            </button>
+          </Modal.Footer> */}
         </Modal>
       )}
     </div>

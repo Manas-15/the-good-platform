@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
+import { CompleteBatchSchema } from "./../Validations";
 import {
   donationPreferenceConstants,
   payrollConstants,
@@ -27,6 +28,12 @@ const confirmInitialValues = {
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 let accordionData;
+const paidInitialValues = {
+  batchId: "",
+  requestType: "",
+  referenceId: "",
+  referenceNote: ""
+};
 const PayrollBatchAccordion = (props) => {
   // let history = useHistory();
   const payrollBatches = useSelector((state) => state.payrollBatch);
@@ -76,9 +83,7 @@ const PayrollBatchAccordion = (props) => {
     setShow(true);
     setReferenceNote(referenceNote);
   };
-
   const handleOpen = (action, item) => {
-    console.log("ddddddddddddd", item)
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
@@ -137,15 +142,16 @@ const PayrollBatchAccordion = (props) => {
   };
   if (props?.viewType === payrollConstants.ORGANIZATION_VIEW) {
     accordionData = groupBy("socialOrganizationName");
-    console.log(">>>>>>>>>>>> accordionData", accordionData);
   } else {
     accordionData = groupBy("corporateName");
   }
-  const confirmPaid = () => {
+  const confirmPaid = (values) => {
     dispatch(
       payrollBatchActions.updateBatchStatus({
         batchId: selectedBatch?.batchId,
-        requestType: payrollConstants.PAID
+        requestType: payrollConstants.PAID,
+        referenceId: values?.referenceId,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -410,7 +416,7 @@ const PayrollBatchAccordion = (props) => {
                                       </td>
                                       <td className="ant-table-cell text-center">
                                         {batch?.status ===
-                                        payrollConstants.CONFIRMED_STATUS ? (
+                                        payrollConstants.RECEIVED_STATUS ? (
                                           <>
                                             <Tooltip title="Unconfirm">
                                               <Link
@@ -581,11 +587,11 @@ const PayrollBatchAccordion = (props) => {
               <Modal.Header closeButton>
                 <Modal.Title>Paid Confirmation</Modal.Title>
               </Modal.Header>
-              {/* <Formik
-                initialValues={null}
-                validationSchema={null}
+              <Formik
+                initialValues={paidInitialValues}
+                validationSchema={CompleteBatchSchema}
                 onSubmit={(values) => {
-                  console.log("<<<<<<<<<<<<<<<<<<< Confirm batch >>>>>>>>>>>>>>>>>")
+                  confirmPaid(values);
                 }}
               >
                 {({
@@ -595,26 +601,65 @@ const PayrollBatchAccordion = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
-                  <Form> */}
-              <Modal.Body style={{ fontSize: "18" }}>
-                <p>
-                  This is a simulating service. Click on the respective button
-                  to send the response.
-                </p>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button type="submit" variant="success" onClick={confirmPaid}>
-                  Simulate Success
-                </Button>
-                <Button variant="danger" onClick={hidePaidSimulator}>
-                  Simulate Failure
-                </Button>
-              </Modal.Footer>
-              {/* </Form>
+                  <Form>
+                    <Modal.Body style={{ fontSize: "18" }}>
+                      <p>
+                        This is a simulating service. Click on the respective
+                        button to send the response.
+                      </p>
+                      <div className="form-group mt-0">
+                        <label>
+                          <strong>Reference ID*</strong>
+                        </label>
+                        <input
+                          type="text"
+                          name="referenceId"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          maxLength={50}
+                          placeholder="Enter reference ID"
+                          className="form-control"
+                        />
+                        <span className="error">
+                          {errors.referenceId &&
+                            touched.referenceId &&
+                            errors.referenceId}
+                        </span>
+                      </div>
+                      <div className="form-group">
+                        <label>
+                          <strong>Reference Note*</strong>
+                        </label>
+                        <textarea
+                          rows="3"
+                          name="referenceNote"
+                          value={values?.referenceNote}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          maxLength={500}
+                          placeholder="Enter reference note"
+                          className="form-control"
+                        />
+                        <span className="error">
+                          {errors.referenceNote &&
+                            touched.referenceNote &&
+                            errors.referenceNote}
+                        </span>
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button type="submit" variant="success">
+                        Simulate Success
+                      </Button>
+                      <Button variant="danger" onClick={hidePaidSimulator}>
+                        Simulate Failure
+                      </Button>
+                    </Modal.Footer>
+                  </Form>
                 )}
-              </Formik> */}
+              </Formik>
             </Modal>
           )}
           <Modal show={show} onHide={handleCancel} backdrop="static">
