@@ -65,6 +65,10 @@ const ListTransactionsHistory = (props) => {
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
+  const [value, setValue] = React.useState([
+    new Date("2017-02-01"),
+    new Date("2017-05-20"),
+  ]);
 
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -247,7 +251,9 @@ const ListTransactionsHistory = (props) => {
         <div className="col-md-4 text-center">
           <DateRangePicker
             appearance="default"
-            onOk={(value) => fetchData(value)}
+            value={value}
+            onChange={setValue}
+            // onOk={(value) => fetchData(value)}
             placeholder={`${moment()
               .add(-30, "days")
               .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
