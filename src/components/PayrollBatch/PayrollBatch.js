@@ -286,7 +286,7 @@ const PayrollBatch = (props) => {
             .startsWith(keyword.toLowerCase());
         }
       } else if (selected === "amount") {
-        console.log("????????????????? keyword", keyword)
+        console.log("????????????????? keyword", keyword);
         return rec?.amount?.toString()?.startsWith(keyword);
       } else {
         return rec;
@@ -325,29 +325,29 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
-              {/* {isCorporatePortal && ( */}
-              <div className="row mb-4">
-                <div className="col-md-6">
-                  <h6 className="mt-2">Filter By</h6>
-                </div>
-                <div className="col-md-6">
-                  <select
-                    className="form-select"
-                    defaultValue={""}
-                    onChange={(e) => filter(e.target.value)}
-                  >
-                    <option value={""} key={"default"} disabled>
-                      Status
-                    </option>
-                    {statusOption.map((status, index) => (
-                      <option value={status.value} key={index}>
-                        {status.label}
+              {isCorporatePortal && (
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <h6 className="mt-2">Filter By</h6>
+                  </div>
+                  <div className="col-md-6">
+                    <select
+                      className="form-select"
+                      defaultValue={""}
+                      onChange={(e) => filter(e.target.value)}
+                    >
+                      <option value={""} key={"default"} disabled>
+                        Status
                       </option>
-                    ))}
-                  </select>
+                      {statusOption.map((status, index) => (
+                        <option value={status.value} key={index}>
+                          {status.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-              </div>
-              {/* )} */}
+              )}
               {!corporateId && !isOrganizationPortal && (
                 <>
                   {isBluePencilPortal && (
