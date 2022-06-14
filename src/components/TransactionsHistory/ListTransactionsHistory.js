@@ -209,7 +209,9 @@ const ListTransactionsHistory = (props) => {
         searchByProgramName: searchByProgramName,
         searchByAmount: searchByAmount,
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
-        endDate: dateRange ? moment(dateRange[1]).add(1, 'days').format("YYYY-MM-DD") : null
+        endDate: dateRange
+          ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
+          : null
       })
     );
   };

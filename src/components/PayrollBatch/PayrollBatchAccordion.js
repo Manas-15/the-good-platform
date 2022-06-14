@@ -422,7 +422,7 @@ const PayrollBatchAccordion = (props) => {
                                       </td>
                                       <td className="ant-table-cell text-center">
                                         {batch?.status ===
-                                        payrollConstants.RECEIVED_STATUS ? (
+                                        payrollConstants.CONFIRMED_STATUS ? (
                                           <>
                                             <Tooltip title="Unconfirm">
                                               <Link
