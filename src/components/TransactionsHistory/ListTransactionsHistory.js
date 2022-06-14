@@ -117,7 +117,6 @@ const ListTransactionsHistory = (props) => {
 
   const onSearchChange = (value, selected) => {
     // const keyword = e.target.value;
-    console.log("???????????????????", value, selected);
     // if (value !== "") {
     // const results = records.filter((rec) => {
     if (selected === "programName") {
