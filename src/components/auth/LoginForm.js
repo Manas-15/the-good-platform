@@ -37,7 +37,7 @@ const LoginForm = ({ submit, disable }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
+                isSubmitting
                 /* and other goodies */
               }) => (
                 <Form autoComplete="false">
@@ -172,7 +172,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/employees/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >
@@ -184,7 +184,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/others/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >
@@ -196,7 +196,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/individual/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >

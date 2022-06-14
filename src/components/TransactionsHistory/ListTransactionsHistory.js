@@ -7,12 +7,12 @@ import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
 import { Modal, Button } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import format from 'date-fns/format';
+import format from "date-fns/format";
 import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -24,12 +24,12 @@ const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -70,7 +70,7 @@ const ListTransactionsHistory = (props) => {
   const [selectedRange, setSelectedRange] = useState([]);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
 
   const isOrganizationView =
@@ -154,7 +154,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -209,7 +209,7 @@ const ListTransactionsHistory = (props) => {
         searchByProgramName: searchByProgramName,
         searchByAmount: searchByAmount,
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
-        endDate: dateRange ? moment(dateRange[1]).format("YYYY-MM-DD") : null,
+        endDate: dateRange ? moment(dateRange[1]).add(1, 'days').format("YYYY-MM-DD") : null
       })
     );
   };
@@ -225,7 +225,7 @@ const ListTransactionsHistory = (props) => {
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: "selection"
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -586,7 +586,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
