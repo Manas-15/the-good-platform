@@ -139,7 +139,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" }
+    { label: "Processed", value: payrollConstants.RECEIVED_STATUS }
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
@@ -235,16 +235,20 @@ const PayrollBatch = (props) => {
     setSelectedBatchId(null);
   };
   const filter = (value) => {
-    if (value && value !== "0" && value !== "10") {
+    if (value && value === payrollConstants.PENDING_STATUS.toString()) {
       setRecords(
         payrollBatches?.items?.filter(
-          (record) => record?.status?.toString() === value
+          (record) =>
+            record?.totalOrganizationCount !==
+            record?.receivedOrganizationIds?.split(",")?.length
         )
       );
-    } else if (value && value === "10") {
+    } else if (value && value === payrollConstants.RECEIVED_STATUS.toString()) {
       setRecords(
         payrollBatches?.items?.filter(
-          (record) => record?.status?.toString() !== value
+          (record) =>
+            record?.totalOrganizationCount ===
+            record?.receivedOrganizationIds?.split(",")?.length
         )
       );
     } else {
