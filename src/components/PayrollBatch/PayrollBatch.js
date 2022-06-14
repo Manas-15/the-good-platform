@@ -285,13 +285,11 @@ const PayrollBatch = (props) => {
             .startsWith(keyword.toLowerCase());
         }
       } else if (selected === "amount") {
-        console.log("????????????????? keyword", keyword);
         return rec?.amount?.toString()?.startsWith(keyword);
       } else {
         return rec;
       }
     });
-    console.log(">>>>>>>>>>>>>>>>>> results", results);
     setAllRecords(results);
     // } else {
     //   setAllRecords(records);
@@ -1372,6 +1370,7 @@ const PayrollBatch = (props) => {
                 viewType={currentView}
                 showBatchDetail={(e) => showBatchDetail(e)}
                 hideBatchDetail={hideBatchDetail}
+                allRecords={allRecords}
               />
             )}
         </>

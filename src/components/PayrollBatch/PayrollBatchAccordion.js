@@ -58,6 +58,13 @@ const PayrollBatchAccordion = (props) => {
   const isBluePencilPortal =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+
+  const isOrganizationPortal =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   // const [currentView, setCurrentView] = useState(props?.viewType);
 
   // Pagination
@@ -134,7 +141,7 @@ const PayrollBatchAccordion = (props) => {
   // };
 
   const groupBy = (key) => {
-    return payrollBatches?.items?.reduce(function (acc, item) {
+    return props?.allRecords?.reduce(function (acc, item) {
       (acc[item[key]] = acc[item[key]] || []).push(item);
       return acc;
     }, {});
@@ -669,9 +676,30 @@ const PayrollBatchAccordion = (props) => {
           </Modal>
         </>
       )}
-      {!payrollBatches && (
+      {props?.allRecords?.length === 0 && (
         <div className="card text-center m-4 p-4">
-          <h6>No data found</h6>
+          {isOrganizationPortal && (
+            <strong>
+              No Payroll donation batch created by the Blue Pencil Admin till
+              now.
+              <br />
+              You should wait a while till any donation reaches to you.
+            </strong>
+          )}
+          {isCorporatePortal && (
+            <strong>
+              There is no Payroll Batch processed by you.
+              <br />
+              Please go to Donation preferences to process a batch now.
+            </strong>
+          )}
+          {isBluePencilPortal && (
+            <strong>
+              No Payroll donation batch created by any corporate.
+              <br />
+              You should wait a while till any donation reaches to you.
+            </strong>
+          )}
         </div>
       )}
       {isBatchDetail && (
