@@ -592,11 +592,19 @@ const PayrollBatch = (props) => {
                                       <Link
                                         onClick={() =>
                                           showReferenceNote(
-                                            isOrganizationPortal ? groupByBatchData[type][0]?.adminreferenceNote : groupByBatchData[type][0]?.referenceNote
+                                            isOrganizationPortal
+                                              ? groupByBatchData[type][0]
+                                                  ?.adminreferenceNote
+                                              : groupByBatchData[type][0]
+                                                  ?.referenceNote
                                           )
                                         }
                                       >
-                                        {isOrganizationPortal ? groupByBatchData[type][0]?.adminreferenceId : groupByBatchData[type][0]?.referenceId}
+                                        {isOrganizationPortal
+                                          ? groupByBatchData[type][0]
+                                              ?.adminreferenceId
+                                          : groupByBatchData[type][0]
+                                              ?.referenceId}
                                       </Link>
                                     </td>
                                     <td className="ant-table-cell">
@@ -1041,7 +1049,6 @@ const PayrollBatch = (props) => {
                                   </td>
                                 </tr>
                               ))}
-
                             {records?.length === 0 && (
                               <tr>
                                 <td className="text-center" colSpan={9}>
@@ -1064,7 +1071,6 @@ const PayrollBatch = (props) => {
             pageSize={pageSize}
             onPageChange={(page) => setPage(page)}
           />
-
           {open && (
             <Modal show={open} onHide={handleClose} backdrop="static">
               <Modal.Header closeButton>
