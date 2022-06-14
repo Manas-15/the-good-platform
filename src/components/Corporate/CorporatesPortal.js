@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { corporateActions, selectedCorporateActions } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,10 +6,9 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import Loader from "../Shared/Loader";
 import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
-// import corporates from "./../../config/corporates.json";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const CorporatesPortal = () => {
   let history = useHistory();

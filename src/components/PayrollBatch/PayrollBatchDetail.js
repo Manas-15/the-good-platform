@@ -5,7 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
@@ -18,7 +18,7 @@ import { ProcessHelper, history } from "./../../helpers";
 import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 
 const actionInitialValues = {
-  preferenceId: "",
+  preferenceId: ""
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, isCorporateView;
@@ -40,7 +40,7 @@ const PayrollBatchDetail = (props) => {
     dispatch(
       payrollSettingActions.getBatchDetail({
         batchId: props?.batchId,
-        socialId: isOrganizationView ? selectedOrganization?.id : null,
+        socialId: isOrganizationView ? selectedOrganization?.id : null
       })
     );
   }, [props?.batchId]);
@@ -142,23 +142,25 @@ const PayrollBatchDetail = (props) => {
               </button>
             </Link>
           )}
-          {!isOrganizationView && !isBluePencilPortal && (!isCorporateView || isOrganizationView) && (
-            <Link
-              className="fs-6 text-decoration-underline mr-3"
-              onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}
-            >
-              <button
-                type="button"
-                className={`${
-                  currentView === payrollConstants.CORPORATE_VIEW
-                    ? "active"
-                    : ""
-                } btn btn-sm  btn-outline-primary btn-outline-custom`}
+          {!isOrganizationView &&
+            !isBluePencilPortal &&
+            (!isCorporateView || isOrganizationView) && (
+              <Link
+                className="fs-6 text-decoration-underline mr-3"
+                onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}
               >
-                Corporate View
-              </button>
-            </Link>
-          )}
+                <button
+                  type="button"
+                  className={`${
+                    currentView === payrollConstants.CORPORATE_VIEW
+                      ? "active"
+                      : ""
+                  } btn btn-sm  btn-outline-primary btn-outline-custom`}
+                >
+                  Corporate View
+                </button>
+              </Link>
+            )}
           {!isOrganizationView && (
             <Link
               className="fs-6 text-decoration-underline"

@@ -13,7 +13,6 @@ import Loader from "./../Shared/Loader";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
-// import payrollBatch from "./../../config/payrollBatch.json";
 import { Modal, Button } from "react-bootstrap";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";

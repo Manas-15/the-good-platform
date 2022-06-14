@@ -14,7 +14,6 @@ import Loader from "./../Shared/Loader";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
-// import payrollBatch from "./../../config/payrollBatch.json";
 import { Modal, Button } from "react-bootstrap";
 import { Tabs, Progress, Tooltip } from "antd";
 import "./../../assets/css/payroll.scss";
@@ -642,8 +641,7 @@ const TableData = ({
                     type="submit"
                     disabled={
                       isSubmitting ||
-                      (!values.referenceId &&
-                      !values.referenceNote)
+                      (!values.referenceId && !values.referenceNote)
                     }
                   >
                     Yes
@@ -662,7 +660,7 @@ const TableData = ({
           <Modal.Title>Reference Note</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
-      </Modal>     
+      </Modal>
       {openPaidSimulator && (
         <Modal
           show={openPaidSimulator}
