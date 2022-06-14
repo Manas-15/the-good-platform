@@ -142,6 +142,9 @@ const PayrollBatch = (props) => {
     { label: "Processed", value: "10" }
   ];
   const openPaidConfirmation = (item) => {
+    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+      "MMMM"
+    )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
   };
@@ -160,7 +163,6 @@ const PayrollBatch = (props) => {
     hidePaidSimulator();
   };
   const handleOpen = (action, item) => {
-    console.log("ddddddddddddd aaaaaaaaa", item);
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
@@ -1272,8 +1274,7 @@ const PayrollBatch = (props) => {
           </Modal.Header>
           <Formik
             initialValues={paidInitialValues}
-            validationSchema={null}
-            // validationSchema={CompleteBatchSchema}
+            validationSchema={CompleteBatchSchema}
             onSubmit={(values) => {
               confirmPaid(values);
             }}
@@ -1293,7 +1294,7 @@ const PayrollBatch = (props) => {
                     This is a simulating service. Click on the respective button
                     to send the response.
                   </p>
-                  {/* <div className="form-group mt-0">
+                  <div className="form-group mt-0">
                     <label>
                       <strong>Reference ID*</strong>
                     </label>
@@ -1331,10 +1332,14 @@ const PayrollBatch = (props) => {
                         touched.referenceNote &&
                         errors.referenceNote}
                     </span>
-                  </div> */}
+                  </div>
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button type="submit" variant="success" onClick={confirmPaid}>
+                  <Button
+                    type="submit"
+                    variant="success"
+                    disabled={!values?.referenceId || !values?.referenceNote}
+                  >
                     Simulate Success
                   </Button>
                   <Button variant="danger" onClick={hidePaidSimulator}>
