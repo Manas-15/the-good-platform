@@ -55,7 +55,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [selectedProgram, setSelectedProgram] = useState(Object);
-  // const [socialId, setSocialId] = useState();
+  const [socialIdd, setSocialIdd] = useState();
   const [checked, setChecked] = useState();
   const [checkedProgram, setCheckedProgram] = useState({
     programId: [],
@@ -68,8 +68,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [allItems, setAllItems] = useState([]);
 
   const handleOpen = (action, item) => {
-    console.log(action, item, "aaaaaaaaaaaaaaaaaaaaa");
+    console.log(action, item, "aaaaaaaaaaaaaaaaaaaaa"); //charityProgram
     setOpen(true);
+    setActionType(action);
     setSelectedProgram(item);
     setActionTitle(`${action} Confirmation`);
     setSelectedCharity(item);
@@ -95,8 +96,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   };
   // console.log(socialId);
   const confirm = () => {
-    console.log("selectedProgram >>>>>>>>>>>>>>>>", selectedProgram);
-    console.log("selectedCharity >>>>>>>>>>>>>>>>", selectedCharity);
+    // console.log("selectedProgram >>>>>>>>>>>>>>>>", selectedProgram);
+    // console.log("selectedCharity >>>>>>>>>>>>>>>>", selectedCharity);
     handleClose();
     dispatch(
       actionType === charityProgramConstants.BULK_UNPROMOTE
@@ -111,7 +112,14 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
             socialId: selectedProgram?.soicalId,
             programId: selectedProgram?.charityId,
           })
-        : charityProgramActions.operateSponsorRequest({
+        : actionType === charityProgramConstants.BULK_PROMOTE
+        ? charityProgramActions.operateBulkSponsorRequest({
+            corporateId: checkedProgram?.corporateId,
+            socialId: checkedProgram?.socialId,
+            charityId: checkedProgram?.programId,
+          })
+        : actionType === charityProgramConstants.PROMOTE &&
+          charityProgramActions.operateSponsorRequest({
             corporateId: selectedCorporate?.corporate?.corporateId,
             socialId: selectedProgram?.soicalId,
             charityId: selectedProgram?.charityId,
@@ -249,29 +257,42 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     e.target.classList.add("bi-heart", "custom-color");
     e.target.classList.remove("bi-heart-fill", "red-color");
   };
-  const handleCheck = (e, charityProgram) => {
-    const { name, value, checked } = e.target;
-    console.log(name, value, checked);
+  const handleCheck = (e, items) => {
+    const { name, checked } = e.target;
     const { programId } = checkedProgram;
-    let socialId = charityProgram?.soicalId;
     setChecked(checked);
 
-    if (checked) {
+    if (name === "allSelect" && checked) {
+      let socialID = allItems?.map((val) => val?.soicalId);
+      const singleSocialId = new Set(socialID);
+      socialID = [...singleSocialId];
+      setSocialIdd(socialID[0]);
       setCheckedProgram({
-        programId: [...programId, charityProgram?.charityId],
+        programId: allItems?.map((val) => val.charityId),
         corporateId: selectedCorporate?.corporate?.corporateId,
-        socialId: socialId,
+        socialId: socialID[0],
+      });
+    } else if (name === "allSelect" && !checked) {
+      console.log(name, checked);
+      setCheckedProgram({
+        programId: [],
+        corporateId: selectedCorporate?.corporate?.corporateId,
+        socialId: socialIdd,
+      });
+    } else if (checked) {
+      setCheckedProgram({
+        programId: [...programId, items?.charityId],
+        corporateId: selectedCorporate?.corporate?.corporateId,
+        socialId: items?.soicalId,
       });
     } else {
       setCheckedProgram({
-        programId: programId?.filter(
-          (val) => val !== charityProgram?.charityId
-        ),
+        programId: programId?.filter((val) => val !== items?.charityId),
         corporateId: selectedCorporate?.corporate?.corporateId,
-        socialId: socialId,
+        socialId: items?.soicalId,
       });
     }
-
+    // For all Check & Uncheck
     if (name === "allSelect") {
       let tempUser = allItems?.map((item) => {
         return { ...item, isChecked: checked };
@@ -284,7 +305,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setAllItems(tempUser);
     }
   };
-
+  // console.log(checked);
   console.log(checkedProgram);
 
   return (
@@ -301,7 +322,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         <input
                           type="checkbox"
                           name="allSelect"
-                          value={allItems?.map((val) => val?.charityId)}
                           checked={
                             allItems?.filter(
                               (charityProgram) =>
@@ -309,10 +329,10 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             ).length < 1
                           }
                           className="form-check-input"
-                          onChange={handleCheck}
+                          onChange={(e) => handleCheck(e, allItems)}
                         />
                       </div>
-                      {checked && (
+                      {checked && tabType === charityProgramConstants.SPONSOR && (
                         <Tooltip title={charityProgramConstants.UNPROMOTE}>
                           <Link
                             to="#"
@@ -327,6 +347,25 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               className="bi-heart-fill fs-6 red-color mr-1"
                               onMouseOver={(e) => removeIconClass(e)}
                               onMouseOut={(e) => addIconClass(e)}
+                            ></i>
+                          </Link>
+                        </Tooltip>
+                      )}
+                      {checked && tabType === charityProgramConstants.OTHERS && (
+                        <Tooltip title={charityProgramConstants.PROMOTE}>
+                          <Link
+                            to="#"
+                            onClick={() =>
+                              handleOpen(
+                                charityProgramConstants.BULK_PROMOTE,
+                                checkedProgram
+                              )
+                            }
+                          >
+                            <i
+                              className="bi-heart fs-6 custom-color"
+                              onMouseOver={(e) => addIconClass(e)}
+                              onMouseOut={(e) => removeIconClass(e)}
                             ></i>
                           </Link>
                         </Tooltip>
@@ -355,7 +394,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               type="checkbox"
                               className="form-check-input"
                               name={charityProgram?.charityName}
-                              // value={[charityProgram]}
                               checked={charityProgram?.isChecked || false}
                               onChange={(e) => handleCheck(e, charityProgram)}
                             />
@@ -401,16 +439,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               >
                                 <Link
                                   to="#"
-                                  onClick={
-                                    () =>
-                                      checkBeforeUnpromote(
-                                        charityProgramConstants.UNPROMOTE,
-                                        charityProgram
-                                      )
-                                    // handleOpen(
-                                    //   charityProgramConstants.UNPROMOTE,
-                                    //   charityProgram
-                                    // )
+                                  onClick={() =>
+                                    checkBeforeUnpromote(
+                                      charityProgramConstants.UNPROMOTE,
+                                      charityProgram
+                                    )
                                   }
                                 >
                                   <i

@@ -7,6 +7,7 @@ export const charityProgramActions = {
   getCharityPrograms,
   saveDonationPreference,
   operateSponsorRequest,
+  operateBulkSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
   checkBeforeBulkUnpromote,
@@ -88,6 +89,7 @@ function saveDonationPreference(data) {
 }
 function operateSponsorRequest(actionValues) {
   return (dispatch) => {
+    console.log(actionValues, "Only Promoteeeee");
     dispatch(request(actionValues));
 
     charityProgramService.operateSponsorRequest(actionValues).then(
@@ -114,6 +116,39 @@ function operateSponsorRequest(actionValues) {
   function failure(error) {
     return {
       type: charityProgramConstants.OPERATE_SPONSOR_FAILURE,
+      error,
+    };
+  }
+}
+function operateBulkSponsorRequest(actionValues) {
+  return (dispatch) => {
+    console.log(actionValues, "Bulk Promoteeeeeeee");
+    dispatch(request(actionValues));
+
+    charityProgramService.operateBulkSponsorRequest(actionValues).then(
+      (data) => {
+        dispatch(success());
+        dispatch(alertActions.success("Bulk Promoted successfully."));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(program) {
+    return {
+      type: charityProgramConstants.OPERATE_BULK_SPONSOR_REQUEST,
+      program,
+    };
+  }
+  function success() {
+    return { type: charityProgramConstants.OPERATE_BULK_SPONSOR_SUCCESS };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.OPERATE_BULK_SPONSOR_FAILURE,
       error,
     };
   }

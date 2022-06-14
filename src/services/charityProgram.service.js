@@ -6,6 +6,7 @@ export const charityProgramService = {
   getCharityPrograms,
   saveDonationPreference,
   operateSponsorRequest,
+  operateBulkSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
   checkBeforeBulkUnpromote,
@@ -34,6 +35,12 @@ function saveDonationPreference(data) {
   );
 }
 function operateSponsorRequest(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/save_corporate_sponser/",
+    data
+  );
+}
+function operateBulkSponsorRequest(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/save_corporate_sponser/",
     data
