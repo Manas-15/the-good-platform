@@ -50,6 +50,7 @@ const EmployeeDonationPreferences = () => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [selected, setSelected] = useState();
   const [tabType, setTabType] = useState(donationPreferenceConstants.ACTIVE);
 
   // Pagination
@@ -145,13 +146,13 @@ const EmployeeDonationPreferences = () => {
   } else {
     document.getElementById("root").classList.remove("loading");
   }
-  const search = (value) => {
-    console.log(
-      "ffffffffffff employee program user name fffffffffff",
-      tabType,
-      value
-    );
+  const onHandleChange = (e) => {
+    console.log("fired");
+    setSelected(e.target.value);
+  };
+  const search = (value) => {    
     setSearchText(value);
+    setSelected(selected);
     // if(tabType === socialOrganizationConstants.SPONSORED){
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
     //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
@@ -165,20 +166,78 @@ const EmployeeDonationPreferences = () => {
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
-        <div className="ant-col ant-col-24  searchContainer">
-          <div className="ant-col ant-col-12">
-            <div className="ant-input-affix-wrapper inputFilterInput">
-              <span className="ant-input-prefix">
-                <i className="bi bi-search"></i>
-                <input
-                  placeholder="Search by amount or program or organization name"
-                  className="ant-input-search"
-                  type="text"
-                  onChange={(e) => search(e.target.value)}
-                />
-              </span>
+        <div className="col-md d-flex pl-0">
+          <div className="col-md-4">
+            <div>
+              <select
+                className="form-select"
+                value={selected}
+                defaultValue={""}
+                onChange={(e) => onHandleChange(e)}
+              >
+                <option value={""} key={"default"} disabled>
+                  Search by
+                </option>
+                <option value="programName">Program Name</option>
+                <option value="organizationName">Organization Name</option>
+                <option value="amount">Amount</option>
+              </select>
             </div>
           </div>
+          {selected === "programName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      className="ant-input-search"
+                      placeholder="Search by Program Name"
+                      onChange={(e) => search(e.target.value, "programName")}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "organizationName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Organization Name"
+                      onChange={(e) =>
+                        search(e.target.value, "organizationName")
+                      }
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "amount" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      className="ant-input-search"
+                      placeholder="Search by Amount"
+                      onChange={(e) => search(e.target.value, "amount")}
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {preferences.loading && <Loader />}
@@ -195,7 +254,8 @@ const EmployeeDonationPreferences = () => {
                 {preferences?.items?.active
                   ? SearchDonationPreferenceHelper(
                       preferences?.items?.active,
-                      searchText
+                      searchText,
+                      selected
                     ).length
                   : 0}
                 )
@@ -209,7 +269,8 @@ const EmployeeDonationPreferences = () => {
                 searchText && tabType === donationPreferenceConstants.ACTIVE
                   ? SearchDonationPreferenceHelper(
                       preferences?.items?.active,
-                      searchText
+                      searchText,
+                      selected
                     )
                   : preferences?.items?.active
               }
@@ -223,7 +284,8 @@ const EmployeeDonationPreferences = () => {
                 {preferences?.items?.complete
                   ? SearchDonationPreferenceHelper(
                       preferences?.items?.complete,
-                      searchText
+                      searchText,
+                      selected
                     ).length
                   : 0}
                 )
@@ -237,7 +299,8 @@ const EmployeeDonationPreferences = () => {
                 searchText && tabType === donationPreferenceConstants.COMPLETED
                   ? SearchDonationPreferenceHelper(
                       preferences?.items?.complete,
-                      searchText
+                      searchText,
+                      selected
                     )
                   : preferences?.items?.complete
               }

@@ -60,6 +60,7 @@ const ListTransactionsHistory = (props) => {
   const [totalCount, setTotalCount] = useState(0);
   const [isFilter, setIsFilter] = useState(false);
   const [searchByEmployeeName, setSearchByEmployeeName] = useState("");
+  const [searchByCorporateName, setSearchByCorporateName] = useState("");
   const [searchByProgramName, setSearchByProgramName] = useState("");
   const [searchByAmount, setSearchByAmount] = useState("");
   const [val, setVal] = useState(0);
@@ -128,6 +129,8 @@ const ListTransactionsHistory = (props) => {
       setSearchByProgramName(value);
     } else if (selected === "employeeName") {
       setSearchByEmployeeName(value);
+    } else if (selected === "corporateName") {
+      setSearchByCorporateName(value);
     } else if (selected === "amount") {
       setSearchByAmount(value);
     } else {
@@ -207,6 +210,7 @@ const ListTransactionsHistory = (props) => {
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         searchByEmployeeName: searchByEmployeeName,
         searchByProgramName: searchByProgramName,
+        searchByCorporateName: searchByCorporateName,
         searchByAmount: searchByAmount,
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
@@ -217,13 +221,18 @@ const ListTransactionsHistory = (props) => {
   };
   useEffect(() => {
     fetchResults("");
-  }, [searchByProgramName]);
-  useEffect(() => {
-    fetchResults("");
-  }, [searchByEmployeeName]);
-  useEffect(() => {
-    fetchResults("");
-  }, [searchByAmount]);
+  }, [
+    searchByProgramName,
+    searchByEmployeeName,
+    searchByCorporateName,
+    searchByAmount
+  ]);
+  // useEffect(() => {
+  //   fetchResults("");
+  // }, [searchByEmployeeName]);
+  // useEffect(() => {
+  //   fetchResults("");
+  // }, [searchByAmount]);
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
@@ -316,8 +325,8 @@ const ListTransactionsHistory = (props) => {
               >
                 <option defaultValue>Search by</option>
                 <option value="programName">Program Name</option>
-                {isBluePencilView && (
-                  <option value="corporate">Corporate</option>
+                {!isEmployeePortal && !isCorporatePortal && (
+                  <option value="corporateName">Corporate</option>
                 )}
 
                 {!isEmployeePortal && (
@@ -339,6 +348,26 @@ const ListTransactionsHistory = (props) => {
                       placeholder="Search by Program Name"
                       onChange={(e) =>
                         onSearchChange(e.target.value, "programName")
+                      }
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {selected === "corporateName" && (
+            <div className="col-md-4">
+              <div>
+                <div className="ant-input-affix-wrapper inputFilterInput">
+                  <span className="ant-input-prefix">
+                    <i className="bi bi-search"></i>
+                    <input
+                      type="text"
+                      // className="form-control"
+                      className="ant-input-search"
+                      placeholder="Search by Corporate Name"
+                      onChange={(e) =>
+                        onSearchChange(e.target.value, "corporateName")
                       }
                     />
                   </span>

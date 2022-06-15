@@ -194,20 +194,13 @@ const DonationPreferences = () => {
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
-  console.log(selected, "selecteddddddddd");
   const search = (value, selected) => {
-    console.log("fffffffffffffffffffffff", tabType, value, selected);
     setSearchText(value);
     setSelected(selected);
   };
   const setRepeatCharity = (charity) => {
-    console.log(
-      "ddddddddddddddfffff",
-      document.getElementsByClassName("sidepanel")
-    );
     document.getElementsByClassName("sidepanel")[0].classList.add("is-open");
     setGetRepeatCharity(charity);
-    console.log(">>>>>>>>>>>>>>>>>>>>>>> repeat charity", charity);
   };
   return (
     <div className="customContainer program-list">
@@ -223,9 +216,12 @@ const DonationPreferences = () => {
               <select
                 className="form-select"
                 value={selected}
+                defaultValue={""}
                 onChange={(e) => onHandleChange(e)}
               >
-                <option defaultValue>Search by</option>
+                <option value={""} key={"default"} disabled>
+                  Search by
+                </option>
                 <option value="programName">Program Name</option>
                 {isEmployeePortal && (
                   <option value="organizationName">Organization Name</option>
