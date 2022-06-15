@@ -8,9 +8,7 @@ import {
   charityProgramConstants,
   viewPortalConstants
 } from "../../constants";
-import {
-  selectedOrganizationActions,
-} from "../../actions";
+import { selectedOrganizationActions } from "../../actions";
 import * as moment from "moment";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];

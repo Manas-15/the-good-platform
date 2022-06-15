@@ -16,6 +16,7 @@ import "./../../assets/css/payroll.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import { ProcessHelper, history } from "./../../helpers";
 import { payrollSettingActions } from "../../actions/payrollSetting.actions";
+import { Modal, Button } from "react-bootstrap";
 
 const actionInitialValues = {
   preferenceId: ""
@@ -32,6 +33,8 @@ const PayrollBatchDetail = (props) => {
   const employee = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
   const [isBatchView, setIsBatchView] = useState(false);
+  const [show, setShow] = useState(false);
+  const [referenceNote, setReferenceNote] = useState();
   const [currentView, setCurrentView] = useState(
     payrollConstants.EMPLOYEE_VIEW
   );
@@ -65,6 +68,8 @@ const PayrollBatchDetail = (props) => {
   const isBluePencilPortal =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   useEffect(() => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
     setCurrentView(
@@ -75,6 +80,13 @@ const PayrollBatchDetail = (props) => {
         : payrollConstants.CORPORATE_VIEW
     );
   }, [history?.location?.pathname]);
+  const showReferenceNote = (referenceNote) => {
+    setShow(true);
+    setReferenceNote(referenceNote);
+  };
+  const handleCancel = () => {
+    setShow(false);
+  };
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -114,6 +126,19 @@ const PayrollBatchDetail = (props) => {
               <span>Export to CSV</span>
             </CSVLink>
           )}
+          <Link
+            className="fs-6 text-decoration-underline mr-3"
+            onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
+          >
+            <button
+              type="button"
+              className={`${
+                currentView === payrollConstants.LIST_VIEW ? "active" : ""
+              } btn btn-sm btn-outline-primary btn-outline-custom`}
+            >
+              List View
+            </button>
+          </Link>
           <Link
             className="fs-6 text-decoration-underline mr-3"
             onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
@@ -181,7 +206,7 @@ const PayrollBatchDetail = (props) => {
           {/* )} */}
         </div>
       </div>
-      {accordionData ? (
+      {accordionData && currentView !== payrollConstants.LIST_VIEW ? (
         <>
           {Object.keys(accordionData).map((type, index) => (
             <div className="row mt-4">
@@ -371,44 +396,96 @@ const PayrollBatchDetail = (props) => {
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>
-              ) : (
-                <div className="text-center m-4">No data found</div>
-              )}
+              ) : null}
             </div>
           ))}
-          {ProcessHelper(preferences, batchId)?.length > 0 && (
-            <div className="row mt-4">
-              <div className="col-md-12 text-right">
-                <h5>
-                  Total:&nbsp;
-                  <span className="fs-5">
-                    {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
-                    {preferences
-                      ? preferences
-                          .filter((preference) =>
-                            batchId
-                              ? preference
-                              : preference?.isDeleted === false &&
-                                !preference?.batchId &&
-                                (preference?.status ===
-                                  donationPreferenceConstants?.RESUMED ||
-                                  preference?.status === null)
-                          )
-                          ?.reduce(
-                            (total, currentValue) =>
-                              (total = total + currentValue.donationAmount),
-                            0
-                          )
-                          .toLocaleString()
-                      : 0}
-                  </span>
-                </h5>
+        </>
+      ) : null}
+      {currentView === payrollConstants.LIST_VIEW && (
+        <div className="ant-row">
+          <div className="ant-col ant-col-24 mt-2">
+            <div className="ant-table-wrapper">
+              <div className="ant-table">
+                <table>
+                  <thead className="ant-table-thead">
+                    <tr>
+                      <th className="ant-table-cell">Batch ID</th>
+                      <th className="ant-table-cell">Employee</th>
+                      <th className="ant-table-cell">Organization</th>
+                      <th className="ant-table-cell">Program</th>
+                      {!isCorporatePortal && (
+                        <th className="ant-table-cell">Corporate Name</th>
+                      )}
+                      {/* <th className="ant-table-cell">REF ID</th> */}
+                      <th className="ant-table-cell">
+                        Amount (
+                        {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                        )
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="ant-table-tbody">
+                    {preferences?.map((item, index) => (
+                      <tr>
+                        <td>{item?.batchId}</td>
+                        <td>{item?.employeeName}</td>
+                        <td>{item?.socialOrganization}</td>
+                        {!isCorporatePortal && <td>{item?.corporateName}</td>}
+                        <td>{item?.charityProgram}</td>
+                        {/* <td>
+                          <Link
+                            onClick={() =>
+                              showReferenceNote(item?.referenceNote)
+                            }
+                          >
+                            {item?.referenceId}
+                          </Link>
+                        </td> */}
+                        <td>{item?.donationAmount?.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-          )}
-        </>
-      ) : (
-        <div className="text-center m-4">No data found</div>
+          </div>
+          <Modal show={show} onHide={handleCancel} backdrop="static">
+            <Modal.Header closeButton className="fs-5 p-2">
+              <Modal.Title>Reference Note</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
+          </Modal>
+        </div>
+      )}
+      {ProcessHelper(preferences, batchId)?.length > 0 && (
+        <div className="row mt-4">
+          <div className="col-md-12 text-right">
+            <h5>
+              Total:&nbsp;
+              <span className="fs-5">
+                {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                {preferences
+                  ? preferences
+                      .filter((preference) =>
+                        batchId
+                          ? preference
+                          : preference?.isDeleted === false &&
+                            !preference?.batchId &&
+                            (preference?.status ===
+                              donationPreferenceConstants?.RESUMED ||
+                              preference?.status === null)
+                      )
+                      ?.reduce(
+                        (total, currentValue) =>
+                          (total = total + currentValue.donationAmount),
+                        0
+                      )
+                      .toLocaleString()
+                  : 0}
+              </span>
+            </h5>
+          </div>
+        </div>
       )}
     </div>
   );

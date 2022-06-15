@@ -18,7 +18,7 @@ function getTransactionsHistory(data) {
 }
 function getDirectPayment(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
-  return axios.get(process.env.REACT_APP_API_URL + "api/direct_payments/", {
+  return axios.get(process.env.REACT_APP_API_URL + "api/directPayment/", {
     params: data
   });
 }
