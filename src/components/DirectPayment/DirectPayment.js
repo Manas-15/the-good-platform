@@ -196,16 +196,6 @@ const DirectPayment = (props) => {
   const fetchResults = (dateRange) => {
     dispatch(
       transactionsHistoryActions.getTransactionsHistory({
-        individualId:
-          loggedInUserType === userConstants.INDIVIDUAL
-            ? employee?.user?.uuid
-            : null,
-        employeeId:
-          loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-        corporateId: isCorporatePortal
-          ? selectedCorporate?.corporate?.corporateId
-          : null,
-        socialId: isOrganizationView ? selectedOrganization?.id : null,
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         searchByEmployeeName: searchByEmployeeName,
@@ -321,9 +311,12 @@ const DirectPayment = (props) => {
               <select
                 className="form-select"
                 value={selected}
+                defaultValue={""}
                 onChange={(e) => onHandleChange(e)}
               >
-                <option defaultValue>Search by</option>
+                <option value={""} key={"default"} disabled>
+                  Search by
+                </option>
                 <option value="programName">Program Name</option>
                 {!isEmployeePortal && !isCorporatePortal && (
                   <option value="corporateName">Corporate</option>

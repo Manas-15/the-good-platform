@@ -321,9 +321,12 @@ const ListTransactionsHistory = (props) => {
               <select
                 className="form-select"
                 value={selected}
+                defaultValue={""}
                 onChange={(e) => onHandleChange(e)}
               >
-                <option defaultValue>Search by</option>
+                <option value={""} key={"default"} disabled>
+                  Search by
+                </option>
                 <option value="programName">Program Name</option>
                 {!isEmployeePortal && !isCorporatePortal && (
                   <option value="corporateName">Corporate</option>

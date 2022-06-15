@@ -6,7 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -28,14 +28,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
