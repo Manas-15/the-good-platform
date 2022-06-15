@@ -34,6 +34,7 @@ import SocialOrganizations from "../components/SocialOrganizations/SocialOrganiz
 import IndividualSignUp from "../components/Auth/IndividualSignUp";
 import OthersSignUp from "../components/Auth/OthersSignUp";
 import { userConstants } from "./../constants";
+import DirectPayment from "../components/DirectPayment/DirectPayment";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -178,7 +179,11 @@ const CreateRoutes = () => {
                 path="/social-organizations"
                 component={SocialOrganizations}
               />
-
+              <Route
+                exact
+                path="/direct-payment"
+                component={DirectPayment}
+              />
               <Route
                 exact
                 path="/social-organizations/payroll-batch"

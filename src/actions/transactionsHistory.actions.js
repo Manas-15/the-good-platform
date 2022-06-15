@@ -4,9 +4,10 @@ import { alertActions } from "./";
 import { history } from "../helpers";
 
 export const transactionsHistoryActions = {
+  getDirectPayment,
   getTransactionsHistory,
   download80G,
-  send80GEmail,
+  send80GEmail
 };
 
 function getTransactionsHistory(data) {
@@ -25,19 +26,51 @@ function getTransactionsHistory(data) {
 
   function request() {
     return {
-      type: transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_REQUEST,
+      type: transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_REQUEST
     };
   }
   function success(data) {
     return {
       type: transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_SUCCESS,
-      data,
+      data
     };
   }
   function failure(error) {
     return {
       type: transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_FAILURE,
-      error,
+      error
+    };
+  }
+}
+function getDirectPayment(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+
+    transactionsHistoryService.getDirectPayment(data).then(
+      (transactions) => dispatch(success(transactions)),
+
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return {
+      type: transactionsHistoryConstants.GET_DIRECT_PAYMENT_REQUEST
+    };
+  }
+  function success(data) {
+    return {
+      type: transactionsHistoryConstants.GET_DIRECT_PAYMENT_SUCCESS,
+      data
+    };
+  }
+  function failure(error) {
+    return {
+      type: transactionsHistoryConstants.GET_DIRECT_PAYMENT_FAILURE,
+      error
     };
   }
 }
@@ -100,18 +133,18 @@ function send80GEmail(data) {
 
   function request() {
     return {
-      type: transactionsHistoryConstants.SEND_80G_EMAIL_REQUEST,
+      type: transactionsHistoryConstants.SEND_80G_EMAIL_REQUEST
     };
   }
   function success() {
     return {
-      type: transactionsHistoryConstants.SEND_80G_EMAIL_SUCCESS,
+      type: transactionsHistoryConstants.SEND_80G_EMAIL_SUCCESS
     };
   }
   function failure(error) {
     return {
       type: transactionsHistoryConstants.SEND_80G_EMAIL_FAILURE,
-      error,
+      error
     };
   }
 }

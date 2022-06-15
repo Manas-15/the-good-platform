@@ -117,11 +117,11 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
-                      <i className="bi bi-hdd-stack"></i>
+                      <i className="bi bi-building"></i>
                       <span className="menu-text">Corporates</span>
                     </NavLink>
                   </span>
@@ -135,6 +135,18 @@ const Sidebar = () => {
                     >
                       <i className="bi bi-hdd-stack"></i>
                       <span className="menu-text">Payroll Batch </span>
+                    </NavLink>
+                  </span>
+                </li>
+                <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                  <span className="ant-menu-title-content">
+                    <NavLink
+                      className=" "
+                      to="/direct-payment"
+                      activeClassName="active"
+                    >
+                      <i className="bi bi-credit-card"></i>
+                      <span className="menu-text">Direct Payment</span>
                     </NavLink>
                   </span>
                 </li>

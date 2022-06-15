@@ -4,15 +4,22 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 export const transactionsHistoryService = {
+  getDirectPayment,
   getTransactionsHistory,
   download80G,
-  send80GEmail,
+  send80GEmail
 };
 
 function getTransactionsHistory(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
   return axios.get(process.env.REACT_APP_API_URL + "api/transaction_history/", {
-    params: data,
+    params: data
+  });
+}
+function getDirectPayment(data) {
+  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
+  return axios.get(process.env.REACT_APP_API_URL + "api/direct_payments/", {
+    params: data
   });
 }
 function download80G(data) {
@@ -20,8 +27,8 @@ function download80G(data) {
   return axios.get(process.env.REACT_APP_API_URL + "api/download_file/", {
     params: data,
     headers: {
-      "Content-Type": "application/pdf",
-    },
+      "Content-Type": "application/pdf"
+    }
   });
 }
 function send80GEmail(data) {
