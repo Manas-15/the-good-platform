@@ -195,7 +195,7 @@ const DirectPayment = (props) => {
   };
   const fetchResults = (dateRange) => {
     dispatch(
-      transactionsHistoryActions.getTransactionsHistory({
+      transactionsHistoryActions.getDirectPayment({
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         searchByEmployeeName: searchByEmployeeName,
