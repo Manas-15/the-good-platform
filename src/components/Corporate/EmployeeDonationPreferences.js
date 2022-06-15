@@ -150,7 +150,7 @@ const EmployeeDonationPreferences = () => {
     console.log("fired");
     setSelected(e.target.value);
   };
-  const search = (value) => {    
+  const search = (value) => {
     setSearchText(value);
     setSelected(selected);
     // if(tabType === socialOrganizationConstants.SPONSORED){

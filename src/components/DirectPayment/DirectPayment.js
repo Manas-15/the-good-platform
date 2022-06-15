@@ -242,7 +242,6 @@ const DirectPayment = (props) => {
   const showAccountDetail = (item) => {
     setOpenAccountDetail(true);
     setSelectedAccount(item);
-    console.log("aaaaaaaaaaaaa item", item);
   };
   const date = new Date();
   return (

@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -21,7 +21,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ProcessHelper } from "./../../helpers";
 
 const actionInitialValues = {
-  preferenceId: "",
+  preferenceId: ""
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, batchId;
@@ -135,7 +135,7 @@ const PayrollSetting = (props) => {
         (total, currentValue) => (total = total + currentValue.donationAmount),
         0
       ),
-      items: data,
+      items: data
     };
     dispatch(payrollSettingActions.processBatch(finalData));
     getData();
@@ -161,7 +161,7 @@ const PayrollSetting = (props) => {
         requestType: "Batch",
         filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
           ? moment().format("MM-YYYY")
-          : moment(generateMonthYear).format("MM-YYYY"),
+          : moment(generateMonthYear).format("MM-YYYY")
         // pageSize: 1000,
         // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })

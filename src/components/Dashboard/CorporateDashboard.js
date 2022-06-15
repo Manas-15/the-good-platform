@@ -7,7 +7,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 const CorporateDashboard = () => {
@@ -24,13 +24,13 @@ const CorporateDashboard = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
-      },
+        position: "top"
+      }
       // title: {
       //   display: true,
       //   text: 'Chart.js Line Chart',
       // },
-    },
+    }
   };
 
   const labels = [
@@ -40,7 +40,7 @@ const CorporateDashboard = () => {
     "April",
     "May",
     "June",
-    "July",
+    "July"
   ];
 
   const data = {
@@ -50,15 +50,15 @@ const CorporateDashboard = () => {
         label: "Donations",
         data: [1000, 5000, 3000, 2500, 1500, 5000, 2500],
         borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)"
       },
       {
         label: "Employees",
         data: [100, 600, 250, 500, 450, 230, 350],
         borderColor: "rgb(0, 0, 128)",
-        backgroundColor: "rgba(0, 0, 128, 0.5)",
-      },
-    ],
+        backgroundColor: "rgba(0, 0, 128, 0.5)"
+      }
+    ]
   };
   return (
     <div>

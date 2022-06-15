@@ -52,7 +52,6 @@ const CorporatesPortal = () => {
     dispatch(corporateActions.getCorporates());
   }, []);
   const setCorporate = (corporate) => {
-    console.log(">>>>>>>>>>>>>>>>>", corporate);
     dispatch(selectedCorporateActions.selectedCorporate(corporate));
   };
   return (
