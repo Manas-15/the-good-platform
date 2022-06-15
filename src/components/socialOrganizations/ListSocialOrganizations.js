@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-// import socialOrganizations from "./../../config/socialOrganizations.json";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import urlSlug from "url-slug";
@@ -8,22 +6,15 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   charityProgramConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import {
   selectedOrganizationActions,
-  socialOrganizationActions,
 } from "../../actions";
-import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
-import { selectedOrganization } from "../../reducers/selectedOrganization.reducer";
-import Loader from "../Shared/Loader";
-import { Tooltip } from "antd";
-// import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
 const ListSocialOrganizations = ({ tabType, items }) => {
-  let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
   const currentPortal = useSelector((state) => state.currentView);
   const user = useSelector((state) => state.employee.user);
@@ -158,7 +149,7 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                                 pathname: `/social-organizations/${urlSlug(
                                   socialOrganization?.name
                                 )}`,
-                                tabType: tabType,
+                                tabType: tabType
                               }}
                               onClick={() =>
                                 setOrganization(socialOrganization)

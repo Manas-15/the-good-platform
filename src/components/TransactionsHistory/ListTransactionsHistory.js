@@ -5,9 +5,8 @@ import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import format from "date-fns/format";
 import {
   paymentConstants,
   paginationConstants,

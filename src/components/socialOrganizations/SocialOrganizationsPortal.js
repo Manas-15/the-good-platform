@@ -2,7 +2,7 @@ import React, { useEffect, useState, createRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
   socialOrganizationActions,
-  selectedOrganizationActions,
+  selectedOrganizationActions
 } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Shared/Loader";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 // import corporates from "./../../config/corporates.json";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const SocialOrganizationsPortal = () => {
   let history = useHistory();
@@ -32,7 +32,7 @@ const SocialOrganizationsPortal = () => {
   useEffect(() => {
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
-        individualId: "social",
+        individualId: "social"
       })
     );
   }, []);
