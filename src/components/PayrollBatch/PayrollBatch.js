@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import { CompleteBatchSchema } from "./../Validations";
 import {
   donationPreferenceConstants,
@@ -45,7 +44,6 @@ const PayrollBatch = (props) => {
   const corporateId = props?.match?.params?.corporateId;
   const organizationId = props?.match?.params?.organizationId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
-  const employee = useSelector((state) => state.employee.user);
   const currentPortal = useSelector((state) => state.currentView);
   const isOrganizationPortal =
     currentPortal?.currentView ===

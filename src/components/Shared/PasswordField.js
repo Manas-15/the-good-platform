@@ -5,7 +5,7 @@ const validateRegx = {
   minChar: null,
   upperChar: null,
   number: null,
-  specialChar: null,
+  specialChar: null
 };
 const isNumberRegx = /\d/;
 const specialCharacterRegx = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
@@ -15,7 +15,7 @@ const PasswordField = ({
   placeholder,
   passwordShown,
   errors,
-  touched,
+  touched
 }) => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
@@ -27,7 +27,7 @@ const PasswordField = ({
       minChar: password.length >= 8,
       upperChar: upperCharacterRegx.test(password),
       number: isNumberRegx.test(password),
-      specialChar: specialCharacterRegx.test(password),
+      specialChar: specialCharacterRegx.test(password)
     });
   };
   const handlePasswordValid = (type) => {
