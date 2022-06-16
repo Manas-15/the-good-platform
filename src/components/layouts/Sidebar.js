@@ -38,7 +38,7 @@ const Sidebar = () => {
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to="/corporates/1/employees"
+                  to={`/corporates/${user?.corporateId}/employees`}
                   activeClassName="active"
                 >
                   <i className="bi bi-people-fill"></i>
