@@ -8,7 +8,7 @@ export const charityProgramService = {
   operateSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
-  getProgramDetail
+  getProgramDetail,
 };
 
 function getCharityPrograms(data) {
@@ -53,10 +53,10 @@ function checkBeforeUnpromote(data) {
 }
 function getProgramDetail(data) {
   return axios.get(
-    process.env.REACT_APP_API_URL + (data?.userType ===
-      userConstants.INDIVIDUAL_VIEW
-      ? "remote_api/charity_details/"
-      : "api/get_charity_details/"),
+    process.env.REACT_APP_API_URL +
+      (data?.userType === userConstants.INDIVIDUAL_VIEW
+        ? "remote_api/charity_details/"
+        : "api/get_program_details/"),
     {
       params: data
     }
