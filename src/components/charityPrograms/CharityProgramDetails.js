@@ -28,6 +28,7 @@ const CharityProgramDetails = (props) => {
   let charityFirstTwoChar, employeeFirstTwoChar;
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
+  const programDetail = useSelector((state) => state?.charityPrograms?.programDetail);
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
@@ -190,7 +191,7 @@ const CharityProgramDetails = (props) => {
                     <div className="col-md-6">
                       <div className="row">
                         <div className="col-md-6  p-1">
-                          <span className="detail-label">1985</span>
+                          <span className="detail-label">{programDetail?.donors?.length}</span>
                           <span className="detail-content">Donors</span>
                         </div>
                         <div className="col-md-6 p-1">
@@ -502,11 +503,11 @@ const CharityProgramDetails = (props) => {
                   </TabPane>
                   <TabPane tab={"Donors"} key={"donors"}>
                     <div className="row mt-4 program-list">
-                      <h4 className="mb-0">Donors (1985)</h4>
+                      <h4 className="mb-0">Donors ({programDetail?.donors?.length})</h4>
                       <div className="col-md-12">
                         <Tabs defaultActiveKey={0}>
                           <TabPane tab={<span>Most Generious</span>} key={0}>
-                            {users?.slice(0, 4).map((user) => (
+                            {programDetail?.donors?.map((user) => (
                               <div className="donor">
                                 <div className="section">
                                   {/* <img src="/assets/img/no-image.png" /> */}
@@ -517,10 +518,10 @@ const CharityProgramDetails = (props) => {
                                   <div className="content">
                                     <h5>{user?.name}</h5>
                                     <p className="donated">
-                                      Donated ₹{user?.donatedAmount}
+                                      Donated ₹{user?.amount}
                                     </p>
                                     <p className="timeline">
-                                      {moment(user?.donatedOn).fromNow()}
+                                      {moment(user?.date).fromNow()}
                                     </p>
                                   </div>
                                 </div>
@@ -528,7 +529,7 @@ const CharityProgramDetails = (props) => {
                             ))}
                           </TabPane>
                           <TabPane tab={<span>Recent</span>} key={1}>
-                            {users?.slice(4, 8).map((user) => (
+                            {programDetail?.donors?.map((user) => (
                               <div className="donor">
                                 <div className="section">
                                   {/* <img src="/assets/img/no-image.png" /> */}
@@ -539,10 +540,10 @@ const CharityProgramDetails = (props) => {
                                   <div className="content">
                                     <h5>{user?.name}</h5>
                                     <p className="donated">
-                                      Donated ₹{user?.donatedAmount}
+                                      Donated ₹{user?.amount}
                                     </p>
                                     <p className="timeline">
-                                      {moment(user?.donatedOn).fromNow()}
+                                      {moment(user?.date).fromNow()}
                                     </p>
                                   </div>
                                 </div>

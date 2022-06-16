@@ -59,12 +59,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setActionTitle(`${action} Confirmation`);
     setSelectedCharity(item);
     if (action === charityProgramConstants.UNPROMOTE) {
-      // const program = charityPrograms["sponsored"]?.filter((item) => item?.charityId === item?.charityId)[0];
-      console.log(
-        "dddddddddddddddddddd selectedProgram",
-        selectedCharity,
-        item
-      );
+      // const program = charityPrograms["sponsored"]?.filter((item) => item?.charityId === item?.charityId)[0];     
       setActionContent(
         employeeCount > 0
           ? `Are you sure you want to unpromote?.<br/><br/>Doing this would remove all the donation preferences set for the programs by the employees.<br/><br/>Total ${employeeCount} employees have set donation preference for the programs.`

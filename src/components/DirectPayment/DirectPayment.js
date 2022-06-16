@@ -23,7 +23,7 @@ let charityProgramsOption = [];
 const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Processed", value: paymentConstants.PAYMENT_PENDING },
-  { label: "Not Processed", value: paymentConstants.PAYMENT_SUCCESS },
+  { label: "Not Processed", value: paymentConstants.PAYMENT_SUCCESS }
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
@@ -460,7 +460,9 @@ const DirectPayment = (props) => {
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
-                                    {transaction?.employeeName ? transaction?.employeeName : transaction?.corporateName}
+                                    {transaction?.employeeName
+                                      ? transaction?.employeeName
+                                      : transaction?.corporateName}
                                   </span>
                                 </Link>
                               </Tooltip>

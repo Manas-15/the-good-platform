@@ -117,11 +117,11 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
-                      <i className="bi bi-hdd-stack"></i>
+                      <i className="bi bi-building"></i>
                       <span className="menu-text">Corporates</span>
                     </NavLink>
                   </span>

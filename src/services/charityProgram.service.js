@@ -8,7 +8,7 @@ export const charityProgramService = {
   operateSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
-  getProgramDetail,
+  getProgramDetail
 };
 
 function getCharityPrograms(data) {
@@ -56,7 +56,7 @@ function getProgramDetail(data) {
     process.env.REACT_APP_API_URL +
       (data?.userType === userConstants.INDIVIDUAL_VIEW
         ? "remote_api/charity_details/"
-        : "api/get_program_details/"),
+        : "api/programDetails/"),
     {
       params: data
     }

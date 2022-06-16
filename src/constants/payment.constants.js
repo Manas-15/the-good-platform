@@ -37,5 +37,5 @@ export const paymentConstants = {
 
   // payment_response
   PAYMENT_NOT_PROCESSED: 1,
-  PAYMENT_PROCESSED: 2,
+  PAYMENT_PROCESSED: 2
 };
