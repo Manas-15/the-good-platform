@@ -380,8 +380,22 @@ $light-blue-bg: #f4f8f8;
       height: 60px;
       border-radius: 50%;
     }
+    .name-circle {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      padding: 8px;
+      border: 2px solid #E9ECF3;
+      color: #648ca9;
+      background: #E9ECF3;
+      text-align: center;
+      font: 25px Arial, sans-serif;
+      line-height: inherit;
+      font-weight: 600;
+    }
     .content {
       flex-grow: 1;
+      margin-left: 10px;
       h5,
       p {
         line-height: 22px;

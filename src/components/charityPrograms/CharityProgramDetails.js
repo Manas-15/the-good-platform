@@ -3,7 +3,7 @@ import "./../../assets/css/charityProgramsList.scss";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { Progress, Tooltip, Tabs } from "antd";
 import users from "../../config/users.json";
@@ -66,7 +66,7 @@ const CharityProgramDetails = (props) => {
       : user?.corporateId,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
-    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
+    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`
   };
   const onScroll = () => {
     // if (listInnerRef.current) {
@@ -97,10 +97,10 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
   const data2 = {
     labels: ["Operations", "Communication", "Travel", "Administrative"],
@@ -111,10 +111,10 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
   return (
     <>
@@ -387,9 +387,9 @@ const CharityProgramDetails = (props) => {
                               plugins: {
                                 legend: {
                                   display: true,
-                                  position: "right",
-                                },
-                              },
+                                  position: "right"
+                                }
+                              }
                             }}
                           />
                         </div>
@@ -494,7 +494,11 @@ const CharityProgramDetails = (props) => {
                             {users?.slice(0, 4).map((user) => (
                               <div className="donor">
                                 <div className="section">
-                                  <img src="/assets/img/no-image.png" />
+                                  {/* <img src="/assets/img/no-image.png" /> */}
+                                  <div class="name-circle">
+                                    {user?.name?.split(" ")?.[0]?.charAt(0)}
+                                    {user?.name?.split(" ")?.pop()?.charAt(0)}
+                                  </div>
                                   <div className="content">
                                     <h5>{user?.name}</h5>
                                     <p className="donated">

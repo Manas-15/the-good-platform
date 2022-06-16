@@ -12,7 +12,6 @@ import "./../../assets/css/charityProgramsList.scss";
 import { useDispatch } from "react-redux";
 
 const AddedDonationFromDetail = ({ charity, selectedAmount, frequency }) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>> charity", charity, frequency);
   // const dispatch = useDispatch();
   return (
     <>
