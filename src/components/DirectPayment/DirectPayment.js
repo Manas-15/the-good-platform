@@ -22,9 +22,9 @@ import "rsuite/dist/rsuite.min.css";
 let charityProgramsOption = [];
 const paymentStatusOption = [
   { label: "All", value: 0 },
-  { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
-  { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
+  { label: "Processed", value: paymentConstants.PAYMENT_PENDING },
+  { label: "Not Processed", value: paymentConstants.PAYMENT_SUCCESS },
+  // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
@@ -460,7 +460,7 @@ const DirectPayment = (props) => {
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
-                                    {transaction?.employeeName}
+                                    {transaction?.employeeName ? transaction?.employeeName : transaction?.corporateName}
                                   </span>
                                 </Link>
                               </Tooltip>
