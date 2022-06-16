@@ -16,7 +16,8 @@ export const employeeService = {
   setEmployeePassword,
   logout,
   employeeAccountRequest,
-  bulkImport
+  bulkImport,
+  getCorporates,
 };
 
 async function login(data) {
@@ -118,4 +119,7 @@ async function bulkImport(formData) {
       }
     }
   );
+}
+async function getCorporates(formData) {
+  return await axios.get(process.env.REACT_APP_API_URL + "remote_api/corporateList/");
 }
