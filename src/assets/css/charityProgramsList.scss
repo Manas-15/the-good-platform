@@ -385,9 +385,9 @@ $light-blue-bg: #f4f8f8;
       width: 60px;
       height: 60px;
       padding: 8px;
-      border: 2px solid #E9ECF3;
+      border: 2px solid #e9ecf3;
       color: #648ca9;
-      background: #E9ECF3;
+      background: #e9ecf3;
       text-align: center;
       font: 25px Arial, sans-serif;
       line-height: inherit;
@@ -449,8 +449,12 @@ $light-blue-bg: #f4f8f8;
   background: #fff;
   width: 400px;
 }
-.detail-tab .ant-tabs-nav-wrap {padding: 0 !important;}
-#payment-section{border: 1px solid #39364f;}
+.detail-tab .ant-tabs-nav-wrap {
+  padding: 0 !important;
+}
+#payment-section {
+  border: 1px solid #39364f;
+}
 @-moz-keyframes blinker {
   0% {
     opacity: 1;
