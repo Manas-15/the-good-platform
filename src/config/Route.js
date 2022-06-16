@@ -35,6 +35,7 @@ import IndividualSignUp from "../components/Auth/IndividualSignUp";
 import OthersSignUp from "../components/Auth/OthersSignUp";
 import { userConstants } from "./../constants";
 import DirectPayment from "../components/DirectPayment/DirectPayment";
+import ListIndividuals from "../components/Individual/ListIndividuals";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -138,6 +139,7 @@ const CreateRoutes = () => {
                 component={PayrollBatch}
               />
               <Route exact path="/list-corporates" component={ListCorporates} />
+              <Route exact path="/list-individuals" component={ListIndividuals} />
               <Route exact path="/corporates/add" component={AddCorporate} />
               <Route
                 exact

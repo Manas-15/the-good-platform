@@ -1,5 +1,6 @@
 export * from "./user.service";
 export * from "./corporate.service";
+export * from "./individual.service";
 export * from "./employee.service";
 export * from "./charityProgram.service";
 export * from "./donationPreference.service";

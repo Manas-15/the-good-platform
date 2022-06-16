@@ -130,6 +130,21 @@ const Sidebar = () => {
                   <span className="ant-menu-title-content">
                     <NavLink
                       className=" "
+                      to={{
+                        pathname: "/list-individuals",
+                        state: { isSuperadminView }
+                      }}
+                      activeClassName="active"
+                    >
+                      <i className="bi bi-people"></i>
+                      <span className="menu-text">Individuals</span>
+                    </NavLink>
+                  </span>
+                </li>
+                <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                  <span className="ant-menu-title-content">
+                    <NavLink
+                      className=" "
                       to="/admin-payroll-batch"
                       activeClassName="active"
                     >
