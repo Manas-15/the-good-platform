@@ -3,16 +3,17 @@ import "./../../assets/css/charityProgramsList.scss";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
+  charityProgramConstants
 } from "../../constants";
+import { charityProgramActions } from "./../../actions";
 import { Progress, Tooltip, Tabs } from "antd";
 import users from "../../config/users.json";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Accordion } from "react-bootstrap";
 import Donate from "./Donate";
 import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
-import { charityProgramConstants } from "../../constants";
 import { Chart, ArcElement } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import donationsConsent from "./../../config/donationsConsent.json";
@@ -23,9 +24,13 @@ const TabPane = Tabs.TabPane;
 Chart.register(ArcElement);
 
 const CharityProgramDetails = (props) => {
+  const dispatch = useDispatch();
   let charityFirstTwoChar, employeeFirstTwoChar;
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
+  const selectedOrganization = useSelector(
+    (state) => state.selectedOrganization
+  );
   const tabType = useSelector((state) => state.selectedCharityTab.tab);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
@@ -40,6 +45,15 @@ const CharityProgramDetails = (props) => {
     (state) => state?.user?.loggedinUserType
   );
   const user = useSelector((state) => state.employee.user);
+  useEffect(() => {
+    dispatch(
+      charityProgramActions.getProgramDetail({
+        socialId: selectedOrganization?.organization?.id,
+        programId: selectedCharity?.charity?.charityId,
+        loggedInUserType: loggedInUserType
+      })
+    );
+  }, []);
   if (selectedCharity) {
     charityFirstTwoChar = selectedCharity?.charityName
       ?.slice(0, 2)

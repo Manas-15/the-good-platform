@@ -381,7 +381,7 @@ const DirectPayment = (props) => {
                       type="text"
                       // className="form-control"
                       className="ant-input-search"
-                      placeholder="Search by Donor"
+                      placeholder="Search by donor name or email"
                       onChange={(e) =>
                         onSearchChange(e.target.value, "employeeName")
                       }

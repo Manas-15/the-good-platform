@@ -7,7 +7,6 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
   charityProgramConstants,
-  payrollConstants,
   userConstants
 } from "./../../constants";
 import { charityProgramActions } from "./../../actions";

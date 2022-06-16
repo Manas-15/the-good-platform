@@ -79,8 +79,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     }
   };
   const confirm = () => {
-    console.log("selectedProgram >>>>>>>>>>>>>>>>", selectedProgram);
-    console.log("selectedCharity >>>>>>>>>>>>>>>>", selectedCharity);
     handleClose();
     dispatch(
       actionType === charityProgramConstants.UNPROMOTE

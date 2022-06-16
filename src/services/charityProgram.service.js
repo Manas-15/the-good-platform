@@ -8,20 +8,22 @@ export const charityProgramService = {
   operateSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
-  getProgramDetail,
+  getProgramDetail
 };
 
 function getCharityPrograms(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/social_charity_list/", {
   //   params: data,
   // });
-  if(data?.userType === userConstants.INDIVIDUAL_VIEW){
-    return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {params: data});
-  }else{
-    return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
-      params: data,
+  if (data?.userType === userConstants.INDIVIDUAL_VIEW) {
+    return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
+      params: data
     });
-  }  
+  } else {
+    return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
+      params: data
+    });
+  }
 }
 function saveDonationPreference(data) {
   return axios.post(
@@ -45,15 +47,18 @@ function checkBeforeUnpromote(data) {
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
-      params: data,
+      params: data
     }
   );
 }
 function getProgramDetail(data) {
   return axios.get(
-    process.env.REACT_APP_API_URL + "remote_api/charity_details/",
+    process.env.REACT_APP_API_URL + (data?.userType ===
+      userConstants.INDIVIDUAL_VIEW
+      ? "remote_api/charity_details/"
+      : "api/get_charity_details/"),
     {
-      params: data,
+      params: data
     }
   );
 }
