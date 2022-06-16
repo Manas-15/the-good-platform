@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import urlSlug from "url-slug";
 import {
   selectedCharityActions,
-  selectedCharityTabActions,
+  selectedCharityTabActions
 } from "../../actions";
 import { useDispatch } from "react-redux";
 
@@ -55,7 +55,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
                         imgUrl:
                           i % 2 === 0
                             ? "/assets/img/charity3.jpg"
-                            : "/assets/img/charity4.jpg",
+                            : "/assets/img/charity4.jpg"
                       }}
                       onClick={() =>
                         setSelectedCharity(

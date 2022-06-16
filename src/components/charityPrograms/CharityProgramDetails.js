@@ -18,6 +18,7 @@ import { Doughnut } from "react-chartjs-2";
 import donationsConsent from "./../../config/donationsConsent.json";
 import selectedCharity from "./../../config/selectedCharity.json";
 import ProgramDetailsIndividual from "./ProgramDetailsIndividual";
+import * as moment from "moment";
 const TabPane = Tabs.TabPane;
 Chart.register(ArcElement);
 
@@ -505,7 +506,7 @@ const CharityProgramDetails = (props) => {
                                       Donated ₹{user?.donatedAmount}
                                     </p>
                                     <p className="timeline">
-                                      {user?.donatedOn}
+                                      {moment(user?.donatedOn).fromNow()}
                                     </p>
                                   </div>
                                 </div>
@@ -516,14 +517,18 @@ const CharityProgramDetails = (props) => {
                             {users?.slice(4, 8).map((user) => (
                               <div className="donor">
                                 <div className="section">
-                                  <img src="/assets/img/no-image.png" />
+                                  {/* <img src="/assets/img/no-image.png" /> */}
+                                  <div class="name-circle">
+                                    {user?.name?.split(" ")?.[0]?.charAt(0)}
+                                    {user?.name?.split(" ")?.pop()?.charAt(0)}
+                                  </div>
                                   <div className="content">
                                     <h5>{user?.name}</h5>
                                     <p className="donated">
                                       Donated ₹{user?.donatedAmount}
                                     </p>
                                     <p className="timeline">
-                                      {user?.donatedOn}
+                                      {moment(user?.donatedOn).fromNow()}
                                     </p>
                                   </div>
                                 </div>

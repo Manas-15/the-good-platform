@@ -14,7 +14,7 @@ import donationsConsent from "../../config/donationsConsent.json";
 import {
   viewPortalConstants,
   payrollConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 
 const FormDatePicker = ({ errors, touched }) => {
@@ -56,7 +56,7 @@ const DonateSecondStep = ({
   frequency,
   selectedCharity,
   selectedAmount,
-  employee,
+  employee
 }) => {
   // Math.random().toString(36).slice(2)
   let charityFirstTwoChar, employeeFirstTwoChar;
@@ -110,7 +110,7 @@ const DonateSecondStep = ({
             organisationId: individualSelectedCharity?.organisationId,
             soicalName: selectedOrganization?.name,
             status: individualSelectedCharity?.status,
-            unitPrice: 500,
+            unitPrice: 500
           }
         : selectedCharity,
     //employee: isCorporatePortal ? null : employee,
@@ -134,7 +134,7 @@ const DonateSecondStep = ({
         ? payrollConstants.CORPORATE_VIEW
         : payrollConstants.EMPLOYEE_VIEW,
     orderPaymentStatus: 1,
-    orderNote: `Donated to ${selectedCharity?.charityName}`,
+    orderNote: `Donated to ${selectedCharity?.charityName}`
   };
   const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
@@ -189,7 +189,7 @@ const DonateSecondStep = ({
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
               /* and other goodies */
             }) => (
               <Form>

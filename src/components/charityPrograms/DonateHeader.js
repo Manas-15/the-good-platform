@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { history } from "../../helpers";
 
@@ -14,7 +14,7 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
   const employee = useSelector((state) => state.employee.user);
