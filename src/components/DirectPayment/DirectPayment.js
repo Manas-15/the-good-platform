@@ -433,7 +433,7 @@ const DirectPayment = (props) => {
                     <th className="ant-table-cell">Donation</th>
                     {/* <th className="ant-table-cell">Donation Type</th> */}
                     {/* <th className="ant-table-cell">Payment Mode</th> */}
-                    <th className="ant-table-cell">Payment Status</th>
+                    {/* <th className="ant-table-cell">Payment Status</th> */}
                     <th className="ant-table-cell">Payment Date</th>
                     {(employeeId || isCorporatePortal) && (
                       <th className="ant-table-cell">80G</th>
@@ -522,7 +522,7 @@ const DirectPayment = (props) => {
                           {transaction?.paymentMethod &&
                             transaction?.paymentMethod.replace(/_/g, " ")}
                         </td> */}
-                        <td className="ant-table-cell text-uppercase">
+                        {/* <td className="ant-table-cell text-uppercase">
                           {transaction?.paymentStatus ===
                             paymentConstants.PAYMENT_SUCCESS && (
                             <span className="text-success">Success</span>
@@ -535,7 +535,7 @@ const DirectPayment = (props) => {
                             paymentConstants.PAYMENT_PENDING && (
                             <span className="text-warning">Pending</span>
                           )}
-                        </td>
+                        </td> */}
                         <td className="ant-table-cell">
                           {transaction?.paymentDate &&
                             transaction?.paymentDate !== "None" &&
