@@ -15,6 +15,7 @@ export const employeeActions = {
   setPasswordValid,
   employeeAccountRequest,
   bulkImport,
+  getCorporates,
 };
 
 function login(data, from) {
@@ -367,5 +368,31 @@ function bulkImport(formData) {
   }
   function failure(error) {
     return { type: employeeConstants.BULK_IMPORT_FAILURE, error };
+  }
+}
+function getCorporates() {
+  return (dispatch) => {
+    dispatch(request());
+    employeeService.getCorporates().then(
+      (res) => {
+        dispatch(success(res));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return {
+      type: employeeConstants.GET_CORPORATES_REQUEST,
+    };
+  }
+  function success(data) {
+    return { type: employeeConstants.GET_CORPORATES_SUCCESS, data };
+  }
+  function failure(error) {
+    return { type: employeeConstants.GET_CORPORATES_FAILURE, error };
   }
 }
