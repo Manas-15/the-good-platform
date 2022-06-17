@@ -32,10 +32,10 @@ const ListIndividuals = () => {
     setOpen(true);
     setActionType(action);
     // setSelectedCorporate(item);
-    setActionTitle(`${action} Confirmation`);
+    setActionTitle(`${action === "Block" ? "Unblock" : "Block"} Confirmation`);
     setActionId(id);
     setActionContent(
-      `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong> individual user?`
+      `Are you sure to ${action === "Block" ? "unblock" : "block"} <strong>"${item}"</strong> individual user?`
     );
   };
   console.log(actionType);
@@ -43,7 +43,6 @@ const ListIndividuals = () => {
     handleClose();
     actionInitialValues.userId = actionId;
     actionInitialValues.requestType = actionType;
-
     dispatch(individualActions.individualAccountRequest(actionInitialValues));
   };
   const handleClose = () => setOpen(false);
@@ -111,39 +110,38 @@ const ListIndividuals = () => {
                             </td>
                             <td className="ant-table-cell">
                               <div className="ms-2">
-                                {!individual?.status ? (
-                                  <Tooltip title="Inactivate">
+                                {individual?.isActive && (
+                                  <Tooltip title="Block">
                                     <Link
                                       to="#"
                                       onClick={() =>
                                         handleOpenDialog(
                                           "Inactivate",
                                           individual?.name,
-                                          individual?.indId
+                                          individual?.userId
                                         )
                                       }
                                     >
                                       <i className="bi bi-unlock custom-color fs-5 ms-2"></i>
                                     </Link>
                                   </Tooltip>
-                                ) : null}
-
-                                {individual?.status ? (
-                                  <Tooltip title="Activate">
+                                )}
+                                {!individual?.isActive && (
+                                  <Tooltip title="Unblock">
                                     <Link
                                       to="#"
                                       onClick={() =>
                                         handleOpenDialog(
                                           "Activate",
                                           individual?.name,
-                                          individual?.indId
+                                          individual?.userId
                                         )
                                       }
                                     >
                                       <i className="bi bi-lock custom-color fs-5 ms-2"></i>
                                     </Link>
                                   </Tooltip>
-                                ) : null}
+                                )}
                               </div>
                             </td>
                           </tr>
