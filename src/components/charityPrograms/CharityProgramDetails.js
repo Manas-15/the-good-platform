@@ -503,8 +503,9 @@ const CharityProgramDetails = (props) => {
                   </TabPane>
                   <TabPane tab={"Donors"} key={"donors"}>
                     <div className="row mt-4 program-list">
-                      <h4 className="mb-0">Donors ({programDetail?.donors?.length})</h4>
+                    {programDetail?.donors?.length > 0 && <h4 className="mb-0">Donors ({programDetail?.donors?.length})</h4>}
                       <div className="col-md-12">
+                       {programDetail?.donors?.length > 0 ?
                         <Tabs defaultActiveKey={0}>
                           <TabPane tab={<span>Most Generious</span>} key={0}>
                             {programDetail?.donors?.map((user) => (
@@ -551,6 +552,9 @@ const CharityProgramDetails = (props) => {
                             ))}
                           </TabPane>
                         </Tabs>
+                        :
+                        <h6 className="mt-4 text-center">No donation made to this program yet.</h6>
+                            }
                       </div>
                     </div>
                   </TabPane>
