@@ -18,7 +18,7 @@ import ListCorporates from "../components/Corporate/ListCorporates";
 import AddCorporate from "../components/Corporate/AddCorporate";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
 import ListTransactionsHistory from "../components/TransactionsHistory/ListTransactionsHistory";
-import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
+import ListSocialOrganizations from "../components/SocialOrganizations/SocialOrganizations";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
@@ -139,7 +139,11 @@ const CreateRoutes = () => {
                 component={PayrollBatch}
               />
               <Route exact path="/list-corporates" component={ListCorporates} />
-              <Route exact path="/list-individuals" component={ListIndividuals} />
+              <Route
+                exact
+                path="/list-individuals"
+                component={ListIndividuals}
+              />
               <Route exact path="/corporates/add" component={AddCorporate} />
               <Route
                 exact
@@ -181,11 +185,7 @@ const CreateRoutes = () => {
                 path="/social-organizations"
                 component={SocialOrganizations}
               />
-              <Route
-                exact
-                path="/direct-payment"
-                component={DirectPayment}
-              />
+              <Route exact path="/direct-payment" component={DirectPayment} />
               <Route
                 exact
                 path="/social-organizations/payroll-batch"
