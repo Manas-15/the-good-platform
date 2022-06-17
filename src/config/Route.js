@@ -18,7 +18,7 @@ import ListCorporates from "../components/Corporate/ListCorporates";
 import AddCorporate from "../components/Corporate/AddCorporate";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
 import ListTransactionsHistory from "../components/TransactionsHistory/ListTransactionsHistory";
-import ListSocialOrganizations from "../components/SocialOrganizations/SocialOrganizations";
+import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";

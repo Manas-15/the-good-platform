@@ -32,7 +32,7 @@ function getIndividuals() {
     return { type: individualConstants.GET_INDIVIDUALS_FAILURE, error };
   }
 }
-function individualAccountRequest(actionValues) {
+function individualAccountRequest(actionValues, name) {
   return (dispatch) => {
     console.log(actionValues);
     dispatch(request(actionValues));
@@ -41,7 +41,7 @@ function individualAccountRequest(actionValues) {
         dispatch(success(msg));
         dispatch(
           alertActions.success(
-            `Individual user ${
+            `${name} ${
               actionValues.requestType === "Block"
                 ? "Blocked"
                 : actionValues.requestType.toLowerCase() + "ed"

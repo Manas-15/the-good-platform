@@ -251,12 +251,14 @@ ul.dropdown-menu.actions li:hover {
   width: 100%;
   background: green;
 }
-.donate-header .nav-link span, .donate-header-program-detail .nav-link span {
+.donate-header .nav-link span,
+.donate-header-program-detail .nav-link span {
   font-size: 0.85rem;
   font-weight: 500;
   color: #fff;
 }
-.donate-header .nav-link.active span, .donate-header-program-detail .nav-link.active span {
+.donate-header .nav-link.active span,
+.donate-header-program-detail .nav-link.active span {
   color: #000;
 }
 .ant-spin-nested-loading {
@@ -306,8 +308,11 @@ ul.dropdown-menu.actions li:hover {
 a .custom-color {
   color: #39364f;
 }
+a .f-size {
+  font-size: 17px;
+}
 a .red-color {
-  color: #E52B2B;
+  color: #e52b2b;
 }
 .accordion-button {
   background-color: #39364f !important;

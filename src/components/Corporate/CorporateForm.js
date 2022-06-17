@@ -5,6 +5,7 @@ import { CorporateSchema } from "./../Validations";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { corporateActions } from "./../../actions";
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 
 const initialValues = {
   organizationName: "",
@@ -37,6 +38,8 @@ const CorporateForm = ({ type, id }) => {
   const [submitted, setSubmitted] = useState(false);
   const [editCorpData, setEditCorpData] = useState();
   const corporates = useSelector((state) => state.corporates);
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState();
 
   const addingCorporate = useSelector(
     (state) => state?.corporates?.addingCorporate
@@ -110,6 +113,13 @@ const CorporateForm = ({ type, id }) => {
     initialValues.country = "";
     initialValues.city = "";
   }
+
+  const selectCountry = (country) => {
+    setCountry(country);
+  };
+  const selectState = (state) => {
+    setState(state);
+  };
 
   return (
     <div style={{ width: "650px" }}>
@@ -402,6 +412,42 @@ const CorporateForm = ({ type, id }) => {
                 <label className="mt-1">State</label>
               </div>
               <div className="col-md-8">
+                <RegionDropdown
+                  name="state"
+                  country={country}
+                  value={state}
+                  placeholder="Select State"
+                  onChange={(val) => selectState(val)}
+                  // onChange={(_, e) => handleChange(e)}
+                  className={
+                    "form-select" +
+                    (errors.state && touched.state ? " is-invalid" : "")
+                  }
+                />
+              </div>
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-4">
+                <label className="mt-1">Country</label>
+              </div>
+              <div className="col-md-8">
+                <CountryDropdown
+                  name="country"
+                  value={country}
+                  // onChange={(_, e) => handleChange(e)}
+                  onChange={(val) => selectCountry(val)}
+                  className={
+                    "form-select" +
+                    (errors.country && touched.country ? " is-invalid" : "")
+                  }
+                />
+              </div>
+            </div>
+            {/* <div className="row mb-4">
+              <div className="col-md-4">
+                <label className="mt-1">State</label>
+              </div>
+              <div className="col-md-8">
                 <Field
                   name="state"
                   type="text"
@@ -426,7 +472,7 @@ const CorporateForm = ({ type, id }) => {
                   }
                 />
               </div>
-            </div>
+            </div> */}
             <div className="text-center">
               <div className="row">
                 <div className="col-md-4 offset-md-4 ">

@@ -7,12 +7,16 @@ import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
 import { Modal, Button } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import format from "date-fns/format";
+import ReactHtmlParser from "react-html-parser";
+import { ProcessHelper, history } from "./../../helpers";
+import { Accordion } from "react-bootstrap";
 import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants
+  payrollConstants,
+  userConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -20,6 +24,7 @@ import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 
 let charityProgramsOption = [];
+let accordionData;
 const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Processed", value: paymentConstants.PAYMENT_PENDING },
@@ -54,7 +59,7 @@ const DirectPayment = (props) => {
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
-
+  const [currentView, setCurrentView] = useState(payrollConstants?.LIST_VIEW);
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -81,7 +86,7 @@ const DirectPayment = (props) => {
     currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  const isBluePencilView =
+  const isBluePencilPortal =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
 
@@ -127,7 +132,43 @@ const DirectPayment = (props) => {
   useEffect(() => {
     setAllRecords(records);
   }, [records]);
-
+  const resultAccordionData = (key) => {
+    return Object.values(
+      key.reduce(
+        (
+          c,
+          {
+            batchId,
+            employeeName,
+            amount,
+            batchDate,
+            charityName,
+            corporateName,
+            socialOrg
+          }
+        ) => {
+          const temp = {
+            batchId,
+            employeeName: "",
+            amount: 0,
+            batchDate: "",
+            charityName: "",
+            corporateName: "",
+            socialOrg: ""
+          };
+          c[batchId] = c[batchId] || temp;
+          c[batchId].employeeName += employeeName;
+          c[batchId].amount += amount;
+          c[batchId].batchDate = batchDate;
+          c[batchId].corporateName = corporateName;
+          c[batchId].charityName = charityName;
+          c[batchId].socialOrg = socialOrg;
+          return c;
+        },
+        {}
+      )
+    );
+  };
   const onSearchChange = (value, selected) => {
     if (selected === "programName") {
       setSearchByProgramName(value);
@@ -247,6 +288,19 @@ const DirectPayment = (props) => {
     setOpenAccountDetail(true);
     setSelectedAccount(item);
   };
+  const groupBy = (key) => {
+    return allRecords?.reduce(function (acc, item) {
+      (acc[item[key]] = acc[item[key]] || []).push(item);
+      return acc;
+    }, {});
+  };
+  if (isBluePencilPortal) {
+    if (currentView === payrollConstants.ORGANIZATION_VIEW) {
+      accordionData = groupBy("socialOrg");
+    } else {
+      accordionData = groupBy("charityName");
+    }
+  }
   const date = new Date();
   return (
     <div className="customContainer">
@@ -305,6 +359,57 @@ const DirectPayment = (props) => {
               </select>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="row mt-3">
+        <div className="col-md-12 text-right">
+          {isBluePencilPortal && (
+            <Link
+              className="fs-6 text-decoration-underline mr-3"
+              onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
+            >
+              <button
+                type="button"
+                className={`${
+                  currentView === payrollConstants.LIST_VIEW ? "active" : ""
+                } btn btn-sm btn-outline-primary btn-outline-custom`}
+              >
+                List View
+              </button>
+            </Link>
+          )}
+          {isBluePencilPortal && (
+            <Link
+              className="fs-6 text-decoration-underline mr-3"
+              onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
+            >
+              <button
+                type="button"
+                className={`${
+                  currentView === payrollConstants.ORGANIZATION_VIEW
+                    ? "active"
+                    : ""
+                } btn btn-sm btn-outline-primary btn-outline-custom`}
+              >
+                Organization View
+              </button>
+            </Link>
+          )}
+          {isBluePencilPortal && (
+            <Link
+              className="fs-6 text-decoration-underline mr-3"
+              onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
+            >
+              <button
+                type="button"
+                className={`${
+                  currentView === payrollConstants.PROGRAM_VIEW ? "active" : ""
+                } btn btn-sm btn-outline-primary btn-outline-custom`}
+              >
+                Program View
+              </button>
+            </Link>
+          )}
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
@@ -411,120 +516,125 @@ const DirectPayment = (props) => {
         </div>
       </div>
       {transactions.loading && <Loader />}
-      <div className="ant-row">
-        <div className="ant-col ant-col-24 mt-2">
-          <div className="ant-table-wrapper">
-            <div className="ant-table">
-              <table>
-                <thead className="ant-table-thead">
-                  <tr>
-                    {/* <th className="ant-table-cell">SR No.</th> */}
-                    {!isEmployeePortal && (
-                      <th className="ant-table-cell">Donor</th>
-                    )}
-                    <th className="ant-table-cell">Program</th>
-                    {!isOrganizationView && (
-                      <th className="ant-table-cell">Organization</th>
-                    )}
-                    {!employeeId && !isCorporatePortal && (
-                      <th className="ant-table-cell">Corporate</th>
-                    )}
-                    <th className="ant-table-cell">Transaction ID</th>
-                    <th className="ant-table-cell">Donation</th>
-                    {/* <th className="ant-table-cell">Donation Type</th> */}
-                    {/* <th className="ant-table-cell">Payment Mode</th> */}
-                    {/* <th className="ant-table-cell">Payment Status</th> */}
-                    <th className="ant-table-cell">Payment Date</th>
-                    {(employeeId || isCorporatePortal) && (
-                      <th className="ant-table-cell">80G</th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="ant-table-tbody">
-                  {allRecords?.length > 0 ? (
-                    allRecords?.map((transaction, index) => (
-                      <tr
-                        key={index + 1}
-                        className="ant-table-row ant-table-row-level-0"
-                      >
-                        {/* <td className="ant-table-cell">
+      {currentView === payrollConstants.LIST_VIEW ? (
+        <div className="ant-row">
+          <div className="ant-col ant-col-24 mt-2">
+            <div className="ant-table-wrapper">
+              <div className="ant-table">
+                <table>
+                  <thead className="ant-table-thead">
+                    <tr>
+                      {/* <th className="ant-table-cell">SR No.</th> */}
+                      {!isEmployeePortal && (
+                        <th className="ant-table-cell">Donor</th>
+                      )}
+                      <th className="ant-table-cell">Program</th>
+                      {!isOrganizationView && (
+                        <th className="ant-table-cell">Organization</th>
+                      )}
+                      {!employeeId && !isCorporatePortal && (
+                        <th className="ant-table-cell">Corporate</th>
+                      )}
+                      <th className="ant-table-cell">Transaction ID</th>
+                      <th className="ant-table-cell">Donation</th>
+                      {/* <th className="ant-table-cell">Donation Type</th> */}
+                      {/* <th className="ant-table-cell">Payment Mode</th> */}
+                      {/* <th className="ant-table-cell">Payment Status</th> */}
+                      <th className="ant-table-cell">Payment Date</th>
+                      {(employeeId || isCorporatePortal) && (
+                        <th className="ant-table-cell">80G</th>
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody className="ant-table-tbody">
+                    {allRecords?.length > 0 ? (
+                      allRecords?.map((transaction, index) => (
+                        <tr
+                          key={index + 1}
+                          className="ant-table-row ant-table-row-level-0"
+                        >
+                          {/* <td className="ant-table-cell">
                           {currentPage >= 2
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
-                        {!isEmployeePortal && (
+                          {!isEmployeePortal && (
+                            <td className="ant-table-cell">
+                              <span className="ant-typography font-weight-bold">
+                                <Tooltip title="Show detail">
+                                  <Link
+                                    onClick={() =>
+                                      showAccountDetail(transaction)
+                                    }
+                                  >
+                                    <span className="custom-color">
+                                      {transaction?.employeeName
+                                        ? transaction?.employeeName
+                                        : transaction?.corporateName}
+                                    </span>
+                                  </Link>
+                                </Tooltip>
+                              </span>
+                            </td>
+                          )}
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title="Show detail">
                                 <Link
                                   onClick={() => showAccountDetail(transaction)}
                                 >
+                                  {" "}
                                   <span className="custom-color">
-                                    {transaction?.employeeName
-                                      ? transaction?.employeeName
-                                      : transaction?.corporateName}
+                                    {transaction?.charityName}
                                   </span>
                                 </Link>
                               </Tooltip>
                             </span>
                           </td>
-                        )}
-                        <td className="ant-table-cell">
-                          <span className="ant-typography font-weight-bold">
-                            <Tooltip title="Show detail">
-                              <Link
-                                onClick={() => showAccountDetail(transaction)}
-                              >
-                                {" "}
-                                <span className="custom-color">
-                                  {transaction?.charityName}
-                                </span>
-                              </Link>
-                            </Tooltip>
-                          </span>
-                        </td>
-                        {!isOrganizationView && (
-                          <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
+                          {!isOrganizationView && (
+                            <td className="ant-table-cell">
+                              <span className="ant-typography font-weight-bold">
+                                <Tooltip title="Show detail">
+                                  <Link
+                                    onClick={() =>
+                                      showAccountDetail(transaction)
+                                    }
+                                  >
+                                    <span className="custom-color">
+                                      {transaction?.socialOrg}
+                                    </span>
+                                  </Link>
+                                </Tooltip>
+                              </span>
+                            </td>
+                          )}
+                          {!employeeId && !isCorporatePortal && (
+                            <td className="ant-table-cell">
                               <Tooltip title="Show detail">
                                 <Link
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
-                                    {transaction?.socialOrg}
+                                    {transaction?.corporateName}
                                   </span>
                                 </Link>
                               </Tooltip>
-                            </span>
-                          </td>
-                        )}
-                        {!employeeId && !isCorporatePortal && (
+                            </td>
+                          )}
                           <td className="ant-table-cell">
-                            <Tooltip title="Show detail">
-                              <Link
-                                onClick={() => showAccountDetail(transaction)}
-                              >
-                                <span className="custom-color">
-                                  {transaction?.corporateName}
-                                </span>
-                              </Link>
-                            </Tooltip>
+                            {transaction?.transactionId}
                           </td>
-                        )}
-                        <td className="ant-table-cell">
-                          {transaction?.transactionId}
-                        </td>
-                        <td className="ant-table-cell">
-                          {transaction?.amount?.toLocaleString()}
-                        </td>
-                        {/* <td className="ant-table-cell">
+                          <td className="ant-table-cell">
+                            {transaction?.amount?.toLocaleString()}
+                          </td>
+                          {/* <td className="ant-table-cell">
                           {transaction?.donationType}
                         </td> */}
-                        {/* <td className="ant-table-cell">
+                          {/* <td className="ant-table-cell">
                           {transaction?.paymentMethod &&
                             transaction?.paymentMethod.replace(/_/g, " ")}
                         </td> */}
-                        {/* <td className="ant-table-cell text-uppercase">
+                          {/* <td className="ant-table-cell text-uppercase">
                           {transaction?.paymentStatus ===
                             paymentConstants.PAYMENT_SUCCESS && (
                             <span className="text-success">Success</span>
@@ -538,57 +648,173 @@ const DirectPayment = (props) => {
                             <span className="text-warning">Pending</span>
                           )}
                         </td> */}
-                        <td className="ant-table-cell">
-                          {transaction?.paymentDate &&
-                            transaction?.paymentDate !== "None" &&
-                            moment(transaction?.paymentDate).format(
-                              "DD/MM/YY, h:mm A"
-                            )}
-                        </td>
-                        {(employeeId || isCorporatePortal) && (
                           <td className="ant-table-cell">
-                            {transaction?.paymentStatus ===
-                              paymentConstants.PAYMENT_SUCCESS && (
-                              <div className="d-flex">
-                                <Tooltip title="Download">
-                                  <Link
-                                    className="text-decoration-underline"
-                                    onClick={() =>
-                                      downlad(transaction?.transactionId)
-                                    }
-                                  >
-                                    <i className="bi bi-download fs-5 mr-3"></i>
-                                  </Link>
-                                </Tooltip>
-                                <Tooltip title="Email">
-                                  <Link
-                                    className="text-decoration-underline"
-                                    onClick={() =>
-                                      setEmailSend(transaction?.transactionId)
-                                    }
-                                  >
-                                    <i className="bi bi-envelope fs-5"></i>
-                                  </Link>
-                                </Tooltip>
-                              </div>
-                            )}
+                            {transaction?.paymentDate &&
+                              transaction?.paymentDate !== "None" &&
+                              moment(transaction?.paymentDate).format(
+                                "DD/MM/YY, h:mm A"
+                              )}
                           </td>
-                        )}
+                          {(employeeId || isCorporatePortal) && (
+                            <td className="ant-table-cell">
+                              {transaction?.paymentStatus ===
+                                paymentConstants.PAYMENT_SUCCESS && (
+                                <div className="d-flex">
+                                  <Tooltip title="Download">
+                                    <Link
+                                      className="text-decoration-underline"
+                                      onClick={() =>
+                                        downlad(transaction?.transactionId)
+                                      }
+                                    >
+                                      <i className="bi bi-download fs-5 mr-3"></i>
+                                    </Link>
+                                  </Tooltip>
+                                  <Tooltip title="Email">
+                                    <Link
+                                      className="text-decoration-underline"
+                                      onClick={() =>
+                                        setEmailSend(transaction?.transactionId)
+                                      }
+                                    >
+                                      <i className="bi bi-envelope fs-5"></i>
+                                    </Link>
+                                  </Tooltip>
+                                </div>
+                              )}
+                            </td>
+                          )}
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="10" className="text-center">
+                          No transactions found
+                        </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="10" className="text-center">
-                        No transactions found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        accordionData &&
+        Object.keys(accordionData).map((type, index) => (
+          <div className="row mt-4" key={index}>
+            {ProcessHelper(accordionData[type], " ")?.length > 0 ? (
+              <Accordion defaultActiveKey={index} className="Payroll">
+                <Accordion.Item eventKey={0}>
+                  <Accordion.Header>
+                    {type} &nbsp;&#45;&nbsp;
+                    {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                    {accordionData[type]
+                      ? ProcessHelper(accordionData[type], " ")
+                          ?.reduce(
+                            (total, currentValue) =>
+                              (total = total + currentValue.amount),
+                            0
+                          )
+                          .toLocaleString()
+                      : 0}
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <div className="ant-row">
+                      <div className="ant-col ant-col-24 mt-2">
+                        <div className="ant-table-wrapper">
+                          <div className="ant-table">
+                            <table>
+                              <thead className="ant-table-thead">
+                                <tr>
+                                  {/* <th className="ant-table-cell">Sr No.</th> */}
+                                  {/* <th className="ant-table-cell">Batch id</th> */}
+                                  {/* <th className="ant-table-cell">Donor</th> */}
+                                  {currentView !==
+                                    payrollConstants.ORGANIZATION_VIEW && (
+                                    <th className="ant-table-cell">
+                                      Organization
+                                    </th>
+                                  )}
+                                  <th className="ant-table-cell">Program</th>
+                                  <th className="ant-table-cell">Corporate</th>
+                                  <th className="ant-table-cell">Month</th>
+                                  <th className="ant-table-cell">
+                                    Amount (
+                                    {ReactHtmlParser(
+                                      donationPreferenceConstants?.CURRENCY
+                                    )}
+                                    )
+                                  </th>
+                                  {/* <th className="ant-table-cell">TransactionId ID</th> */}
+                                  {/* <th className="ant-table-cell text-center">
+                                      Actions
+                                    </th> */}
+                                </tr>
+                              </thead>
+                              <tbody className="ant-table-tbody">
+                                {resultAccordionData(accordionData[type])?.map(
+                                  (item, index) => (
+                                    <tr
+                                      key={index + 1}
+                                      className="ant-table-row ant-table-row-level-0"
+                                    >
+                                      {/* <td className="ant-table-cell">
+                                        <Link
+                                          onClick={() =>
+                                            props?.showBatchDetail(
+                                              batch?.batchId
+                                            )
+                                          }
+                                        >
+                                          {batch?.batchId}
+                                        </Link>
+                                      </td> */}
+                                      {/* <td className="ant-table-cell">
+                                        {item?.employeeName}
+                                      </td> */}
+                                      {currentView !==
+                                        payrollConstants.ORGANIZATION_VIEW && (
+                                        <td className="ant-table-cell">
+                                          {item?.socialOrg}
+                                        </td>
+                                      )}
+                                      <td className="ant-table-cell">
+                                        {item?.charityName}
+                                      </td>
+                                      <td className="ant-table-cell">
+                                        {item?.corporateName}
+                                      </td>
+                                      <td className="ant-table-cell">
+                                        {moment(item?.createdDate).format(
+                                          "MMM, YYYY"
+                                        )}
+                                      </td>
+                                      <td className="ant-table-cell">
+                                        {item?.amount?.toLocaleString()}
+                                      </td>
+                                      {/* <td className="ant-table-cell">
+                                        
+                                          {batch?.referenceId}
+                                      </td> */}
+                                      {/* <td className="ant-table-cell text-center">
+                                      </td> */}
+                                    </tr>
+                                  )
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            ) : null}
+          </div>
+        ))
+      )}
       <Pagination
         className="pagination-bar mt-4"
         currentPage={currentPage}

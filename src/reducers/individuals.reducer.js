@@ -26,8 +26,8 @@ export function individuals(state = {}, action) {
       console.log(state.requestType);
       return {
         items: state?.items?.map((item) => {
-          if (item.indId === state.userId) {
-            console.log(state.requestType);
+          if (item.userId === state.userId) {
+            console.log(state.requestType, "dddddddddrecudede");
             if (
               state.requestType === "Activate" ||
               state.requestType === "Inactivate"
@@ -37,6 +37,8 @@ export function individuals(state = {}, action) {
           }
           return item;
         }),
+        requestType: null,
+        actionRequest: false,
       };
     case individualConstants.INDIVIDUAL_ACTION_FAILURE:
       return { items: state.items, error: action.error };
