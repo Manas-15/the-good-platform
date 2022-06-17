@@ -117,7 +117,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView }
+                        state: { isSuperadminView },
                       }}
                       activeClassName="active"
                     >
@@ -132,7 +132,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView }
+                        state: { isSuperadminView },
                       }}
                       activeClassName="active"
                     >

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  charityProgramConstants
+  charityProgramConstants,
 } from "../../constants";
 import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
@@ -13,11 +13,11 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import {
   charityProgramActions,
   selectedCharityActions,
-  selectedCharityTabActions
+  selectedCharityTabActions,
 } from "../../actions";
 import urlSlug from "url-slug";
-import DonateHeader from "./../CharityPrograms/DonateHeader";
-import Donate from "./../CharityPrograms/Donate";
+import DonateHeader from "./DonateHeader";
+import Donate from "./Donate";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setActionTitle(`${action} Confirmation`);
     setSelectedCharity(item);
     if (action === charityProgramConstants.UNPROMOTE) {
-      // const program = charityPrograms["sponsored"]?.filter((item) => item?.charityId === item?.charityId)[0];     
+      // const program = charityPrograms["sponsored"]?.filter((item) => item?.charityId === item?.charityId)[0];
       setActionContent(
         employeeCount > 0
           ? `Are you sure you want to unpromote?.<br/><br/>Doing this would remove all the donation preferences set for the programs by the employees.<br/><br/>Total ${employeeCount} employees have set donation preference for the programs.`
@@ -80,12 +80,12 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         ? charityProgramActions.operateDenyRequest({
             corporateId: selectedCorporate?.corporate?.corporateId,
             socialId: selectedProgram?.soicalId,
-            programId: selectedProgram?.charityId
+            programId: selectedProgram?.charityId,
           })
         : charityProgramActions.operateSponsorRequest({
             corporateId: selectedCorporate?.corporate?.corporateId,
             socialId: selectedProgram?.soicalId,
-            charityId: selectedProgram?.charityId
+            charityId: selectedProgram?.charityId,
           })
     );
   };
@@ -112,11 +112,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     const allCheckBox = checkList?.map((color, index) => {
       if (isAllChecked || color.value === checkName) {
         return Object.assign({}, color, {
-          checked
+          checked,
         });
       } else if (isAllUnChecked) {
         return Object.assign({}, color, {
-          checked: false
+          checked: false,
         });
       }
 
@@ -142,7 +142,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         programId: item?.charityId,
         corporateId: isCorporatePortal
           ? selectedCorporate?.corporate?.corporateId
-          : user?.corporateId
+          : user?.corporateId,
       })
     );
     setSelectedProgram(item);
@@ -251,7 +251,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 pathname: `/social-organizations/programs/${urlSlug(
                                   charityProgram?.charityName
                                 )}`,
-                                programName: charityProgram?.charityName
+                                programName: charityProgram?.charityName,
                               }}
                               onClick={() => setSelectedCharity(charityProgram)}
                             >

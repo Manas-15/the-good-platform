@@ -9,7 +9,7 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: ""
+  requestType: "",
 };
 const ListIndividuals = () => {
   let location = useLocation();
@@ -18,6 +18,7 @@ const ListIndividuals = () => {
 
   let history = useHistory();
   const individuals = useSelector((state) => state.individuals);
+  console.log(individuals);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -27,7 +28,7 @@ const ListIndividuals = () => {
   const [actionType, setActionType] = useState("");
 
   const handleOpenDialog = (action, item, id) => {
-    // console.log(action, item, id);
+    console.log(action, item, id);
     setOpen(true);
     setActionType(action);
     // setSelectedCorporate(item);
@@ -37,19 +38,14 @@ const ListIndividuals = () => {
       `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong> individual user?`
     );
   };
-  // console.log(actionType);
+  console.log(actionType);
+  const confirm = () => {
+    handleClose();
+    actionInitialValues.userId = actionId;
+    actionInitialValues.requestType = actionType;
 
-  // const confirm = () => {
-  //   handleClose();
-  //   actionInitialValues.userId = actionId;
-  //   actionInitialValues.requestType = actionType;
-
-  //   // if (actionType === "Delete") {
-  //   //   dispatch(corporateActions.deleteCorporate({ corporateId: actionId }));
-  //   // } else {
-  //   dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
-  //   // }
-  // };
+    dispatch(individualActions.individualAccountRequest(actionInitialValues));
+  };
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
@@ -114,69 +110,41 @@ const ListIndividuals = () => {
                               {individual?.gender}
                             </td>
                             <td className="ant-table-cell">
-                              {/* <div className="ms-2">
-                                <Tooltip title="Edit">
-                                  <Link
-                                    className="text-black"
-                                    to={{
-                                      pathname: `/individuals/edit/${individual.corporateId}`,
-                                      state: individual.corporateId
-                                    }}
-                                  >
-                                    <i
-                                      className="bi bi-pencil fs-5 me-1"
-                                      style={{ fontSize: "17px" }}
-                                    ></i>
-                                  </Link>
-                                </Tooltip>
-                                {!individual?.isActive ? (
-                                  <Tooltip title="Activate">
-                                    <Link
-                                      to="#"
-                                      onClick={() =>
-                                        handleOpenDialog(
-                                          "Activate",
-                                          individual?.organizationName,
-                                          individual?.userId
-                                        )
-                                      }
-                                    >
-                                      <i className="bi bi-check-circle custom-color fs-5 ms-2"></i>
-                                    </Link>
-                                  </Tooltip>
-                                ) : null}
-                                {individual?.isActive ? (
+                              <div className="ms-2">
+                                {!individual?.status ? (
                                   <Tooltip title="Inactivate">
                                     <Link
                                       to="#"
                                       onClick={() =>
                                         handleOpenDialog(
                                           "Inactivate",
-                                          individual?.organizationName,
-                                          individual?.userId
+                                          individual?.name,
+                                          individual?.indId
                                         )
                                       }
                                     >
-                                      <i className="bi bi-x-circle custom-color fs-5 ms-2"></i>
+                                      <i className="bi bi-unlock custom-color fs-5 ms-2"></i>
                                     </Link>
                                   </Tooltip>
                                 ) : null}
 
-                                <Tooltip title="Delete">
-                                  <Link
-                                    to="#"
-                                    onClick={() =>
-                                      handleOpenDialog(
-                                        "Delete",
-                                        individual?.organizationName,
-                                        individual?.corporateId
-                                      )
-                                    }
-                                  >
-                                    <i className="bi bi-trash fs-5 custom-color ms-2"></i>
-                                  </Link>
-                                </Tooltip>
-                              </div> */}
+                                {individual?.status ? (
+                                  <Tooltip title="Activate">
+                                    <Link
+                                      to="#"
+                                      onClick={() =>
+                                        handleOpenDialog(
+                                          "Activate",
+                                          individual?.name,
+                                          individual?.indId
+                                        )
+                                      }
+                                    >
+                                      <i className="bi bi-lock custom-color fs-5 ms-2"></i>
+                                    </Link>
+                                  </Tooltip>
+                                ) : null}
+                              </div>
                             </td>
                           </tr>
                         );
@@ -195,7 +163,7 @@ const ListIndividuals = () => {
         </div>
       </div>
 
-      {/* {open && (
+      {open && (
         <ConfirmationDialog
           open={true}
           title={actionTitle}
@@ -207,7 +175,7 @@ const ListIndividuals = () => {
             handleClose();
           }}
         />
-      )} */}
+      )}
     </div>
   );
 };

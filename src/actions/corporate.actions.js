@@ -12,7 +12,7 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   // getCorporateById,
-  corporateAccountRequest
+  corporateAccountRequest,
 };
 
 function getCorporates() {
@@ -122,7 +122,7 @@ function updateCorporate(corporate) {
   function success(corporate) {
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate
+      corporate,
     };
   }
   function failure(error) {
@@ -131,7 +131,7 @@ function updateCorporate(corporate) {
 }
 
 function deleteCorporate(corporateId) {
-  // console.log(corporateId, "delete idddddd");
+  console.log(corporateId, "delete idddddd");
   return (dispatch) => {
     dispatch(request(corporateId));
 
@@ -221,6 +221,7 @@ function corporateAccountRequest(actionValues) {
     return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
   }
   function success(data) {
+    console.log(data);
     return { type: corporateConstants.CORPORATE_ACTION_SUCCESS, data };
   }
   function failure(error) {

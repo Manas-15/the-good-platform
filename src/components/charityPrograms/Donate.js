@@ -8,14 +8,14 @@ import { charityProgramActions } from "../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import DonationConsent from "../Shared/DonationConsent";
 import { charityProgramConstants } from "../../constants";
 import DonateSecondStep from "./DonateSecondStep";
 import donationsConsent from "../../config/donationsConsent.json";
 import { history } from "../../helpers";
-import AddedDonationFromDetail from "./AddedDonationFromDetail";
+import AddedDonationFromDetail from "../CharityPrograms/AddedDonationFromDetail";
 
 const preferenceForm = {
   corporateId: "",
@@ -26,7 +26,7 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
   donationConsent: "",
-  repeat: ""
+  repeat: "",
 };
 const Donate = ({
   frequency,
@@ -34,7 +34,7 @@ const Donate = ({
   tabType,
   from,
   currentPortal,
-  repeatPreference
+  repeatPreference,
 }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);

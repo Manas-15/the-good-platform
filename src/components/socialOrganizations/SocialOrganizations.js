@@ -7,15 +7,15 @@ import {
   paginationConstants,
   charityProgramConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import {
   selectedOrganizationActions,
-  socialOrganizationActions
+  socialOrganizationActions,
 } from "../../actions";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
-import Pagination from "./../Shared/Pagination";
+import Pagination from "../Shared/Pagination";
 import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";
@@ -68,7 +68,7 @@ const SocialOrganizations = () => {
         // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         loggedInUserType: loggedInUserType,
         individualId:
-          loggedInUserType === userConstants.INDIVIDUAL ? user?.uuid : null
+          loggedInUserType === userConstants.INDIVIDUAL ? user?.uuid : null,
       })
     );
   }, [currentPage]);
