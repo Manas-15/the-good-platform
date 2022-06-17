@@ -15,7 +15,7 @@ import {
 } from "../../actions";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
-import Pagination from "./../Shared/Pagination";
+import Pagination from "../Shared/Pagination";
 import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";

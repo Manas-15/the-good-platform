@@ -73,11 +73,7 @@ const PayrollBatchDetail = (props) => {
   useEffect(() => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
     setCurrentView(
-      isOrganizationView || isBluePencilPortal
-        ? payrollConstants.EMPLOYEE_VIEW
-        : isCorporateView
-        ? payrollConstants.EMPLOYEE_VIEW
-        : payrollConstants.CORPORATE_VIEW
+      payrollConstants.LIST_VIEW
     );
   }, [history?.location?.pathname]);
   const showReferenceNote = (referenceNote) => {
