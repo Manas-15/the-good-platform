@@ -12,7 +12,7 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData
+  CountryRegionData,
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
@@ -31,17 +31,17 @@ const initialValues = {
   state: "",
   country: "",
   userType: 3,
-  password: "test@%^@#1023"
+  password: "test@%^@#1023",
 };
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
   { value: "2", label: "Help Donar" },
-  { value: "3", label: "Universe Donar" }
+  { value: "3", label: "Universe Donar" },
 ];
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" }
+  { value: "Transgender", label: "Transgender" },
 ];
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -133,7 +133,7 @@ const EmployeeForm = ({ type }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting
+                isSubmitting,
                 /* and other goodies */
               }) => (
                 <Form>

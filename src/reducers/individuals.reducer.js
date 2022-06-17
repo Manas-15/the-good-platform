@@ -16,7 +16,12 @@ export function individuals(state = {}, action) {
         error: action.error,
       };
     case individualConstants.INDIVIDUAL_ACTION_REQUEST:
-      return { items: state.items, actionRequest: true };
+      return {
+        items: state.items,
+        actionRequest: true,
+        requestType: action?.individual?.requestType,
+        userId: action?.individual?.userId,
+      };
     case individualConstants.INDIVIDUAL_ACTION_SUCCESS:
       console.log(state.requestType);
       return {
@@ -27,7 +32,7 @@ export function individuals(state = {}, action) {
               state.requestType === "Activate" ||
               state.requestType === "Inactivate"
             ) {
-              return { ...item, status: state.requestType === "Activate" };
+              return { ...item, isActive: state.requestType === "Activate" };
             }
           }
           return item;

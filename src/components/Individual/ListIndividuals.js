@@ -111,7 +111,7 @@ const ListIndividuals = () => {
                             </td>
                             <td className="ant-table-cell">
                               <div className="ms-2">
-                                {!individual?.status ? (
+                                {individual?.isActive ? (
                                   <Tooltip title="Inactivate">
                                     <Link
                                       to="#"
@@ -128,7 +128,7 @@ const ListIndividuals = () => {
                                   </Tooltip>
                                 ) : null}
 
-                                {individual?.status ? (
+                                {!individual?.isActive ? (
                                   <Tooltip title="Activate">
                                     <Link
                                       to="#"
