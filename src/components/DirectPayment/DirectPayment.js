@@ -16,7 +16,7 @@ import {
   viewPortalConstants,
   payrollConstants,
   userConstants,
-  donationPreferenceConstants
+  donationPreferenceConstants,
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -28,13 +28,13 @@ let accordionData;
 const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Processed", value: paymentConstants.PAYMENT_PENDING },
-  { label: "Not Processed", value: paymentConstants.PAYMENT_SUCCESS }
+  { label: "Not Processed", value: paymentConstants.PAYMENT_SUCCESS },
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: ""
+  transactionId: "",
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -46,6 +46,7 @@ const DirectPayment = (props) => {
   const [allRecords, setAllRecords] = useState(records);
 
   const transactions = useSelector((state) => state.transactionsHistory);
+  console.log(transactions);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
@@ -74,12 +75,14 @@ const DirectPayment = (props) => {
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
-  const [checkedPreference, setCheckedPreference] = useState({preferenceId: []});
+  const [checkedPreference, setCheckedPreference] = useState({
+    preferenceId: [],
+  });
   const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD"))
+    new Date(moment().format("YYYY-MM-DD")),
   ]);
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -146,7 +149,7 @@ const DirectPayment = (props) => {
             batchDate,
             charityName,
             corporateName,
-            socialOrg
+            socialOrg,
           }
         ) => {
           const temp = {
@@ -156,7 +159,7 @@ const DirectPayment = (props) => {
             batchDate: "",
             charityName: "",
             corporateName: "",
-            socialOrg: ""
+            socialOrg: "",
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].employeeName += employeeName;
@@ -204,7 +207,7 @@ const DirectPayment = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId
+        transactionId: transactionId,
       })
     );
   };
@@ -252,7 +255,7 @@ const DirectPayment = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null
+          : null,
       })
     );
   };
@@ -262,29 +265,17 @@ const DirectPayment = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount
+    searchByAmount,
   ]);
-  // useEffect(() => {
-  //   fetchResults("");
-  // }, [searchByEmployeeName]);
-  // useEffect(() => {
-  //   fetchResults("");
-  // }, [searchByAmount]);
+
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection"
+    key: "selection",
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
     fetchResults(ranges);
-    // setIsDateRangeFilter(false);
-    // {
-    //   selection: {
-    //     startDate: [native Date Object],
-    //     endDate: [native Date Object],
-    //   }
-    // }
   };
   const showAccountDetail = (item) => {
     setOpenAccountDetail(true);
@@ -296,14 +287,15 @@ const DirectPayment = (props) => {
       return acc;
     }, {});
   };
+
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
-    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference)
+    console.log(name, checked);
     const { preferenceId } = checkedPreference;
     setChecked(checked);
 
     if (name === "allSelect" && checked) {
-      console.log("11111111111111111")
+      console.log("11111111111111111");
       let prefenreceID = allRecords?.map((val) => val?.Id);
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
@@ -311,32 +303,32 @@ const DirectPayment = (props) => {
         preferenceId: allRecords?.map((val) => val.Id),
       });
     } else if (name === "allSelect" && !checked) {
-      console.log("222222222222222222")
+      console.log("222222222222222222");
       setCheckedPreference({
         preferenceId: [],
       });
     } else if (checked) {
-      console.log("33333333333333333333")
+      console.log("33333333333333333333");
       setCheckedPreference({
         preferenceId: [...preferenceId, items?.Id],
       });
     } else {
-      console.log("44444444444444")
+      console.log("44444444444444");
       setCheckedPreference({
         preferenceId: preferenceId?.filter((val) => val !== items?.Id),
       });
     }
-    // For all Check & Uncheck
+    For all Check & Uncheck
     if (name === "allSelect") {
       let tempreference = allRecords?.map((item) => {
         return { ...item, isChecked: checked };
       });
-      setAllItems(tempreference);
+      setAllRecords(tempreference);
     } else {
       let tempreference = allRecords?.map((item) =>
-        item.charityName === name ? { ...item, isChecked: checked } : item
+        item.Id.toString() === name ? { ...item, isChecked: checked } : item
       );
-      setAllItems(tempreference);
+      setAllRecords(tempreference);
     }
   };
   if (isBluePencilPortal) {
@@ -346,7 +338,8 @@ const DirectPayment = (props) => {
       accordionData = groupBy("charityName");
     }
   }
-  const date = new Date();
+  console.log(allRecords);
+
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -363,11 +356,6 @@ const DirectPayment = (props) => {
               .add(-30, "days")
               .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
             format={"dd/MM/yyyy"}
-            // defaultValue={selectedRange}
-            // defaultValue={[date.setDate(date.getDate() - 30), new Date()]}
-            // renderValue={value => {
-            //   return format(value[0], 'dd/MM/yyyy') + ' ~ ' + format(value[1], 'dd/MM/yyyy');
-            // }}
             cleanable={true}
             disabledDate={afterToday()}
           />
@@ -571,19 +559,18 @@ const DirectPayment = (props) => {
                     <tr>
                       {/* <th className="ant-table-cell">SR No.</th> */}
                       <th>
-                      <div className="form-check me-2">
-                      <input
-                          type="checkbox"
-                          name="allSelect"
-                          checked={
-                            allRecords?.filter(
-                              (item) =>
-                              item?.isChecked !== true
-                            ).length < 1
-                          }
-                          className="form-check-input"
-                          onChange={(e) => handleCheck(e, allRecords)}
-                        />
+                        <div className="form-check me-2">
+                          <input
+                            type="checkbox"
+                            name="allSelect"
+                            checked={
+                              allRecords?.filter(
+                                (item) => item?.isChecked !== true
+                              ).length < 1
+                            }
+                            className="form-check-input"
+                            onChange={(e) => handleCheck(e, allRecords)}
+                          />
                         </div>
                       </th>
                       {!isEmployeePortal && (
@@ -619,17 +606,17 @@ const DirectPayment = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
-                        <td>
-                        <div className="form-check">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name={transaction?.Id}
-                              checked={transaction?.isChecked || false}
-                              onChange={(e) => handleCheck(e, transaction)}
-                            />
-                          </div>
-                        </td>
+                          <td>
+                            <div className="form-check">
+                              <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name={transaction?.Id}
+                                checked={transaction?.isChecked || false}
+                                onChange={(e) => handleCheck(e, transaction)}
+                              />
+                            </div>
+                          </td>
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
@@ -913,7 +900,7 @@ const DirectPayment = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

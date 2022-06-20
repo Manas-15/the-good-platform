@@ -259,6 +259,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   };
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
+    console.log(name, checked);
+
     const { programId } = checkedProgram;
     setChecked(checked);
 
@@ -307,6 +309,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   };
   // console.log(checked);
   console.log(checkedProgram);
+  console.log(allItems);
 
   return (
     <>
