@@ -46,7 +46,7 @@ export default function ConfirmationDialog({
           )}
           {totalProgram && (
             <>
-              <p>
+              <p className={`${totalEmployee === 0 ? "mt-4" : ""}`}>
                 <strong>Total programs benefits:</strong>&nbsp;{totalProgram}
               </p>
             </>

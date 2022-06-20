@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 let allGroupData;
@@ -113,7 +113,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     filter("All");
@@ -123,6 +123,7 @@ const PayrollBatch = (props) => {
     // groupByBatchData = groupByBatch();
     allGroupData = groupByBatch();
     setGroupByBatchData(allGroupData);
+    console.log("groupByBatchDatssssa", allGroupData)
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -140,7 +141,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" },
+    { label: "Processed", value: "10" }
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
@@ -158,7 +159,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -523,7 +524,7 @@ const PayrollBatch = (props) => {
               organizationId ||
               currentView === payrollConstants.LIST_VIEW) && (
               <>
-                <div className="row g-2">
+                {/* <div className="row g-2">
                   <div className="col-md d-flex">
                     <div className="col-md-4">
                       <div>
@@ -578,8 +579,7 @@ const PayrollBatch = (props) => {
                       </div>
                     )}
                   </div>
-                </div>
-
+                </div> */}
                 <div className="ant-row">
                   <div className="ant-col ant-col-24 mt-2">
                     <div className="ant-table-wrapper">
@@ -588,14 +588,12 @@ const PayrollBatch = (props) => {
                           <thead className="ant-table-thead">
                             <tr>
                               <th className="ant-table-cell">Batch id</th>
-
                               {currentView ===
                                 payrollConstants.ORGANIZATION_VIEW && (
                                 <th className="ant-table-cell">
                                   Organization Name
                                 </th>
                               )}
-
                               {!corporateId && (
                                 <th className="ant-table-cell">
                                   Corporate Name
@@ -1196,7 +1194,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1396,7 +1394,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
