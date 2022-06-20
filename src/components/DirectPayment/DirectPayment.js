@@ -28,9 +28,9 @@ import "rsuite/dist/rsuite.min.css";
 let charityProgramsOption = [];
 let accordionData;
 const paymentStatusOption = [
-  { label: "All", value: 'all' },
-  { label: "Processed", value: 'true' },
-  { label: "Not Processed", value: 'false' }
+  { label: "All", value: "all" },
+  { label: "Processed", value: "true" },
+  { label: "Not Processed", value: "false" }
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
@@ -135,7 +135,7 @@ const DirectPayment = (props) => {
   // }, [currentPage]);
   useEffect(() => {
     setRecords(transactions?.directPayments);
-    filter("status", "false")
+    filter("status", "false");
   }, [transactions?.directPayments]);
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
@@ -664,15 +664,17 @@ const DirectPayment = (props) => {
                             : index + 1}
                         </td> */}
                           <td>
-                            {!transaction?.directBatchPaymentId && <div className="form-check">
-                              <input
-                                type="checkbox"
-                                className="form-check-input"
-                                name={transaction?.Id}
-                                checked={transaction?.isChecked || false}
-                                onChange={(e) => handleCheck(e, transaction)}
-                              />
-                            </div>}
+                            {!transaction?.directBatchPaymentId && (
+                              <div className="form-check">
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                  name={transaction?.Id}
+                                  checked={transaction?.isChecked || false}
+                                  onChange={(e) => handleCheck(e, transaction)}
+                                />
+                              </div>
+                            )}
                           </td>
                           <td>{transaction?.directBatchPaymentId}</td>
                           {!isEmployeePortal && (
