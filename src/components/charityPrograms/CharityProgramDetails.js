@@ -4,9 +4,9 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
   userConstants,
-  charityProgramConstants
+  charityProgramConstants,
 } from "../../constants";
-import { charityProgramActions } from "./../../actions";
+import { charityProgramActions } from "../../actions";
 import { Progress, Tooltip, Tabs } from "antd";
 import users from "../../config/users.json";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,8 +16,8 @@ import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
 import { Chart, ArcElement } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import donationsConsent from "./../../config/donationsConsent.json";
-import selectedCharity from "./../../config/selectedCharity.json";
+import donationsConsent from "../../config/donationsConsent.json";
+import selectedCharity from "../../config/selectedCharity.json";
 import ProgramDetailsIndividual from "./ProgramDetailsIndividual";
 import * as moment from "moment";
 const TabPane = Tabs.TabPane;
@@ -28,7 +28,9 @@ const CharityProgramDetails = (props) => {
   let charityFirstTwoChar, employeeFirstTwoChar;
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
-  const programDetail = useSelector((state) => state?.charityPrograms?.programDetail);
+  const programDetail = useSelector(
+    (state) => state?.charityPrograms?.programDetail
+  );
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
@@ -51,7 +53,7 @@ const CharityProgramDetails = (props) => {
       charityProgramActions.getProgramDetail({
         socialId: selectedOrganization?.organization?.id,
         programId: selectedCharity?.charity?.charityId,
-        loggedInUserType: loggedInUserType
+        loggedInUserType: loggedInUserType,
       })
     );
   }, []);
@@ -82,7 +84,7 @@ const CharityProgramDetails = (props) => {
       : user?.corporateId,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
-    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`
+    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
   };
   const onScroll = () => {
     // if (listInnerRef.current) {
@@ -113,10 +115,10 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)"
-        ]
-      }
-    ]
+          "rgb(122,231,125)",
+        ],
+      },
+    ],
   };
   const data2 = {
     labels: ["Operations", "Communication", "Travel", "Administrative"],
@@ -127,10 +129,10 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)"
-        ]
-      }
-    ]
+          "rgb(122,231,125)",
+        ],
+      },
+    ],
   };
   return (
     <>
@@ -191,7 +193,9 @@ const CharityProgramDetails = (props) => {
                     <div className="col-md-6">
                       <div className="row">
                         <div className="col-md-6  p-1">
-                          <span className="detail-label">{programDetail?.donors?.length}</span>
+                          <span className="detail-label">
+                            {programDetail?.donors?.length}
+                          </span>
                           <span className="detail-content">Donors</span>
                         </div>
                         <div className="col-md-6 p-1">
@@ -403,9 +407,9 @@ const CharityProgramDetails = (props) => {
                               plugins: {
                                 legend: {
                                   display: true,
-                                  position: "right"
-                                }
-                              }
+                                  position: "right",
+                                },
+                              },
                             }}
                           />
                         </div>
@@ -503,58 +507,64 @@ const CharityProgramDetails = (props) => {
                   </TabPane>
                   <TabPane tab={"Donors"} key={"donors"}>
                     <div className="row mt-4 program-list">
-                    {programDetail?.donors?.length > 0 && <h4 className="mb-0">Donors ({programDetail?.donors?.length})</h4>}
+                      {programDetail?.donors?.length > 0 && (
+                        <h4 className="mb-0">
+                          Donors ({programDetail?.donors?.length})
+                        </h4>
+                      )}
                       <div className="col-md-12">
-                       {programDetail?.donors?.length > 0 ?
-                        <Tabs defaultActiveKey={0}>
-                          <TabPane tab={<span>Most Generious</span>} key={0}>
-                            {programDetail?.donors?.map((user) => (
-                              <div className="donor">
-                                <div className="section">
-                                  {/* <img src="/assets/img/no-image.png" /> */}
-                                  <div class="name-circle">
-                                    {user?.name?.split(" ")?.[0]?.charAt(0)}
-                                    {user?.name?.split(" ")?.pop()?.charAt(0)}
-                                  </div>
-                                  <div className="content">
-                                    <h5>{user?.name}</h5>
-                                    <p className="donated">
-                                      Donated ₹{user?.amount}
-                                    </p>
-                                    <p className="timeline">
-                                      {moment(user?.date).fromNow()}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </TabPane>
-                          <TabPane tab={<span>Recent</span>} key={1}>
-                            {programDetail?.donors?.map((user) => (
-                              <div className="donor">
-                                <div className="section">
-                                  {/* <img src="/assets/img/no-image.png" /> */}
-                                  <div class="name-circle">
-                                    {user?.name?.split(" ")?.[0]?.charAt(0)}
-                                    {user?.name?.split(" ")?.pop()?.charAt(0)}
-                                  </div>
-                                  <div className="content">
-                                    <h5>{user?.name}</h5>
-                                    <p className="donated">
-                                      Donated ₹{user?.amount}
-                                    </p>
-                                    <p className="timeline">
-                                      {moment(user?.date).fromNow()}
-                                    </p>
+                        {programDetail?.donors?.length > 0 ? (
+                          <Tabs defaultActiveKey={0}>
+                            <TabPane tab={<span>Most Generious</span>} key={0}>
+                              {programDetail?.donors?.map((user) => (
+                                <div className="donor">
+                                  <div className="section">
+                                    {/* <img src="/assets/img/no-image.png" /> */}
+                                    <div class="name-circle">
+                                      {user?.name?.split(" ")?.[0]?.charAt(0)}
+                                      {user?.name?.split(" ")?.pop()?.charAt(0)}
+                                    </div>
+                                    <div className="content">
+                                      <h5>{user?.name}</h5>
+                                      <p className="donated">
+                                        Donated ₹{user?.amount}
+                                      </p>
+                                      <p className="timeline">
+                                        {moment(user?.date).fromNow()}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
-                          </TabPane>
-                        </Tabs>
-                        :
-                        <h6 className="mt-4 text-center">No donation made to this program yet.</h6>
-                            }
+                              ))}
+                            </TabPane>
+                            <TabPane tab={<span>Recent</span>} key={1}>
+                              {programDetail?.donors?.map((user) => (
+                                <div className="donor">
+                                  <div className="section">
+                                    {/* <img src="/assets/img/no-image.png" /> */}
+                                    <div class="name-circle">
+                                      {user?.name?.split(" ")?.[0]?.charAt(0)}
+                                      {user?.name?.split(" ")?.pop()?.charAt(0)}
+                                    </div>
+                                    <div className="content">
+                                      <h5>{user?.name}</h5>
+                                      <p className="donated">
+                                        Donated ₹{user?.amount}
+                                      </p>
+                                      <p className="timeline">
+                                        {moment(user?.date).fromNow()}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </TabPane>
+                          </Tabs>
+                        ) : (
+                          <h6 className="mt-4 text-center">
+                            No donation made to this program yet.
+                          </h6>
+                        )}
                       </div>
                     </div>
                   </TabPane>
