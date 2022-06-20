@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: ""
+  socialId: "",
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -114,7 +114,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
     filter("All");
@@ -135,7 +135,6 @@ const PayrollBatch = (props) => {
   useEffect(() => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
-    console.log(allGroupData);
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
 
@@ -152,7 +151,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" }
+    { label: "Processed", value: "10" },
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
@@ -170,7 +169,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote
+        referenceNote: values?.referenceNote,
       })
     );
     hidePaidSimulator();
@@ -277,8 +276,10 @@ const PayrollBatch = (props) => {
 
   const onSearchChange = (e, selected) => {
     const keyword = e;
+    allGroupData = groupByBatch();
     if (keyword !== "") {
       const results = Object.keys(groupByBatchData)?.map((type, index) => {
+        console.log(type, index);
         if (selected === "batchId") {
           if (
             groupByBatchData[type]?.[0]?.batchId
@@ -287,54 +288,54 @@ const PayrollBatch = (props) => {
           ) {
             return groupByBatchData[type];
           }
-        } else if (selected === "amount") {
-          return groupByBatchData[type]?.[0]?.corporateName
-            ?.toLowerCase()
-            .startsWith(keyword.toLowerCase());
-        } else {
-          return (
-            selected === "referenceId" &&
+        } else if (selected === "referenceId") {
+          if (
             groupByBatchData[type]?.[0]?.referenceId
               ?.toLowerCase()
               .startsWith(keyword.toLowerCase())
-          );
+          ) {
+            return groupByBatchData[type];
+          }
+        } else {
+          if (
+            selected === "amount" &&
+            groupByBatchData[type]?.[0]?.amount
+              ?.toString()
+              .startsWith(keyword.toString())
+          ) {
+            return groupByBatchData[type];
+          }
         }
       });
       console.log("resultsresults", results);
       setGroupByBatchData(results);
-
-      // const results = allGroupData.filter((rec) => {
-      //   if (selected === "batchId") {
-      //     return rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
-      //   } else if (selected === "corporateName") {
-      //     return rec?.corporateName
-      //       .toLowerCase()
-      //       .startsWith(keyword.toLowerCase());
-      //   } else {
-      //     return rec?.referenceId
-      //       .toLowerCase()
-      //       .startsWith(keyword.toLowerCase());
-      //   }
-      // });
-      // setGroupByBatchData(results);
     } else {
-      setGroupByBatchData(allGroupData);
+      keyword === "" && setGroupByBatchData(allGroupData);
     }
     // setSearchValue(keyword);
     // setSelectedKeySearch(selected);
   };
   console.log(groupByBatchData);
   const onHandleChange = (e) => {
-    console.log("fired");
     setSelected(e.target.value);
   };
-  console.log(selected);
+  //for reset state on selected
+  useEffect(() => {
+    if (
+      selected === "batchId" ||
+      selected === "referenceId" ||
+      selected === "amount"
+    ) {
+      allGroupData = groupByBatch();
+      setGroupByBatchData(allGroupData);
+    }
+  }, [selected]);
 
   // if (isBluePencilPortal || isOrganizationPortal) {
   //   allGroupData = groupByBatch();
-  //   // console.log("dddddddddddddddddddd groupByBatch");
+
+  //   console.log("dddddddddddddddddddd groupByBatch", allGroupData);
   // }
-  // console.log(groupByBatchData, "gggfgfgfgfggfgfggfgg");
 
   return (
     <div className="customContainer">
@@ -1148,7 +1149,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting
+                  isSubmitting,
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1348,7 +1349,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
