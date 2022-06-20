@@ -9,8 +9,8 @@ import {
   charityProgramConstants,
   payrollConstants,
   userConstants,
-} from "./../../constants";
-import { charityProgramActions } from "./../../actions";
+} from "../../constants";
+import { charityProgramActions } from "../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
 import { Tabs, Icon } from "antd";
