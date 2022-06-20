@@ -10,6 +10,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import ReactHtmlParser from "react-html-parser";
 import { ProcessHelper, history } from "./../../helpers";
 import { Accordion } from "react-bootstrap";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import {
   paymentConstants,
   paginationConstants,
@@ -81,6 +82,8 @@ const DirectPayment = (props) => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
+  const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
+  const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
   const [checkedPreference, setCheckedPreference] = useState({
     preferenceId: []
   });
@@ -337,6 +340,7 @@ const DirectPayment = (props) => {
       );
       setAllRecords(tempreference);
     }
+    console.log("ddddddddddddddddd", checkedPreference)
   };
   if (isBluePencilPortal) {
     if (currentView === payrollConstants.ORGANIZATION_VIEW) {
@@ -1048,6 +1052,32 @@ const DirectPayment = (props) => {
             </button>
           </Modal.Footer> */}
         </Modal>
+      )}
+      {openDialog && (
+        <ConfirmationDialog
+          open={true}
+          actionType={actionType}
+          title={actionTitle}
+          content={actionContent}
+          totalEmployee={totalEmployeeInBatch}
+          totalProgram={totalProgramInBatch}
+          totalAmount={
+            allRecords
+              ? allRecords?.reduce(
+                    (total, currentValue) =>
+                      (total = total + currentValue?.amount),
+                    0
+                  )
+                  .toLocaleString()
+              : 0
+          }
+          handleConfirm={() => {
+            confirm();
+          }}
+          handleCancel={() => {
+            handleCloseDialog();
+          }}
+        />
       )}
     </div>
   );
