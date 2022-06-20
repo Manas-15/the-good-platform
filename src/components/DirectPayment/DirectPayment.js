@@ -332,6 +332,8 @@ const DirectPayment = (props) => {
       setAllRecords(tempreference);
     }
   };
+
+  console.log(checkedPreference);
   if (isBluePencilPortal) {
     if (currentView === payrollConstants.ORGANIZATION_VIEW) {
       accordionData = groupBy("socialOrg");
