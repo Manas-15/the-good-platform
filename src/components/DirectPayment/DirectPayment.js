@@ -74,14 +74,13 @@ const DirectPayment = (props) => {
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
-  const [checkedPreference, setCheckedPreference] = useState([]);
+  const [checkedPreference, setCheckedPreference] = useState({preferenceId: []});
   const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
     new Date(moment().format("YYYY-MM-DD"))
   ]);
-
   const isOrganizationView =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
@@ -299,28 +298,32 @@ const DirectPayment = (props) => {
   };
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
-    const { Id } = items;
+    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference)
+    const { preferenceId } = checkedPreference;
     setChecked(checked);
 
     if (name === "allSelect" && checked) {
+      console.log("11111111111111111")
       let prefenreceID = allRecords?.map((val) => val?.Id);
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
       setCheckedPreference({
-        Id: allRecords?.map((val) => val.Id),
+        preferenceId: allRecords?.map((val) => val.Id),
       });
     } else if (name === "allSelect" && !checked) {
-      console.log(name, checked);
+      console.log("222222222222222222")
       setCheckedPreference({
-        Id: [],
+        preferenceId: [],
       });
     } else if (checked) {
+      console.log("33333333333333333333")
       setCheckedPreference({
-        Id: [...Id, items?.Id],
+        preferenceId: [...preferenceId, items?.Id],
       });
     } else {
+      console.log("44444444444444")
       setCheckedPreference({
-        Id: Id?.filter((val) => val !== items?.Id),
+        preferenceId: preferenceId?.filter((val) => val !== items?.Id),
       });
     }
     // For all Check & Uncheck
