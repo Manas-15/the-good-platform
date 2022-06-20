@@ -7,9 +7,10 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
   charityProgramConstants,
+  payrollConstants,
   userConstants,
-} from "../../constants";
-import { charityProgramActions } from "../../actions";
+} from "./../../constants";
+import { charityProgramActions } from "./../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
 import { Tabs, Icon } from "antd";
@@ -114,7 +115,7 @@ const CharityPrograms = (props) => {
       <div className="row mb-4">
         <div className="col-md-12">
           <h1 className="ant-typography customHeading">
-            Social Organizations/Charity Programs
+            Social Organizations/Charity Programs manas
           </h1>
         </div>
       </div>

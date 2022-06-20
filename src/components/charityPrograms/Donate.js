@@ -53,7 +53,7 @@ const Donate = ({
     currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
-    console.log("selectedCharity ??????????????????????", selectedCharity);
+    // console.log("selectedCharity ??????????????????????", selectedCharity);
     if (selectedCharity) {
       setSelectedAmount(
         selectedCharity?.employeePreferenceId

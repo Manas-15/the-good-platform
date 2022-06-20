@@ -7,8 +7,10 @@ export const charityProgramActions = {
   getCharityPrograms,
   saveDonationPreference,
   operateSponsorRequest,
+  operateBulkSponsorRequest,
   operateDenyRequest,
   checkBeforeUnpromote,
+  checkBeforeBulkUnpromote,
   getProgramDetail,
 };
 
@@ -87,6 +89,7 @@ function saveDonationPreference(data) {
 }
 function operateSponsorRequest(actionValues) {
   return (dispatch) => {
+    console.log(actionValues, "Only Promoteeeee");
     dispatch(request(actionValues));
 
     charityProgramService.operateSponsorRequest(actionValues).then(
@@ -117,8 +120,42 @@ function operateSponsorRequest(actionValues) {
     };
   }
 }
+function operateBulkSponsorRequest(actionValues) {
+  return (dispatch) => {
+    console.log(actionValues, "Bulk Promoteeeeeeee");
+    dispatch(request(actionValues));
+
+    charityProgramService.operateBulkSponsorRequest(actionValues).then(
+      (data) => {
+        dispatch(success());
+        dispatch(alertActions.success("Bulk Promoted successfully."));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(program) {
+    return {
+      type: charityProgramConstants.OPERATE_BULK_SPONSOR_REQUEST,
+      program,
+    };
+  }
+  function success() {
+    return { type: charityProgramConstants.OPERATE_BULK_SPONSOR_SUCCESS };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.OPERATE_BULK_SPONSOR_FAILURE,
+      error,
+    };
+  }
+}
 function operateDenyRequest(actionValues) {
   return (dispatch) => {
+    console.log(actionValues);
     dispatch(request(actionValues));
 
     charityProgramService.operateDenyRequest(actionValues).then(
@@ -151,6 +188,7 @@ function operateDenyRequest(actionValues) {
 }
 function checkBeforeUnpromote(actionValues) {
   return (dispatch) => {
+    console.log(actionValues);
     dispatch(request(actionValues));
 
     charityProgramService.checkBeforeUnpromote(actionValues).then(
@@ -187,6 +225,47 @@ function checkBeforeUnpromote(actionValues) {
     };
   }
 }
+
+function checkBeforeBulkUnpromote(actionValues) {
+  return (dispatch) => {
+    console.log(actionValues);
+    dispatch(request(actionValues));
+
+    charityProgramService.checkBeforeBulkUnpromote(actionValues).then(
+      (data) => {
+        dispatch(success(data));
+        // dispatch(alertActions.error(data?.data?.msg));
+        // if(data?.data?.msg){
+        //   dispatch(alertActions.error(data?.data?.msg));
+        // }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(program) {
+    return {
+      type: charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_REQUEST,
+      program,
+    };
+  }
+  function success(data) {
+    return {
+      type: charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_SUCCESS,
+      data,
+    };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_FAILURE,
+      error,
+    };
+  }
+}
+
 function getProgramDetail(data) {
   return (dispatch) => {
     dispatch(request(data));
