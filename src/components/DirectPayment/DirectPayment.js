@@ -10,13 +10,15 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import ReactHtmlParser from "react-html-parser";
 import { ProcessHelper, history } from "./../../helpers";
 import { Accordion } from "react-bootstrap";
+import ConfirmationDialog from "../Shared/ConfirmationDialog";
+import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
   payrollConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -26,15 +28,15 @@ import "rsuite/dist/rsuite.min.css";
 let charityProgramsOption = [];
 let accordionData;
 const paymentStatusOption = [
-  { label: "All", value: 0 },
-  { label: "Processed", value: paymentConstants.PAYMENT_PENDING },
-  { label: "Not Processed", value: paymentConstants.PAYMENT_SUCCESS },
+  { label: "All", value: "all" },
+  { label: "Processed", value: "true" },
+  { label: "Not Processed", value: "false" }
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -71,18 +73,26 @@ const DirectPayment = (props) => {
   const [searchByAmount, setSearchByAmount] = useState("");
   const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
+  const [selectedPreference, setSelectedPreference] = useState();
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
+  const [actionType, setActionType] = useState("");
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionContent, setActionContent] = useState("");
+  const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
+  const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
+  const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
   const [checkedPreference, setCheckedPreference] = useState({
-    preferenceId: [],
+    preferenceId: []
   });
   const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -125,6 +135,7 @@ const DirectPayment = (props) => {
   // }, [currentPage]);
   useEffect(() => {
     setRecords(transactions?.directPayments);
+    filter("status", "false");
   }, [transactions?.directPayments]);
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
@@ -145,7 +156,7 @@ const DirectPayment = (props) => {
             batchDate,
             charityName,
             corporateName,
-            socialOrg,
+            socialOrg
           }
         ) => {
           const temp = {
@@ -155,7 +166,7 @@ const DirectPayment = (props) => {
             batchDate: "",
             charityName: "",
             corporateName: "",
-            socialOrg: "",
+            socialOrg: ""
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].employeeName += employeeName;
@@ -194,10 +205,10 @@ const DirectPayment = (props) => {
 
   const filter = (type, value) => {
     setIsFilter(true);
-    if (value && value !== "0") {
+    if (value && value !== "all") {
       setRecords(
         transactions?.directPayments?.filter(
-          (record) => record?.paymentStatus?.toString() === value
+          (record) => record?.directBatchPaymentStatus?.toString() === value
         )
       );
     } else {
@@ -207,7 +218,7 @@ const DirectPayment = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -255,7 +266,7 @@ const DirectPayment = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
+          : null
       })
     );
   };
@@ -265,13 +276,13 @@ const DirectPayment = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount,
+    searchByAmount
   ]);
 
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: "selection"
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -301,22 +312,22 @@ const DirectPayment = (props) => {
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
       setCheckedPreference({
-        preferenceId: allRecords?.map((val) => val.Id),
+        preferenceId: allRecords?.map((val) => val.Id)
       });
     } else if (name === "allSelect" && !checked) {
       console.log("222222222222222222");
       setCheckedPreference({
-        preferenceId: [],
+        preferenceId: []
       });
     } else if (checked) {
       console.log("33333333333333333333");
       setCheckedPreference({
-        preferenceId: [...preferenceId, items?.Id],
+        preferenceId: [...preferenceId, items?.Id]
       });
     } else {
       console.log("44444444444444");
       setCheckedPreference({
-        preferenceId: preferenceId?.filter((val) => val !== items?.Id),
+        preferenceId: preferenceId?.filter((val) => val !== items?.Id)
       });
     }
     // For all Check & Uncheck
@@ -331,9 +342,14 @@ const DirectPayment = (props) => {
       );
       setAllRecords(tempreference);
     }
+    console.log("ddddddddddddddddd", checkedPreference);
   };
 
-  console.log(checkedPreference);
+  console.log(
+    allRecords?.map((item) =>
+      checkedPreference?.preferenceId?.includes(item?.Id)
+    )
+  );
   if (isBluePencilPortal) {
     if (currentView === payrollConstants.ORGANIZATION_VIEW) {
       accordionData = groupBy("socialOrg");
@@ -341,8 +357,36 @@ const DirectPayment = (props) => {
       accordionData = groupBy("charityName");
     }
   }
-  console.log(allRecords);
-
+  const handleOpenDialog = (action, item) => {
+    setOpenDialog(true);
+    setActionType(action);
+    setActionTitle(`${action} Confirmation`);
+    setSelectedPreference(item);
+    setActionContent(`Are you sure to crate this process batch?`);
+  };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedPreference(null);
+  };
+  const createBatch = () => {
+    dispatch(
+      payrollSettingActions.processBatch({
+        batchProcessType: "directPaymentBatch",
+        ids: checkedPreference?.preferenceId,
+        corporateId: "",
+        totalAmount: allRecords
+          ?.filter((item) =>
+            checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
+          )
+          .reduce(
+            (total, currentValue) => (total = total + currentValue?.amount),
+            0
+          )
+      })
+    );
+    handleCloseDialog();
+    // getData();
+  };
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -381,12 +425,9 @@ const DirectPayment = (props) => {
             <div className="col-md-6">
               <select
                 className="form-select"
-                defaultValue={""}
+                defaultValue={"false"}
                 onChange={(e) => filter("status", e.target.value)}
               >
-                <option value={""} key={"default"} disabled>
-                  Status
-                </option>
                 {paymentStatusOption.map((status, index) => (
                   <option value={status.value} key={index}>
                     {status.label}
@@ -472,6 +513,18 @@ const DirectPayment = (props) => {
                 <option value="amount">Amount</option>
               </select>
             </div>
+          </div>
+          <div className="col-md-8 text-right">
+            <button
+              className="btn btn-custom"
+              onClick={() => handleOpenDialog("Process batch", "")}
+              disabled={
+                checkedPreference?.preferenceId?.length === 0 ||
+                moment(generateMonthYear).isAfter(moment())
+              }
+            >
+              Process Batch
+            </button>
           </div>
           {selected === "programName" && (
             <div className="col-md-4">
@@ -576,6 +629,7 @@ const DirectPayment = (props) => {
                           />
                         </div>
                       </th>
+                      <th>Batch ID</th>
                       {!isEmployeePortal && (
                         <th className="ant-table-cell">Donor</th>
                       )}
@@ -610,16 +664,19 @@ const DirectPayment = (props) => {
                             : index + 1}
                         </td> */}
                           <td>
-                            <div className="form-check">
-                              <input
-                                type="checkbox"
-                                className="form-check-input"
-                                name={transaction?.Id}
-                                checked={transaction?.isChecked || false}
-                                onChange={(e) => handleCheck(e, transaction)}
-                              />
-                            </div>
+                            {!transaction?.directBatchPaymentId && (
+                              <div className="form-check">
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                  name={transaction?.Id}
+                                  checked={transaction?.isChecked || false}
+                                  onChange={(e) => handleCheck(e, transaction)}
+                                />
+                              </div>
+                            )}
                           </td>
+                          <td>{transaction?.directBatchPaymentId}</td>
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
@@ -903,7 +960,7 @@ const DirectPayment = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
@@ -1020,6 +1077,58 @@ const DirectPayment = (props) => {
             </button>
           </Modal.Footer> */}
         </Modal>
+      )}
+      {openDialog && (
+        <ConfirmationDialog
+          open={true}
+          actionType={actionType}
+          title={actionTitle}
+          content={actionContent}
+          totalEmployee={
+            [
+              ...new Set(
+                allRecords?.filter((item) =>
+                  checkedPreference?.preferenceId?.includes(item?.Id)
+                    ? item?.employeeName
+                    : null
+                )
+              )
+            ].length
+          }
+          totalProgram={
+            [
+              ...new Set(
+                allRecords?.filter((item) =>
+                  checkedPreference?.preferenceId?.includes(item?.Id)
+                    ? item?.charityName
+                    : null
+                )
+              )
+            ].length
+          }
+          totalAmount={
+            allRecords
+              ? allRecords
+                  ?.filter((item) =>
+                    checkedPreference?.preferenceId?.includes(item?.Id)
+                      ? item
+                      : null
+                  )
+                  .reduce(
+                    (total, currentValue) =>
+                      (total = total + currentValue?.amount),
+                    0
+                  )
+                  .toLocaleString()
+              : 0
+          }
+          handleConfirm={() => {
+            createBatch();
+          }}
+          handleCancel={() => {
+            handleCloseDialog();
+          }}
+        />
       )}
     </div>
   );
