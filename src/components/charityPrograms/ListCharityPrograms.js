@@ -317,7 +317,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
               <table>
                 <thead className="ant-table-thead">
                   <tr>
-                    <th className="d-flex">
+                    {/* <th className="d-flex">
                       <div className="form-check me-2">
                         <input
                           type="checkbox"
@@ -370,7 +370,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                           </Link>
                         </Tooltip>
                       )}
-                    </th>
+                    </th> */}
                     <th className="ant-table-cell">Program</th>
                     <th className="ant-table-cell">Organization</th>
                     <th className="ant-table-cell">Category</th>
@@ -388,7 +388,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         key={index + 1}
                         className="ant-table-row ant-table-row-level-0"
                       >
-                        <td>
+                        {/* <td>
                           <div className="form-check">
                             <input
                               type="checkbox"
@@ -398,7 +398,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               onChange={(e) => handleCheck(e, charityProgram)}
                             />
                           </div>
-                        </td>
+                        </td> */}
 
                         <td className="ant-table-cell">
                           <Tooltip title={charityProgram?.charityName}>
