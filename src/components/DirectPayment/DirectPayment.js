@@ -74,7 +74,9 @@ const DirectPayment = (props) => {
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
-  const [checkedPreference, setCheckedPreference] = useState({preferenceId: []});
+  const [checkedPreference, setCheckedPreference] = useState({
+    preferenceId: []
+  });
   const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
@@ -121,10 +123,6 @@ const DirectPayment = (props) => {
   //   }
   // }, [currentPage]);
   useEffect(() => {
-    console.log(
-      ">>>>>>>>>>>>>>>>>> transactions?.directPayments",
-      transactions?.directPayments
-    );
     setRecords(transactions?.directPayments);
   }, [transactions?.directPayments]);
   useEffect(() => {
@@ -186,6 +184,10 @@ const DirectPayment = (props) => {
   };
   const onHandleChange = (e) => {
     console.log("fired");
+    setSearchByProgramName("");
+    setSearchByEmployeeName("");
+    setSearchByCorporateName("");
+    setSearchByAmount("");
     setSelected(e.target.value);
   };
 
@@ -298,32 +300,32 @@ const DirectPayment = (props) => {
   };
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
-    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference)
+    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
     const { preferenceId } = checkedPreference;
     setChecked(checked);
 
     if (name === "allSelect" && checked) {
-      console.log("11111111111111111")
+      console.log("11111111111111111");
       let prefenreceID = allRecords?.map((val) => val?.Id);
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
       setCheckedPreference({
-        preferenceId: allRecords?.map((val) => val.Id),
+        preferenceId: allRecords?.map((val) => val.Id)
       });
     } else if (name === "allSelect" && !checked) {
-      console.log("222222222222222222")
+      console.log("222222222222222222");
       setCheckedPreference({
-        preferenceId: [],
+        preferenceId: []
       });
     } else if (checked) {
-      console.log("33333333333333333333")
+      console.log("33333333333333333333");
       setCheckedPreference({
-        preferenceId: [...preferenceId, items?.Id],
+        preferenceId: [...preferenceId, items?.Id]
       });
     } else {
-      console.log("44444444444444")
+      console.log("44444444444444");
       setCheckedPreference({
-        preferenceId: preferenceId?.filter((val) => val !== items?.Id),
+        preferenceId: preferenceId?.filter((val) => val !== items?.Id)
       });
     }
     // For all Check & Uncheck
@@ -571,19 +573,18 @@ const DirectPayment = (props) => {
                     <tr>
                       {/* <th className="ant-table-cell">SR No.</th> */}
                       <th>
-                      <div className="form-check me-2">
-                      <input
-                          type="checkbox"
-                          name="allSelect"
-                          checked={
-                            allRecords?.filter(
-                              (item) =>
-                              item?.isChecked !== true
-                            ).length < 1
-                          }
-                          className="form-check-input"
-                          onChange={(e) => handleCheck(e, allRecords)}
-                        />
+                        <div className="form-check me-2">
+                          <input
+                            type="checkbox"
+                            name="allSelect"
+                            checked={
+                              allRecords?.filter(
+                                (item) => item?.isChecked !== true
+                              ).length < 1
+                            }
+                            className="form-check-input"
+                            onChange={(e) => handleCheck(e, allRecords)}
+                          />
                         </div>
                       </th>
                       {!isEmployeePortal && (
@@ -619,17 +620,17 @@ const DirectPayment = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
-                        <td>
-                        <div className="form-check">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name={transaction?.Id}
-                              checked={transaction?.isChecked || false}
-                              onChange={(e) => handleCheck(e, transaction)}
-                            />
-                          </div>
-                        </td>
+                          <td>
+                            <div className="form-check">
+                              <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name={transaction?.Id}
+                                checked={transaction?.isChecked || false}
+                                onChange={(e) => handleCheck(e, transaction)}
+                              />
+                            </div>
+                          </td>
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
