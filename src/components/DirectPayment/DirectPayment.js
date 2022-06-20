@@ -74,6 +74,9 @@ const DirectPayment = (props) => {
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
+  const [checkedPreference, setCheckedPreference] = useState([]);
+  const [allItems, setAllItems] = useState();
+  const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
     new Date(moment().format("YYYY-MM-DD"))
@@ -293,6 +296,45 @@ const DirectPayment = (props) => {
       (acc[item[key]] = acc[item[key]] || []).push(item);
       return acc;
     }, {});
+  };
+  const handleCheck = (e, items) => {
+    const { name, checked } = e.target;
+    const { Id } = items;
+    setChecked(checked);
+
+    if (name === "allSelect" && checked) {
+      let prefenreceID = allRecords?.map((val) => val?.Id);
+      const singleSocialPreferenceId = new Set(prefenreceID);
+      prefenreceID = [...singleSocialPreferenceId];
+      setCheckedPreference({
+        Id: allRecords?.map((val) => val.Id),
+      });
+    } else if (name === "allSelect" && !checked) {
+      console.log(name, checked);
+      setCheckedPreference({
+        Id: [],
+      });
+    } else if (checked) {
+      setCheckedPreference({
+        Id: [...Id, items?.Id],
+      });
+    } else {
+      setCheckedPreference({
+        Id: Id?.filter((val) => val !== items?.Id),
+      });
+    }
+    // For all Check & Uncheck
+    if (name === "allSelect") {
+      let tempreference = allRecords?.map((item) => {
+        return { ...item, isChecked: checked };
+      });
+      setAllItems(tempreference);
+    } else {
+      let tempreference = allRecords?.map((item) =>
+        item.charityName === name ? { ...item, isChecked: checked } : item
+      );
+      setAllItems(tempreference);
+    }
   };
   if (isBluePencilPortal) {
     if (currentView === payrollConstants.ORGANIZATION_VIEW) {
@@ -525,6 +567,22 @@ const DirectPayment = (props) => {
                   <thead className="ant-table-thead">
                     <tr>
                       {/* <th className="ant-table-cell">SR No.</th> */}
+                      <th>
+                      <div className="form-check me-2">
+                      <input
+                          type="checkbox"
+                          name="allSelect"
+                          checked={
+                            allRecords?.filter(
+                              (item) =>
+                              item?.isChecked !== true
+                            ).length < 1
+                          }
+                          className="form-check-input"
+                          onChange={(e) => handleCheck(e, allRecords)}
+                        />
+                        </div>
+                      </th>
                       {!isEmployeePortal && (
                         <th className="ant-table-cell">Donor</th>
                       )}
@@ -558,6 +616,17 @@ const DirectPayment = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
+                        <td>
+                        <div className="form-check">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              name={transaction?.Id}
+                              checked={transaction?.isChecked || false}
+                              onChange={(e) => handleCheck(e, transaction)}
+                            />
+                          </div>
+                        </td>
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
