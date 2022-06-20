@@ -71,10 +71,16 @@ const DirectPayment = (props) => {
   const [searchByAmount, setSearchByAmount] = useState("");
   const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
+  const [selectedPreference, setSelectedPreference] = useState();
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
+  const [actionType, setActionType] = useState("");
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionContent, setActionContent] = useState("");
+  const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
   const [checkedPreference, setCheckedPreference] = useState({
     preferenceId: []
   });
@@ -339,7 +345,19 @@ const DirectPayment = (props) => {
       accordionData = groupBy("charityName");
     }
   }
-  console.log(allRecords);
+  const handleOpenDialog = (action, item) => {
+    setOpenDialog(true);
+    setActionType(action);
+    setActionTitle(`${action} Confirmation`);
+    setSelectedPreference(item);
+    setActionContent(
+      `Are you sure to crate this process batch?`
+    );
+  }
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedPreference(null);
+  };
 
   return (
     <div className="customContainer">
@@ -471,6 +489,18 @@ const DirectPayment = (props) => {
               </select>
             </div>
           </div>
+          <div className="col-md-8 text-right">
+        <button
+              className="btn btn-custom"
+              onClick={() => handleOpenDialog("Process batch", "")}
+              disabled={
+                allRecords?.[0]?.batchId ||
+                moment(generateMonthYear).isAfter(moment())
+              }
+            >
+              Process Batch
+            </button>
+        </div>
           {selected === "programName" && (
             <div className="col-md-4">
               <div>
@@ -547,7 +577,7 @@ const DirectPayment = (props) => {
               </div>
             </div>
           )}
-        </div>
+        </div>        
       </div>
       {transactions.loading && <Loader />}
       {currentView === payrollConstants.LIST_VIEW ? (
