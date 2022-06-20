@@ -124,10 +124,6 @@ const DirectPayment = (props) => {
   //   }
   // }, [currentPage]);
   useEffect(() => {
-    console.log(
-      ">>>>>>>>>>>>>>>>>> transactions?.directPayments",
-      transactions?.directPayments
-    );
     setRecords(transactions?.directPayments);
   }, [transactions?.directPayments]);
   useEffect(() => {
@@ -189,6 +185,10 @@ const DirectPayment = (props) => {
   };
   const onHandleChange = (e) => {
     console.log("fired");
+    setSearchByProgramName("");
+    setSearchByEmployeeName("");
+    setSearchByCorporateName("");
+    setSearchByAmount("");
     setSelected(e.target.value);
   };
 
@@ -291,6 +291,7 @@ const DirectPayment = (props) => {
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
     console.log(name, checked);
+    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
     const { preferenceId } = checkedPreference;
     setChecked(checked);
 
@@ -318,7 +319,7 @@ const DirectPayment = (props) => {
         preferenceId: preferenceId?.filter((val) => val !== items?.Id),
       });
     }
-    For all Check & Uncheck
+    // For all Check & Uncheck
     if (name === "allSelect") {
       let tempreference = allRecords?.map((item) => {
         return { ...item, isChecked: checked };
