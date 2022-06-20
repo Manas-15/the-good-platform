@@ -15,7 +15,7 @@ import { charityProgramConstants } from "../../constants";
 import DonateSecondStep from "./DonateSecondStep";
 import donationsConsent from "../../config/donationsConsent.json";
 import { history } from "../../helpers";
-import AddedDonationFromDetail from "../CharityPrograms/AddedDonationFromDetail";
+import AddedDonationFromDetail from "./AddedDonationFromDetail";
 
 const preferenceForm = {
   corporateId: "",
