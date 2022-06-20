@@ -135,7 +135,6 @@ const PayrollBatch = (props) => {
   useEffect(() => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
-    console.log(allGroupData);
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
 
@@ -277,6 +276,7 @@ const PayrollBatch = (props) => {
 
   const onSearchChange = (e, selected) => {
     const keyword = e;
+    allGroupData = groupByBatch();
     if (keyword !== "") {
       const results = Object.keys(groupByBatchData)?.map((type, index) => {
         console.log(type, index);
@@ -288,67 +288,54 @@ const PayrollBatch = (props) => {
           ) {
             return groupByBatchData[type];
           }
-        } else if (selected === "amount") {
-          return groupByBatchData[type]?.[0]?.corporateName
-            ?.toLowerCase()
-            .startsWith(keyword.toLowerCase());
-        } else {
-          return (
-            selected === "referenceId" &&
+        } else if (selected === "referenceId") {
+          if (
             groupByBatchData[type]?.[0]?.referenceId
               ?.toLowerCase()
               .startsWith(keyword.toLowerCase())
-          );
+          ) {
+            return groupByBatchData[type];
+          }
+        } else {
+          if (
+            selected === "amount" &&
+            groupByBatchData[type]?.[0]?.amount
+              ?.toString()
+              .startsWith(keyword.toString())
+          ) {
+            return groupByBatchData[type];
+          }
         }
-
-        // else if (selected === "amount") {
-        //   return groupByBatchData[type][0].corporateName
-        //     .toLowerCase()
-        //     .startsWith(keyword.toLowerCase());
-        // } else {
-        //   return (
-        //     selected === "referenceId" &&
-        //     groupByBatchData[type][0].referenceId
-        //       .toLowerCase()
-        //       .startsWith(keyword.toLowerCase())
-        //   );
-        // }
       });
       console.log("resultsresults", results);
       setGroupByBatchData(results);
-
-      // const results = allGroupData.filter((rec) => {
-      //   if (selected === "batchId") {
-      //     return rec?.batchId.toLowerCase().startsWith(keyword.toLowerCase());
-      //   } else if (selected === "corporateName") {
-      //     return rec?.corporateName
-      //       .toLowerCase()
-      //       .startsWith(keyword.toLowerCase());
-      //   } else {
-      //     return rec?.referenceId
-      //       .toLowerCase()
-      //       .startsWith(keyword.toLowerCase());
-      //   }
-      // });
-      // setGroupByBatchData(results);
     } else {
-      setGroupByBatchData(allGroupData);
+      keyword === "" && setGroupByBatchData(allGroupData);
     }
     // setSearchValue(keyword);
     // setSelectedKeySearch(selected);
   };
   console.log(groupByBatchData);
   const onHandleChange = (e) => {
-    console.log("fired");
     setSelected(e.target.value);
   };
-  console.log(selected);
+  //for reset state on selected
+  useEffect(() => {
+    if (
+      selected === "batchId" ||
+      selected === "referenceId" ||
+      selected === "amount"
+    ) {
+      allGroupData = groupByBatch();
+      setGroupByBatchData(allGroupData);
+    }
+  }, [selected]);
 
   // if (isBluePencilPortal || isOrganizationPortal) {
   //   allGroupData = groupByBatch();
-  //   // console.log("dddddddddddddddddddd groupByBatch");
+
+  //   console.log("dddddddddddddddddddd groupByBatch", allGroupData);
   // }
-  // console.log(groupByBatchData, "gggfgfgfgfggfgfggfgg");
 
   return (
     <div className="customContainer">
