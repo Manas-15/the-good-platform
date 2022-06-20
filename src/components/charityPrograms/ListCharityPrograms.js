@@ -371,7 +371,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         </Tooltip>
                       )}
                     </th>
-                    <th className="ant-table-cell">Program manas</th>
+                    <th className="ant-table-cell">Program</th>
                     <th className="ant-table-cell">Organization</th>
                     <th className="ant-table-cell">Category</th>
                     <th className="ant-table-cell text-center">
