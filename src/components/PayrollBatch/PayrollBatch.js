@@ -282,25 +282,29 @@ const PayrollBatch = (props) => {
     console.log(groupByBatchData);
     if (keyword !== "") {
       const results = Object.keys(groupByBatchData)?.map((type, index) => {
+        console.log(type, index);
         if (selected === "batchId") {
           console.log(groupByBatchData[type][0].batchId);
           return groupByBatchData[type][0].batchId
             .toLowerCase()
             .startsWith(keyword.toLowerCase());
-        } else if (selected === "amount") {
-          return groupByBatchData[type][0].corporateName
-            .toLowerCase()
-            .startsWith(keyword.toLowerCase());
-        } else {
-          return (
-            selected === "referenceId" &&
-            groupByBatchData[type][0].referenceId
-              .toLowerCase()
-              .startsWith(keyword.toLowerCase())
-          );
         }
+
+        // else if (selected === "amount") {
+        //   return groupByBatchData[type][0].corporateName
+        //     .toLowerCase()
+        //     .startsWith(keyword.toLowerCase());
+        // } else {
+        //   return (
+        //     selected === "referenceId" &&
+        //     groupByBatchData[type][0].referenceId
+        //       .toLowerCase()
+        //       .startsWith(keyword.toLowerCase())
+        //   );
+        // }
       });
-      setGroupByBatchData(results);
+      console.log(results);
+      // setGroupByBatchData(results);
 
       // const results = allGroupData.filter((rec) => {
       //   if (selected === "batchId") {
