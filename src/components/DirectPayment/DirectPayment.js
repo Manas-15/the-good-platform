@@ -79,6 +79,8 @@ const DirectPayment = (props) => {
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("Not Processed");
+
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -204,6 +206,7 @@ const DirectPayment = (props) => {
   };
 
   const filter = (type, value) => {
+    setSelectedStatus(value);
     setIsFilter(true);
     if (value && value !== "all") {
       setRecords(
@@ -515,16 +518,18 @@ const DirectPayment = (props) => {
             </div>
           </div>
           <div className="col-md-8 text-right">
-            <button
-              className="btn btn-custom"
-              onClick={() => handleOpenDialog("Process batch", "")}
-              disabled={
-                checkedPreference?.preferenceId?.length === 0 ||
-                moment(generateMonthYear).isAfter(moment())
-              }
-            >
-              Process Batch
-            </button>
+            {selectedStatus !== "true" && (
+              <button
+                className="btn btn-custom"
+                onClick={() => handleOpenDialog("Process batch", "")}
+                disabled={
+                  checkedPreference?.preferenceId?.length === 0 ||
+                  moment(generateMonthYear).isAfter(moment())
+                }
+              >
+                Process Batch
+              </button>
+            )}
           </div>
           {selected === "programName" && (
             <div className="col-md-4">
@@ -849,6 +854,7 @@ const DirectPayment = (props) => {
                                   {/* <th className="ant-table-cell">Sr No.</th> */}
                                   {/* <th className="ant-table-cell">Batch id</th> */}
                                   {/* <th className="ant-table-cell">Donor</th> */}
+                                  {/* <th className="ant-table-cell">Batch ID</th> */}
                                   {currentView !==
                                     payrollConstants.ORGANIZATION_VIEW && (
                                     <th className="ant-table-cell">
@@ -892,6 +898,9 @@ const DirectPayment = (props) => {
                                       {/* <td className="ant-table-cell">
                                         {item?.employeeName}
                                       </td> */}
+                                      {/* <td className="ant-table-cell">
+                                          {item?.directBatchPaymentId}
+                                        </td> */}
                                       {currentView !==
                                         payrollConstants.ORGANIZATION_VIEW && (
                                         <td className="ant-table-cell">
