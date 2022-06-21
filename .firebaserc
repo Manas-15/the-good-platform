@@ -1,8 +1,8 @@
 {
   "projects": {
     "default": "the-good-platform",
-    "production": "tgp-uat-platform",
-    "staging": "the-good-platform"
+    "staging": "the-good-platform",
+    "production": "tgp-uat-platform"
   },
   "targets": {}
 }

@@ -516,21 +516,7 @@ const DirectPayment = (props) => {
                 <option value="amount">Amount</option>
               </select>
             </div>
-          </div>
-          <div className="col-md-8 text-right">
-            {selectedStatus !== "true" && (
-              <button
-                className="btn btn-custom"
-                onClick={() => handleOpenDialog("Process batch", "")}
-                disabled={
-                  checkedPreference?.preferenceId?.length === 0 ||
-                  moment(generateMonthYear).isAfter(moment())
-                }
-              >
-                Process Batch
-              </button>
-            )}
-          </div>
+          </div>          
           {selected === "programName" && (
             <div className="col-md-4">
               <div>
@@ -607,6 +593,20 @@ const DirectPayment = (props) => {
               </div>
             </div>
           )}
+          <div className="col-md-4 text-right">
+            {selectedStatus !== "true" && (
+              <button
+                className="btn btn-custom"
+                onClick={() => handleOpenDialog("Process batch", "")}
+                disabled={
+                  checkedPreference?.preferenceId?.length === 0 ||
+                  moment(generateMonthYear).isAfter(moment())
+                }
+              >
+                Process Batch
+              </button>
+            )}
+          </div>
         </div>
       </div>
       {transactions.loading && <Loader />}
