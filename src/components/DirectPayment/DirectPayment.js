@@ -41,10 +41,9 @@ const initialValues = {
 const { afterToday } = DateRangePicker;
 const date = new Date();
 const DirectPayment = (props) => {
-  const [records, setRecords] = useState([]);
-  console.log(records);
   const [selected, setSelected] = useState();
   const [searchValue, setSearchValue] = useState("");
+  const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState(records);
 
   const transactions = useSelector((state) => state.transactionsHistory);
@@ -146,6 +145,21 @@ const DirectPayment = (props) => {
   useEffect(() => {
     setAllRecords(records);
   }, [records]);
+
+  const filter = (type, value) => {
+    setSelectedStatus(value);
+    setIsFilter(true);
+    if (value && value !== "all") {
+      setRecords(
+        transactions?.directPayments?.filter(
+          (record) => record?.directBatchPaymentStatus?.toString() === value
+        )
+      );
+    } else {
+      setRecords(transactions?.directPayments);
+    }
+  };
+
   const resultAccordionData = (key) => {
     return Object.values(
       key.reduce(
@@ -205,19 +219,6 @@ const DirectPayment = (props) => {
     setSelected(e.target.value);
   };
 
-  const filter = (type, value) => {
-    setSelectedStatus(value);
-    setIsFilter(true);
-    if (value && value !== "all") {
-      setRecords(
-        transactions?.directPayments?.filter(
-          (record) => record?.directBatchPaymentStatus?.toString() === value
-        )
-      );
-    } else {
-      setRecords(transactions?.directPayments);
-    }
-  };
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
@@ -301,6 +302,9 @@ const DirectPayment = (props) => {
       return acc;
     }, {});
   };
+  console.log(transactions?.directPayments);
+  console.log(records);
+  console.log(allRecords);
 
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
