@@ -47,7 +47,9 @@ function login(data, from) {
                 history.push("/otp");
               } else {
                 dispatch(
-                  alertActions.error("Your account is currently blocked.")
+                  alertActions.error(
+                    "Your account is currently in review. You will soon receive an email with a link to set your password."
+                  )
                 );
               }
               // dispatch(
