@@ -43,10 +43,13 @@ const PayrollBatch = (props) => {
   const corporateId = props?.match?.params?.corporateId;
   const organizationId = props?.match?.params?.organizationId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
+  console.log(payrollBatches);
   const currentPortal = useSelector((state) => state.currentView);
   const isOrganizationPortal =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  console.log(isOrganizationPortal);
+
   const isBluePencilPortal =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
@@ -81,6 +84,9 @@ const PayrollBatch = (props) => {
     isBluePencilPortal
       ? payrollConstants?.LIST_VIEW
       : payrollConstants?.CORPORATE_VIEW
+  );
+  const [batchCurrentView, setBatchCurrentView] = useState(
+    isBluePencilPortal ? payrollConstants?.PAYROLL : payrollConstants?.DIRECT
   );
 
   // Pagination
@@ -122,14 +128,22 @@ const PayrollBatch = (props) => {
 
   const groupByBatch = () => {
     console.log("payrollBatches?.itemssss", allRecords);
-    return allRecords?.reduce(function (acc, item) {
-      (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
-      return acc;
-    }, {});
+    return (
+      allRecords?.length > 0 &&
+      allRecords?.reduce(function (acc, item) {
+        (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
+        return acc;
+      }, {})
+    );
   };
   let allGroupData;
+
   useEffect(() => {
+    // if (isOrganizationPortal) {
+    //   setAllRecords(payrollBatches?.items?.batch);
+    // } else {
     setAllRecords(payrollBatches?.items);
+    // }
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -138,7 +152,9 @@ const PayrollBatch = (props) => {
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
 
-  console.log(groupByBatchData);
+  console.log(allRecords, "payroll all recordsssssssss");
+  console.log(groupByBatchData, "payroll group by batch dataaaaaaaa");
+
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -156,7 +172,7 @@ const PayrollBatch = (props) => {
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
       "MMMM"
-    )} - ${item?.corporateName}`;
+    )}`;
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
   };
@@ -175,6 +191,7 @@ const PayrollBatch = (props) => {
     hidePaidSimulator();
   };
   const handleOpen = (action, item) => {
+    console.log(action);
     setOpen(true);
     setActionType(action);
     setSelectedBatch(item);
@@ -232,6 +249,20 @@ const PayrollBatch = (props) => {
     //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
     // }
     dispatch(payrollBatchActions.updateBatchStatus(values));
+    dispatch(
+      payrollBatchActions.getPayrollBatch({
+        corporateId: corporateId ? corporateId : null,
+        socialId: organizationId ? organizationId : null,
+        userType: corporateId
+          ? "Corporate"
+          : organizationId
+          ? "SocialOrganization"
+          : "BluePencilAdmin",
+        requestType: "Batch",
+        pageSize: pageSize,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+      })
+    );
   };
   const handleClose = () => {
     setOpen(false);
@@ -315,7 +346,7 @@ const PayrollBatch = (props) => {
     // setSearchValue(keyword);
     // setSelectedKeySearch(selected);
   };
-  console.log(groupByBatchData);
+
   const onHandleChange = (e) => {
     setSelected(e.target.value);
   };
@@ -333,7 +364,7 @@ const PayrollBatch = (props) => {
 
   // if (isBluePencilPortal || isOrganizationPortal) {
   //   allGroupData = groupByBatch();
-
+  //   setGroupByBatchData(allGroupData);
   //   console.log("dddddddddddddddddddd groupByBatch", allGroupData);
   // }
 
@@ -512,9 +543,54 @@ const PayrollBatch = (props) => {
                   </div>
                 </div>
               )}
+              {/* <div className="col-md-4">
+                {!corporateId && !isOrganizationPortal && (
+                  <>
+                    {isBluePencilPortal && (
+                      <Link
+                        className="fs-6 text-decoration-underline mr-3"
+                        onClick={() =>
+                          setBatchCurrentView(payrollConstants.PAYROLL)
+                        }
+                      >
+                        <button
+                          type="button"
+                          className={`${
+                            batchCurrentView === payrollConstants.PAYROLL
+                              ? "active"
+                              : ""
+                          } btn btn-sm btn-outline-primary btn-outline-custom`}
+                        >
+                          Payroll
+                        </button>
+                      </Link>
+                    )}
+                    {!isOrganizationPortal && (
+                      <Link
+                        className="fs-6 text-decoration-underline mr-3"
+                        onClick={() =>
+                          setBatchCurrentView(payrollConstants.DIRECT)
+                        }
+                      >
+                        <button
+                          type="button"
+                          className={`${
+                            batchCurrentView === payrollConstants.DIRECT
+                              ? "active"
+                              : ""
+                          } btn btn-sm btn-outline-primary btn-outline-custom`}
+                        >
+                          Direct
+                        </button>
+                      </Link>
+                    )}
+                  </>
+                )}
+              </div> */}
             </div>
           </div>
           {payrollBatches.loading && <Loader />}
+
           {!allRecords && (
             <div className="card p-4 text-center">
               {isOrganizationPortal && (
@@ -554,7 +630,6 @@ const PayrollBatch = (props) => {
                         <thead className="ant-table-thead">
                           <tr>
                             <th className="ant-table-cell">Batch id</th>
-
                             {currentView ===
                               payrollConstants.ORGANIZATION_VIEW && (
                               <th className="ant-table-cell">
@@ -562,9 +637,9 @@ const PayrollBatch = (props) => {
                               </th>
                             )}
 
-                            {!corporateId && (
+                            {/* {!corporateId && (
                               <th className="ant-table-cell">Corporate Name</th>
-                            )}
+                            )} */}
                             <th className="ant-table-cell">Month</th>
                             <th className="ant-table-cell">
                               Amount (
@@ -583,8 +658,11 @@ const PayrollBatch = (props) => {
                         <tbody className="ant-table-tbody">
                           {(isBluePencilPortal || isOrganizationPortal) &&
                             groupByBatchData &&
-                            Object.keys(groupByBatchData)?.map(
-                              (type, index) => (
+                            Object.keys(groupByBatchData)
+                              // ?.filter((val) => {
+                              //   return !val?.isDeleted;
+                              // })
+                              ?.map((type, index) => (
                                 <tr
                                   key={index + 1}
                                   className="ant-table-row ant-table-row-level-0"
@@ -628,14 +706,14 @@ const PayrollBatch = (props) => {
                               {batch?.corporateId}
                             </td>
                           )} */}
-                                  {!corporateId && (
+                                  {/* {!corporateId && (
                                     <td className="ant-table-cell">
                                       {
                                         groupByBatchData[type]?.[0]
                                           ?.corporateName
                                       }
                                     </td>
-                                  )}
+                                  )} */}
                                   <td className="ant-table-cell">
                                     {moment(
                                       groupByBatchData[type]?.[0]?.createdDate
@@ -731,7 +809,6 @@ const PayrollBatch = (props) => {
                                           ?.totalOrganizationCount && (
                                         <>
                                           <span>
-                                            {/* {payrollConstants.CONFIRMED} */}
                                             {75 +
                                               Math.round(
                                                 25 /
@@ -841,6 +918,95 @@ const PayrollBatch = (props) => {
                                         )}
                                       </>
                                     )}
+                                    {!corporateId && !isOrganizationPortal && (
+                                      <>
+                                        {groupByBatchData[type]?.[0]?.status ===
+                                          payrollConstants.PAID_STATUS &&
+                                        groupByBatchData[type]?.[0]
+                                          ?.batchType === "Direct" ? (
+                                          <>
+                                            <Tooltip title="Unconfirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Unconfirm Batch",
+                                                    groupByBatchData[type]?.[0]
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-arrow-counterclockwise fs-5"></span>
+                                              </Link>
+                                            </Tooltip>
+                                            {/* <Tooltip title="Paid">
+                                              <Link
+                                                onClick={() =>
+                                                  openPaidConfirmation(
+                                                    groupByBatchData[type]?.[0]
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-check-square fs-5 ml-2"></span>
+                                              </Link>
+                                            </Tooltip> */}
+                                          </>
+                                        ) : (
+                                          groupByBatchData[type]?.[0]
+                                            ?.status ===
+                                            payrollConstants.COMPLETED_STATUS && (
+                                            <Tooltip title="Confirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Confirm Batch",
+                                                    groupByBatchData[type]?.[0]
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-check-circle fs-5"></span>
+                                              </Link>
+                                            </Tooltip>
+                                          )
+                                        )}
+                                      </>
+                                    )}
+                                    {!corporateId && !isOrganizationPortal && (
+                                      <>
+                                        {groupByBatchData[type]?.[0]?.status ===
+                                        payrollConstants.RECEIVED_STATUS ? (
+                                          <>
+                                            <Tooltip title="Unconfirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Unconfirm Batch",
+                                                    groupByBatchData[type]?.[0]
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-arrow-counterclockwise fs-5"></span>
+                                              </Link>
+                                            </Tooltip>
+                                          </>
+                                        ) : (
+                                          groupByBatchData[type]?.[0]
+                                            ?.status ===
+                                            payrollConstants.COMPLETED_STATUS && (
+                                            <Tooltip title="Confirm">
+                                              <Link
+                                                onClick={() =>
+                                                  handleOpen(
+                                                    "Confirm Batch",
+                                                    groupByBatchData[type]?.[0]
+                                                  )
+                                                }
+                                              >
+                                                <span className="bi-check-circle fs-5"></span>
+                                              </Link>
+                                            </Tooltip>
+                                          )
+                                        )}
+                                      </>
+                                    )}
                                     {isOrganizationPortal &&
                                       groupByBatchData[type]?.[0]?.status !==
                                         payrollConstants.RECEIVED_STATUS && (
@@ -871,8 +1037,7 @@ const PayrollBatch = (props) => {
                                       )}
                                   </td>
                                 </tr>
-                              )
-                            )}
+                              ))}
 
                           {!isBluePencilPortal &&
                             !isOrganizationPortal &&
@@ -1313,6 +1478,7 @@ const PayrollBatch = (props) => {
             </Modal.Header>
             <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
           </Modal>
+
           {!corporateId &&
             !isOrganizationPortal &&
             (currentView === payrollConstants.ORGANIZATION_VIEW ||

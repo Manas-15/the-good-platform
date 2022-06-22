@@ -5,7 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
@@ -19,13 +19,14 @@ import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { Modal, Button } from "react-bootstrap";
 
 const actionInitialValues = {
-  preferenceId: ""
+  preferenceId: "",
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, isCorporateView;
 const PayrollBatchDetail = (props) => {
   // let history = useHistory();
   const preferences = useSelector((state) => state?.payrollSetting?.items);
+  console.log(preferences);
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
@@ -43,15 +44,18 @@ const PayrollBatchDetail = (props) => {
     dispatch(
       payrollSettingActions.getBatchDetail({
         batchId: props?.batchId,
-        socialId: isOrganizationView ? selectedOrganization?.id : null
+        socialId: isOrganizationView ? selectedOrganization?.id : null,
       })
     );
   }, [props?.batchId]);
   const groupBy = (key) => {
-    return preferences?.reduce?.(function (acc, item) {
-      (acc[item[key]] = acc[item[key]] || []).push(item);
-      return acc;
-    }, {});
+    return (
+      preferences?.length > 0 &&
+      preferences?.reduce?.(function (acc, item) {
+        (acc[item[key]] = acc[item[key]] || []).push(item);
+        return acc;
+      }, {})
+    );
   };
   if (currentView === payrollConstants.ORGANIZATION_VIEW) {
     accordionData = groupBy("socialOrganization");
@@ -72,9 +76,7 @@ const PayrollBatchDetail = (props) => {
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   useEffect(() => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
-    setCurrentView(
-      payrollConstants.LIST_VIEW
-    );
+    setCurrentView(payrollConstants.LIST_VIEW);
   }, [history?.location?.pathname]);
   const showReferenceNote = (referenceNote) => {
     setShow(true);
@@ -95,10 +97,15 @@ const PayrollBatchDetail = (props) => {
       <div className="row mb-4">
         <div className="col-md-7">
           <h1 className="ant-typography customHeading">
-            Payroll Batch Detail -{" "}
+            Payroll Batch Detail -
             {preferences &&
               moment(preferences[0]?.batchDate).format("MMM YYYY")}
           </h1>
+        </div>
+        <div className="col-md-5">
+          <h3 className="ant-typography customHeading">
+            Batch Id - {preferences?.[0]?.batchId}
+          </h3>
         </div>
       </div>
       <div className="row mb-b payroll ">
@@ -405,13 +412,13 @@ const PayrollBatchDetail = (props) => {
                 <table>
                   <thead className="ant-table-thead">
                     <tr>
-                      <th className="ant-table-cell">Batch ID</th>
-                      <th className="ant-table-cell">Employee</th>
+                      {/* <th className="ant-table-cell">Batch ID</th>   */}
+                      {/* <th className="ant-table-cell">Employee</th> */}
                       <th className="ant-table-cell">Organization</th>
                       <th className="ant-table-cell">Program</th>
-                      {!isCorporatePortal && (
+                      {/* {!isCorporatePortal && (
                         <th className="ant-table-cell">Corporate Name</th>
-                      )}
+                      )} */}
                       {/* <th className="ant-table-cell">REF ID</th> */}
                       <th className="ant-table-cell">
                         Amount (
@@ -421,14 +428,15 @@ const PayrollBatchDetail = (props) => {
                     </tr>
                   </thead>
                   <tbody className="ant-table-tbody">
-                    {preferences?.map((item, index) => (
-                      <tr>
-                        <td>{item?.batchId}</td>
-                        <td>{item?.employeeName}</td>
-                        <td>{item?.socialOrganization}</td>
-                        {!isCorporatePortal && <td>{item?.corporateName}</td>}
-                        <td>{item?.charityProgram}</td>
-                        {/* <td>
+                    {preferences?.length > 0 &&
+                      preferences?.map((item, index) => (
+                        <tr>
+                          {/* <td>{item?.batchId}</td> */}
+                          {/* <td>{item?.employeeName}</td> */}
+                          <td>{item?.socialOrganization}</td>
+                          {/* {!isCorporatePortal && <td>{item?.corporateName}</td>} */}
+                          <td>{item?.charityProgram}</td>
+                          {/* <td>
                           <Link
                             onClick={() =>
                               showReferenceNote(item?.referenceNote)
@@ -437,9 +445,9 @@ const PayrollBatchDetail = (props) => {
                             {item?.referenceId}
                           </Link>
                         </td> */}
-                        <td>{item?.donationAmount?.toLocaleString()}</td>
-                      </tr>
-                    ))}
+                          <td>{item?.donationAmount?.toLocaleString()}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>

@@ -47,7 +47,7 @@ const DirectPayment = (props) => {
   const [allRecords, setAllRecords] = useState(records);
 
   const transactions = useSelector((state) => state.transactionsHistory);
-  console.log(transactions);
+  // console.log(transactions);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
@@ -83,6 +83,7 @@ const DirectPayment = (props) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [batchType, setBatchType] = useState("");
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
   const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
   const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
@@ -364,9 +365,11 @@ const DirectPayment = (props) => {
       accordionData = groupBy("charityName");
     }
   }
-  const handleOpenDialog = (action, item) => {
+  const handleOpenDialog = (action, item, type) => {
+    console.log(action, item, type);
     setOpenDialog(true);
     setActionType(action);
+    setBatchType(type);
     setActionTitle(`${action} Confirmation`);
     setSelectedPreference(item);
     setActionContent(`Are you sure to crate this process batch?`);
@@ -376,21 +379,25 @@ const DirectPayment = (props) => {
     setSelectedPreference(null);
   };
   const createBatch = () => {
-    dispatch(
-      payrollSettingActions.processBatch({
-        batchProcessType: "directPaymentBatch",
-        ids: checkedPreference?.preferenceId,
-        corporateId: "",
-        totalAmount: allRecords
-          ?.filter((item) =>
-            checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
-          )
-          .reduce(
-            (total, currentValue) => (total = total + currentValue?.amount),
-            0
-          ),
-      })
-    );
+    if (isBluePencilPortal) {
+      dispatch(
+        payrollSettingActions.processBatch({
+          batchType: batchType,
+          batchProcessType: "directPaymentBatch",
+          ids: checkedPreference?.preferenceId,
+          corporateId: "",
+          totalAmount: allRecords
+            ?.filter((item) =>
+              checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
+            )
+            .reduce(
+              (total, currentValue) => (total = total + currentValue?.amount),
+              0
+            ),
+        })
+      );
+    }
+
     handleCloseDialog();
     // getData();
   };
@@ -498,110 +505,115 @@ const DirectPayment = (props) => {
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
         <div className="col-md d-flex pl-0">
-          <div className="col-md-4">
-            <div>
-              <select
-                className="form-select"
-                value={selected}
-                defaultValue={""}
-                onChange={(e) => onHandleChange(e)}
-              >
-                <option value={""} key={"default"} disabled>
-                  Search by
-                </option>
-                <option value="programName">Program Name</option>
-                {!isEmployeePortal && !isCorporatePortal && (
-                  <option value="corporateName">Corporate</option>
-                )}
+          <div className="col-md-8 d-flex ">
+            <div className="col-md-6">
+              <div>
+                <select
+                  className="form-select"
+                  value={selected}
+                  defaultValue={""}
+                  onChange={(e) => onHandleChange(e)}
+                >
+                  <option value={""} key={"default"} disabled>
+                    Search by
+                  </option>
+                  <option value="programName">Program Name</option>
+                  {!isEmployeePortal && !isCorporatePortal && (
+                    <option value="corporateName">Corporate</option>
+                  )}
 
-                {!isEmployeePortal && (
-                  <option value="employeeName">Donor</option>
-                )}
-                <option value="amount">Amount</option>
-              </select>
+                  {!isEmployeePortal && (
+                    <option value="employeeName">Donor</option>
+                  )}
+                  <option value="amount">Amount</option>
+                </select>
+              </div>
             </div>
+            {selected === "programName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Program Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "programName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selected === "corporateName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        // className="form-control"
+                        className="ant-input-search"
+                        placeholder="Search by Corporate Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "corporateName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selected === "employeeName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        // className="form-control"
+                        className="ant-input-search"
+                        placeholder="Search by donor name or email"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "employeeName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selected === "amount" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Amount"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "amount")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          {selected === "programName" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      className="ant-input-search"
-                      placeholder="Search by Program Name"
-                      onChange={(e) =>
-                        onSearchChange(e.target.value, "programName")
-                      }
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-          {selected === "corporateName" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      // className="form-control"
-                      className="ant-input-search"
-                      placeholder="Search by Corporate Name"
-                      onChange={(e) =>
-                        onSearchChange(e.target.value, "corporateName")
-                      }
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-          {selected === "employeeName" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      // className="form-control"
-                      className="ant-input-search"
-                      placeholder="Search by donor name or email"
-                      onChange={(e) =>
-                        onSearchChange(e.target.value, "employeeName")
-                      }
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-          {selected === "amount" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      className="ant-input-search"
-                      placeholder="Search by Amount"
-                      onChange={(e) => onSearchChange(e.target.value, "amount")}
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
+
           <div className="col-md-4 text-right">
             {selectedStatus !== "true" && (
               <button
                 className="btn btn-custom"
-                onClick={() => handleOpenDialog("Process batch", "")}
+                onClick={() => handleOpenDialog("Process batch", "", "Direct")}
                 disabled={
                   checkedPreference?.preferenceId?.length === 0 ||
                   moment(generateMonthYear).isAfter(moment())

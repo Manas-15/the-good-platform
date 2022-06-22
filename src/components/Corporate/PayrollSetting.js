@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -21,7 +21,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ProcessHelper } from "./../../helpers";
 
 const actionInitialValues = {
-  preferenceId: ""
+  preferenceId: "",
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, batchId;
@@ -43,6 +43,8 @@ const PayrollSetting = (props) => {
   const [actionContent, setActionContent] = useState("");
   const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
   const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
+  const [batchType, setBatchType] = useState("");
+
   const [currentView, setCurrentView] = useState(
     payrollConstants.EMPLOYEE_VIEW
   );
@@ -61,9 +63,11 @@ const PayrollSetting = (props) => {
   useEffect(() => {
     getData();
   }, [currentPage]);
-  const handleOpenDialog = (action, item) => {
+  const handleOpenDialog = (action, item, type) => {
+    console.log(action, item, type, "ffffffffff");
     setOpenDialog(true);
     setActionType(action);
+    setBatchType(type);
     setActionTitle(`${action} Confirmation`);
     if (item) {
       setSelectedPreference(item);
@@ -85,6 +89,7 @@ const PayrollSetting = (props) => {
         if (!findEmployee) totalEmployee.push(item);
         if (!findProgram) totalProgram.push(item);
       });
+      setBatchType(type);
       setTotalEmployeeInBatch(totalEmployee?.length);
       setTotalProgramInBatch(totalProgram?.length);
       setActionContent(`Are you sure to process this batch?`);
@@ -104,6 +109,7 @@ const PayrollSetting = (props) => {
       processBatch();
     }
   };
+
   if (preferences.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -135,7 +141,9 @@ const PayrollSetting = (props) => {
         (total, currentValue) => (total = total + currentValue.donationAmount),
         0
       ),
-      items: data
+      items: data,
+      batchType: batchType,
+      batchProcessType: "",
     };
     dispatch(payrollSettingActions.processBatch(finalData));
     getData();
@@ -161,7 +169,7 @@ const PayrollSetting = (props) => {
         requestType: "Batch",
         filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
           ? moment().format("MM-YYYY")
-          : moment(generateMonthYear).format("MM-YYYY")
+          : moment(generateMonthYear).format("MM-YYYY"),
         // pageSize: 1000,
         // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })
@@ -494,7 +502,7 @@ const PayrollSetting = (props) => {
           <div className="text-right m-3">
             <button
               className="btn btn-custom"
-              onClick={() => handleOpenDialog("Process batch", "")}
+              onClick={() => handleOpenDialog("Process batch", "", "Payroll")}
               disabled={
                 preferences?.items?.active?.[0]?.batchId ||
                 moment(generateMonthYear).isAfter(moment())

@@ -16,7 +16,7 @@ export default function ConfirmationDialog({
   duration,
   totalEmployee,
   totalProgram,
-  totalAmount
+  totalAmount,
 }) {
   const [isDisabled, setIsDisabled] = useState(
     actionType === donationPreferenceConstants.SUSPEND
@@ -40,7 +40,7 @@ export default function ConfirmationDialog({
           {totalEmployee && (
             <>
               <p className="mt-4">
-                <strong>Total employees donating:</strong>&nbsp;{totalEmployee}
+                <strong>Total individual donors:</strong>&nbsp;{totalEmployee}
               </p>
             </>
           )}
