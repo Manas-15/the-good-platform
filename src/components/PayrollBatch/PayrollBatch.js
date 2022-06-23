@@ -404,6 +404,7 @@ const PayrollBatch = (props) => {
                 <>
                   {isBluePencilPortal && (
                     <Link
+                      to="#"
                       className="fs-6 text-decoration-underline mr-3"
                       onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
                     >
@@ -421,6 +422,7 @@ const PayrollBatch = (props) => {
                   )}
                   {!isOrganizationPortal && (
                     <Link
+                      to="#"
                       className="fs-6 text-decoration-underline mr-3"
                       onClick={() =>
                         setCurrentView(payrollConstants.CORPORATE_VIEW)
@@ -440,6 +442,7 @@ const PayrollBatch = (props) => {
                   )}
                   {!isBluePencilPortal && (
                     <Link
+                      to="#"
                       className="fs-6 text-decoration-underline mr-3"
                       onClick={() =>
                         setCurrentView(payrollConstants.ORGANIZATION_VIEW)
@@ -547,7 +550,7 @@ const PayrollBatch = (props) => {
                 {!corporateId && !isOrganizationPortal && (
                   <>
                     {isBluePencilPortal && (
-                      <Link
+                      <Link to="#"
                         className="fs-6 text-decoration-underline mr-3"
                         onClick={() =>
                           setBatchCurrentView(payrollConstants.PAYROLL)
@@ -566,7 +569,7 @@ const PayrollBatch = (props) => {
                       </Link>
                     )}
                     {!isOrganizationPortal && (
-                      <Link
+                      <Link to="#"
                         className="fs-6 text-decoration-underline mr-3"
                         onClick={() =>
                           setBatchCurrentView(payrollConstants.DIRECT)
@@ -677,6 +680,7 @@ const PayrollBatch = (props) => {
                           </td> */}
                                   <td className="ant-table-cell">
                                     <Link
+                                      to="#"
                                       onClick={() =>
                                         showBatchDetail(
                                           groupByBatchData[type]?.[0]?.batchId
@@ -736,6 +740,7 @@ const PayrollBatch = (props) => {
                                   </td>
                                   <td className="ant-table-cell">
                                     <Link
+                                      to="#"
                                       onClick={() =>
                                         showReferenceNote(
                                           isOrganizationPortal
@@ -858,6 +863,7 @@ const PayrollBatch = (props) => {
                                         payrollConstants.PENDING_STATUS && (
                                         <Tooltip title="Complete">
                                           <Link
+                                            to="#"
                                             onClick={() =>
                                               handleOpen(
                                                 "Complete Batch",
@@ -876,6 +882,7 @@ const PayrollBatch = (props) => {
                                           <>
                                             <Tooltip title="Unconfirm">
                                               <Link
+                                                to="#"
                                                 onClick={() =>
                                                   handleOpen(
                                                     "Unconfirm Batch",
@@ -888,6 +895,7 @@ const PayrollBatch = (props) => {
                                             </Tooltip>
                                             <Tooltip title="Paid">
                                               <Link
+                                                to="#"
                                                 onClick={() =>
                                                   openPaidConfirmation(
                                                     groupByBatchData[type]?.[0]
@@ -904,6 +912,7 @@ const PayrollBatch = (props) => {
                                             payrollConstants.COMPLETED_STATUS && (
                                             <Tooltip title="Confirm">
                                               <Link
+                                                to="#"
                                                 onClick={() =>
                                                   handleOpen(
                                                     "Confirm Batch",
@@ -927,6 +936,7 @@ const PayrollBatch = (props) => {
                                           <>
                                             <Tooltip title="Unconfirm">
                                               <Link
+                                                to="#"
                                                 onClick={() =>
                                                   handleOpen(
                                                     "Unconfirm Batch",
@@ -938,7 +948,7 @@ const PayrollBatch = (props) => {
                                               </Link>
                                             </Tooltip>
                                             {/* <Tooltip title="Paid">
-                                              <Link
+                                              <Link to="#"
                                                 onClick={() =>
                                                   openPaidConfirmation(
                                                     groupByBatchData[type]?.[0]
@@ -955,6 +965,7 @@ const PayrollBatch = (props) => {
                                             payrollConstants.COMPLETED_STATUS && (
                                             <Tooltip title="Confirm">
                                               <Link
+                                                to="#"
                                                 onClick={() =>
                                                   handleOpen(
                                                     "Confirm Batch",
@@ -976,6 +987,7 @@ const PayrollBatch = (props) => {
                                           <>
                                             <Tooltip title="Unconfirm">
                                               <Link
+                                                to="#"
                                                 onClick={() =>
                                                   handleOpen(
                                                     "Unconfirm Batch",
@@ -993,6 +1005,7 @@ const PayrollBatch = (props) => {
                                             payrollConstants.COMPLETED_STATUS && (
                                             <Tooltip title="Confirm">
                                               <Link
+                                                to="#"
                                                 onClick={() =>
                                                   handleOpen(
                                                     "Confirm Batch",
@@ -1012,6 +1025,7 @@ const PayrollBatch = (props) => {
                                         payrollConstants.RECEIVED_STATUS && (
                                         <Tooltip title="Confirm Payment Receipt">
                                           <Link
+                                            to="#"
                                             onClick={() =>
                                               handleOpen(
                                                 "Receive Batch",
@@ -1056,6 +1070,7 @@ const PayrollBatch = (props) => {
                           </td> */}
                                 <td className="ant-table-cell">
                                   <Link
+                                    to="#"
                                     onClick={() =>
                                       showBatchDetail(batch?.batchId)
                                     }
@@ -1095,6 +1110,7 @@ const PayrollBatch = (props) => {
                                 </td>
                                 <td className="ant-table-cell">
                                   <Link
+                                    to="#"
                                     onClick={() =>
                                       showReferenceNote(batch?.referenceNote)
                                     }
@@ -1189,6 +1205,7 @@ const PayrollBatch = (props) => {
                                       payrollConstants.PENDING_STATUS && (
                                       <Tooltip title="Complete">
                                         <Link
+                                          to="#"
                                           onClick={() =>
                                             handleOpen("Complete Batch", batch)
                                           }
@@ -1204,6 +1221,7 @@ const PayrollBatch = (props) => {
                                         <>
                                           <Tooltip title="Unconfirm">
                                             <Link
+                                              to="#"
                                               onClick={() =>
                                                 handleOpen(
                                                   "Unconfirm Batch",
@@ -1216,6 +1234,7 @@ const PayrollBatch = (props) => {
                                           </Tooltip>
                                           <Tooltip title="Paid">
                                             <Link
+                                              to="#"
                                               onClick={() =>
                                                 openPaidConfirmation(batch)
                                               }
@@ -1229,6 +1248,7 @@ const PayrollBatch = (props) => {
                                           payrollConstants.COMPLETED_STATUS && (
                                           <Tooltip title="Confirm">
                                             <Link
+                                              to="#"
                                               onClick={() =>
                                                 handleOpen(
                                                   "Confirm Batch",
@@ -1248,6 +1268,7 @@ const PayrollBatch = (props) => {
                                       payrollConstants.RECEIVED_STATUS && (
                                       <Tooltip title="Confirm Payment Receipt">
                                         <Link
+                                          to="#"
                                           onClick={() =>
                                             handleOpen("Receive Batch", batch)
                                           }

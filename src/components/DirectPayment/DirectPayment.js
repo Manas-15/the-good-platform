@@ -45,6 +45,7 @@ const DirectPayment = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState(records);
+  console.log(allRecords?.length);
 
   const transactions = useSelector((state) => state.transactionsHistory);
   // console.log(transactions);
@@ -79,7 +80,6 @@ const DirectPayment = (props) => {
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("Not Processed");
-
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -248,17 +248,7 @@ const DirectPayment = (props) => {
       : employee?.user?.email;
     initialValues.transactionId = transactionId;
   };
-  const search = (value, type) => {
-    // if (value.length > 3) {
-    if (type === "employeeName") {
-      setSearchByEmployeeName(value);
-    } else if (type === "programName") {
-      setSearchByProgramName(value);
-    } else if (type === "amount") {
-      setSearchByAmount(value);
-    }
-    // }
-  };
+
   const fetchResults = (dateRange) => {
     dispatch(
       transactionsHistoryActions.getDirectPayment({
@@ -401,6 +391,7 @@ const DirectPayment = (props) => {
     handleCloseDialog();
     // getData();
   };
+
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -641,6 +632,7 @@ const DirectPayment = (props) => {
                             type="checkbox"
                             name="allSelect"
                             checked={
+                              allRecords?.length > 0 &&
                               allRecords?.filter(
                                 (item) => item?.isChecked !== true
                               ).length < 1
