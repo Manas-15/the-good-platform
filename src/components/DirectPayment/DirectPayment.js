@@ -136,6 +136,7 @@ const DirectPayment = (props) => {
   //   }
   // }, [currentPage]);
   useEffect(() => {
+    console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
     filter("status", "false");
   }, [transactions?.directPayments]);
@@ -274,6 +275,11 @@ const DirectPayment = (props) => {
     searchByAmount,
   ]);
 
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
     fetchResults(ranges);
@@ -371,6 +377,7 @@ const DirectPayment = (props) => {
           batchProcessType: "directPaymentBatch",
           ids: checkedPreference?.preferenceId,
           corporateId: "",
+          allRecords: allRecords,
           totalAmount: allRecords
             ?.filter((item) =>
               checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
@@ -381,6 +388,12 @@ const DirectPayment = (props) => {
             ),
         })
       );
+      // fetchResults("");
+      const data = allRecords?.filter(
+        (item) => !checkedPreference?.preferenceId?.includes(item?.Id)
+      );
+      setRecords(data);
+      setCheckedPreference({ preferenceId: [] });
     }
 
     handleCloseDialog();
@@ -596,18 +609,21 @@ const DirectPayment = (props) => {
           </div>
 
           <div className="col-md-4 text-right">
-            {selectedStatus !== "true" && (
-              <button
-                className="btn btn-custom"
-                onClick={() => handleOpenDialog("Process batch", "", "Direct")}
-                disabled={
-                  checkedPreference?.preferenceId?.length === 0 ||
-                  moment(generateMonthYear).isAfter(moment())
-                }
-              >
-                Process Batch
-              </button>
-            )}
+            {selectedStatus !== "true" &&
+              currentView === payrollConstants.LIST_VIEW && (
+                <button
+                  className="btn btn-custom"
+                  onClick={() =>
+                    handleOpenDialog("Process batch", "", "Direct")
+                  }
+                  disabled={
+                    checkedPreference?.preferenceId?.length === 0 ||
+                    moment(generateMonthYear).isAfter(moment())
+                  }
+                >
+                  Process Batch
+                </button>
+              )}
           </div>
         </div>
       </div>

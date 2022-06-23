@@ -25,23 +25,44 @@ export function payrollSetting(state = {}, action) {
         }),
       };
     case payrollConstants.PROCESS_BATCH_REQUEST:
+      console.log(">>>>>>>> inside action?.data reducers", action?.data)
       return {
         ...state,
         loading: true,
-        data: action?.data?.items?.active,
+        data: action?.data?.batchType === "Direct" ? action?.data : action?.data?.items?.active,
+        batchType: action?.data?.batchType,
+        allRecords:action?.data?.allRecords,
       };
     case payrollConstants.PROCESS_BATCH_SUCCESS:
-      const selectedItems = state?.data?.map?.((p) => p.employeePreferenceId);
-      const activeItems = state?.items?.active?.map?.((item) => {
-        // if (selectedItems?.includes(item?.employeePreferenceId)) {
-        return { ...item, status: payrollConstants.PENDING_STATUS };
-        // }
-        // return item;
-      });
-      return {
-        // ...state,
-        items: { active: activeItems, complete: state?.items?.complete },
-      };
+      console.log(">>>>>>>> inside reducers", state)
+      // const selectedItems = state?.data?.map?.((p) => p.employeePreferenceId);
+      if(state?.batchType === "Direct") {
+        console.log("????????????", state?.data?.ids)
+        const items = state?.allRecords?.filter?.((item) => {
+          console.log("???????????? item?.Id", item?.Id)
+          if (!state?.data?.ids?.includes?.(item?.Id)){
+            console.log("???????????? if", item?.Id)
+          return item
+          }
+          // return item;
+        });
+        console.log("???????????? items", items)
+        return {
+          // ...state,
+          directPayments: items,
+        };        
+      }else{        
+        const activeItems = state?.items?.active?.map?.((item) => {
+          // if (selectedItems?.includes(item?.employeePreferenceId)) {
+          return { ...item, status: payrollConstants.PENDING_STATUS };
+          // }
+          // return item;
+        });
+        return {
+          // ...state,
+          items: { active: activeItems, complete: state?.items?.complete },
+        };
+      }
     case payrollConstants.PROCESS_BATCH_FAILURE:
       return {
         ...state,
