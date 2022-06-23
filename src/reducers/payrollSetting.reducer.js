@@ -29,8 +29,10 @@ export function payrollSetting(state = {}, action) {
         ...state,
         loading: true,
         data: action?.data?.items?.active,
+        batchType: action?.data?.items?.batchType,
       };
     case payrollConstants.PROCESS_BATCH_SUCCESS:
+      console.log(">>>>>>>> inside reducers", state?.batchType)
       const selectedItems = state?.data?.map?.((p) => p.employeePreferenceId);
       const activeItems = state?.items?.active?.map?.((item) => {
         // if (selectedItems?.includes(item?.employeePreferenceId)) {
