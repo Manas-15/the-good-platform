@@ -248,7 +248,6 @@ const PayrollBatch = (props) => {
     //   values.batchId = selectedBatch?.batchId;
     //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
     // }
-    dispatch(payrollBatchActions.updateBatchStatus(values));
     dispatch(
       payrollBatchActions.getPayrollBatch({
         corporateId: corporateId ? corporateId : null,
@@ -263,6 +262,7 @@ const PayrollBatch = (props) => {
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
+    dispatch(payrollBatchActions.updateBatchStatus(values));
   };
   const handleClose = () => {
     setOpen(false);
