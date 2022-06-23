@@ -232,6 +232,12 @@ const PayrollBatch = (props) => {
     //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
     // }
     dispatch(payrollBatchActions.updateBatchStatus(values));
+    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>", values)
+    const data = allRecords?.filter(
+      (item) => item?.batchId !== values.batchId
+    );
+    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data)
+    setAllRecords(data);
   };
   const handleClose = () => {
     setOpen(false);
@@ -518,7 +524,7 @@ const PayrollBatch = (props) => {
             </div>
           </div>
           {payrollBatches.loading && <Loader />}
-          {!allRecords && (
+          {allRecords?.length === 0 && (
             <div className="card p-4 text-center">
               {isOrganizationPortal && (
                 <strong>
@@ -545,7 +551,7 @@ const PayrollBatch = (props) => {
             </div>
           )}
 
-          {allRecords &&
+          {allRecords?.length > 0 &&
             (corporateId ||
               organizationId ||
               currentView === payrollConstants.LIST_VIEW) && (

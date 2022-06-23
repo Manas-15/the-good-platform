@@ -136,7 +136,7 @@ const DirectPayment = (props) => {
   //   }
   // }, [currentPage]);
   useEffect(() => {
-    console.log("coming to riect payment >>>>>>>>>>>>")
+    console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
     filter("status", "false");
   }, [transactions?.directPayments]);
@@ -388,9 +388,12 @@ const DirectPayment = (props) => {
             )
         })
       );
-      // allRecords?.map((item) => 
-      //   !checkedPreference?.preferenceId?.includes(item?.Id)
-      // );
+      // fetchResults("");
+      const data = allRecords?.filter(
+        (item) => !checkedPreference?.preferenceId?.includes(item?.Id)
+      );
+      setRecords(data);
+      setCheckedPreference({preferenceId: []});
     }
 
     handleCloseDialog();
@@ -606,7 +609,7 @@ const DirectPayment = (props) => {
           </div>
 
           <div className="col-md-4 text-right">
-            {selectedStatus !== "true" && (
+            {selectedStatus !== "true" && currentView === payrollConstants.LIST_VIEW && (
               <button
                 className="btn btn-custom"
                 onClick={() => handleOpenDialog("Process batch", "", "Direct")}
