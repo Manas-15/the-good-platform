@@ -684,7 +684,7 @@ const DirectPayment = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
-                          {/* <td>
+                          <td>
                             {!transaction?.directBatchPaymentId && (
                               <div className="form-check">
                                 <input
@@ -696,7 +696,7 @@ const DirectPayment = (props) => {
                                 />
                               </div>
                             )}
-                          </td> */}
+                          </td>
                           <td>{transaction?.directBatchPaymentId}</td>
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
