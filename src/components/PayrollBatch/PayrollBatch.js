@@ -122,7 +122,7 @@ const PayrollBatch = (props) => {
 
   const groupByBatch = () => {
     console.log("payrollBatches?.itemssss", allRecords);
-    return allRecords?.reduce(function (acc, item) {
+    return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
       return acc;
     }, {});
