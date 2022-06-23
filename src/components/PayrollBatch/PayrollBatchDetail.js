@@ -142,18 +142,19 @@ const PayrollBatchDetail = (props) => {
         </div>
       </div>
       <div className="row mb-4">
-        <div className="col-md-7">
+        <div className="col-md-12">
           <h1 className="ant-typography customHeading">
             Payroll Batch Detail -
-            {preferences &&
-              moment(preferences[0]?.batchDate).format("MMM YYYY")}
+            {preferences?.[0]?.batchId}
+            ({preferences &&
+              moment(preferences[0]?.batchDate).format("MMM YYYY")})
           </h1>
         </div>
-        <div className="col-md-5">
+        {/* <div className="col-md-5">
           <h3 className="ant-typography customHeading">
             Batch Id - {preferences?.[0]?.batchId}
           </h3>
-        </div>
+        </div> */}
       </div>
       <div className="row mb-b payroll ">
         <div className="col-md-12 text-right">
@@ -204,7 +205,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {(isCorporateView || isBluePencilPortal) && (
+          {(isCorporateView) && (
             <Link
               to="#"
               className="fs-6 text-decoration-underline mr-3"
@@ -456,10 +457,10 @@ const PayrollBatchDetail = (props) => {
           ))}
         </>
       ) : null}
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-8 d-flex ">
-            <div className="col-md-6">
+            <div className="col-md-6 pl-0">
               <div>
                 <select
                   className="form-select"
