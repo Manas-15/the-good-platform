@@ -41,6 +41,8 @@ const CorporateForm = ({ type, id }) => {
   const [country, setCountry] = useState("India");
   const [state, setState] = useState();
 
+  console.log(editCorpData);
+
   const addingCorporate = useSelector(
     (state) => state?.corporates?.addingCorporate
   );
@@ -54,15 +56,14 @@ const CorporateForm = ({ type, id }) => {
 
   const dispatch = useDispatch();
   const corporateRegister = (values) => {
+    values.state = state;
+    values.country = country;
+    console.log(values);
     setSubmitted(true);
     if (values.organizationName && values.email && values.regdNumber) {
-      // if (
       id
         ? dispatch(corporateActions.updateCorporate(values, type))
         : dispatch(corporateActions.addCorporate(values, type));
-      // )else{
-      //   dispatch(corporateActions.addCorporate(values, type));
-      // }
     }
   };
 
@@ -118,6 +119,7 @@ const CorporateForm = ({ type, id }) => {
     setCountry(country);
   };
   const selectState = (state) => {
+    console.log(state);
     setState(state);
   };
 
@@ -142,6 +144,9 @@ const CorporateForm = ({ type, id }) => {
           /* and other goodies */
         }) => (
           <Form>
+            <pre>
+              <code>{JSON.stringify(initialValues, null, 2)}</code>
+            </pre>
             <h3>
               {id
                 ? "Edit Corporate"
@@ -236,6 +241,8 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
+            //****************************************************************************
+            */
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Size</label>
@@ -265,6 +272,8 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
+            //****************************************************************************
+            */
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Type</label>
@@ -413,17 +422,17 @@ const CorporateForm = ({ type, id }) => {
               </div>
               <div className="col-md-8">
                 <RegionDropdown
-                  name="state"
                   country={country}
                   value={state}
+                  name="state"
                   placeholder="Select State"
                   onChange={(val) => selectState(val)}
-                  // onChange={(_, e) => handleChange(e)}
                   className={
                     "form-select" +
                     (errors.state && touched.state ? " is-invalid" : "")
                   }
                 />
+                {/* </Field> */}
               </div>
             </div>
             <div className="row mb-4">

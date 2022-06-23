@@ -248,20 +248,7 @@ const PayrollBatch = (props) => {
     //   values.batchId = selectedBatch?.batchId;
     //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
     // }
-    dispatch(
-      payrollBatchActions.getPayrollBatch({
-        corporateId: corporateId ? corporateId : null,
-        socialId: organizationId ? organizationId : null,
-        userType: corporateId
-          ? "Corporate"
-          : organizationId
-          ? "SocialOrganization"
-          : "BluePencilAdmin",
-        requestType: "Batch",
-        pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-      })
-    );
+
     dispatch(payrollBatchActions.updateBatchStatus(values));
   };
   const handleClose = () => {
@@ -308,41 +295,41 @@ const PayrollBatch = (props) => {
   const onSearchChange = (e, selected) => {
     const keyword = e;
     allGroupData = groupByBatch();
-    if (keyword !== "") {
-      const results = Object.keys(groupByBatchData)?.map((type, index) => {
-        console.log(type, index);
-        if (selected === "batchId") {
-          if (
-            groupByBatchData[type]?.[0]?.batchId
-              ?.toLowerCase()
-              .startsWith(keyword.toLowerCase())
-          ) {
-            return groupByBatchData[type];
-          }
-        } else if (selected === "referenceId") {
-          if (
-            groupByBatchData[type]?.[0]?.referenceId
-              ?.toLowerCase()
-              .startsWith(keyword.toLowerCase())
-          ) {
-            return groupByBatchData[type];
-          }
-        } else {
-          if (
-            selected === "amount" &&
-            groupByBatchData[type]?.[0]?.amount
-              ?.toString()
-              .startsWith(keyword.toString())
-          ) {
-            return groupByBatchData[type];
-          }
-        }
-      });
-      console.log("resultsresults", results);
-      setGroupByBatchData(results);
-    } else {
-      keyword === "" && setGroupByBatchData(allGroupData);
-    }
+    // if (keyword !== "") {
+    //   const results = Object.keys(groupByBatchData)?.map((type, index) => {
+    //     console.log(type, index);
+    // if (selected === "batchId") {
+    //   if (
+    //     groupByBatchData[type]?.[0]?.batchId
+    //       ?.toLowerCase()
+    //       .startsWith(keyword.toLowerCase())
+    //   ) {
+    //     return groupByBatchData[type];
+    //   }
+    // } else if (selected === "referenceId") {
+    //   if (
+    //     groupByBatchData[type]?.[0]?.referenceId
+    //       ?.toLowerCase()
+    //       .startsWith(keyword.toLowerCase())
+    //   ) {
+    //     return groupByBatchData[type];
+    //   }
+    // } else {
+    //   if (
+    //     selected === "amount" &&
+    //     groupByBatchData[type]?.[0]?.amount
+    //       ?.toString()
+    //       .startsWith(keyword.toString())
+    //   ) {
+    //     return groupByBatchData[type];
+    //   }
+    // }
+    // });
+    //   console.log("resultsresults", results);
+    //   setGroupByBatchData(results);
+    // } else {
+    //   keyword === "" && setGroupByBatchData(allGroupData);
+    // }
     // setSearchValue(keyword);
     // setSelectedKeySearch(selected);
   };
@@ -351,16 +338,16 @@ const PayrollBatch = (props) => {
     setSelected(e.target.value);
   };
   //for reset state on selected
-  useEffect(() => {
-    if (
-      selected === "batchId" ||
-      selected === "referenceId" ||
-      selected === "amount"
-    ) {
-      allGroupData = groupByBatch();
-      setGroupByBatchData(allGroupData);
-    }
-  }, [selected]);
+  // useEffect(() => {
+  //   if (
+  //     selected === "batchId" ||
+  //     selected === "referenceId" ||
+  //     selected === "amount"
+  //   ) {
+  //     allGroupData = groupByBatch();
+  //     setGroupByBatchData(allGroupData);
+  //   }
+  // }, [selected]);
 
   // if (isBluePencilPortal || isOrganizationPortal) {
   //   allGroupData = groupByBatch();
@@ -661,11 +648,8 @@ const PayrollBatch = (props) => {
                         <tbody className="ant-table-tbody">
                           {(isBluePencilPortal || isOrganizationPortal) &&
                             groupByBatchData &&
-                            Object.keys(groupByBatchData)
-                              // ?.filter((val) => {
-                              //   return !val?.isDeleted;
-                              // })
-                              ?.map((type, index) => (
+                            Object.keys(groupByBatchData)?.map(
+                              (type, index) => (
                                 <tr
                                   key={index + 1}
                                   className="ant-table-row ant-table-row-level-0"
@@ -1051,7 +1035,8 @@ const PayrollBatch = (props) => {
                                       )}
                                   </td>
                                 </tr>
-                              ))}
+                              )
+                            )}
 
                           {!isBluePencilPortal &&
                             !isOrganizationPortal &&

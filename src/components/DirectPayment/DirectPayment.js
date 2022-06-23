@@ -274,11 +274,6 @@ const DirectPayment = (props) => {
     searchByAmount,
   ]);
 
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: "selection",
-  };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
     fetchResults(ranges);
@@ -300,12 +295,12 @@ const DirectPayment = (props) => {
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
     console.log(name, checked);
-    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
+    // console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
     const { preferenceId } = checkedPreference;
     setChecked(checked);
 
     if (name === "allSelect" && checked) {
-      console.log("11111111111111111");
+      // console.log("11111111111111111");
       let prefenreceID = allRecords?.map((val) => val?.Id);
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
@@ -313,17 +308,17 @@ const DirectPayment = (props) => {
         preferenceId: allRecords?.map((val) => val.Id),
       });
     } else if (name === "allSelect" && !checked) {
-      console.log("222222222222222222");
+      // console.log("222222222222222222");
       setCheckedPreference({
         preferenceId: [],
       });
     } else if (checked) {
-      console.log("33333333333333333333");
+      // console.log("33333333333333333333");
       setCheckedPreference({
         preferenceId: [...preferenceId, items?.Id],
       });
     } else {
-      console.log("44444444444444");
+      // console.log("44444444444444");
       setCheckedPreference({
         preferenceId: preferenceId?.filter((val) => val !== items?.Id),
       });
@@ -340,7 +335,7 @@ const DirectPayment = (props) => {
       );
       setAllRecords(tempreference);
     }
-    console.log("ddddddddddddddddd", checkedPreference);
+    // console.log("ddddddddddddddddd", checkedPreference);
   };
 
   console.log(
@@ -494,7 +489,7 @@ const DirectPayment = (props) => {
           )}
         </div>
       </div>
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-8 d-flex ">
             <div className="col-md-6">
@@ -625,7 +620,6 @@ const DirectPayment = (props) => {
                 <table>
                   <thead className="ant-table-thead">
                     <tr>
-                      {/* <th className="ant-table-cell">SR No.</th> */}
                       <th>
                         <div className="form-check me-2">
                           <input
@@ -655,9 +649,6 @@ const DirectPayment = (props) => {
                       )}
                       <th className="ant-table-cell">Transaction ID</th>
                       <th className="ant-table-cell">Donation</th>
-                      {/* <th className="ant-table-cell">Donation Type</th> */}
-                      {/* <th className="ant-table-cell">Payment Mode</th> */}
-                      {/* <th className="ant-table-cell">Payment Status</th> */}
                       <th className="ant-table-cell">Payment Date</th>
                       {(employeeId || isCorporatePortal) && (
                         <th className="ant-table-cell">80G</th>
