@@ -393,7 +393,7 @@ const DirectPayment = (props) => {
         (item) => !checkedPreference?.preferenceId?.includes(item?.Id)
       );
       setRecords(data);
-      setCheckedPreference({preferenceId: []});
+      setCheckedPreference({ preferenceId: [] });
     }
 
     handleCloseDialog();
@@ -609,18 +609,21 @@ const DirectPayment = (props) => {
           </div>
 
           <div className="col-md-4 text-right">
-            {selectedStatus !== "true" && currentView === payrollConstants.LIST_VIEW && (
-              <button
-                className="btn btn-custom"
-                onClick={() => handleOpenDialog("Process batch", "", "Direct")}
-                disabled={
-                  checkedPreference?.preferenceId?.length === 0 ||
-                  moment(generateMonthYear).isAfter(moment())
-                }
-              >
-                Process Batch
-              </button>
-            )}
+            {selectedStatus !== "true" &&
+              currentView === payrollConstants.LIST_VIEW && (
+                <button
+                  className="btn btn-custom"
+                  onClick={() =>
+                    handleOpenDialog("Process batch", "", "Direct")
+                  }
+                  disabled={
+                    checkedPreference?.preferenceId?.length === 0 ||
+                    moment(generateMonthYear).isAfter(moment())
+                  }
+                >
+                  Process Batch
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -1034,7 +1037,7 @@ const DirectPayment = (props) => {
             <Modal.Title>Account Detail</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ fontSize: "18" }}>
-          <div className="row mb-2">
+            <div className="row mb-2">
               <div className="col-md-4">
                 <strong>Batch ID:</strong>
               </div>
