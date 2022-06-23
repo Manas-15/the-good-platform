@@ -697,7 +697,7 @@ const DirectPayment = (props) => {
                               </div>
                             )}
                           </td>
-                          <td>{transaction?.directBatchPaymentId}</td>
+                          {/* <td>{transaction?.directBatchPaymentId}</td> */}
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
