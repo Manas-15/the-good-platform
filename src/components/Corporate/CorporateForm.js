@@ -144,9 +144,6 @@ const CorporateForm = ({ type, id }) => {
           /* and other goodies */
         }) => (
           <Form>
-            <pre>
-              <code>{JSON.stringify(initialValues, null, 2)}</code>
-            </pre>
             <h3>
               {id
                 ? "Edit Corporate"
@@ -241,8 +238,7 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-            //****************************************************************************
-            */
+
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Size</label>
@@ -272,8 +268,7 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-            //****************************************************************************
-            */
+
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Type</label>
