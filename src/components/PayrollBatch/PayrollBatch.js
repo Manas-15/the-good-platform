@@ -121,7 +121,6 @@ const PayrollBatch = (props) => {
   }, [currentPage]);
 
   const groupByBatch = () => {
-    console.log("payrollBatches?.itemssss", allRecords);
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
       return acc;
@@ -129,7 +128,7 @@ const PayrollBatch = (props) => {
   };
   let allGroupData;
   useEffect(() => {
-    setAllRecords(payrollBatches?.items);
+    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted ));
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -232,12 +231,11 @@ const PayrollBatch = (props) => {
     //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
     // }
     dispatch(payrollBatchActions.updateBatchStatus(values));
-    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>", values)
-    const data = allRecords?.filter(
-      (item) => item?.batchId !== values.batchId
-    );
-    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data)
-    setAllRecords(data);
+    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>", values.batchId, allRecords)
+    // setRecords(allRecords?.filter(
+    //   (item) => item?.batchId !== values.batchId
+    // ));
+    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords 22222 >>>>>>>>>>>>>>>>>>>>>>>>>", allRecords)
   };
   const handleClose = () => {
     setOpen(false);
