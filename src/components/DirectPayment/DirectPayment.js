@@ -18,7 +18,7 @@ import {
   viewPortalConstants,
   payrollConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -30,13 +30,13 @@ let accordionData;
 const paymentStatusOption = [
   { label: "All", value: "all" },
   { label: "Processed", value: "true" },
-  { label: "Not Processed", value: "false" },
+  { label: "Not Processed", value: "false" }
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -45,9 +45,10 @@ const DirectPayment = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState(records);
+  console.log(allRecords?.length);
 
   const transactions = useSelector((state) => state.transactionsHistory);
-  console.log(transactions);
+  // console.log(transactions);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
@@ -79,21 +80,21 @@ const DirectPayment = (props) => {
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("Not Processed");
-
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
+  const [batchType, setBatchType] = useState("");
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
   const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
   const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
   const [checkedPreference, setCheckedPreference] = useState({
-    preferenceId: [],
+    preferenceId: []
   });
   const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -135,6 +136,7 @@ const DirectPayment = (props) => {
   //   }
   // }, [currentPage]);
   useEffect(() => {
+    console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
     filter("status", "false");
   }, [transactions?.directPayments]);
@@ -172,7 +174,7 @@ const DirectPayment = (props) => {
             batchDate,
             charityName,
             corporateName,
-            socialOrg,
+            socialOrg
           }
         ) => {
           const temp = {
@@ -182,7 +184,7 @@ const DirectPayment = (props) => {
             batchDate: "",
             charityName: "",
             corporateName: "",
-            socialOrg: "",
+            socialOrg: ""
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].employeeName += employeeName;
@@ -222,7 +224,7 @@ const DirectPayment = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -247,17 +249,7 @@ const DirectPayment = (props) => {
       : employee?.user?.email;
     initialValues.transactionId = transactionId;
   };
-  const search = (value, type) => {
-    // if (value.length > 3) {
-    if (type === "employeeName") {
-      setSearchByEmployeeName(value);
-    } else if (type === "programName") {
-      setSearchByProgramName(value);
-    } else if (type === "amount") {
-      setSearchByAmount(value);
-    }
-    // }
-  };
+
   const fetchResults = (dateRange) => {
     dispatch(
       transactionsHistoryActions.getDirectPayment({
@@ -270,7 +262,7 @@ const DirectPayment = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
+          : null
       })
     );
   };
@@ -280,13 +272,13 @@ const DirectPayment = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount,
+    searchByAmount
   ]);
 
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: "selection"
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -319,22 +311,22 @@ const DirectPayment = (props) => {
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
       setCheckedPreference({
-        preferenceId: allRecords?.map((val) => val.Id),
+        preferenceId: allRecords?.map((val) => val.Id)
       });
     } else if (name === "allSelect" && !checked) {
       console.log("222222222222222222");
       setCheckedPreference({
-        preferenceId: [],
+        preferenceId: []
       });
     } else if (checked) {
       console.log("33333333333333333333");
       setCheckedPreference({
-        preferenceId: [...preferenceId, items?.Id],
+        preferenceId: [...preferenceId, items?.Id]
       });
     } else {
       console.log("44444444444444");
       setCheckedPreference({
-        preferenceId: preferenceId?.filter((val) => val !== items?.Id),
+        preferenceId: preferenceId?.filter((val) => val !== items?.Id)
       });
     }
     // For all Check & Uncheck
@@ -364,9 +356,11 @@ const DirectPayment = (props) => {
       accordionData = groupBy("charityName");
     }
   }
-  const handleOpenDialog = (action, item) => {
+  const handleOpenDialog = (action, item, type) => {
+    console.log(action, item, type);
     setOpenDialog(true);
     setActionType(action);
+    setBatchType(type);
     setActionTitle(`${action} Confirmation`);
     setSelectedPreference(item);
     setActionContent(`Are you sure to crate this process batch?`);
@@ -376,24 +370,36 @@ const DirectPayment = (props) => {
     setSelectedPreference(null);
   };
   const createBatch = () => {
-    dispatch(
-      payrollSettingActions.processBatch({
-        batchProcessType: "directPaymentBatch",
-        ids: checkedPreference?.preferenceId,
-        corporateId: "",
-        totalAmount: allRecords
-          ?.filter((item) =>
-            checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
-          )
-          .reduce(
-            (total, currentValue) => (total = total + currentValue?.amount),
-            0
-          ),
-      })
-    );
+    if (isBluePencilPortal) {
+      dispatch(
+        payrollSettingActions.processBatch({
+          batchType: batchType,
+          batchProcessType: "directPaymentBatch",
+          ids: checkedPreference?.preferenceId,
+          corporateId: "",
+          allRecords: allRecords,
+          totalAmount: allRecords
+            ?.filter((item) =>
+              checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
+            )
+            .reduce(
+              (total, currentValue) => (total = total + currentValue?.amount),
+              0
+            )
+        })
+      );
+      // fetchResults("");
+      const data = allRecords?.filter(
+        (item) => !checkedPreference?.preferenceId?.includes(item?.Id)
+      );
+      setRecords(data);
+      setCheckedPreference({ preferenceId: [] });
+    }
+
     handleCloseDialog();
     // getData();
   };
+
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -496,120 +502,128 @@ const DirectPayment = (props) => {
           )}
         </div>
       </div>
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
-          <div className="col-md-4">
-            <div>
-              <select
-                className="form-select"
-                value={selected}
-                defaultValue={""}
-                onChange={(e) => onHandleChange(e)}
-              >
-                <option value={""} key={"default"} disabled>
-                  Search by
-                </option>
-                <option value="programName">Program Name</option>
-                {!isEmployeePortal && !isCorporatePortal && (
-                  <option value="corporateName">Corporate</option>
-                )}
+          <div className="col-md-8 d-flex ">
+            <div className="col-md-6 pl-0">
+              <div>
+                <select
+                  className="form-select"
+                  value={selected}
+                  defaultValue={""}
+                  onChange={(e) => onHandleChange(e)}
+                >
+                  <option value={""} key={"default"} disabled>
+                    Search by
+                  </option>
+                  <option value="programName">Program Name</option>
+                  {!isEmployeePortal && !isCorporatePortal && (
+                    <option value="corporateName">Corporate</option>
+                  )}
 
-                {!isEmployeePortal && (
-                  <option value="employeeName">Donor</option>
-                )}
-                <option value="amount">Amount</option>
-              </select>
-            </div>
-          </div>
-          {selected === "programName" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      className="ant-input-search"
-                      placeholder="Search by Program Name"
-                      onChange={(e) =>
-                        onSearchChange(e.target.value, "programName")
-                      }
-                    />
-                  </span>
-                </div>
+                  {!isEmployeePortal && (
+                    <option value="employeeName">Donor</option>
+                  )}
+                  <option value="amount">Amount</option>
+                </select>
               </div>
             </div>
-          )}
-          {selected === "corporateName" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      // className="form-control"
-                      className="ant-input-search"
-                      placeholder="Search by Corporate Name"
-                      onChange={(e) =>
-                        onSearchChange(e.target.value, "corporateName")
-                      }
-                    />
-                  </span>
+            {selected === "programName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Program Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "programName")
+                        }
+                      />
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          {selected === "employeeName" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      // className="form-control"
-                      className="ant-input-search"
-                      placeholder="Search by donor name or email"
-                      onChange={(e) =>
-                        onSearchChange(e.target.value, "employeeName")
-                      }
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-          {selected === "amount" && (
-            <div className="col-md-4">
-              <div>
-                <div className="ant-input-affix-wrapper inputFilterInput">
-                  <span className="ant-input-prefix">
-                    <i className="bi bi-search"></i>
-                    <input
-                      type="text"
-                      className="ant-input-search"
-                      placeholder="Search by Amount"
-                      onChange={(e) => onSearchChange(e.target.value, "amount")}
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-          <div className="col-md-4 text-right">
-            {selectedStatus !== "true" && (
-              <button
-                className="btn btn-custom"
-                onClick={() => handleOpenDialog("Process batch", "")}
-                disabled={
-                  checkedPreference?.preferenceId?.length === 0 ||
-                  moment(generateMonthYear).isAfter(moment())
-                }
-              >
-                Process Batch
-              </button>
             )}
+            {selected === "corporateName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        // className="form-control"
+                        className="ant-input-search"
+                        placeholder="Search by Corporate Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "corporateName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selected === "employeeName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        // className="form-control"
+                        className="ant-input-search"
+                        placeholder="Search by donor name or email"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "employeeName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selected === "amount" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Amount"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "amount")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="col-md-4 text-right">
+            {selectedStatus !== "true" &&
+              currentView === payrollConstants.LIST_VIEW && (
+                <button
+                  className="btn btn-custom"
+                  onClick={() =>
+                    handleOpenDialog("Process batch", "", "Direct")
+                  }
+                  disabled={
+                    checkedPreference?.preferenceId?.length === 0 ||
+                    moment(generateMonthYear).isAfter(moment())
+                  }
+                >
+                  Process Batch
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -629,6 +643,7 @@ const DirectPayment = (props) => {
                             type="checkbox"
                             name="allSelect"
                             checked={
+                              allRecords?.length > 0 &&
                               allRecords?.filter(
                                 (item) => item?.isChecked !== true
                               ).length < 1
@@ -638,7 +653,7 @@ const DirectPayment = (props) => {
                           />
                         </div>
                       </th>
-                      <th>Batch ID</th>
+                      {/* <th>Batch ID</th> */}
                       {!isEmployeePortal && (
                         <th className="ant-table-cell">Donor</th>
                       )}
@@ -685,7 +700,7 @@ const DirectPayment = (props) => {
                               </div>
                             )}
                           </td>
-                          <td>{transaction?.directBatchPaymentId}</td>
+                          {/* <td>{transaction?.directBatchPaymentId}</td> */}
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
@@ -973,7 +988,7 @@ const DirectPayment = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
@@ -1022,6 +1037,14 @@ const DirectPayment = (props) => {
             <Modal.Title>Account Detail</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ fontSize: "18" }}>
+            {selectedAccount?.batchId && (
+              <div className="row mb-2">
+                <div className="col-md-4">
+                  <strong>Batch ID:</strong>
+                </div>
+                <div className="col-md-8">{selectedAccount?.batchId}</div>
+              </div>
+            )}
             {!isEmployeePortal && selectedAccount?.employeeName && (
               <div className="row mb-2">
                 <div className="col-md-4">
@@ -1105,7 +1128,7 @@ const DirectPayment = (props) => {
                     ? item?.employeeName
                     : null
                 )
-              ),
+              )
             ].length
           }
           totalProgram={
@@ -1116,7 +1139,7 @@ const DirectPayment = (props) => {
                     ? item?.charityName
                     : null
                 )
-              ),
+              )
             ].length
           }
           totalAmount={

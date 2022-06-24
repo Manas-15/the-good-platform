@@ -8,7 +8,7 @@ export function payrollBatch(state = {}, action) {
       };
     case payrollConstants.GET_PAYROLL_BATCH_SUCCESS:
       return {
-        items: action?.batches?.data?.batch,
+        items: action?.batches?.data?.adminbatch,
         totalCount: action?.batches?.data?.count,
         loading: false
       };
@@ -24,53 +24,58 @@ export function payrollBatch(state = {}, action) {
         requestType: action?.data?.requestType
       };
     case payrollConstants.UPDATE_BATCH_STATUS_SUCCESS:
-      console.log(
-        "dddddddddddddddddddd reducer",
-        state?.requestType,
-        state?.requestType
-      );
+      console.log("dddddddddddddddddddd reducer", state?.items);
       return {
         ...state,
-        items: state.items.map((item) => {
-          if (item?.batchId === state?.batchId) {
-            if (
-              state?.requestType === payrollConstants?.COMPLETE ||
-              state?.requestType === payrollConstants?.UNCONFIRM
-            ) {
-              return {
-                ...item,
-                status: payrollConstants?.COMPLETED_STATUS
-              };
+        items:
+          state?.items?.length > 0 &&
+          state?.items?.map((item) => {
+            if (item?.batchId === state?.batchId) {
+              if (state?.requestType === payrollConstants?.COMPLETE) {                
+                return {
+                  ...item,
+                  isDeleted: true,
+                  status: payrollConstants?.COMPLETED_STATUS
+                };
+              }
+              if (state?.requestType === payrollConstants?.CONFIRM) {                
+                return {
+                  ...item,
+                  status: payrollConstants?.CONFIRMED_STATUS
+                };
+              }
+              if (state?.requestType === payrollConstants?.PAID) {                
+                return {
+                  ...item,
+                  status: payrollConstants?.PAID_STATUS
+                };
+              }
+              if (state?.requestType === payrollConstants?.UNCONFIRM) {
+                return {
+                  ...item,
+                  status: payrollConstants?.COMPLETED_STATUS,
+                  isDeleted: true
+                };
+                // const index = state?.items?.indexOf(state?.batchId);
+                // state?.items?.splice(index, 1);
+                //   if(item?.batchId !== state?.batchId){
+                //     return {
+                //       ...item,
+                //       status: payrollConstants?.COMPLETED_STATUS,
+                //     };
+                // }
+              }
+              if (state?.requestType === payrollConstants?.RECEIVE) {
+                // const splitReciveOrgs = item?.receivedOrganizationIds?.split(",")
+                return {
+                  ...item,
+                  status: payrollConstants?.RECEIVED_STATUS
+                  // receivedOrganizationIds: splitReciveOrgs?.length > 0 ? splitReciveOrgs.push("9").toString() : "9"
+                };
+              }
             }
-            if (state?.requestType === payrollConstants?.CONFIRM) {
-              return {
-                ...item,
-                status: payrollConstants?.CONFIRMED_STATUS
-              };
-            }
-            if (state?.requestType === payrollConstants?.PAID) {
-              return {
-                ...item,
-                status: payrollConstants?.PAID_STATUS
-              };
-            }
-            if (state?.requestType === payrollConstants?.UNCONFIRM) {
-              return {
-                ...item,
-                status: payrollConstants?.COMPLETED_STATUS
-              };
-            }
-            if (state?.requestType === payrollConstants?.RECEIVE) {
-              // const splitReciveOrgs = item?.receivedOrganizationIds?.split(",")
-              return {
-                ...item,
-                status: payrollConstants?.RECEIVED_STATUS
-                // receivedOrganizationIds: splitReciveOrgs?.length > 0 ? splitReciveOrgs.push("9").toString() : "9"
-              };
-            }
-          }
-          return item;
-        }),
+            return item;
+          }),
         loading: false,
         batchId: null,
         requestType: null

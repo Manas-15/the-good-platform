@@ -25,6 +25,7 @@ function login(data, from) {
       employeeService.login(data).then(
         (res) => {
           dispatch(success(res));
+          console.log("res?.data?.approve 111", res?.data);
           if (data?.loginType === "Others") {
             const result = JSON.stringify(res?.data);
             localStorage.setItem("accessToken", result);
@@ -46,11 +47,15 @@ function login(data, from) {
                 // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
                 history.push("/otp");
               } else {
-                dispatch(
-                  alertActions.error(
-                    "Your account is currently in review. You will soon receive an email with a link to set your password."
-                  )
-                );
+                if (res?.data?.msg === "Email or Password is not valid") {
+                  dispatch(
+                    alertActions.error("Email or Password is not valid")
+                  );
+                } else {
+                  dispatch(
+                    alertActions.error("Your account is currently blocked")
+                  );
+                }
               }
               // dispatch(
               //   alertActions.error("Your account is currently inactive.")
@@ -85,11 +90,15 @@ function login(data, from) {
       employeeService.login(data).then(
         (data) => {
           dispatch(success(data));
-          const res = JSON.stringify(data?.data);
-          localStorage.setItem("user", JSON.stringify(data?.data));
-          // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
+          if (data?.data?.msg !== "Login Success") {
+            dispatch(alertActions.error(data?.data?.msg));
+          } else {
+            const res = JSON.stringify(data?.data);
+            localStorage.setItem("user", JSON.stringify(data?.data));
+            // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
 
-          history.push("/otp");
+            history.push("/otp");
+          }
         },
         (error) => {
           dispatch(failure(error.toString()));

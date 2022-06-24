@@ -11,7 +11,7 @@ import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -23,12 +23,12 @@ const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -70,7 +70,7 @@ const ListTransactionsHistory = (props) => {
   const [selectedRange, setSelectedRange] = useState([]);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
 
   const isOrganizationView =
@@ -156,7 +156,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -214,7 +214,7 @@ const ListTransactionsHistory = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
+          : null
       })
     );
   };
@@ -224,7 +224,7 @@ const ListTransactionsHistory = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount,
+    searchByAmount
   ]);
   // useEffect(() => {
   //   fetchResults("");
@@ -235,7 +235,7 @@ const ListTransactionsHistory = (props) => {
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: "selection"
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -531,16 +531,34 @@ const ListTransactionsHistory = (props) => {
                         <td className="ant-table-cell text-uppercase">
                           {transaction?.paymentStatus ===
                             paymentConstants.PAYMENT_SUCCESS && (
-                            <span className="text-success">Success</span>
+                            <>
+                              {isOrganizationView &&
+                                !transaction?.batchStatus
+                                  ?.split(",")
+                                  ?.includes?.(
+                                    selectedOrganization?.id?.toString()
+                                  ) && (
+                                  <span className="text-warning">Pending</span>
+                                )}
+                              {(!isOrganizationView ||
+                                transaction?.batchStatus
+                                  ?.split(",")
+                                  ?.includes?.(
+                                    selectedOrganization?.id?.toString()
+                                  )) && (
+                                <span className="text-success">Success</span>
+                              )}
+                            </>
                           )}
                           {transaction?.paymentStatus ===
                             paymentConstants.PAYMENT_FAILURE && (
                             <span className="text-danger">Failed</span>
                           )}
                           {transaction?.paymentStatus ===
-                            paymentConstants.PAYMENT_PENDING && (
-                            <span className="text-warning">Pending</span>
-                          )}
+                            paymentConstants.PAYMENT_PENDING &&
+                            !isOrganizationView && (
+                              <span className="text-warning">Pending</span>
+                            )}
                         </td>
                         <td className="ant-table-cell">
                           {transaction?.paymentDate &&
@@ -549,35 +567,40 @@ const ListTransactionsHistory = (props) => {
                               "DD/MM/YY, h:mm A"
                             )}
                         </td>
-                        {(employeeId || isCorporatePortal) && (
-                          <td className="ant-table-cell">
-                            {transaction?.paymentStatus ===
-                              paymentConstants.PAYMENT_SUCCESS && (
-                              <div className="d-flex">
-                                <Tooltip title="Download">
-                                  <Link
-                                    className="text-decoration-underline"
-                                    onClick={() =>
-                                      downlad(transaction?.transactionId)
-                                    }
-                                  >
-                                    <i className="bi bi-download fs-5 mr-3"></i>
-                                  </Link>
-                                </Tooltip>
-                                <Tooltip title="Email">
-                                  <Link
-                                    className="text-decoration-underline"
-                                    onClick={() =>
-                                      setEmailSend(transaction?.transactionId)
-                                    }
-                                  >
-                                    <i className="bi bi-envelope fs-5"></i>
-                                  </Link>
-                                </Tooltip>
-                              </div>
-                            )}
-                          </td>
-                        )}
+                        {(employeeId || isCorporatePortal) &&
+                          transaction?.batchStatus
+                            ?.split(",")
+                            ?.includes?.(
+                              transaction?.socialOrgId?.toString()
+                            ) && (
+                            <td className="ant-table-cell">
+                              {transaction?.paymentStatus ===
+                                paymentConstants.PAYMENT_SUCCESS && (
+                                <div className="d-flex">
+                                  <Tooltip title="Download">
+                                    <Link
+                                      className="text-decoration-underline"
+                                      onClick={() =>
+                                        downlad(transaction?.transactionId)
+                                      }
+                                    >
+                                      <i className="bi bi-download fs-5 mr-3"></i>
+                                    </Link>
+                                  </Tooltip>
+                                  <Tooltip title="Email">
+                                    <Link
+                                      className="text-decoration-underline"
+                                      onClick={() =>
+                                        setEmailSend(transaction?.transactionId)
+                                      }
+                                    >
+                                      <i className="bi bi-envelope fs-5"></i>
+                                    </Link>
+                                  </Tooltip>
+                                </div>
+                              )}
+                            </td>
+                          )}
                       </tr>
                     ))
                   ) : (
@@ -619,7 +642,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

@@ -23,9 +23,10 @@ const actionInitialValues = {
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, isCorporateView;
+
 const PayrollBatchDetail = (props) => {
-  // let history = useHistory();
   const preferences = useSelector((state) => state?.payrollSetting?.items);
+  console.log(preferences);
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
@@ -35,6 +36,11 @@ const PayrollBatchDetail = (props) => {
   const [isBatchView, setIsBatchView] = useState(false);
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
+  const [selected, setSelected] = useState();
+  const [searchByOrganizationName, setSearchByOrganizationName] = useState("");
+  const [searchByProgramName, setSearchByProgramName] = useState("");
+  const [searchByAmount, setSearchByAmount] = useState("");
+
   const [currentView, setCurrentView] = useState(
     payrollConstants.EMPLOYEE_VIEW
   );
@@ -48,10 +54,13 @@ const PayrollBatchDetail = (props) => {
     );
   }, [props?.batchId]);
   const groupBy = (key) => {
-    return preferences?.reduce?.(function (acc, item) {
-      (acc[item[key]] = acc[item[key]] || []).push(item);
-      return acc;
-    }, {});
+    return (
+      preferences?.length > 0 &&
+      preferences?.reduce?.(function (acc, item) {
+        (acc[item[key]] = acc[item[key]] || []).push(item);
+        return acc;
+      }, {})
+    );
   };
   if (currentView === payrollConstants.ORGANIZATION_VIEW) {
     accordionData = groupBy("socialOrganization");
@@ -72,9 +81,7 @@ const PayrollBatchDetail = (props) => {
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   useEffect(() => {
     isCorporateView = history.location.pathname !== "/admin-payroll-batch";
-    setCurrentView(
-      payrollConstants.LIST_VIEW
-    );
+    setCurrentView(payrollConstants.LIST_VIEW);
   }, [history?.location?.pathname]);
   const showReferenceNote = (referenceNote) => {
     setShow(true);
@@ -83,23 +90,71 @@ const PayrollBatchDetail = (props) => {
   const handleCancel = () => {
     setShow(false);
   };
+  const onSearchChange = (value, selected) => {
+    if (selected === "programName") {
+      setSearchByProgramName(value);
+    } else if (selected === "organizationName") {
+      setSearchByOrganizationName(value);
+    } else if (selected === "amount") {
+      setSearchByAmount(value);
+    } else {
+      return null;
+    }
+  };
+  const onHandleChange = (e) => {
+    console.log("fired");
+    setSearchByProgramName("");
+    setSearchByOrganizationName("");
+    setSearchByAmount("");
+    setSelected(e.target.value);
+  };
+  // const fetchResults = (dateRange) => {
+  //   dispatch(
+  //     transactionsHistoryActions.getDirectPayment({
+  //       pageSize: pageSize,
+  //       offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+  //       searchByEmployeeName: searchByEmployeeName,
+  //       searchByProgramName: searchByProgramName,
+  //       searchByCorporateName: searchByCorporateName,
+  //       searchByAmount: searchByAmount,
+  //       startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
+  //       endDate: dateRange
+  //         ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
+  //         : null,
+  //     })
+  //   );
+  // };
+  // useEffect(() => {
+  //   fetchResults("");
+  // }, [
+  //   searchByProgramName,
+  //   searchByEmployeeName,
+  //   searchByCorporateName,
+  //   searchByAmount,
+  // ]);
   return (
     <div className="customContainer">
       <div className="row mb-4">
         <div className="col-md-12">
-          <Link onClick={() => props?.hideBatchDetail(false)}>
+          <Link to="#" onClick={() => props?.hideBatchDetail(false)}>
             <i className="bi bi-arrow-90deg-left fs-6">&nbsp;Back</i>
           </Link>
         </div>
       </div>
       <div className="row mb-4">
-        <div className="col-md-7">
+        <div className="col-md-12">
           <h1 className="ant-typography customHeading">
-            Payroll Batch Detail -{" "}
+            Payroll Batch Detail -{preferences?.[0]?.batchId}(
             {preferences &&
               moment(preferences[0]?.batchDate).format("MMM YYYY")}
+            )
           </h1>
         </div>
+        {/* <div className="col-md-5">
+          <h3 className="ant-typography customHeading">
+            Batch Id - {preferences?.[0]?.batchId}
+          </h3>
+        </div> */}
       </div>
       <div className="row mb-b payroll ">
         <div className="col-md-12 text-right">
@@ -123,6 +178,7 @@ const PayrollBatchDetail = (props) => {
             </CSVLink>
           )}
           <Link
+            to="#"
             className="fs-6 text-decoration-underline mr-3"
             onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
           >
@@ -136,6 +192,7 @@ const PayrollBatchDetail = (props) => {
             </button>
           </Link>
           <Link
+            to="#"
             className="fs-6 text-decoration-underline mr-3"
             onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
           >
@@ -148,8 +205,9 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {(isCorporateView || isBluePencilPortal) && (
+          {isCorporateView && (
             <Link
+              to="#"
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.EMPLOYEE_VIEW)}
             >
@@ -167,6 +225,7 @@ const PayrollBatchDetail = (props) => {
             !isBluePencilPortal &&
             (!isCorporateView || isOrganizationView) && (
               <Link
+                to="#"
                 className="fs-6 text-decoration-underline mr-3"
                 onClick={() => setCurrentView(payrollConstants.CORPORATE_VIEW)}
               >
@@ -184,6 +243,7 @@ const PayrollBatchDetail = (props) => {
             )}
           {!isOrganizationView && (
             <Link
+              to="#"
               className="fs-6 text-decoration-underline"
               onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
             >
@@ -397,6 +457,95 @@ const PayrollBatchDetail = (props) => {
           ))}
         </>
       ) : null}
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
+        <div className="col-md d-flex pl-0">
+          <div className="col-md-8 d-flex ">
+            <div className="col-md-6 pl-0">
+              <div>
+                <select
+                  className="form-select"
+                  value={selected}
+                  defaultValue={""}
+                  onChange={(e) => onHandleChange(e)}
+                >
+                  <option value={""} key={"default"} disabled>
+                    Search by
+                  </option>
+                  <option value="programName">Program Name</option>
+                  <option value="organizationName">Organization Name</option>
+                  {/* {!isEmployeePortal && !isCorporatePortal && (
+                    <option value="corporateName">Corporate</option>
+                  )} */}
+
+                  {/* {!isEmployeePortal && (
+                    <option value="employeeName">Donor</option>
+                  )} */}
+                  <option value="amount">Amount</option>
+                </select>
+              </div>
+            </div>
+            {selected === "programName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Program Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "programName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selected === "organizationName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        // className="form-control"
+                        className="ant-input-search"
+                        placeholder="Search by Organization Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "organizationName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selected === "amount" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Amount"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "amount")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       {currentView === payrollConstants.LIST_VIEW && (
         <div className="ant-row">
           <div className="ant-col ant-col-24 mt-2">
@@ -405,31 +554,38 @@ const PayrollBatchDetail = (props) => {
                 <table>
                   <thead className="ant-table-thead">
                     <tr>
-                      <th className="ant-table-cell">Batch ID</th>
-                      <th className="ant-table-cell">Employee</th>
+                      {/* <th className="ant-table-cell">Batch ID</th>   */}
+                      {/* <th className="ant-table-cell">Employee</th> */}
+                      <th className="ant-table-cell">Donor</th>
                       <th className="ant-table-cell">Organization</th>
                       <th className="ant-table-cell">Program</th>
-                      {!isCorporatePortal && (
+                      {/* {!isCorporatePortal && (
                         <th className="ant-table-cell">Corporate Name</th>
-                      )}
+                      )} */}
                       {/* <th className="ant-table-cell">REF ID</th> */}
                       <th className="ant-table-cell">
                         Amount (
                         {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                         )
                       </th>
+                      <th className="ant-table-cell">Month</th>
                     </tr>
                   </thead>
                   <tbody className="ant-table-tbody">
-                    {preferences?.map((item, index) => (
-                      <tr>
-                        <td>{item?.batchId}</td>
-                        <td>{item?.employeeName}</td>
-                        <td>{item?.socialOrganization}</td>
-                        {!isCorporatePortal && <td>{item?.corporateName}</td>}
-                        <td>{item?.charityProgram}</td>
-                        {/* <td>
-                          <Link
+                    {preferences?.length > 0 &&
+                      preferences?.map((item, idx) => (
+                        <tr key={idx}>
+                          {/* <td>{item?.batchId}</td> */}
+                          <td>
+                            {item?.employeeName
+                              ? item?.employeeName
+                              : item?.corporateName}
+                          </td>
+                          <td>{item?.socialOrganization}</td>
+                          {/* {!isCorporatePortal && <td>{item?.corporateName}</td>} */}
+                          <td>{item?.charityProgram}</td>
+                          {/* <td>
+                          <Link to="#"
                             onClick={() =>
                               showReferenceNote(item?.referenceNote)
                             }
@@ -437,9 +593,10 @@ const PayrollBatchDetail = (props) => {
                             {item?.referenceId}
                           </Link>
                         </td> */}
-                        <td>{item?.donationAmount?.toLocaleString()}</td>
-                      </tr>
-                    ))}
+                          <td>{item?.donationAmount?.toLocaleString()}</td>
+                          <td>{moment(item?.batchDate).format("MMM YYYY")}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
