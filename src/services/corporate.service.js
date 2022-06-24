@@ -10,7 +10,7 @@ export const corporateService = {
   registerCorporate,
   getCorporates,
   // getCorporateById,
-  corporateAccountRequest
+  corporateAccountRequest,
 };
 
 function getCorporates() {
@@ -28,6 +28,7 @@ function registerCorporate(data) {
   );
 }
 function updateCorporate(corporate) {
+  console.log(corporate);
   return axios.post(
     process.env.REACT_APP_API_URL + "api/editCorporate/",
     corporate

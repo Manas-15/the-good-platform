@@ -39,7 +39,9 @@ const CorporateForm = ({ type, id }) => {
   const [editCorpData, setEditCorpData] = useState();
   const corporates = useSelector((state) => state.corporates);
   const [country, setCountry] = useState("India");
-  const [state, setState] = useState();
+  const [state, setState] = useState("");
+  const [editCountry, setEditCountry] = useState("");
+  const [editState, setEditState] = useState("");
 
   console.log(editCorpData);
 
@@ -97,6 +99,7 @@ const CorporateForm = ({ type, id }) => {
     initialValues.city = editCorpData?.city;
     initialValues.state = editCorpData?.state;
     initialValues.country = editCorpData?.country;
+    console.log(editCorpData?.state);
   } else {
     initialValues.organizationName = "";
     initialValues.email = "";
@@ -114,13 +117,31 @@ const CorporateForm = ({ type, id }) => {
     initialValues.country = "";
     initialValues.city = "";
   }
+  useEffect(
+    (id) => {
+      setEditState(editCorpData?.state);
+      setEditCountry(editCorpData?.country);
+    },
+    [editCorpData?.state, editCorpData?.country]
+  );
 
   const selectCountry = (country) => {
+    console.log(country);
     setCountry(country);
   };
+
+  const selectEditCountry = (country) => {
+    console.log(country);
+    setEditCountry(country);
+  };
+
   const selectState = (state) => {
     console.log(state);
     setState(state);
+  };
+  const selectEditState = () => {
+    console.log(country);
+    setEditCountry(country);
   };
 
   return (
@@ -417,46 +438,14 @@ const CorporateForm = ({ type, id }) => {
               </div>
               <div className="col-md-8">
                 <RegionDropdown
-                  country={country}
-                  value={state}
                   name="state"
-                  placeholder="Select State"
-                  onChange={(val) => selectState(val)}
+                  country={id ? editCountry : country}
+                  value={id ? editState : state}
+                  onChange={(val) =>
+                    id ? selectEditState(val) : selectState(val)
+                  }
                   className={
                     "form-select" +
-                    (errors.state && touched.state ? " is-invalid" : "")
-                  }
-                />
-                {/* </Field> */}
-              </div>
-            </div>
-            <div className="row mb-4">
-              <div className="col-md-4">
-                <label className="mt-1">Country</label>
-              </div>
-              <div className="col-md-8">
-                <CountryDropdown
-                  name="country"
-                  value={country}
-                  // onChange={(_, e) => handleChange(e)}
-                  onChange={(val) => selectCountry(val)}
-                  className={
-                    "form-select" +
-                    (errors.country && touched.country ? " is-invalid" : "")
-                  }
-                />
-              </div>
-            </div>
-            {/* <div className="row mb-4">
-              <div className="col-md-4">
-                <label className="mt-1">State</label>
-              </div>
-              <div className="col-md-8">
-                <Field
-                  name="state"
-                  type="text"
-                  className={
-                    "form-control" +
                     (errors.state && touched.state ? " is-invalid" : "")
                   }
                 />
@@ -467,16 +456,20 @@ const CorporateForm = ({ type, id }) => {
                 <label className="mt-1">Country</label>
               </div>
               <div className="col-md-8">
-                <Field
+                <CountryDropdown
                   name="country"
-                  type="text"
+                  value={id ? editCountry : country}
+                  onChange={(val) =>
+                    id ? selectEditCountry(val) : selectCountry(val)
+                  }
                   className={
-                    "form-control" +
+                    "form-select" +
                     (errors.country && touched.country ? " is-invalid" : "")
                   }
                 />
               </div>
-            </div> */}
+            </div>
+
             <div className="text-center">
               <div className="row">
                 <div className="col-md-4 offset-md-4 ">
