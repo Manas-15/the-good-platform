@@ -47,6 +47,7 @@ const IndividualForm = ({ type }) => {
   const individualRegister = (values) => {
     setSubmitted(true);
     if (values.firstName && values.email) {
+      values.email = values.email.toLowerCase();
       dispatch(employeeActions.register(values, userConstants.INDIVIDUAL));
     }
   };

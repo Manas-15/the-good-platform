@@ -93,6 +93,7 @@ const EmployeeForm = ({ type }) => {
   const employeeRegister = (values) => {
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
+      values.email = values.email.toLowerCase();
       dispatch(employeeActions.register(values, userConstants.EMPLOYEE));
     }
   };
