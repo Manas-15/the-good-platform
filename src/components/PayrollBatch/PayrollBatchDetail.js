@@ -205,7 +205,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {isCorporateView && (
+          {(isCorporateView && !isOrganizationView) && (
             <Link
               to="#"
               className="fs-6 text-decoration-underline mr-3"
@@ -384,11 +384,15 @@ const PayrollBatchDetail = (props) => {
                                 <thead className="ant-table-thead">
                                   <tr>
                                     {/* <th className="ant-table-cell">Sr No.</th> */}
+                                    {(isBluePencilPortal || isOrganizationView) && (
+                                      <th className="ant-table-cell">Donor</th>
+                                    )}
                                     {(currentView ===
                                       payrollConstants.ORGANIZATION_VIEW ||
                                       currentView ===
                                         payrollConstants.PROGRAM_VIEW) &&
-                                      !isOrganizationView && (
+                                      !isOrganizationView &&
+                                      !isBluePencilPortal && (
                                         <th className="ant-table-cell">
                                           Employee Name
                                         </th>
@@ -397,12 +401,13 @@ const PayrollBatchDetail = (props) => {
                                       payrollConstants.ORGANIZATION_VIEW ||
                                       currentView ===
                                         payrollConstants.PROGRAM_VIEW) &&
-                                      !isOrganizationView && (
+                                      !isOrganizationView &&
+                                      !isBluePencilPortal && (
                                         <th className="ant-table-cell">
                                           Employee ID
                                         </th>
                                       )}
-                                    {isOrganizationView &&
+                                    {!isOrganizationView &&
                                       currentView !==
                                         payrollConstants.CORPORATE_VIEW && (
                                         <th className="ant-table-cell">
@@ -436,6 +441,11 @@ const PayrollBatchDetail = (props) => {
                                         Actions
                                       </th>
                                     )}
+                                    {(isBluePencilPortal || isOrganizationView) && (
+                                      <th className="ant-table-cell">
+                                        Payment Date
+                                      </th>
+                                    )}
                                   </tr>
                                 </thead>
                                 <tbody className="ant-table-tbody">
@@ -456,11 +466,19 @@ const PayrollBatchDetail = (props) => {
                                         {/* <td className="ant-table-cell">
                                           {i + 1}
                                         </td> */}
+                                        {(isBluePencilPortal || isOrganizationView) && (
+                                          <td className="ant-table-cell">
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference?.donor}
+                                            </span>
+                                          </td>
+                                        )}
                                         {(currentView ===
                                           payrollConstants.ORGANIZATION_VIEW ||
                                           currentView ===
                                             payrollConstants.PROGRAM_VIEW) &&
-                                          !isOrganizationView && (
+                                          !isOrganizationView &&
+                                          !isBluePencilPortal && (
                                             <td className="ant-table-cell">
                                               <span className="ant-typography font-weight-bold">
                                                 {preference?.employeeName}
@@ -471,12 +489,13 @@ const PayrollBatchDetail = (props) => {
                                           payrollConstants.ORGANIZATION_VIEW ||
                                           currentView ===
                                             payrollConstants.PROGRAM_VIEW) &&
-                                          !isOrganizationView && (
+                                          !isOrganizationView &&
+                                          !isBluePencilPortal && (
                                             <td className="ant-table-cell">
                                               {preference?.employeeUid}
                                             </td>
                                           )}
-                                        {isOrganizationView &&
+                                        {!isOrganizationView &&
                                           currentView !==
                                             payrollConstants.CORPORATE_VIEW && (
                                             <td className="ant-table-cell">
@@ -499,7 +518,7 @@ const PayrollBatchDetail = (props) => {
                                             payrollConstants.CORPORATE_VIEW) && (
                                           <td className="ant-table-cell">
                                             <span className="ant-typography font-weight-bold">
-                                              {preference.socialOrganization}
+                                              {preference?.socialOrganization}
                                             </span>
                                           </td>
                                         )}
@@ -529,6 +548,13 @@ const PayrollBatchDetail = (props) => {
                                             disabled={true}
                                           />
                                         </td>
+                                        {(isBluePencilPortal || isOrganizationView) && (
+                                          <td className="ant-table-cell">
+                                            {moment(
+                                              preference.transactionDate
+                                            ).format("DD MMM YYYY")}
+                                          </td>
+                                        )}
                                       </tr>
                                     ))}
                                 </tbody>
@@ -567,7 +593,7 @@ const PayrollBatchDetail = (props) => {
                         {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                         )
                       </th>
-                      <th className="ant-table-cell">Month</th>
+                      <th className="ant-table-cell">Payment Date</th>
                     </tr>
                   </thead>
                   <tbody className="ant-table-tbody">
@@ -575,11 +601,7 @@ const PayrollBatchDetail = (props) => {
                       preferences?.map((item, idx) => (
                         <tr key={idx}>
                           {/* <td>{item?.batchId}</td> */}
-                          <td>
-                            {item?.employeeName
-                              ? item?.employeeName
-                              : item?.corporateName}
-                          </td>
+                          <td>{item?.donor}</td>
                           <td>{item?.socialOrganization}</td>
                           {/* {!isCorporatePortal && <td>{item?.corporateName}</td>} */}
                           <td>{item?.charityProgram}</td>
@@ -593,7 +615,11 @@ const PayrollBatchDetail = (props) => {
                           </Link>
                         </td> */}
                           <td>{item?.donationAmount?.toLocaleString()}</td>
-                          <td>{moment(item?.batchDate).format("MMM YYYY")}</td>
+                          <td>
+                            {moment(item?.transactionDate).format(
+                              "DD MMM YYYY"
+                            )}
+                          </td>
                         </tr>
                       ))}
                   </tbody>
