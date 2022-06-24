@@ -153,9 +153,9 @@ const PayrollBatch = (props) => {
     { label: "Processed", value: "10" },
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed payment for the batch on the month of ${moment().format(
       "MMMM"
-    )} - ${item?.corporateName}`;
+    )} - ${item?.batchId}`;
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
   };
