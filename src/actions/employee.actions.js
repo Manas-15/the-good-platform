@@ -15,7 +15,7 @@ export const employeeActions = {
   setPasswordValid,
   employeeAccountRequest,
   bulkImport,
-  getCorporates,
+  getCorporates
 };
 
 function login(data, from) {
@@ -25,7 +25,7 @@ function login(data, from) {
       employeeService.login(data).then(
         (res) => {
           dispatch(success(res));
-          console.log("res?.data?.approve 111", res?.data)
+          console.log("res?.data?.approve 111", res?.data);
           if (data?.loginType === "Others") {
             const result = JSON.stringify(res?.data);
             localStorage.setItem("accessToken", result);
@@ -47,13 +47,15 @@ function login(data, from) {
                 // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
                 history.push("/otp");
               } else {
-                if(res?.data?.msg === "Email or Password is not valid"){
-                  dispatch(alertActions.error("Email or Password is not valid"))
-                }else{
-                dispatch(
-                  alertActions.error("Your account is currently blocked")
-                );
-                }
+                // if(!res?.data?.approve) {
+                //   dispatch(
+                //     alertActions.error("Your account is currently blocked")
+                //   );
+                // } else {
+                  dispatch(
+                    alertActions.error(res?.data?.msg)
+                  );
+                // }
               }
               // dispatch(
               //   alertActions.error("Your account is currently inactive.")
@@ -88,16 +90,15 @@ function login(data, from) {
       employeeService.login(data).then(
         (data) => {
           dispatch(success(data));
-          if(data?.data?.msg !== "Login Success"){
-            dispatch(alertActions.error(data?.data?.msg))
-          }else{
+          if (data?.data?.msg !== "Login Success") {
+            dispatch(alertActions.error(data?.data?.msg));
+          } else {
             const res = JSON.stringify(data?.data);
             localStorage.setItem("user", JSON.stringify(data?.data));
             // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
-  
+
             history.push("/otp");
           }
-          
         },
         (error) => {
           dispatch(failure(error.toString()));
@@ -241,7 +242,7 @@ function register(employee, userType) {
         } else {
           history.push({
             pathname: "/thank-you",
-            state: { userType: userType },
+            state: { userType: userType }
           });
         }
       },
@@ -326,9 +327,7 @@ function setEmployeePassword(data) {
 
 function employeeAccountRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "mmmmmmmmmmmmmmmmmmmm");
     dispatch(request(actionValues));
-
     employeeService.employeeAccountRequest(actionValues).then(
       (msg) => {
         dispatch(success(msg));
@@ -360,10 +359,8 @@ function employeeAccountRequest(actionValues) {
   }
 }
 function bulkImport(formData) {
-  console.log(formData);
   return (dispatch) => {
     dispatch(request(formData));
-
     employeeService.bulkImport(formData).then(
       () => {
         dispatch(success());
@@ -378,7 +375,7 @@ function bulkImport(formData) {
   function request(formData) {
     return {
       type: employeeConstants.BULK_IMPORT_REQUEST,
-      formData,
+      formData
     };
   }
   function success(formData) {
@@ -404,7 +401,7 @@ function getCorporates() {
 
   function request() {
     return {
-      type: employeeConstants.GET_CORPORATES_REQUEST,
+      type: employeeConstants.GET_CORPORATES_REQUEST
     };
   }
   function success(data) {
