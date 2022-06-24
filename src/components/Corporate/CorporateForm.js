@@ -139,9 +139,9 @@ const CorporateForm = ({ type, id }) => {
     console.log(state);
     setState(state);
   };
-  const selectEditState = () => {
-    console.log(country);
-    setEditCountry(country);
+  const selectEditState = (state) => {
+    console.log(state);
+    setEditState(state);
   };
 
   return (

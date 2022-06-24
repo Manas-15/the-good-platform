@@ -75,6 +75,7 @@ const PayrollBatch = (props) => {
   const [allRecords, setAllRecords] = useState([]);
   const [selected, setSelected] = useState();
   const [groupByBatchData, setGroupByBatchData] = useState({});
+  const [selectedStatus, setSelectedStatus] = useState("Not Processed");
 
   const [openPaidSimulator, setOpenPaidSimulator] = useState(false);
   const [currentView, setCurrentView] = useState(
@@ -117,10 +118,11 @@ const PayrollBatch = (props) => {
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
-    filter("All");
+    // filter("All");
   }, [currentPage]);
 
   const groupByBatch = () => {
+    // console.log("payrollBatches?.itemssss", allRecords);
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
       return acc;
@@ -128,13 +130,14 @@ const PayrollBatch = (props) => {
   };
   let allGroupData;
   useEffect(() => {
-    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted));
+    setAllRecords(payrollBatches?.items);
   }, [payrollBatches?.items]);
 
   useEffect(() => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
     setGroupByBatchData(allGroupData);
+    // filter("status", "false");
   }, [allRecords]);
 
   // console.log(groupByBatchData);
@@ -150,12 +153,12 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" },
+    { label: "Processed", value: payrollConstants.RECEIVED_STATUS },
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed payment for the batch on the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
       "MMMM"
-    )} - ${item?.batchId}`;
+    )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
   };
@@ -233,16 +236,11 @@ const PayrollBatch = (props) => {
     dispatch(payrollBatchActions.updateBatchStatus(values));
     console.log(
       "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
-      values.batchId,
-      allRecords
+      values
     );
-    // setRecords(allRecords?.filter(
-    //   (item) => item?.batchId !== values.batchId
-    // ));
-    console.log(
-      "<<<<<<<<<<<<<<<<<<<<< allRecords 22222 >>>>>>>>>>>>>>>>>>>>>>>>>",
-      allRecords
-    );
+    const data = allRecords?.filter((item) => item?.batchId !== values.batchId);
+    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data);
+    setAllRecords(data);
   };
   const handleClose = () => {
     setOpen(false);
@@ -257,33 +255,71 @@ const PayrollBatch = (props) => {
     setIsBatchDetail(status);
     setSelectedBatchId(null);
   };
-  const filter = (value) => {
-    if (value && value === payrollConstants.PENDING_STATUS.toString()) {
-      setAllRecords(
-        records?.filter(
-          (record) =>
-            !record?.receivedOrganizationIds ||
-            (record?.status === payrollConstants.RECEIVED_STATUS &&
-              record?.totalOrganizationCount !==
-                record?.receivedOrganizationIds?.split(",")?.length)
+
+  //  PENDING_STATUS: 1,
+  // COMPLETED_STATUS: 2,
+  // CONFIRMED_STATUS: 3,
+  // PAID_STATUS: 4,
+  // RECEIVED_STATUS: 5,
+
+  // const myData = Object.keys(groupByBatchData)?.map((type, index) => {
+  //   console.log(groupByBatchData[type]?.[0]?.status);
+  // });
+  // console.log(myData);
+
+  // setRecords(
+  //       transactions?.directPayments?.filter(
+  //         (record) => record?.directBatchPaymentStatus?.toString() === value
+  //       )
+
+  const onFilter = (value) => {
+    // console.log(value);
+    setSelectedStatus(value);
+    allGroupData = groupByBatch();
+    setGroupByBatchData(allGroupData);
+    console.log(allGroupData);
+    if (value) {
+      console.log(value);
+      setGroupByBatchData(
+        Object.keys(allGroupData)?.filter(
+          (type, index) => allGroupData[type]?.[0]?.status.toString() === value
         )
       );
-    } else if (value && value === payrollConstants.RECEIVED_STATUS.toString()) {
-      setAllRecords(
-        records?.filter(
-          (record) =>
-            record?.status === payrollConstants.RECEIVED_STATUS &&
-            record?.totalOrganizationCount ===
-              record?.receivedOrganizationIds?.split(",")?.length
-        )
-      );
-    } else {
-      setAllRecords(records);
     }
-    if (selectedKeySearch && searchValue) {
-      onSearchChange(searchValue, selectedKeySearch);
-    }
+    console.log(groupByBatchData);
   };
+
+  //************************************************************************* */
+  // const filter = (value) => {
+  //   console.log(value);
+  //   if (value && value === payrollConstants.PENDING_STATUS.toString()) {
+  //     setAllRecords(
+  //       records?.filter(
+  //         (record) =>
+  //           !record?.receivedOrganizationIds ||
+  //           (record?.status === payrollConstants.RECEIVED_STATUS &&
+  //             record?.totalOrganizationCount !==
+  //               record?.receivedOrganizationIds?.split(",")?.length)
+  //       )
+  //     );
+  //   } else if (value && value === payrollConstants.RECEIVED_STATUS.toString()) {
+  //     setAllRecords(
+  //       records?.filter(
+  //         (record) =>
+  //           record?.status === payrollConstants.RECEIVED_STATUS &&
+  //           record?.totalOrganizationCount ===
+  //             record?.receivedOrganizationIds?.split(",")?.length
+  //       )
+  //     );
+  //   } else {
+  //     setAllRecords(records);
+  //   }
+  //   if (selectedKeySearch && searchValue) {
+  //     onSearchChange(searchValue, selectedKeySearch);
+  //   }
+  // };
+
+  //************************************************************************* */
 
   const onSearchChange = (e, selected) => {
     const keyword = e;
@@ -358,7 +394,7 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
-              {isCorporatePortal && isBluePencilPortal && (
+              {(isCorporatePortal || isBluePencilPortal) && (
                 <div className="row mb-4">
                   <div className="col-md-6 mt-2">
                     <h6 className="mt-2">Filter By</h6>
@@ -367,7 +403,7 @@ const PayrollBatch = (props) => {
                     <select
                       className="form-select"
                       defaultValue={""}
-                      onChange={(e) => filter(e.target.value)}
+                      onChange={(e) => onFilter(e.target.value)}
                     >
                       <option value={""} key={"default"} disabled>
                         Status
@@ -584,9 +620,9 @@ const PayrollBatch = (props) => {
                               </th>
                             )}
 
-                            {/* {!corporateId && (
+                            {!corporateId && (
                               <th className="ant-table-cell">Corporate Name</th>
-                            )} */}
+                            )}
                             <th className="ant-table-cell">Month</th>
                             <th className="ant-table-cell">
                               Amount (
@@ -651,14 +687,14 @@ const PayrollBatch = (props) => {
                               {batch?.corporateId}
                             </td>
                           )} */}
-                                  {/* {!corporateId && (
+                                  {!corporateId && (
                                     <td className="ant-table-cell">
                                       {
                                         groupByBatchData[type]?.[0]
                                           ?.corporateName
                                       }
                                     </td>
-                                  )} */}
+                                  )}
                                   <td className="ant-table-cell">
                                     {moment(
                                       groupByBatchData[type]?.[0]?.createdDate

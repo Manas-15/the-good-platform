@@ -36,7 +36,7 @@ const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
   console.log(records);
   const [selected, setSelected] = useState();
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
   const [allRecords, setAllRecords] = useState(records);
 
   const transactions = useSelector((state) => state.transactionsHistory);
@@ -240,11 +240,6 @@ const ListTransactionsHistory = (props) => {
               .add(-30, "days")
               .format("DD/MM/YYYY")} - ${moment().format("DD/MM/YYYY")}`}
             format={"dd/MM/yyyy"}
-            // defaultValue={selectedRange}
-            // defaultValue={[date.setDate(date.getDate() - 30), new Date()]}
-            // renderValue={value => {
-            //   return format(value[0], 'dd/MM/yyyy') + ' ~ ' + format(value[1], 'dd/MM/yyyy');
-            // }}
             cleanable={true}
             disabledDate={afterToday()}
           />
@@ -407,8 +402,7 @@ const ListTransactionsHistory = (props) => {
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
                     <th className="ant-table-cell">Donation</th>
-                    <th className="ant-table-cell">Donation Type</th>
-                    {/* <th className="ant-table-cell">Payment Mode</th> */}
+                    <th className="ant-table-cell">Type</th>
                     <th className="ant-table-cell">Payment Status</th>
                     <th className="ant-table-cell">Payment Date</th>
                     {(employeeId || isCorporatePortal) && (
