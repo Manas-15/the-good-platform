@@ -10,7 +10,7 @@ export const corporateService = {
   registerCorporate,
   getCorporates,
   // getCorporateById,
-  corporateAccountRequest
+  corporateAccountRequest,
 };
 
 function getCorporates() {

@@ -54,6 +54,10 @@ const DonationPreferences = () => {
   const [searchText, setSearchText] = useState("");
   const [getRepeatCharity, setGetRepeatCharity] = useState();
   const [selected, setSelected] = useState("");
+  const [searchByEmployeeName, setSearchByEmployeeName] = useState("");
+  const [searchByCorporateName, setSearchByCorporateName] = useState("");
+  const [searchByProgramName, setSearchByProgramName] = useState("");
+  const [searchByAmount, setSearchByAmount] = useState("");
 
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
@@ -114,23 +118,57 @@ const DonationPreferences = () => {
     getData();
   };
 
-  // const onSearchChange = (value, selected) => {
-  //   console.log("???????????????????", value, selected);
-
-  //   if (selected === "programName") {
-  //     setSearchByProgramName(value);
-  //   } else if (selected === "employeeName") {
-  //     setSearchByEmployeeName(value);
-  //   } else if (selected === "amount") {
-  //     setSearchByAmount(value);
-  //   } else {
-  //     return null;
-  //   }
-  // };
   const onHandleChange = (e) => {
     console.log("fired");
+    setSearchByProgramName("");
+    setSearchByEmployeeName("");
+    setSearchByCorporateName("");
+    setSearchByAmount("");
     setSelected(e.target.value);
   };
+  const onSearchChange = (value, selected) => {
+    if (selected === "programName") {
+      setSearchByProgramName(value);
+    } else if (selected === "employeeName") {
+      setSearchByEmployeeName(value);
+    } else if (selected === "corporateName") {
+      setSearchByCorporateName(value);
+    } else if (selected === "amount") {
+      setSearchByAmount(value);
+    } else {
+      return null;
+    }
+  };
+  //  const fetchResults = (dateRange) => {
+  //    dispatch(
+  //      transactionsHistoryActions.getDirectPayment({
+  //        pageSize: pageSize,
+  //        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+  //        searchByEmployeeName: searchByEmployeeName,
+  //        searchByProgramName: searchByProgramName,
+  //        searchByCorporateName: searchByCorporateName,
+  //        searchByAmount: searchByAmount,
+  //        startDate: dateRange
+  //          ? moment(dateRange[0]).format("YYYY-MM-DD")
+  //          : null,
+  //        endDate: dateRange
+  //          ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
+  //          : null,
+  //      })
+  //    );
+  //  };
+  //  useEffect(() => {
+  //    fetchResults("");
+  //  }, [
+  //    searchByProgramName,
+  //    searchByEmployeeName,
+  //    searchByCorporateName,
+  //    searchByAmount,
+  //  ]);
+  // const search = (value, selected) => {
+  //   setSearchText(value);
+  //   setSelected(selected);
+  // };
 
   const handleCheck = () => {
     setChecked(true);
@@ -194,10 +232,7 @@ const DonationPreferences = () => {
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
-  const search = (value, selected) => {
-    setSearchText(value);
-    setSelected(selected);
-  };
+
   const setRepeatCharity = (charity) => {
     document.getElementsByClassName("sidepanel")[0].classList.add("is-open");
     setGetRepeatCharity(charity);
@@ -209,7 +244,7 @@ const DonationPreferences = () => {
           <h1 className="ant-typography customHeading">Donation Preferences</h1>
         </div>
       </div>
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-4">
             <div>
@@ -240,7 +275,9 @@ const DonationPreferences = () => {
                       type="text"
                       className="ant-input-search"
                       placeholder="Search by Program Name"
-                      onChange={(e) => search(e.target.value, "programName")}
+                      onChange={(e) =>
+                        onSearchChange(e.target.value, "programName")
+                      }
                     />
                   </span>
                 </div>
@@ -259,7 +296,7 @@ const DonationPreferences = () => {
                       className="ant-input-search"
                       placeholder="Search by Organization Name"
                       onChange={(e) =>
-                        search(e.target.value, "organizationName")
+                        onSearchChange(e.target.value, "organizationName")
                       }
                     />
                   </span>
@@ -277,7 +314,7 @@ const DonationPreferences = () => {
                       type="text"
                       className="ant-input-search"
                       placeholder="Search by Amount"
-                      onChange={(e) => search(e.target.value, "amount")}
+                      onChange={(e) => onSearchChange(e.target.value, "amount")}
                     />
                   </span>
                 </div>
@@ -286,23 +323,7 @@ const DonationPreferences = () => {
           )}
         </div>
       </div>
-      {/* <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
-        <div className="ant-col ant-col-24  searchContainer">
-          <div className="ant-col ant-col-12">
-            <div className="ant-input-affix-wrapper inputFilterInput">
-              <span className="ant-input-prefix">
-                <i className="bi bi-search"></i>
-                <input
-                  placeholder="Search by amount or program or organization name"
-                  className="ant-input-search"
-                  type="text"
-                  onChange={(e) => search(e.target.value)}
-                />
-              </span>
-            </div>
-          </div>
-        </div>
-      </div> */}
+
       {preferences.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
         <Tabs

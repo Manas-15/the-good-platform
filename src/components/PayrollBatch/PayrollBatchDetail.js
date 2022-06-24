@@ -265,7 +265,7 @@ const PayrollBatchDetail = (props) => {
       <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-8 d-flex ">
-            <div className="col-md-6 pl-0">
+            <div className="col-md-6">
               <div>
                 <select
                   className="form-select"
@@ -281,7 +281,6 @@ const PayrollBatchDetail = (props) => {
                   {/* {!isEmployeePortal && !isCorporatePortal && (
                     <option value="corporateName">Corporate</option>
                   )} */}
-
                   {/* {!isEmployeePortal && (
                     <option value="employeeName">Donor</option>
                   )} */}

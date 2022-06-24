@@ -18,7 +18,7 @@ import {
   viewPortalConstants,
   payrollConstants,
   userConstants,
-  donationPreferenceConstants
+  donationPreferenceConstants,
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -30,13 +30,13 @@ let accordionData;
 const paymentStatusOption = [
   { label: "All", value: "all" },
   { label: "Processed", value: "true" },
-  { label: "Not Processed", value: "false" }
+  { label: "Not Processed", value: "false" },
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: ""
+  transactionId: "",
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -88,13 +88,13 @@ const DirectPayment = (props) => {
   const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
   const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
   const [checkedPreference, setCheckedPreference] = useState({
-    preferenceId: []
+    preferenceId: [],
   });
   const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD"))
+    new Date(moment().format("YYYY-MM-DD")),
   ]);
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -116,25 +116,7 @@ const DirectPayment = (props) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
   }, [props, charityPrograms?.items?.sponsored, charityPrograms?.items?.other]);
-  // useEffect(() => {
-  //   if (!isFilter) {
-  //     dispatch(
-  //       transactionsHistoryActions.getTransactionsHistory({
-  //         individualId:
-  //           loggedInUserType === userConstants.INDIVIDUAL
-  //             ? employee?.user?.individual_id
-  //             : null,
-  //         employeeId:
-  //           loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-  //         corporateId: isCorporatePortal
-  //           ? selectedCorporate?.corporate?.corporateId
-  //           : null,
-  //         pageSize: pageSize,
-  //         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-  //       })
-  //     );
-  //   }
-  // }, [currentPage]);
+
   useEffect(() => {
     console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
@@ -174,7 +156,7 @@ const DirectPayment = (props) => {
             batchDate,
             charityName,
             corporateName,
-            socialOrg
+            socialOrg,
           }
         ) => {
           const temp = {
@@ -184,7 +166,7 @@ const DirectPayment = (props) => {
             batchDate: "",
             charityName: "",
             corporateName: "",
-            socialOrg: ""
+            socialOrg: "",
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].employeeName += employeeName;
@@ -224,7 +206,7 @@ const DirectPayment = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId
+        transactionId: transactionId,
       })
     );
   };
@@ -262,7 +244,7 @@ const DirectPayment = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null
+          : null,
       })
     );
   };
@@ -272,13 +254,13 @@ const DirectPayment = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount
+    searchByAmount,
   ]);
 
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection"
+    key: "selection",
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -301,32 +283,32 @@ const DirectPayment = (props) => {
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
     console.log(name, checked);
-    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
+    // console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
     const { preferenceId } = checkedPreference;
     setChecked(checked);
 
     if (name === "allSelect" && checked) {
-      console.log("11111111111111111");
+      // console.log("11111111111111111");
       let prefenreceID = allRecords?.map((val) => val?.Id);
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
       setCheckedPreference({
-        preferenceId: allRecords?.map((val) => val.Id)
+        preferenceId: allRecords?.map((val) => val.Id),
       });
     } else if (name === "allSelect" && !checked) {
-      console.log("222222222222222222");
+      // console.log("222222222222222222");
       setCheckedPreference({
-        preferenceId: []
+        preferenceId: [],
       });
     } else if (checked) {
-      console.log("33333333333333333333");
+      // console.log("33333333333333333333");
       setCheckedPreference({
-        preferenceId: [...preferenceId, items?.Id]
+        preferenceId: [...preferenceId, items?.Id],
       });
     } else {
-      console.log("44444444444444");
+      // console.log("44444444444444");
       setCheckedPreference({
-        preferenceId: preferenceId?.filter((val) => val !== items?.Id)
+        preferenceId: preferenceId?.filter((val) => val !== items?.Id),
       });
     }
     // For all Check & Uncheck
@@ -341,7 +323,7 @@ const DirectPayment = (props) => {
       );
       setAllRecords(tempreference);
     }
-    console.log("ddddddddddddddddd", checkedPreference);
+    // console.log("ddddddddddddddddd", checkedPreference);
   };
 
   console.log(
@@ -385,7 +367,7 @@ const DirectPayment = (props) => {
             .reduce(
               (total, currentValue) => (total = total + currentValue?.amount),
               0
-            )
+            ),
         })
       );
       // fetchResults("");
@@ -636,7 +618,6 @@ const DirectPayment = (props) => {
                 <table>
                   <thead className="ant-table-thead">
                     <tr>
-                      {/* <th className="ant-table-cell">SR No.</th> */}
                       <th>
                         <div className="form-check me-2">
                           <input
@@ -666,9 +647,6 @@ const DirectPayment = (props) => {
                       )}
                       <th className="ant-table-cell">Transaction ID</th>
                       <th className="ant-table-cell">Donation</th>
-                      {/* <th className="ant-table-cell">Donation Type</th> */}
-                      {/* <th className="ant-table-cell">Payment Mode</th> */}
-                      {/* <th className="ant-table-cell">Payment Status</th> */}
                       <th className="ant-table-cell">Payment Date</th>
                       {(employeeId || isCorporatePortal) && (
                         <th className="ant-table-cell">80G</th>
@@ -962,6 +940,26 @@ const DirectPayment = (props) => {
           </div>
         ))
       )}
+      {allRecords?.length > 0 && (
+        <div className="row mt-4">
+          <div className="col-md-12 text-right">
+            <h5>
+              Total : &nbsp;
+              <span className="fs-5">
+                {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                {allRecords
+                  ?.reduce(
+                    (total, currentValue) =>
+                      (total = total + currentValue.amount),
+                    0
+                  )
+                  .toLocaleString()}
+              </span>
+            </h5>
+          </div>
+        </div>
+      )}
+
       <Pagination
         className="pagination-bar mt-4"
         currentPage={currentPage}
@@ -988,7 +986,7 @@ const DirectPayment = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
@@ -1128,7 +1126,7 @@ const DirectPayment = (props) => {
                     ? item?.employeeName
                     : null
                 )
-              )
+              ),
             ].length
           }
           totalProgram={
@@ -1139,7 +1137,7 @@ const DirectPayment = (props) => {
                     ? item?.charityName
                     : null
                 )
-              )
+              ),
             ].length
           }
           totalAmount={
