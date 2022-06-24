@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -114,7 +114,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     filter("All");
@@ -128,7 +128,7 @@ const PayrollBatch = (props) => {
   };
   let allGroupData;
   useEffect(() => {
-    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted ));
+    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted));
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -150,7 +150,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" },
+    { label: "Processed", value: "10" }
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed payment for the batch on the month of ${moment().format(
@@ -168,7 +168,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -231,11 +231,18 @@ const PayrollBatch = (props) => {
     //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
     // }
     dispatch(payrollBatchActions.updateBatchStatus(values));
-    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>", values.batchId, allRecords)
+    console.log(
+      "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
+      values.batchId,
+      allRecords
+    );
     // setRecords(allRecords?.filter(
     //   (item) => item?.batchId !== values.batchId
     // ));
-    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords 22222 >>>>>>>>>>>>>>>>>>>>>>>>>", allRecords)
+    console.log(
+      "<<<<<<<<<<<<<<<<<<<<< allRecords 22222 >>>>>>>>>>>>>>>>>>>>>>>>>",
+      allRecords
+    );
   };
   const handleClose = () => {
     setOpen(false);
@@ -1170,7 +1177,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1229,7 +1236,9 @@ const PayrollBatch = (props) => {
                               <strong>Reference ID:</strong>
                             </div>
                             <div className="col-md-8">
-                              {selectedBatch?.referenceId}
+                              {isOrganizationPortal
+                                ? selectedBatch?.adminreferenceId
+                                : selectedBatch?.referenceId}
                             </div>
                           </div>
                           <div className="row mb-2">
@@ -1237,7 +1246,9 @@ const PayrollBatch = (props) => {
                               <strong>Reference Note:</strong>
                             </div>
                             <div className="col-md-8">
-                              {selectedBatch?.referenceNote}
+                              {isOrganizationPortal
+                                ? selectedBatch?.adminreferenceNote
+                                : selectedBatch?.referenceNote}
                             </div>
                           </div>
                         </>
@@ -1370,7 +1381,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

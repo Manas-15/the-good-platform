@@ -262,6 +262,95 @@ const PayrollBatchDetail = (props) => {
           {/* )} */}
         </div>
       </div>
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
+        <div className="col-md d-flex pl-0">
+          <div className="col-md-8 d-flex ">
+            <div className="col-md-6 pl-0">
+              <div>
+                <select
+                  className="form-select"
+                  value={selected}
+                  defaultValue={""}
+                  onChange={(e) => onHandleChange(e)}
+                >
+                  <option value={""} key={"default"} disabled>
+                    Search by
+                  </option>
+                  <option value="programName">Program Name</option>
+                  <option value="organizationName">Organization Name</option>
+                  {/* {!isEmployeePortal && !isCorporatePortal && (
+                    <option value="corporateName">Corporate</option>
+                  )} */}
+
+                  {/* {!isEmployeePortal && (
+                    <option value="employeeName">Donor</option>
+                  )} */}
+                  <option value="amount">Amount</option>
+                </select>
+              </div>
+            </div>
+            {selected === "programName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Program Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "programName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selected === "organizationName" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        // className="form-control"
+                        className="ant-input-search"
+                        placeholder="Search by Organization Name"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "organizationName")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selected === "amount" && (
+              <div className="col-md-6">
+                <div>
+                  <div className="ant-input-affix-wrapper inputFilterInput">
+                    <span className="ant-input-prefix">
+                      <i className="bi bi-search"></i>
+                      <input
+                        type="text"
+                        className="ant-input-search"
+                        placeholder="Search by Amount"
+                        onChange={(e) =>
+                          onSearchChange(e.target.value, "amount")
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       {accordionData && currentView !== payrollConstants.LIST_VIEW ? (
         <>
           {Object.keys(accordionData).map((type, index) => (
@@ -456,96 +545,7 @@ const PayrollBatchDetail = (props) => {
             </div>
           ))}
         </>
-      ) : null}
-      <div className="ant-row searchContainer mt-3 py-4 align-center">
-        <div className="col-md d-flex pl-0">
-          <div className="col-md-8 d-flex ">
-            <div className="col-md-6 pl-0">
-              <div>
-                <select
-                  className="form-select"
-                  value={selected}
-                  defaultValue={""}
-                  onChange={(e) => onHandleChange(e)}
-                >
-                  <option value={""} key={"default"} disabled>
-                    Search by
-                  </option>
-                  <option value="programName">Program Name</option>
-                  <option value="organizationName">Organization Name</option>
-                  {/* {!isEmployeePortal && !isCorporatePortal && (
-                    <option value="corporateName">Corporate</option>
-                  )} */}
-
-                  {/* {!isEmployeePortal && (
-                    <option value="employeeName">Donor</option>
-                  )} */}
-                  <option value="amount">Amount</option>
-                </select>
-              </div>
-            </div>
-            {selected === "programName" && (
-              <div className="col-md-6">
-                <div>
-                  <div className="ant-input-affix-wrapper inputFilterInput">
-                    <span className="ant-input-prefix">
-                      <i className="bi bi-search"></i>
-                      <input
-                        type="text"
-                        className="ant-input-search"
-                        placeholder="Search by Program Name"
-                        onChange={(e) =>
-                          onSearchChange(e.target.value, "programName")
-                        }
-                      />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {selected === "organizationName" && (
-              <div className="col-md-6">
-                <div>
-                  <div className="ant-input-affix-wrapper inputFilterInput">
-                    <span className="ant-input-prefix">
-                      <i className="bi bi-search"></i>
-                      <input
-                        type="text"
-                        // className="form-control"
-                        className="ant-input-search"
-                        placeholder="Search by Organization Name"
-                        onChange={(e) =>
-                          onSearchChange(e.target.value, "organizationName")
-                        }
-                      />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-            {selected === "amount" && (
-              <div className="col-md-6">
-                <div>
-                  <div className="ant-input-affix-wrapper inputFilterInput">
-                    <span className="ant-input-prefix">
-                      <i className="bi bi-search"></i>
-                      <input
-                        type="text"
-                        className="ant-input-search"
-                        placeholder="Search by Amount"
-                        onChange={(e) =>
-                          onSearchChange(e.target.value, "amount")
-                        }
-                      />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      ) : null}      
       {currentView === payrollConstants.LIST_VIEW && (
         <div className="ant-row">
           <div className="ant-col ant-col-24 mt-2">
