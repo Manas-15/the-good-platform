@@ -7,11 +7,13 @@ import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
 import { Modal } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import ReactHtmlParser from "react-html-parser";
 import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
+  donationPreferenceConstants,
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -436,7 +438,7 @@ const ListTransactionsHistory = (props) => {
                       <th className="ant-table-cell">Corporate</th>
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
-                    <th className="ant-table-cell">Donation</th>
+                    <th className="ant-table-cell">Donation ({ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})</th>
                     <th className="ant-table-cell">Donation Type</th>
                     {/* <th className="ant-table-cell">Payment Mode</th> */}
                     <th className="ant-table-cell">Payment Status</th>
