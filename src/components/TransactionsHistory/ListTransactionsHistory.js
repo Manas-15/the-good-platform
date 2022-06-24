@@ -13,7 +13,7 @@ import {
   paginationConstants,
   viewPortalConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -397,7 +397,10 @@ const ListTransactionsHistory = (props) => {
                       <th className="ant-table-cell">Corporate</th>
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
-                    <th className="ant-table-cell">Donation ({ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})</th>
+                    <th className="ant-table-cell">
+                      Donation (
+                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
+                    </th>
                     <th className="ant-table-cell">Donation Type</th>
                     {/* <th className="ant-table-cell">Payment Mode</th> */}
                     <th className="ant-table-cell">Payment Status</th>
