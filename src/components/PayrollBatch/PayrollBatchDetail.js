@@ -5,7 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
@@ -19,7 +19,7 @@ import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { Modal, Button } from "react-bootstrap";
 
 const actionInitialValues = {
-  preferenceId: "",
+  preferenceId: ""
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, isCorporateView;
@@ -49,7 +49,7 @@ const PayrollBatchDetail = (props) => {
     dispatch(
       payrollSettingActions.getBatchDetail({
         batchId: props?.batchId,
-        socialId: isOrganizationView ? selectedOrganization?.id : null,
+        socialId: isOrganizationView ? selectedOrganization?.id : null
       })
     );
   }, [props?.batchId]);
@@ -144,10 +144,10 @@ const PayrollBatchDetail = (props) => {
       <div className="row mb-4">
         <div className="col-md-12">
           <h1 className="ant-typography customHeading">
-            Payroll Batch Detail -
-            {preferences?.[0]?.batchId}
-            ({preferences &&
-              moment(preferences[0]?.batchDate).format("MMM YYYY")})
+            Payroll Batch Detail -{preferences?.[0]?.batchId}(
+            {preferences &&
+              moment(preferences[0]?.batchDate).format("MMM YYYY")}
+            )
           </h1>
         </div>
         {/* <div className="col-md-5">
@@ -205,7 +205,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {(isCorporateView) && (
+          {isCorporateView && (
             <Link
               to="#"
               className="fs-6 text-decoration-underline mr-3"
@@ -556,6 +556,7 @@ const PayrollBatchDetail = (props) => {
                     <tr>
                       {/* <th className="ant-table-cell">Batch ID</th>   */}
                       {/* <th className="ant-table-cell">Employee</th> */}
+                      <th className="ant-table-cell">Donor</th>
                       <th className="ant-table-cell">Organization</th>
                       <th className="ant-table-cell">Program</th>
                       {/* {!isCorporatePortal && (
@@ -567,6 +568,7 @@ const PayrollBatchDetail = (props) => {
                         {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                         )
                       </th>
+                      <th className="ant-table-cell">Month</th>
                     </tr>
                   </thead>
                   <tbody className="ant-table-tbody">
@@ -574,7 +576,11 @@ const PayrollBatchDetail = (props) => {
                       preferences?.map((item, idx) => (
                         <tr key={idx}>
                           {/* <td>{item?.batchId}</td> */}
-                          {/* <td>{item?.employeeName}</td> */}
+                          <td>
+                            {item?.employeeName
+                              ? item?.employeeName
+                              : item?.corporateName}
+                          </td>
                           <td>{item?.socialOrganization}</td>
                           {/* {!isCorporatePortal && <td>{item?.corporateName}</td>} */}
                           <td>{item?.charityProgram}</td>
@@ -588,6 +594,7 @@ const PayrollBatchDetail = (props) => {
                           </Link>
                         </td> */}
                           <td>{item?.donationAmount?.toLocaleString()}</td>
+                          <td>{moment(item?.batchDate).format("MMM YYYY")}</td>
                         </tr>
                       ))}
                   </tbody>

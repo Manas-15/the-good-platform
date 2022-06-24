@@ -1037,12 +1037,14 @@ const DirectPayment = (props) => {
             <Modal.Title>Account Detail</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ fontSize: "18" }}>
-            <div className="row mb-2">
-              <div className="col-md-4">
-                <strong>Batch ID:</strong>
+            {selectedAccount?.batchId && (
+              <div className="row mb-2">
+                <div className="col-md-4">
+                  <strong>Batch ID:</strong>
+                </div>
+                <div className="col-md-8">{selectedAccount?.batchId}</div>
               </div>
-              <div className="col-md-8">{selectedAccount?.batchId}</div>
-            </div>
+            )}
             {!isEmployeePortal && selectedAccount?.employeeName && (
               <div className="row mb-2">
                 <div className="col-md-4">
