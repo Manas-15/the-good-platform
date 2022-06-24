@@ -11,8 +11,13 @@ function getSocialOrganizations(data) {
     dispatch(request(data));
 
     socialOrganizationService.getSocialOrganizations(data).then(
-      (socialOrganizations) => dispatch(success(socialOrganizations)),
-
+      (socialOrganizations) => {
+        if(socialOrganizations?.data?.msg){
+          dispatch(alertActions.error(socialOrganizations?.data?.msg));
+        }else{
+          dispatch(success(socialOrganizations))
+        }
+      },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));

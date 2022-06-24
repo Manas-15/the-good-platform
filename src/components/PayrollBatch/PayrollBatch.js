@@ -121,7 +121,6 @@ const PayrollBatch = (props) => {
   }, [currentPage]);
 
   const groupByBatch = () => {
-    // console.log("payrollBatches?.itemssss", allRecords);
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
       return acc;
@@ -129,7 +128,7 @@ const PayrollBatch = (props) => {
   };
   let allGroupData;
   useEffect(() => {
-    setAllRecords(payrollBatches?.items);
+    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted));
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -154,9 +153,9 @@ const PayrollBatch = (props) => {
     { label: "Processed", value: "10" },
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed payment for the batch on the month of ${moment().format(
       "MMMM"
-    )} - ${item?.corporateName}`;
+    )} - ${item?.batchId}`;
     setOpenPaidSimulator(true);
     setSelectedBatch(item);
   };
@@ -234,11 +233,16 @@ const PayrollBatch = (props) => {
     dispatch(payrollBatchActions.updateBatchStatus(values));
     console.log(
       "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
-      values
+      values.batchId,
+      allRecords
     );
-    const data = allRecords?.filter((item) => item?.batchId !== values.batchId);
-    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data);
-    setAllRecords(data);
+    // setRecords(allRecords?.filter(
+    //   (item) => item?.batchId !== values.batchId
+    // ));
+    console.log(
+      "<<<<<<<<<<<<<<<<<<<<< allRecords 22222 >>>>>>>>>>>>>>>>>>>>>>>>>",
+      allRecords
+    );
   };
   const handleClose = () => {
     setOpen(false);
@@ -580,9 +584,9 @@ const PayrollBatch = (props) => {
                               </th>
                             )}
 
-                            {!corporateId && (
+                            {/* {!corporateId && (
                               <th className="ant-table-cell">Corporate Name</th>
-                            )}
+                            )} */}
                             <th className="ant-table-cell">Month</th>
                             <th className="ant-table-cell">
                               Amount (
@@ -647,14 +651,14 @@ const PayrollBatch = (props) => {
                               {batch?.corporateId}
                             </td>
                           )} */}
-                                  {!corporateId && (
+                                  {/* {!corporateId && (
                                     <td className="ant-table-cell">
                                       {
                                         groupByBatchData[type]?.[0]
                                           ?.corporateName
                                       }
                                     </td>
-                                  )}
+                                  )} */}
                                   <td className="ant-table-cell">
                                     {moment(
                                       groupByBatchData[type]?.[0]?.createdDate

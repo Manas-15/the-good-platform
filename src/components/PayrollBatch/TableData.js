@@ -159,7 +159,7 @@ const TableData = ({
             : ""
         }`
       );
-      completeInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+      completeInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
         "MMMM"
       )} - ${item?.corporateName}`;
       setActionContent(

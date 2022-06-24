@@ -203,7 +203,17 @@ const ListTransactionsHistory = (props) => {
     searchByCorporateName,
     searchByAmount,
   ]);
-
+  // useEffect(() => {
+  //   fetchResults("");
+  // }, [searchByEmployeeName]);
+  // useEffect(() => {
+  //   fetchResults("");
+  // }, [searchByAmount]);
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
     fetchResults(ranges);
@@ -495,16 +505,34 @@ const ListTransactionsHistory = (props) => {
                         <td className="ant-table-cell text-uppercase">
                           {transaction?.paymentStatus ===
                             paymentConstants.PAYMENT_SUCCESS && (
-                            <span className="text-success">Success</span>
+                            <>
+                              {isOrganizationView &&
+                                !transaction?.batchStatus
+                                  ?.split(",")
+                                  ?.includes?.(
+                                    selectedOrganization?.id?.toString()
+                                  ) && (
+                                  <span className="text-warning">Pending</span>
+                                )}
+                              {(!isOrganizationView ||
+                                transaction?.batchStatus
+                                  ?.split(",")
+                                  ?.includes?.(
+                                    selectedOrganization?.id?.toString()
+                                  )) && (
+                                <span className="text-success">Success</span>
+                              )}
+                            </>
                           )}
                           {transaction?.paymentStatus ===
                             paymentConstants.PAYMENT_FAILURE && (
                             <span className="text-danger">Failed</span>
                           )}
                           {transaction?.paymentStatus ===
-                            paymentConstants.PAYMENT_PENDING && (
-                            <span className="text-warning">Pending</span>
-                          )}
+                            paymentConstants.PAYMENT_PENDING &&
+                            !isOrganizationView && (
+                              <span className="text-warning">Pending</span>
+                            )}
                         </td>
                         <td className="ant-table-cell">
                           {transaction?.paymentDate &&
@@ -513,37 +541,40 @@ const ListTransactionsHistory = (props) => {
                               "DD/MM/YY, h:mm A"
                             )}
                         </td>
-                        {(employeeId || isCorporatePortal) && (
-                          <td className="ant-table-cell">
-                            {transaction?.paymentStatus ===
-                              paymentConstants.PAYMENT_SUCCESS && (
-                              <div className="d-flex">
-                                <Tooltip title="Download">
-                                  <Link
-                                    to="#"
-                                    className="text-decoration-underline"
-                                    onClick={() =>
-                                      downlad(transaction?.transactionId)
-                                    }
-                                  >
-                                    <i className="bi bi-download fs-5 mr-3"></i>
-                                  </Link>
-                                </Tooltip>
-                                <Tooltip title="Email">
-                                  <Link
-                                    to="#"
-                                    className="text-decoration-underline"
-                                    onClick={() =>
-                                      setEmailSend(transaction?.transactionId)
-                                    }
-                                  >
-                                    <i className="bi bi-envelope fs-5"></i>
-                                  </Link>
-                                </Tooltip>
-                              </div>
-                            )}
-                          </td>
-                        )}
+                        {(employeeId || isCorporatePortal) &&
+                          transaction?.batchStatus
+                            ?.split(",")
+                            ?.includes?.(
+                              transaction?.socialOrgId?.toString()
+                            ) && (
+                            <td className="ant-table-cell">
+                              {transaction?.paymentStatus ===
+                                paymentConstants.PAYMENT_SUCCESS && (
+                                <div className="d-flex">
+                                  <Tooltip title="Download">
+                                    <Link
+                                      className="text-decoration-underline"
+                                      onClick={() =>
+                                        downlad(transaction?.transactionId)
+                                      }
+                                    >
+                                      <i className="bi bi-download fs-5 mr-3"></i>
+                                    </Link>
+                                  </Tooltip>
+                                  <Tooltip title="Email">
+                                    <Link
+                                      className="text-decoration-underline"
+                                      onClick={() =>
+                                        setEmailSend(transaction?.transactionId)
+                                      }
+                                    >
+                                      <i className="bi bi-envelope fs-5"></i>
+                                    </Link>
+                                  </Tooltip>
+                                </div>
+                              )}
+                            </td>
+                          )}
                       </tr>
                     ))
                   ) : (

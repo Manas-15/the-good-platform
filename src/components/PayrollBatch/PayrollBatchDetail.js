@@ -142,18 +142,19 @@ const PayrollBatchDetail = (props) => {
         </div>
       </div>
       <div className="row mb-4">
-        <div className="col-md-7">
+        <div className="col-md-12">
           <h1 className="ant-typography customHeading">
-            Payroll Batch Detail -
+            Payroll Batch Detail -{preferences?.[0]?.batchId}(
             {preferences &&
               moment(preferences[0]?.batchDate).format("MMM YYYY")}
+            )
           </h1>
         </div>
-        <div className="col-md-5">
+        {/* <div className="col-md-5">
           <h3 className="ant-typography customHeading">
             Batch Id - {preferences?.[0]?.batchId}
           </h3>
-        </div>
+        </div> */}
       </div>
       <div className="row mb-b payroll ">
         <div className="col-md-12 text-right">
@@ -204,7 +205,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {(isCorporateView || isBluePencilPortal) && (
+          {isCorporateView && (
             <Link
               to="#"
               className="fs-6 text-decoration-underline mr-3"
@@ -555,6 +556,7 @@ const PayrollBatchDetail = (props) => {
                     <tr>
                       {/* <th className="ant-table-cell">Batch ID</th>   */}
                       {/* <th className="ant-table-cell">Employee</th> */}
+                      <th className="ant-table-cell">Donor</th>
                       <th className="ant-table-cell">Organization</th>
                       <th className="ant-table-cell">Program</th>
                       {/* {!isCorporatePortal && (
@@ -566,6 +568,7 @@ const PayrollBatchDetail = (props) => {
                         {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                         )
                       </th>
+                      <th className="ant-table-cell">Month</th>
                     </tr>
                   </thead>
                   <tbody className="ant-table-tbody">
@@ -573,7 +576,11 @@ const PayrollBatchDetail = (props) => {
                       preferences?.map((item, idx) => (
                         <tr key={idx}>
                           {/* <td>{item?.batchId}</td> */}
-                          {/* <td>{item?.employeeName}</td> */}
+                          <td>
+                            {item?.employeeName
+                              ? item?.employeeName
+                              : item?.corporateName}
+                          </td>
                           <td>{item?.socialOrganization}</td>
                           {/* {!isCorporatePortal && <td>{item?.corporateName}</td>} */}
                           <td>{item?.charityProgram}</td>
@@ -587,6 +594,7 @@ const PayrollBatchDetail = (props) => {
                           </Link>
                         </td> */}
                           <td>{item?.donationAmount?.toLocaleString()}</td>
+                          <td>{moment(item?.batchDate).format("MMM YYYY")}</td>
                         </tr>
                       ))}
                   </tbody>

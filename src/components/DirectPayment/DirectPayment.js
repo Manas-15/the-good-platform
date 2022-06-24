@@ -487,7 +487,7 @@ const DirectPayment = (props) => {
       <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-8 d-flex ">
-            <div className="col-md-6">
+            <div className="col-md-6 pl-0">
               <div>
                 <select
                   className="form-select"
@@ -634,7 +634,7 @@ const DirectPayment = (props) => {
                           />
                         </div>
                       </th>
-                      <th>Batch ID</th>
+                      {/* <th>Batch ID</th> */}
                       {!isEmployeePortal && (
                         <th className="ant-table-cell">Donor</th>
                       )}
@@ -678,7 +678,7 @@ const DirectPayment = (props) => {
                               </div>
                             )}
                           </td>
-                          <td>{transaction?.directBatchPaymentId}</td>
+                          {/* <td>{transaction?.directBatchPaymentId}</td> */}
                           {!isEmployeePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
@@ -1035,6 +1035,14 @@ const DirectPayment = (props) => {
             <Modal.Title>Account Detail</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ fontSize: "18" }}>
+            {selectedAccount?.batchId && (
+              <div className="row mb-2">
+                <div className="col-md-4">
+                  <strong>Batch ID:</strong>
+                </div>
+                <div className="col-md-8">{selectedAccount?.batchId}</div>
+              </div>
+            )}
             {!isEmployeePortal && selectedAccount?.employeeName && (
               <div className="row mb-2">
                 <div className="col-md-4">
