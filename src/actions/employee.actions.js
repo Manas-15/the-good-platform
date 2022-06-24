@@ -52,9 +52,7 @@ function login(data, from) {
                 //     alertActions.error("Your account is currently blocked")
                 //   );
                 // } else {
-                  dispatch(
-                    alertActions.error(res?.data?.msg)
-                  );
+                dispatch(alertActions.error(res?.data?.msg));
                 // }
               }
               // dispatch(
