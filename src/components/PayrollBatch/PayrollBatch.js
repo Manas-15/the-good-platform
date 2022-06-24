@@ -59,13 +59,13 @@ const PayrollBatch = (props) => {
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
   const [openDialog, setOpenDialog] = useState(false);
-  const [checked, setChecked] = useState(false);
+  // const [checked, setChecked] = useState(false);
   const [isBatchDetail, setIsBatchDetail] = useState(false);
   const [selectedBatchId, setSelectedBatchId] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedBatch, setSelectedBatch] = useState();
-  const [updateType, setUpdateType] = useState("");
-  const [updatedValue, setUpdatedValue] = useState();
+  // const [updateType, setUpdateType] = useState("");
+  // const [updatedValue, setUpdatedValue] = useState();
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -121,7 +121,7 @@ const PayrollBatch = (props) => {
   }, [currentPage]);
 
   const groupByBatch = () => {
-    console.log("payrollBatches?.itemssss", allRecords);
+    // console.log("payrollBatches?.itemssss", allRecords);
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
       return acc;
@@ -138,7 +138,7 @@ const PayrollBatch = (props) => {
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
 
-  console.log(groupByBatchData);
+  // console.log(groupByBatchData);
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -322,7 +322,7 @@ const PayrollBatch = (props) => {
     // setSearchValue(keyword);
     // setSelectedKeySearch(selected);
   };
-  console.log(groupByBatchData);
+  // console.log(groupByBatchData);
   const onHandleChange = (e) => {
     setSelected(e.target.value);
   };
@@ -344,6 +344,7 @@ const PayrollBatch = (props) => {
   //   console.log("dddddddddddddddddddd groupByBatch", allGroupData);
   // }
 
+  // console.log(isCorporatePortal);
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -353,12 +354,12 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
-              {isCorporatePortal && (
+              {isCorporatePortal && isBluePencilPortal && (
                 <div className="row mb-4">
-                  <div className="col-md-6">
+                  <div className="col-md-6 mt-2">
                     <h6 className="mt-2">Filter By</h6>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 mt-2">
                     <select
                       className="form-select"
                       defaultValue={""}
@@ -376,6 +377,96 @@ const PayrollBatch = (props) => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-8">
+              <div className="row mb-3">
+                <div className="col-md d-flex pl-0">
+                  <div className="col-md-6">
+                    <div>
+                      <select
+                        className="form-select"
+                        value={selected}
+                        defaultValue={""}
+                        onChange={(e) => onHandleChange(e)}
+                      >
+                        <option value={""} key={"default"} disabled>
+                          Search by
+                        </option>
+                        <option value="batchId">Batch ID</option>
+                        {/* {isCorporatePortal && ( */}
+                        <option value="referenceId">Reference ID</option>
+                        {/* )} */}
+
+                        <option value="amount">Amount</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {selected === "batchId" && (
+                    <div className="col-md-6">
+                      <div>
+                        <div className="ant-input-affix-wrapper inputFilterInput">
+                          <span className="ant-input-prefix">
+                            <i className="bi bi-search"></i>
+                            <input
+                              type="text"
+                              // className="form-control"
+                              className="ant-input-search"
+                              placeholder="Search by Batch Id"
+                              onChange={(e) =>
+                                onSearchChange(e.target.value, "batchId")
+                              }
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {selected === "referenceId" && (
+                    <div className="col-md-6">
+                      <div>
+                        <div className="ant-input-affix-wrapper inputFilterInput">
+                          <span className="ant-input-prefix">
+                            <i className="bi bi-search"></i>
+                            <input
+                              type="text"
+                              // className="form-control"
+                              className="ant-input-search"
+                              placeholder="Search by Reference ID"
+                              onChange={(e) =>
+                                onSearchChange(e.target.value, "referenceId")
+                              }
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {selected === "amount" && (
+                    <div className="col-md-6">
+                      <div>
+                        <div className="ant-input-affix-wrapper inputFilterInput">
+                          <span className="ant-input-prefix">
+                            <i className="bi bi-search"></i>
+                            <input
+                              type="text"
+                              className="ant-input-search"
+                              placeholder="Search by Amount"
+                              onChange={(e) =>
+                                onSearchChange(e.target.value, "amount")
+                              }
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4 text-right">
               {!corporateId && !isOrganizationPortal && (
                 <>
                   {isBluePencilPortal && (
@@ -440,90 +531,7 @@ const PayrollBatch = (props) => {
               )}
             </div>
           </div>
-          <div className="row mb-3">
-            <div className="col-md d-flex pl-0">
-              <div className="col-md-4">
-                <div>
-                  <select
-                    className="form-select"
-                    value={selected}
-                    defaultValue={""}
-                    onChange={(e) => onHandleChange(e)}
-                  >
-                    <option value={""} key={"default"} disabled>
-                      Search by
-                    </option>
-                    <option value="batchId">Batch ID</option>
-                    {/* {isCorporatePortal && ( */}
-                    <option value="referenceId">Reference ID</option>
-                    {/* )} */}
 
-                    <option value="amount">Amount</option>
-                  </select>
-                </div>
-              </div>
-
-              {selected === "batchId" && (
-                <div className="col-md-4">
-                  <div>
-                    <div className="ant-input-affix-wrapper inputFilterInput">
-                      <span className="ant-input-prefix">
-                        <i className="bi bi-search"></i>
-                        <input
-                          type="text"
-                          // className="form-control"
-                          className="ant-input-search"
-                          placeholder="Search by Batch Id"
-                          onChange={(e) =>
-                            onSearchChange(e.target.value, "batchId")
-                          }
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {selected === "referenceId" && (
-                <div className="col-md-4">
-                  <div>
-                    <div className="ant-input-affix-wrapper inputFilterInput">
-                      <span className="ant-input-prefix">
-                        <i className="bi bi-search"></i>
-                        <input
-                          type="text"
-                          // className="form-control"
-                          className="ant-input-search"
-                          placeholder="Search by Reference ID"
-                          onChange={(e) =>
-                            onSearchChange(e.target.value, "referenceId")
-                          }
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {selected === "amount" && (
-                <div className="col-md-4">
-                  <div>
-                    <div className="ant-input-affix-wrapper inputFilterInput">
-                      <span className="ant-input-prefix">
-                        <i className="bi bi-search"></i>
-                        <input
-                          type="text"
-                          className="ant-input-search"
-                          placeholder="Search by Amount"
-                          onChange={(e) =>
-                            onSearchChange(e.target.value, "amount")
-                          }
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
           {payrollBatches.loading && <Loader />}
           {allRecords?.length === 0 && (
             <div className="card p-4 text-center">

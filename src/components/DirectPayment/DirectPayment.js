@@ -116,25 +116,7 @@ const DirectPayment = (props) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
   }, [props, charityPrograms?.items?.sponsored, charityPrograms?.items?.other]);
-  // useEffect(() => {
-  //   if (!isFilter) {
-  //     dispatch(
-  //       transactionsHistoryActions.getTransactionsHistory({
-  //         individualId:
-  //           loggedInUserType === userConstants.INDIVIDUAL
-  //             ? employee?.user?.individual_id
-  //             : null,
-  //         employeeId:
-  //           loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-  //         corporateId: isCorporatePortal
-  //           ? selectedCorporate?.corporate?.corporateId
-  //           : null,
-  //         pageSize: pageSize,
-  //         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-  //       })
-  //     );
-  //   }
-  // }, [currentPage]);
+
   useEffect(() => {
     console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
@@ -958,6 +940,26 @@ const DirectPayment = (props) => {
           </div>
         ))
       )}
+      {allRecords?.length > 0 && (
+        <div className="row mt-4">
+          <div className="col-md-12 text-right">
+            <h5>
+              Total : &nbsp;
+              <span className="fs-5">
+                {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                {allRecords
+                  ?.reduce(
+                    (total, currentValue) =>
+                      (total = total + currentValue.amount),
+                    0
+                  )
+                  .toLocaleString()}
+              </span>
+            </h5>
+          </div>
+        </div>
+      )}
+
       <Pagination
         className="pagination-bar mt-4"
         currentPage={currentPage}
