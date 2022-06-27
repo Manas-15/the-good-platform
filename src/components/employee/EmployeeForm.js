@@ -12,7 +12,7 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData
+  CountryRegionData,
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
@@ -31,17 +31,17 @@ const initialValues = {
   state: "",
   country: "",
   userType: 3,
-  password: "test@%^@#1023"
+  password: "test@%^@#1023",
 };
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
   { value: "2", label: "Help Donar" },
-  { value: "3", label: "Universe Donar" }
+  { value: "3", label: "Universe Donar" },
 ];
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" }
+  { value: "Transgender", label: "Transgender" },
 ];
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -86,17 +86,25 @@ const EmployeeForm = ({ type }) => {
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("India");
-  const [state, setState] = useState();
+  const [state, setState] = useState("");
   const addinguser = useSelector((state) => state.employee.addinguser);
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
+
   const employeeRegister = (values) => {
+    values.state = state;
+    values.country = country;
+    console.log(values);
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
+      console.log(values.email);
       dispatch(employeeActions.register(values, userConstants.EMPLOYEE));
     }
   };
+
+  console.log(country, state);
+
   const selectCountry = (country) => {
     setCountry(country);
   };
@@ -125,6 +133,7 @@ const EmployeeForm = ({ type }) => {
                   values.organizationJoiningDate
                 ).format("YYYY-MM-DD");
                 employeeRegister(values);
+                console.log(values);
               }}
             >
               {({
@@ -134,7 +143,7 @@ const EmployeeForm = ({ type }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting
+                isSubmitting,
                 /* and other goodies */
               }) => (
                 <Form>
@@ -356,7 +365,7 @@ const EmployeeForm = ({ type }) => {
                       name="state"
                       country={country}
                       value={state}
-                      placeholder="Select State"
+                      // placeholder="Select State"
                       onChange={(val) => selectState(val)}
                       className={
                         "form-select" +
