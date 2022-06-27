@@ -38,34 +38,41 @@ const CorporateForm = ({ type, id }) => {
   const [submitted, setSubmitted] = useState(false);
   const [editCorpData, setEditCorpData] = useState();
   const corporates = useSelector((state) => state.corporates);
+  console.log(corporates);
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const [editCountry, setEditCountry] = useState("");
   const [editState, setEditState] = useState("");
 
-  console.log(editCorpData);
-
   const addingCorporate = useSelector(
     (state) => state?.corporates?.addingCorporate
   );
-  // console.log(addingCorporate);
 
-  // if (type === "admin") {
-  //   initialValues.userType = 1;
-  // } else if (type === "corporate") {
   initialValues.userType = 2;
-  // }
 
   const dispatch = useDispatch();
+
   const corporateRegister = (values) => {
-    values.state = state;
-    values.country = country;
+    values.state = id ? editState : state;
+    values.country = id ? editCountry : country;
+
+    console.log(country, state); // passed
+    console.log(editCountry, editState);
+    console.log(values.country, values.state); // passed
+
     console.log(values);
     setSubmitted(true);
-    if (values.organizationName && values.email && values.regdNumber) {
+    if (
+      values.organizationName &&
+      values.email &&
+      values.regdNumber &&
+      values.country &&
+      values.state
+    ) {
       id
         ? dispatch(corporateActions.updateCorporate(values, type))
-        : dispatch(corporateActions.addCorporate(values, type));
+        : // console.log(values, "edit apiiiiiiiiiii")
+          dispatch(corporateActions.addCorporate(values, type));
     }
   };
 
@@ -84,6 +91,7 @@ const CorporateForm = ({ type, id }) => {
   }, []);
 
   if (id) {
+    // console.log(id, "iddddddddddddddd");
     initialValues.corporateId = id;
     initialValues.organizationName = editCorpData?.organizationName;
     initialValues.email = editCorpData?.email;
@@ -97,9 +105,6 @@ const CorporateForm = ({ type, id }) => {
     initialValues.contactPerson = editCorpData?.contactPerson;
     initialValues.address = editCorpData?.address;
     initialValues.city = editCorpData?.city;
-    initialValues.state = editCorpData?.state;
-    initialValues.country = editCorpData?.country;
-    console.log(editCorpData?.state);
   } else {
     initialValues.organizationName = "";
     initialValues.email = "";
@@ -151,6 +156,7 @@ const CorporateForm = ({ type, id }) => {
         initialValues={initialValues}
         validationSchema={CorporateSchema}
         onSubmit={(values, { setSubmitting }) => {
+          // console.log(values);
           corporateRegister(values);
         }}
       >
@@ -440,6 +446,9 @@ const CorporateForm = ({ type, id }) => {
                 <RegionDropdown
                   name="state"
                   country={id ? editCountry : country}
+                  // value={
+                  //   id ? console.log("editSantosh") : console.log("santosh")
+                  // }
                   value={id ? editState : state}
                   onChange={(val) =>
                     id ? selectEditState(val) : selectState(val)
@@ -458,6 +467,7 @@ const CorporateForm = ({ type, id }) => {
               <div className="col-md-8">
                 <CountryDropdown
                   name="country"
+                  // value={id ? console.log("editManas") : console.log("manas")}
                   value={id ? editCountry : country}
                   onChange={(val) =>
                     id ? selectEditCountry(val) : selectCountry(val)

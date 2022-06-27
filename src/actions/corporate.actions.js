@@ -102,10 +102,13 @@ function addCorporate(corporate, type) {
 
 function updateCorporate(corporate) {
   return (dispatch) => {
+    console.log(corporate, "valuessssssss");
     dispatch(request(corporate));
 
     corporateService.updateCorporate(corporate).then(
       (corporate) => {
+        console.log(corporate, "valuessssssss successssssss");
+
         dispatch(success(corporate));
         history.push("/list-corporates");
         dispatch(alertActions.success("Corporate Updated Successfully"));
@@ -120,6 +123,8 @@ function updateCorporate(corporate) {
     return { type: corporateConstants.UPDATE_CORPORATE_REQUEST, corporate };
   }
   function success(corporate) {
+    console.log(corporate, "after successsssss");
+
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
       corporate,
