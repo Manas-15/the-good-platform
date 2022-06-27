@@ -119,8 +119,8 @@ const DirectPayment = (props) => {
   useEffect(() => {
     console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
-    filter("status", "False");
-  }, []);
+    // filter("status", "False");
+  }, [transactions?.directPayments]);
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
   }, [transactions?.totalCount]);
@@ -131,6 +131,7 @@ const DirectPayment = (props) => {
 
   const filter = (type, value) => {
     console.log("changeeeeeeeeeeeeeee", value, type);
+    // setAllRecords();
     setSelectedStatus(value);
     setIsFilter(true);
     // fetchResults("");
@@ -355,7 +356,6 @@ const DirectPayment = (props) => {
           batchProcessType: "directPaymentBatch",
           ids: checkedPreference?.preferenceId,
           corporateId: "",
-          allRecords: allRecords,
           totalAmount: allRecords
             ?.filter((item) =>
               checkedPreference?.preferenceId?.includes(item?.Id) ? item : null

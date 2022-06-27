@@ -78,7 +78,7 @@ const DonateSecondStep = ({
     employeeFirstTwoChar = employee?.name?.slice(0, 2)?.toLowerCase();
   }
   const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;    
   const initialValues = {
     orderId: selectedCharity
       ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
@@ -105,11 +105,11 @@ const DonateSecondStep = ({
     charity:
       loggedInUserType === userConstants.INDIVIDUAL
         ? {
-            charityName: individualSelectedCharity?.name,
-            id: individualSelectedCharity?.id?.toString(),
-            organisationId: individualSelectedCharity?.organisationId,
-            soicalName: selectedOrganization?.name,
-            status: individualSelectedCharity?.status,
+            charityName: selectedCharity?.charityName,
+            id: selectedCharity?.id,
+            organisationId: selectedCharity?.organisationId,
+            soicalName: selectedCharity?.soicalName,
+            status: selectedCharity?.status,
             unitPrice: 500
           }
         : selectedCharity,
