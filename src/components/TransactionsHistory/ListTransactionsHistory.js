@@ -13,7 +13,7 @@ import {
   paginationConstants,
   viewPortalConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -25,12 +25,12 @@ const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -72,7 +72,7 @@ const ListTransactionsHistory = (props) => {
   const [selectedRange, setSelectedRange] = useState([]);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
 
   const isOrganizationView =
@@ -145,7 +145,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -193,17 +193,20 @@ const ListTransactionsHistory = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
+          : null
       })
     );
   };
+  useEffect(() => {
+    console.log("currentPagecurrentPagecurrentPage", currentPage)
+    fetchResults("")  }, [currentPage]);
   useEffect(() => {
     fetchResults("");
   }, [
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount,
+    searchByAmount
   ]);
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -530,14 +533,14 @@ const ListTransactionsHistory = (props) => {
                               "DD/MM/YY, h:mm A"
                             )}
                         </td>
-                        {(employeeId || isCorporatePortal) &&
-                          transaction?.batchStatus
-                            ?.split(",")
-                            ?.includes?.(
-                              transaction?.socialOrgId?.toString()
-                            ) && (
-                            <td className="ant-table-cell">
-                              {transaction?.paymentStatus ===
+                        {(employeeId || isCorporatePortal) && (
+                          <td className="ant-table-cell">
+                            {transaction?.batchStatus
+                              ?.split(",")
+                              ?.includes?.(
+                                transaction?.socialOrgId?.toString()
+                              ) ? (
+                              transaction?.paymentStatus ===
                                 paymentConstants.PAYMENT_SUCCESS && (
                                 <div className="d-flex">
                                   <Tooltip title="Download">
@@ -561,9 +564,12 @@ const ListTransactionsHistory = (props) => {
                                     </Link>
                                   </Tooltip>
                                 </div>
-                              )}
-                            </td>
-                          )}
+                              )
+                            ) : (
+                              <span className="text-warning">Pending</span>
+                            )}
+                          </td>
+                        )}
                       </tr>
                     ))
                   ) : (
@@ -605,7 +611,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
