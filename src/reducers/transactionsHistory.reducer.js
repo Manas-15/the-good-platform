@@ -36,7 +36,8 @@ export function transactionsHistory(state = {}, action) {
       };
     case transactionsHistoryConstants.GET_DIRECT_PAYMENT_SUCCESS:
       return {
-        directPayments: action?.data?.data?.direct_payment
+        directPayments: action?.data?.data?.direct_payment,
+        totalCount: action?.data?.data?.count,
       };
     case transactionsHistoryConstants.GET_DIRECT_PAYMENT_FAILURE:
       return {
