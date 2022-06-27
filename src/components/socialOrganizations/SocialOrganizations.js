@@ -145,7 +145,7 @@ const SocialOrganizations = () => {
           <h1 className="ant-typography customHeading">Social Organizations</h1>
         </div>
       </div>
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+      <div className="ant-row searchContainer mt-3 py-4 px-2 align-center">
         <div className="ant-col ant-col-24  searchContainer">
           <div className="ant-col ant-col-8">
             <div className="ant-input-affix-wrapper inputFilterInput">

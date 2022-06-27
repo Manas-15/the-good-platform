@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -21,14 +21,14 @@ const preferenceForm = {
   type: "",
   donationAmount: "",
   frequency: "",
-  isConsentCheck: ""
+  isConsentCheck: "",
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: ""
+  preferenceId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -65,7 +65,7 @@ const EmployeeDonationPreferences = () => {
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Preference",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
   }, [currentPage]);
@@ -148,15 +148,12 @@ const EmployeeDonationPreferences = () => {
   }
   const onHandleChange = (e) => {
     console.log("fired");
+    setSearchText("");
     setSelected(e.target.value);
   };
   const search = (value) => {
     setSearchText(value);
     setSelected(selected);
-    // if(tabType === socialOrganizationConstants.SPONSORED){
-    //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
-    // }
   };
   return (
     <div className="customContainer program-list">
@@ -165,7 +162,7 @@ const EmployeeDonationPreferences = () => {
           <h1 className="ant-typography customHeading">Donation Preference</h1>
         </div>
       </div>
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-4">
             <div>

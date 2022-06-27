@@ -9,7 +9,7 @@ import Pagination from "../Shared/Pagination";
 import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
-  requestType: ""
+  requestType: "",
 };
 let goodplatformFields = [
   { label: "First Name", value: "firstName" },
@@ -21,16 +21,17 @@ let goodplatformFields = [
   { label: "PAN", value: "pan" },
   { label: "Joining Date", value: "joiningDate" },
   { label: "Country", value: "country" },
-  { label: "Status", value: "status" }
+  { label: "Status", value: "status" },
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 
 const ListEmployees = (props) => {
   let location = useLocation();
   const isSuperadminView = location.state;
-  console.log(isSuperadminView);
+  // console.log(isSuperadminView);
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
+  // console.log(employees);
   const hiddenFileInput = useRef(null);
   // const user = useSelector((state) => state.employee.user);
   // Pagination
@@ -49,6 +50,8 @@ const ListEmployees = (props) => {
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
   const [finalData, setFinalData] = useState([]);
+  const [records, setRecords] = useState("");
+  const [selected, setSelected] = useState();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -56,7 +59,7 @@ const ListEmployees = (props) => {
       employeeActions.getEmployees({
         corporateId: corporateId,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
   }, [currentPage]);
@@ -66,6 +69,9 @@ const ListEmployees = (props) => {
   useEffect(() => {
     setTotalCount(employees?.totalCount);
   }, [employees?.totalCount]);
+  useEffect(() => {
+    setRecords(employees?.items);
+  }, [employees?.items]);
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
@@ -118,7 +124,7 @@ const ListEmployees = (props) => {
             fieldType.push("select_field");
             goodplatformFields = [
               ...goodplatformFields,
-              { label: "Select Field", value: "select_field" }
+              { label: "Select Field", value: "select_field" },
             ];
           }
         }
@@ -148,10 +154,7 @@ const ListEmployees = (props) => {
     });
     setSelectedFieldTypes(data);
   };
-  // const goNext = () => {
-  //   setIsImportNextStep(true);
-  //   setIsBulkUpload(false);
-  // };
+
   const goBack = () => {
     setIsImportNextStep(false);
     setIsBulkUpload(false);
@@ -172,14 +175,36 @@ const ListEmployees = (props) => {
     formData.append("file", selectedFile, selectedFile?.name);
     formData.append("tblHeader", JSON.stringify(changesField));
 
-    // console.log(formData);
     dispatch(employeeActions.bulkImport(formData));
-    // console.log(
-    //   "setSelectedFieldType confirm >>>>>>>>>>>>>>>>>>",
-    //   changesField,
-    //   formData
-    // );
   };
+  const onHandleChange = (e) => {
+    console.log("fired");
+    setRecords(employees?.items);
+    setSelected(e.target.value);
+  };
+  const search = (value, selected) => {
+    if (value !== "") {
+      const results = () => {
+        if (selected === "name") {
+          return records?.filter((item) =>
+            value
+              ? item?.name?.toLowerCase()?.includes?.(value.toLowerCase())
+              : item
+          );
+        } else if (selected === "email") {
+          return records?.filter((item) =>
+            value
+              ? item?.email?.toLowerCase()?.includes?.(value.toLowerCase())
+              : item
+          );
+        }
+      };
+      setRecords(results);
+    } else {
+      setRecords(employees?.items);
+    }
+  };
+  console.log(records);
 
   return (
     <div className="customContainer">
@@ -222,7 +247,62 @@ const ListEmployees = (props) => {
       </div>
       {!isBulkUpload && !isImportNextStep && (
         <>
-          <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+          <div className="ant-row searchContainer mt-3 py-4 align-center">
+            <div className="col-md d-flex pl-0">
+              <div className="col-md-4">
+                <div>
+                  <select
+                    className="form-select"
+                    value={selected}
+                    defaultValue={""}
+                    onChange={(e) => onHandleChange(e)}
+                  >
+                    <option value={""} key={"default"} disabled>
+                      Search by
+                    </option>
+                    <option value="name"> Name</option>
+                    <option value="email">Email </option>
+                  </select>
+                </div>
+              </div>
+              {selected === "name" && (
+                <div className="col-md-4">
+                  <div>
+                    <div className="ant-input-affix-wrapper inputFilterInput">
+                      <span className="ant-input-prefix">
+                        <i className="bi bi-search"></i>
+                        <input
+                          type="text"
+                          className="ant-input-search"
+                          placeholder="Search by Name"
+                          onChange={(e) => search(e.target.value, "name")}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {selected === "email" && (
+                <div className="col-md-4">
+                  <div>
+                    <div className="ant-input-affix-wrapper inputFilterInput">
+                      <span className="ant-input-prefix">
+                        <i className="bi bi-search"></i>
+                        <input
+                          type="text"
+                          // className="form-control"
+                          className="ant-input-search"
+                          placeholder="Search by Email"
+                          onChange={(e) => search(e.target.value, "email")}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          {/* <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
             <div className="ant-col ant-col-24  searchContainer">
               <div className="ant-col ant-col-8">
                 <div className="ant-input-affix-wrapper inputFilterInput">
@@ -232,13 +312,13 @@ const ListEmployees = (props) => {
                       placeholder="Search by Name"
                       className="ant-input-search"
                       type="text"
-                      // value=""
+                      onChange={(e) => search(e.target.value)}
                     />
                   </span>
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           {employees.actionRequest && <Loader />}
           <div className="ant-row">
             <div className="ant-col ant-col-24 mt-2">
@@ -256,8 +336,8 @@ const ListEmployees = (props) => {
                       </tr>
                     </thead>
                     <tbody className="ant-table-tbody">
-                      {employees?.items?.length > 0 ? (
-                        employees?.items.map((employee, index) => (
+                      {records?.length > 0 ? (
+                        records?.map((employee, index) => (
                           <tr
                             key={index + 1}
                             className="ant-table-row ant-table-row-level-0"

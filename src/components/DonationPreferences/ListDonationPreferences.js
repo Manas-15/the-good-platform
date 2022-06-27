@@ -6,7 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -28,14 +28,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: ""
+  donationConsent: "",
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: ""
+  preferenceId: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
@@ -249,7 +249,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                           key={index + 1}
                           className="ant-table-row ant-table-row-level-0"
                         >
-                          {/* <td className="ant-table-cell">{index + 1}</td> */}
                           {isCorporatePortal && (
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">

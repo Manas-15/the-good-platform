@@ -7,11 +7,13 @@ import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
 import { Modal } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import ReactHtmlParser from "react-html-parser";
 import {
   paymentConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -93,25 +95,7 @@ const ListTransactionsHistory = (props) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
   }, [props, charityPrograms?.items?.sponsored, charityPrograms?.items?.other]);
-  // useEffect(() => {
-  //   if (!isFilter) {
-  //     dispatch(
-  //       transactionsHistoryActions.getTransactionsHistory({
-  //         individualId:
-  //           loggedInUserType === userConstants.INDIVIDUAL
-  //             ? employee?.user?.individual_id
-  //             : null,
-  //         employeeId:
-  //           loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-  //         corporateId: isCorporatePortal
-  //           ? selectedCorporate?.corporate?.corporateId
-  //           : null,
-  //         pageSize: pageSize,
-  //         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-  //       })
-  //     );
-  //   }
-  // }, [currentPage]);
+
   useEffect(() => {
     setRecords(transactions?.items);
   }, [transactions?.items]);
@@ -138,6 +122,11 @@ const ListTransactionsHistory = (props) => {
   };
   const onHandleChange = (e) => {
     console.log("fired");
+    setSearchByEmployeeName("");
+    setSearchByCorporateName("");
+    setSearchByProgramName("");
+    setSearchByAmount("");
+
     setSelected(e.target.value);
   };
 
@@ -181,17 +170,7 @@ const ListTransactionsHistory = (props) => {
       : employee?.user?.email;
     initialValues.transactionId = transactionId;
   };
-  const search = (value, type) => {
-    // if (value.length > 3) {
-    if (type === "employeeName") {
-      setSearchByEmployeeName(value);
-    } else if (type === "programName") {
-      setSearchByProgramName(value);
-    } else if (type === "amount") {
-      setSearchByAmount(value);
-    }
-    // }
-  };
+
   const fetchResults = (dateRange) => {
     dispatch(
       transactionsHistoryActions.getTransactionsHistory({
@@ -226,34 +205,16 @@ const ListTransactionsHistory = (props) => {
     searchByCorporateName,
     searchByAmount
   ]);
-  // useEffect(() => {
-  //   fetchResults("");
-  // }, [searchByEmployeeName]);
-  // useEffect(() => {
-  //   fetchResults("");
-  // }, [searchByAmount]);
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: "selection"
-  };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
     fetchResults(ranges);
-    // setIsDateRangeFilter(false);
-    // {
-    //   selection: {
-    //     startDate: [native Date Object],
-    //     endDate: [native Date Object],
-    //   }
-    // }
   };
   const showAccountDetail = (item) => {
     setOpenAccountDetail(true);
     setSelectedAccount(item);
-    console.log("aaaaaaaaaaaaa item", item);
+    // console.log("aaaaaaaaaaaaa item", item);
   };
-  const date = new Date();
+
   return (
     <div className="customContainer">
       <div className="row mt-3">
@@ -313,7 +274,7 @@ const ListTransactionsHistory = (props) => {
           </div>
         </div>
       </div>
-      <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
+      <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-4">
             <div>
@@ -436,7 +397,10 @@ const ListTransactionsHistory = (props) => {
                       <th className="ant-table-cell">Corporate</th>
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
-                    <th className="ant-table-cell">Donation</th>
+                    <th className="ant-table-cell">
+                      Donation (
+                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
+                    </th>
                     <th className="ant-table-cell">Donation Type</th>
                     {/* <th className="ant-table-cell">Payment Mode</th> */}
                     <th className="ant-table-cell">Payment Status</th>
@@ -463,6 +427,7 @@ const ListTransactionsHistory = (props) => {
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title="Show detail">
                                 <Link
+                                  to="#"
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
@@ -477,6 +442,7 @@ const ListTransactionsHistory = (props) => {
                           <span className="ant-typography font-weight-bold">
                             <Tooltip title="Show detail">
                               <Link
+                                to="#"
                                 onClick={() => showAccountDetail(transaction)}
                               >
                                 {" "}
@@ -492,6 +458,7 @@ const ListTransactionsHistory = (props) => {
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title="Show detail">
                                 <Link
+                                  to="#"
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
@@ -506,6 +473,7 @@ const ListTransactionsHistory = (props) => {
                           <td className="ant-table-cell">
                             <Tooltip title="Show detail">
                               <Link
+                                to="#"
                                 onClick={() => showAccountDetail(transaction)}
                               >
                                 <span className="custom-color">

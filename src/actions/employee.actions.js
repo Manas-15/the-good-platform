@@ -47,15 +47,13 @@ function login(data, from) {
                 // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
                 history.push("/otp");
               } else {
-                if (res?.data?.msg === "Email or Password is not valid") {
-                  dispatch(
-                    alertActions.error("Email or Password is not valid")
-                  );
-                } else {
-                  dispatch(
-                    alertActions.error("Your account is currently blocked")
-                  );
-                }
+                // if(!res?.data?.approve) {
+                //   dispatch(
+                //     alertActions.error("Your account is currently blocked")
+                //   );
+                // } else {
+                dispatch(alertActions.error(res?.data?.msg));
+                // }
               }
               // dispatch(
               //   alertActions.error("Your account is currently inactive.")
@@ -327,9 +325,7 @@ function setEmployeePassword(data) {
 
 function employeeAccountRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "mmmmmmmmmmmmmmmmmmmm");
     dispatch(request(actionValues));
-
     employeeService.employeeAccountRequest(actionValues).then(
       (msg) => {
         dispatch(success(msg));
@@ -361,10 +357,8 @@ function employeeAccountRequest(actionValues) {
   }
 }
 function bulkImport(formData) {
-  console.log(formData);
   return (dispatch) => {
     dispatch(request(formData));
-
     employeeService.bulkImport(formData).then(
       () => {
         dispatch(success());

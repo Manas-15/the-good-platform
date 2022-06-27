@@ -205,7 +205,7 @@ const PayrollBatchDetail = (props) => {
               Program View
             </button>
           </Link>
-          {isCorporateView && (
+          {(isCorporateView && !isOrganizationView) && (
             <Link
               to="#"
               className="fs-6 text-decoration-underline mr-3"
@@ -262,205 +262,10 @@ const PayrollBatchDetail = (props) => {
           {/* )} */}
         </div>
       </div>
-      {accordionData && currentView !== payrollConstants.LIST_VIEW ? (
-        <>
-          {Object.keys(accordionData).map((type, index) => (
-            <div className="row mt-4">
-              {ProcessHelper(accordionData[type], batchId)?.length > 0 ? (
-                <Accordion defaultActiveKey={index} className="Payroll">
-                  <Accordion.Item eventKey={0}>
-                    <Accordion.Header>
-                      {type}{" "}
-                      {currentView === payrollConstants.EMPLOYEE_VIEW &&
-                        ` - ${accordionData[type][0]?.employeeUid}`}
-                      {currentView === payrollConstants.PROGRAM_VIEW &&
-                        ` - ${accordionData[type][0]?.socialOrganization}`}
-                      &nbsp;&#45;&nbsp;
-                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
-                      {accordionData[type]
-                        ? ProcessHelper(accordionData[type], batchId)
-                            ?.reduce(
-                              (total, currentValue) =>
-                                (total = total + currentValue.donationAmount),
-                              0
-                            )
-                            .toLocaleString()
-                        : 0}
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <div className="ant-row">
-                        <div className="ant-col ant-col-24 mt-2">
-                          <div className="ant-table-wrapper">
-                            <div className="ant-table">
-                              <table>
-                                <thead className="ant-table-thead">
-                                  <tr>
-                                    <th className="ant-table-cell">Sr No.</th>
-                                    {(currentView ===
-                                      payrollConstants.ORGANIZATION_VIEW ||
-                                      currentView ===
-                                        payrollConstants.PROGRAM_VIEW) &&
-                                      !isOrganizationView && (
-                                        <th className="ant-table-cell">
-                                          Employee Name
-                                        </th>
-                                      )}
-                                    {(currentView ===
-                                      payrollConstants.ORGANIZATION_VIEW ||
-                                      currentView ===
-                                        payrollConstants.PROGRAM_VIEW) &&
-                                      !isOrganizationView && (
-                                        <th className="ant-table-cell">
-                                          Employee ID
-                                        </th>
-                                      )}
-                                    {isOrganizationView &&
-                                      currentView !==
-                                        payrollConstants.CORPORATE_VIEW && (
-                                        <th className="ant-table-cell">
-                                          Corporate Name
-                                        </th>
-                                      )}
-                                    {currentView !==
-                                      payrollConstants.PROGRAM_VIEW && (
-                                      <th className="ant-table-cell">
-                                        Program
-                                      </th>
-                                    )}
-                                    {(currentView ===
-                                      payrollConstants.EMPLOYEE_VIEW ||
-                                      currentView ===
-                                        payrollConstants.CORPORATE_VIEW) && (
-                                      <th className="ant-table-cell">
-                                        Organization
-                                      </th>
-                                    )}
-                                    {/* <th className="text-center">Status</th> */}
-                                    <th className="ant-table-cell">
-                                      Amount (
-                                      {ReactHtmlParser(
-                                        donationPreferenceConstants?.CURRENCY
-                                      )}
-                                      )
-                                    </th>
-                                    {!batchId && (
-                                      <th className="ant-table-cell text-center">
-                                        Actions
-                                      </th>
-                                    )}
-                                  </tr>
-                                </thead>
-                                <tbody className="ant-table-tbody">
-                                  {accordionData[type]
-                                    .filter((preference) =>
-                                      batchId
-                                        ? preference
-                                        : !preference?.batchId &&
-                                          (preference?.status ===
-                                            donationPreferenceConstants?.RESUMED ||
-                                            preference?.status === null)
-                                    )
-                                    .map((preference, i) => (
-                                      <tr
-                                        key={index + 1}
-                                        className="ant-table-row ant-table-row-level-0"
-                                      >
-                                        <td className="ant-table-cell">
-                                          {i + 1}
-                                        </td>
-                                        {(currentView ===
-                                          payrollConstants.ORGANIZATION_VIEW ||
-                                          currentView ===
-                                            payrollConstants.PROGRAM_VIEW) &&
-                                          !isOrganizationView && (
-                                            <td className="ant-table-cell">
-                                              <span className="ant-typography font-weight-bold">
-                                                {preference?.employeeName}
-                                              </span>
-                                            </td>
-                                          )}
-                                        {(currentView ===
-                                          payrollConstants.ORGANIZATION_VIEW ||
-                                          currentView ===
-                                            payrollConstants.PROGRAM_VIEW) &&
-                                          !isOrganizationView && (
-                                            <td className="ant-table-cell">
-                                              {preference?.employeeUid}
-                                            </td>
-                                          )}
-                                        {isOrganizationView &&
-                                          currentView !==
-                                            payrollConstants.CORPORATE_VIEW && (
-                                            <td className="ant-table-cell">
-                                              <span className="ant-typography font-weight-bold">
-                                                {preference?.corporateName}
-                                              </span>
-                                            </td>
-                                          )}
-                                        {currentView !==
-                                          payrollConstants.PROGRAM_VIEW && (
-                                          <td className="ant-table-cell">
-                                            <span className="ant-typography font-weight-bold">
-                                              {preference?.charityProgram}
-                                            </span>
-                                          </td>
-                                        )}
-                                        {(currentView ===
-                                          payrollConstants.EMPLOYEE_VIEW ||
-                                          currentView ===
-                                            payrollConstants.CORPORATE_VIEW) && (
-                                          <td className="ant-table-cell">
-                                            <span className="ant-typography font-weight-bold">
-                                              {preference.socialOrganization}
-                                            </span>
-                                          </td>
-                                        )}
-                                        {/* <td className="text-center">
-                                  {preference?.status ===
-                                    donationPreferenceConstants?.SUSPENDED && (
-                                    <span className="badge badge-danger">
-                                      Suspended
-                                    </span>
-                                  )}
-                                  {(!preference?.status ||
-                                    preference?.status ===
-                                      donationPreferenceConstants?.RESUMED) && (
-                                    <span className="badge badge-success">
-                                      Active
-                                    </span>
-                                  )}
-                                </td> */}
-                                        <td className="ant-table-cell">
-                                          <input
-                                            name="amount"
-                                            type="text"
-                                            size="4"
-                                            maxLength={10}
-                                            value={preference?.donationAmount?.toLocaleString()}
-                                            className="form-control"
-                                            disabled={true}
-                                          />
-                                        </td>
-                                      </tr>
-                                    ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              ) : null}
-            </div>
-          ))}
-        </>
-      ) : null}
       <div className="ant-row searchContainer mt-3 py-4 align-center">
         <div className="col-md d-flex pl-0">
           <div className="col-md-8 d-flex ">
-            <div className="col-md-6 pl-0">
+            <div className="col-md-6">
               <div>
                 <select
                   className="form-select"
@@ -476,7 +281,6 @@ const PayrollBatchDetail = (props) => {
                   {/* {!isEmployeePortal && !isCorporatePortal && (
                     <option value="corporateName">Corporate</option>
                   )} */}
-
                   {/* {!isEmployeePortal && (
                     <option value="employeeName">Donor</option>
                   )} */}
@@ -546,6 +350,227 @@ const PayrollBatchDetail = (props) => {
           </div>
         </div>
       </div>
+      {accordionData && currentView !== payrollConstants.LIST_VIEW ? (
+        <>
+          {Object.keys(accordionData).map((type, index) => (
+            <div className="row mt-4">
+              {ProcessHelper(accordionData[type], batchId)?.length > 0 ? (
+                <Accordion defaultActiveKey={index} className="Payroll">
+                  <Accordion.Item eventKey={0}>
+                    <Accordion.Header>
+                      {type}{" "}
+                      {currentView === payrollConstants.EMPLOYEE_VIEW &&
+                        ` - ${accordionData[type][0]?.employeeUid}`}
+                      {currentView === payrollConstants.PROGRAM_VIEW &&
+                        ` - ${accordionData[type][0]?.socialOrganization}`}
+                      &nbsp;&#45;&nbsp;
+                      {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                      {accordionData[type]
+                        ? ProcessHelper(accordionData[type], batchId)
+                            ?.reduce(
+                              (total, currentValue) =>
+                                (total = total + currentValue.donationAmount),
+                              0
+                            )
+                            .toLocaleString()
+                        : 0}
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div className="ant-row">
+                        <div className="ant-col ant-col-24 mt-2">
+                          <div className="ant-table-wrapper">
+                            <div className="ant-table">
+                              <table>
+                                <thead className="ant-table-thead">
+                                  <tr>
+                                    {/* <th className="ant-table-cell">Sr No.</th> */}
+                                    {(isBluePencilPortal || isOrganizationView) && (
+                                      <th className="ant-table-cell">Donor</th>
+                                    )}
+                                    {(currentView ===
+                                      payrollConstants.ORGANIZATION_VIEW ||
+                                      currentView ===
+                                        payrollConstants.PROGRAM_VIEW) &&
+                                      !isOrganizationView &&
+                                      !isBluePencilPortal && (
+                                        <th className="ant-table-cell">
+                                          Employee Name
+                                        </th>
+                                      )}
+                                    {(currentView ===
+                                      payrollConstants.ORGANIZATION_VIEW ||
+                                      currentView ===
+                                        payrollConstants.PROGRAM_VIEW) &&
+                                      !isOrganizationView &&
+                                      !isBluePencilPortal && (
+                                        <th className="ant-table-cell">
+                                          Employee ID
+                                        </th>
+                                      )}
+                                    {!isOrganizationView &&
+                                      currentView !==
+                                        payrollConstants.CORPORATE_VIEW && (
+                                        <th className="ant-table-cell">
+                                          Corporate Name
+                                        </th>
+                                      )}
+                                    {currentView !==
+                                      payrollConstants.PROGRAM_VIEW && (
+                                      <th className="ant-table-cell">
+                                        Program
+                                      </th>
+                                    )}
+                                    {(currentView ===
+                                      payrollConstants.EMPLOYEE_VIEW ||
+                                      currentView ===
+                                        payrollConstants.CORPORATE_VIEW) && (
+                                      <th className="ant-table-cell">
+                                        Organization
+                                      </th>
+                                    )}
+                                    {/* <th className="text-center">Status</th> */}
+                                    <th className="ant-table-cell">
+                                      Amount (
+                                      {ReactHtmlParser(
+                                        donationPreferenceConstants?.CURRENCY
+                                      )}
+                                      )
+                                    </th>
+                                    {!batchId && (
+                                      <th className="ant-table-cell text-center">
+                                        Actions
+                                      </th>
+                                    )}
+                                    {(isBluePencilPortal || isOrganizationView) && (
+                                      <th className="ant-table-cell">
+                                        Payment Date
+                                      </th>
+                                    )}
+                                  </tr>
+                                </thead>
+                                <tbody className="ant-table-tbody">
+                                  {accordionData[type]
+                                    .filter((preference) =>
+                                      batchId
+                                        ? preference
+                                        : !preference?.batchId &&
+                                          (preference?.status ===
+                                            donationPreferenceConstants?.RESUMED ||
+                                            preference?.status === null)
+                                    )
+                                    .map((preference, i) => (
+                                      <tr
+                                        key={index + 1}
+                                        className="ant-table-row ant-table-row-level-0"
+                                      >
+                                        {/* <td className="ant-table-cell">
+                                          {i + 1}
+                                        </td> */}
+                                        {(isBluePencilPortal || isOrganizationView) && (
+                                          <td className="ant-table-cell">
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference?.donor}
+                                            </span>
+                                          </td>
+                                        )}
+                                        {(currentView ===
+                                          payrollConstants.ORGANIZATION_VIEW ||
+                                          currentView ===
+                                            payrollConstants.PROGRAM_VIEW) &&
+                                          !isOrganizationView &&
+                                          !isBluePencilPortal && (
+                                            <td className="ant-table-cell">
+                                              <span className="ant-typography font-weight-bold">
+                                                {preference?.employeeName}
+                                              </span>
+                                            </td>
+                                          )}
+                                        {(currentView ===
+                                          payrollConstants.ORGANIZATION_VIEW ||
+                                          currentView ===
+                                            payrollConstants.PROGRAM_VIEW) &&
+                                          !isOrganizationView &&
+                                          !isBluePencilPortal && (
+                                            <td className="ant-table-cell">
+                                              {preference?.employeeUid}
+                                            </td>
+                                          )}
+                                        {!isOrganizationView &&
+                                          currentView !==
+                                            payrollConstants.CORPORATE_VIEW && (
+                                            <td className="ant-table-cell">
+                                              <span className="ant-typography font-weight-bold">
+                                                {preference?.corporateName}
+                                              </span>
+                                            </td>
+                                          )}
+                                        {currentView !==
+                                          payrollConstants.PROGRAM_VIEW && (
+                                          <td className="ant-table-cell">
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference?.charityProgram}
+                                            </span>
+                                          </td>
+                                        )}
+                                        {(currentView ===
+                                          payrollConstants.EMPLOYEE_VIEW ||
+                                          currentView ===
+                                            payrollConstants.CORPORATE_VIEW) && (
+                                          <td className="ant-table-cell">
+                                            <span className="ant-typography font-weight-bold">
+                                              {preference?.socialOrganization}
+                                            </span>
+                                          </td>
+                                        )}
+                                        {/* <td className="text-center">
+                                  {preference?.status ===
+                                    donationPreferenceConstants?.SUSPENDED && (
+                                    <span className="badge badge-danger">
+                                      Suspended
+                                    </span>
+                                  )}
+                                  {(!preference?.status ||
+                                    preference?.status ===
+                                      donationPreferenceConstants?.RESUMED) && (
+                                    <span className="badge badge-success">
+                                      Active
+                                    </span>
+                                  )}
+                                </td> */}
+                                        <td className="ant-table-cell">
+                                          <input
+                                            name="amount"
+                                            type="text"
+                                            size="4"
+                                            maxLength={10}
+                                            value={preference?.donationAmount?.toLocaleString()}
+                                            className="form-control"
+                                            disabled={true}
+                                          />
+                                        </td>
+                                        {(isBluePencilPortal || isOrganizationView) && (
+                                          <td className="ant-table-cell">
+                                            {moment(
+                                              preference.transactionDate
+                                            ).format("DD MMM YYYY")}
+                                          </td>
+                                        )}
+                                      </tr>
+                                    ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              ) : null}
+            </div>
+          ))}
+        </>
+      ) : null}
       {currentView === payrollConstants.LIST_VIEW && (
         <div className="ant-row">
           <div className="ant-col ant-col-24 mt-2">
@@ -568,7 +593,7 @@ const PayrollBatchDetail = (props) => {
                         {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
                         )
                       </th>
-                      <th className="ant-table-cell">Month</th>
+                      <th className="ant-table-cell">Payment Date</th>
                     </tr>
                   </thead>
                   <tbody className="ant-table-tbody">
@@ -576,11 +601,7 @@ const PayrollBatchDetail = (props) => {
                       preferences?.map((item, idx) => (
                         <tr key={idx}>
                           {/* <td>{item?.batchId}</td> */}
-                          <td>
-                            {item?.employeeName
-                              ? item?.employeeName
-                              : item?.corporateName}
-                          </td>
+                          <td>{item?.donor}</td>
                           <td>{item?.socialOrganization}</td>
                           {/* {!isCorporatePortal && <td>{item?.corporateName}</td>} */}
                           <td>{item?.charityProgram}</td>
@@ -594,7 +615,11 @@ const PayrollBatchDetail = (props) => {
                           </Link>
                         </td> */}
                           <td>{item?.donationAmount?.toLocaleString()}</td>
-                          <td>{moment(item?.batchDate).format("MMM YYYY")}</td>
+                          <td>
+                            {moment(item?.transactionDate).format(
+                              "DD MMM YYYY"
+                            )}
+                          </td>
                         </tr>
                       ))}
                   </tbody>

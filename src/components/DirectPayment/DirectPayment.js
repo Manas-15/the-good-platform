@@ -116,25 +116,7 @@ const DirectPayment = (props) => {
       charityProgramsOption.push({ label: e.soicalName, value: e.soicalId });
     });
   }, [props, charityPrograms?.items?.sponsored, charityPrograms?.items?.other]);
-  // useEffect(() => {
-  //   if (!isFilter) {
-  //     dispatch(
-  //       transactionsHistoryActions.getTransactionsHistory({
-  //         individualId:
-  //           loggedInUserType === userConstants.INDIVIDUAL
-  //             ? employee?.user?.individual_id
-  //             : null,
-  //         employeeId:
-  //           loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-  //         corporateId: isCorporatePortal
-  //           ? selectedCorporate?.corporate?.corporateId
-  //           : null,
-  //         pageSize: pageSize,
-  //         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-  //       })
-  //     );
-  //   }
-  // }, [currentPage]);
+
   useEffect(() => {
     console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
@@ -301,12 +283,12 @@ const DirectPayment = (props) => {
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
     console.log(name, checked);
-    console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
+    // console.log(">>>>>>>>>>>>>>>>>>", e.target, checkedPreference);
     const { preferenceId } = checkedPreference;
     setChecked(checked);
 
     if (name === "allSelect" && checked) {
-      console.log("11111111111111111");
+      // console.log("11111111111111111");
       let prefenreceID = allRecords?.map((val) => val?.Id);
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
@@ -314,17 +296,17 @@ const DirectPayment = (props) => {
         preferenceId: allRecords?.map((val) => val.Id)
       });
     } else if (name === "allSelect" && !checked) {
-      console.log("222222222222222222");
+      // console.log("222222222222222222");
       setCheckedPreference({
         preferenceId: []
       });
     } else if (checked) {
-      console.log("33333333333333333333");
+      // console.log("33333333333333333333");
       setCheckedPreference({
         preferenceId: [...preferenceId, items?.Id]
       });
     } else {
-      console.log("44444444444444");
+      // console.log("44444444444444");
       setCheckedPreference({
         preferenceId: preferenceId?.filter((val) => val !== items?.Id)
       });
@@ -341,7 +323,7 @@ const DirectPayment = (props) => {
       );
       setAllRecords(tempreference);
     }
-    console.log("ddddddddddddddddd", checkedPreference);
+    // console.log("ddddddddddddddddd", checkedPreference);
   };
 
   console.log(
@@ -636,7 +618,6 @@ const DirectPayment = (props) => {
                 <table>
                   <thead className="ant-table-thead">
                     <tr>
-                      {/* <th className="ant-table-cell">SR No.</th> */}
                       <th>
                         <div className="form-check me-2">
                           <input
@@ -666,9 +647,6 @@ const DirectPayment = (props) => {
                       )}
                       <th className="ant-table-cell">Transaction ID</th>
                       <th className="ant-table-cell">Donation</th>
-                      {/* <th className="ant-table-cell">Donation Type</th> */}
-                      {/* <th className="ant-table-cell">Payment Mode</th> */}
-                      {/* <th className="ant-table-cell">Payment Status</th> */}
                       <th className="ant-table-cell">Payment Date</th>
                       {(employeeId || isCorporatePortal) && (
                         <th className="ant-table-cell">80G</th>
@@ -722,13 +700,18 @@ const DirectPayment = (props) => {
                           )}
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
-                              <Tooltip title="Show detail">
+                              <Tooltip title={transaction?.charityName}>
                                 <Link
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   {" "}
                                   <span className="custom-color">
-                                    {transaction?.charityName}
+                                    {transaction?.charityName?.length > 30
+                                      ? transaction?.charityName?.substring(
+                                          0,
+                                          27
+                                        ) + "..."
+                                      : transaction?.charityName}
                                   </span>
                                 </Link>
                               </Tooltip>
@@ -962,6 +945,26 @@ const DirectPayment = (props) => {
           </div>
         ))
       )}
+      {allRecords?.length > 0 && (
+        <div className="row mt-4">
+          <div className="col-md-12 text-right">
+            <h5>
+              Total : &nbsp;
+              <span className="fs-5">
+                {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)}
+                {allRecords
+                  ?.reduce(
+                    (total, currentValue) =>
+                      (total = total + currentValue.amount),
+                    0
+                  )
+                  .toLocaleString()}
+              </span>
+            </h5>
+          </div>
+        </div>
+      )}
+
       <Pagination
         className="pagination-bar mt-4"
         currentPage={currentPage}

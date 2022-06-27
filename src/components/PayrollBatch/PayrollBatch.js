@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -59,13 +59,13 @@ const PayrollBatch = (props) => {
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
   const [openDialog, setOpenDialog] = useState(false);
-  const [checked, setChecked] = useState(false);
+  // const [checked, setChecked] = useState(false);
   const [isBatchDetail, setIsBatchDetail] = useState(false);
   const [selectedBatchId, setSelectedBatchId] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedBatch, setSelectedBatch] = useState();
-  const [updateType, setUpdateType] = useState("");
-  const [updatedValue, setUpdatedValue] = useState();
+  // const [updateType, setUpdateType] = useState("");
+  // const [updatedValue, setUpdatedValue] = useState();
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -114,7 +114,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     filter("All");
@@ -128,7 +128,7 @@ const PayrollBatch = (props) => {
   };
   let allGroupData;
   useEffect(() => {
-    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted ));
+    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted));
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const PayrollBatch = (props) => {
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
 
-  console.log(groupByBatchData);
+  // console.log(groupByBatchData);
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -150,7 +150,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" },
+    { label: "Processed", value: "10" }
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed payment for the batch on the month of ${moment().format(
@@ -168,7 +168,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -231,11 +231,13 @@ const PayrollBatch = (props) => {
     //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
     // }
     dispatch(payrollBatchActions.updateBatchStatus(values));
-    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>", values.batchId, allRecords)
-    // setRecords(allRecords?.filter(
-    //   (item) => item?.batchId !== values.batchId
-    // ));
-    console.log("<<<<<<<<<<<<<<<<<<<<< allRecords 22222 >>>>>>>>>>>>>>>>>>>>>>>>>", allRecords)
+    console.log(
+      "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
+      values
+    );
+    const data = allRecords?.filter((item) => item?.batchId !== values.batchId);
+    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data);
+    setAllRecords(data);
   };
   const handleClose = () => {
     setOpen(false);
@@ -281,59 +283,59 @@ const PayrollBatch = (props) => {
   const onSearchChange = (e, selected) => {
     const keyword = e;
     allGroupData = groupByBatch();
-    if (keyword !== "") {
-      const results = Object.keys(groupByBatchData)?.map((type, index) => {
-        console.log(type, index);
-        if (selected === "batchId") {
-          if (
-            groupByBatchData[type]?.[0]?.batchId
-              ?.toLowerCase()
-              .startsWith(keyword.toLowerCase())
-          ) {
-            return groupByBatchData[type];
-          }
-        } else if (selected === "referenceId") {
-          if (
-            groupByBatchData[type]?.[0]?.referenceId
-              ?.toLowerCase()
-              .startsWith(keyword.toLowerCase())
-          ) {
-            return groupByBatchData[type];
-          }
-        } else {
-          if (
-            selected === "amount" &&
-            groupByBatchData[type]?.[0]?.amount
-              ?.toString()
-              .startsWith(keyword.toString())
-          ) {
-            return groupByBatchData[type];
-          }
-        }
-      });
-      console.log("resultsresults", results);
-      setGroupByBatchData(results);
-    } else {
-      keyword === "" && setGroupByBatchData(allGroupData);
-    }
+    // if (keyword !== "") {
+    //   const results = Object.keys(groupByBatchData)?.map((type, index) => {
+    //     console.log(type, index);
+    // if (selected === "batchId") {
+    //   if (
+    //     groupByBatchData[type]?.[0]?.batchId
+    //       ?.toLowerCase()
+    //       .startsWith(keyword.toLowerCase())
+    //   ) {
+    //     return groupByBatchData[type];
+    //   }
+    // } else if (selected === "referenceId") {
+    //   if (
+    //     groupByBatchData[type]?.[0]?.referenceId
+    //       ?.toLowerCase()
+    //       .startsWith(keyword.toLowerCase())
+    //   ) {
+    //     return groupByBatchData[type];
+    //   }
+    // } else {
+    //   if (
+    //     selected === "amount" &&
+    //     groupByBatchData[type]?.[0]?.amount
+    //       ?.toString()
+    //       .startsWith(keyword.toString())
+    //   ) {
+    //     return groupByBatchData[type];
+    //   }
+    // }
+    // });
+    //   console.log("resultsresults", results);
+    //   setGroupByBatchData(results);
+    // } else {
+    //   keyword === "" && setGroupByBatchData(allGroupData);
+    // }
     // setSearchValue(keyword);
     // setSelectedKeySearch(selected);
   };
-  console.log(groupByBatchData);
+  // console.log(groupByBatchData);
   const onHandleChange = (e) => {
     setSelected(e.target.value);
   };
   //for reset state on selected
-  useEffect(() => {
-    if (
-      selected === "batchId" ||
-      selected === "referenceId" ||
-      selected === "amount"
-    ) {
-      allGroupData = groupByBatch();
-      setGroupByBatchData(allGroupData);
-    }
-  }, [selected]);
+  // useEffect(() => {
+  //   if (
+  //     selected === "batchId" ||
+  //     selected === "referenceId" ||
+  //     selected === "amount"
+  //   ) {
+  //     allGroupData = groupByBatch();
+  //     setGroupByBatchData(allGroupData);
+  //   }
+  // }, [selected]);
 
   // if (isBluePencilPortal || isOrganizationPortal) {
   //   allGroupData = groupByBatch();
@@ -341,6 +343,7 @@ const PayrollBatch = (props) => {
   //   console.log("dddddddddddddddddddd groupByBatch", allGroupData);
   // }
 
+  // console.log(isCorporatePortal);
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -350,12 +353,12 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
-              {isCorporatePortal && (
+              {isCorporatePortal && isBluePencilPortal && (
                 <div className="row mb-4">
-                  <div className="col-md-6">
+                  <div className="col-md-6 mt-2">
                     <h6 className="mt-2">Filter By</h6>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 mt-2">
                     <select
                       className="form-select"
                       defaultValue={""}
@@ -373,6 +376,96 @@ const PayrollBatch = (props) => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-8">
+              <div className="row mb-3">
+                <div className="col-md d-flex pl-0">
+                  <div className="col-md-6">
+                    <div>
+                      <select
+                        className="form-select"
+                        value={selected}
+                        defaultValue={""}
+                        onChange={(e) => onHandleChange(e)}
+                      >
+                        <option value={""} key={"default"} disabled>
+                          Search by
+                        </option>
+                        <option value="batchId">Batch ID</option>
+                        {/* {isCorporatePortal && ( */}
+                        <option value="referenceId">Reference ID</option>
+                        {/* )} */}
+
+                        <option value="amount">Amount</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {selected === "batchId" && (
+                    <div className="col-md-6">
+                      <div>
+                        <div className="ant-input-affix-wrapper inputFilterInput">
+                          <span className="ant-input-prefix">
+                            <i className="bi bi-search"></i>
+                            <input
+                              type="text"
+                              // className="form-control"
+                              className="ant-input-search"
+                              placeholder="Search by Batch Id"
+                              onChange={(e) =>
+                                onSearchChange(e.target.value, "batchId")
+                              }
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {selected === "referenceId" && (
+                    <div className="col-md-6">
+                      <div>
+                        <div className="ant-input-affix-wrapper inputFilterInput">
+                          <span className="ant-input-prefix">
+                            <i className="bi bi-search"></i>
+                            <input
+                              type="text"
+                              // className="form-control"
+                              className="ant-input-search"
+                              placeholder="Search by Reference ID"
+                              onChange={(e) =>
+                                onSearchChange(e.target.value, "referenceId")
+                              }
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {selected === "amount" && (
+                    <div className="col-md-6">
+                      <div>
+                        <div className="ant-input-affix-wrapper inputFilterInput">
+                          <span className="ant-input-prefix">
+                            <i className="bi bi-search"></i>
+                            <input
+                              type="text"
+                              className="ant-input-search"
+                              placeholder="Search by Amount"
+                              onChange={(e) =>
+                                onSearchChange(e.target.value, "amount")
+                              }
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4 text-right">
               {!corporateId && !isOrganizationPortal && (
                 <>
                   {isBluePencilPortal && (
@@ -437,90 +530,7 @@ const PayrollBatch = (props) => {
               )}
             </div>
           </div>
-          <div className="row mb-3">
-            <div className="col-md d-flex pl-0">
-              <div className="col-md-4">
-                <div>
-                  <select
-                    className="form-select"
-                    value={selected}
-                    defaultValue={""}
-                    onChange={(e) => onHandleChange(e)}
-                  >
-                    <option value={""} key={"default"} disabled>
-                      Search by
-                    </option>
-                    <option value="batchId">Batch ID</option>
-                    {/* {isCorporatePortal && ( */}
-                    <option value="referenceId">Reference ID</option>
-                    {/* )} */}
 
-                    <option value="amount">Amount</option>
-                  </select>
-                </div>
-              </div>
-
-              {selected === "batchId" && (
-                <div className="col-md-4">
-                  <div>
-                    <div className="ant-input-affix-wrapper inputFilterInput">
-                      <span className="ant-input-prefix">
-                        <i className="bi bi-search"></i>
-                        <input
-                          type="text"
-                          // className="form-control"
-                          className="ant-input-search"
-                          placeholder="Search by Batch Id"
-                          onChange={(e) =>
-                            onSearchChange(e.target.value, "batchId")
-                          }
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {selected === "referenceId" && (
-                <div className="col-md-4">
-                  <div>
-                    <div className="ant-input-affix-wrapper inputFilterInput">
-                      <span className="ant-input-prefix">
-                        <i className="bi bi-search"></i>
-                        <input
-                          type="text"
-                          // className="form-control"
-                          className="ant-input-search"
-                          placeholder="Search by Reference ID"
-                          onChange={(e) =>
-                            onSearchChange(e.target.value, "referenceId")
-                          }
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {selected === "amount" && (
-                <div className="col-md-4">
-                  <div>
-                    <div className="ant-input-affix-wrapper inputFilterInput">
-                      <span className="ant-input-prefix">
-                        <i className="bi bi-search"></i>
-                        <input
-                          type="text"
-                          className="ant-input-search"
-                          placeholder="Search by Amount"
-                          onChange={(e) =>
-                            onSearchChange(e.target.value, "amount")
-                          }
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
           {payrollBatches.loading && <Loader />}
           {allRecords?.length === 0 && (
             <div className="card p-4 text-center">
@@ -1170,22 +1180,22 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
                       {ReactHtmlParser(actionContent)}
                       {actionType !== payrollConstants.COMPLETE_BATCH && (
                         <>
-                          <div className="row mt-4 mb-2">
+                          {/* <div className="row mt-4 mb-2">
                             <div className="col-md-4">
                               <strong>Corporate Name:</strong>
                             </div>
                             <div className="col-md-8">
                               {selectedBatch?.corporateName}
                             </div>
-                          </div>
-                          <div className="row mb-2">
+                          </div> */}
+                          <div className="row mt-4 mb-2">
                             <div className="col-md-4">
                               <strong>Batch ID:</strong>
                             </div>
@@ -1224,22 +1234,32 @@ const PayrollBatch = (props) => {
                               )}
                             </div>
                           </div>
-                          <div className="row mb-2">
-                            <div className="col-md-4">
-                              <strong>Reference ID:</strong>
+                          {(selectedBatch?.referenceId ||
+                            selectedBatch?.adminreferenceId) && (
+                            <div className="row mb-2">
+                              <div className="col-md-4">
+                                <strong>Reference ID:</strong>
+                              </div>
+                              <div className="col-md-8">
+                                {isOrganizationPortal
+                                  ? selectedBatch?.adminreferenceId
+                                  : selectedBatch?.referenceId}
+                              </div>
                             </div>
-                            <div className="col-md-8">
-                              {selectedBatch?.referenceId}
+                          )}
+                          {(selectedBatch?.referenceId ||
+                            selectedBatch?.adminreferenceId) && (
+                            <div className="row mb-2">
+                              <div className="col-md-4">
+                                <strong>Reference Note:</strong>
+                              </div>
+                              <div className="col-md-8">
+                                {isOrganizationPortal
+                                  ? selectedBatch?.adminreferenceNote
+                                  : selectedBatch?.referenceNote}
+                              </div>
                             </div>
-                          </div>
-                          <div className="row mb-2">
-                            <div className="col-md-4">
-                              <strong>Reference Note:</strong>
-                            </div>
-                            <div className="col-md-8">
-                              {selectedBatch?.referenceNote}
-                            </div>
-                          </div>
+                          )}
                         </>
                       )}
                       {actionType === payrollConstants.COMPLETE_BATCH && (
@@ -1370,7 +1390,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

@@ -1,10 +1,12 @@
 const SearchHelper = (data, searchText) => {
+  console.log(data, searchText);
   return data?.filter((item) =>
     searchText
       ? item?.name?.toLowerCase()?.includes?.(searchText.toLowerCase())
       : item
   );
 };
+
 const SearchDonationPreferenceHelper = (data, searchText, selected) => {
   console.log(data, searchText, selected);
   const lowerSearchText = searchText.toLowerCase();
