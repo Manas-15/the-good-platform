@@ -1,3 +1,3 @@
 export const paginationConstants = {
-  PAGE_SIZE: 1,
+  PAGE_SIZE: 10,
 };
