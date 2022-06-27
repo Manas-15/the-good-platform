@@ -9,7 +9,7 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData
+  CountryRegionData,
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
@@ -25,14 +25,14 @@ const initialValues = {
   city: "",
   state: "",
   country: "",
-  userType: 4
+  userType: 4,
   //   password: "test@%^@#1023",
 };
 
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" }
+  { value: "Transgender", label: "Transgender" },
 ];
 
 const IndividualForm = ({ type }) => {
@@ -46,11 +46,16 @@ const IndividualForm = ({ type }) => {
 
   const individualRegister = (values) => {
     setSubmitted(true);
+
     if (values.firstName && values.email) {
+      values.state = state;
+      values.country = country;
       values.email = values.email.toLowerCase();
+
       dispatch(employeeActions.register(values, userConstants.INDIVIDUAL));
     }
   };
+  // console.log(country, state);
   const selectCountry = (country) => {
     setCountry(country);
   };
@@ -85,7 +90,7 @@ const IndividualForm = ({ type }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting
+                isSubmitting,
                 /* and other goodies */
               }) => (
                 <Form>

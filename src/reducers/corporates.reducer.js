@@ -37,6 +37,7 @@ export function corporates(state = {}, action) {
     case corporateConstants.UPDATE_CORPORATE_REQUEST:
       return { updateCorporate: true };
     case corporateConstants.UPDATE_CORPORATE_SUCCESS:
+      console.log(action.corporates?.data, "reducersssssss");
       return { items: action.corporates?.data?.corporates };
     case corporateConstants.UPDATE_CORPORATE_FAILURE:
       return {};

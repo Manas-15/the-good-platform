@@ -234,7 +234,7 @@ function register(employee, userType) {
     employeeService.register(employee, userType).then(
       (data) => {
         dispatch(success());
-        console.log("ddddddddddddddddd data", data?.data?.email);
+        // console.log("ddddddddddddddddd data", data?.data?.email);
         if (data?.data?.email) {
           dispatch(alertActions.error(data?.data?.email[0]));
         } else {
