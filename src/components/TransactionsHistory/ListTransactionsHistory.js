@@ -198,8 +198,8 @@ const ListTransactionsHistory = (props) => {
     );
   };
   useEffect(() => {
-    console.log("currentPagecurrentPagecurrentPage", currentPage)
-    fetchResults("")  }, [currentPage]);
+    fetchResults("");
+  }, [currentPage]);
   useEffect(() => {
     fetchResults("");
   }, [
