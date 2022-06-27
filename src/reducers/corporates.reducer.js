@@ -40,7 +40,6 @@ export function corporates(state = {}, action) {
       return { items: action.corporates?.data?.corporates };
     case corporateConstants.UPDATE_CORPORATE_FAILURE:
       return {};
-
     case corporateConstants.DELETE_CORPORATE_REQUEST:
       return {
         ...state,
@@ -59,7 +58,6 @@ export function corporates(state = {}, action) {
       };
     case corporateConstants.DELETE_CORPORATE_FAILURE:
       return {};
-
     case corporateConstants.CORPORATE_ACTION_REQUEST:
       return {
         items: state.items,
