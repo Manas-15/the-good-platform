@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -112,7 +112,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     // filter("All");
@@ -127,7 +127,13 @@ const PayrollBatch = (props) => {
   let allGroupData;
   const allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
   useEffect(() => {
-    setAllRecords(payrollBatches?.items?.filter((item) => item?.receivedOrganizationIds?.split(",")?.length !== item?.totalOrganizationCount));
+    setAllRecords(
+      payrollBatches?.items?.filter(
+        (item) =>
+          item?.receivedOrganizationIds?.split(",")?.length !==
+          item?.totalOrganizationCount
+      )
+    );
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -150,7 +156,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
+    { label: "Processed", value: payrollConstants.COMPLETED_STATUS }
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
@@ -168,7 +174,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -258,13 +264,25 @@ const PayrollBatch = (props) => {
     setSelectedStatus(value);
     if (value === "2") {
       // console.log(value, "received status");
-      setAllRecords(allData.filter((val) => val?.receivedOrganizationIds?.split(",")?.length === val?.totalOrganizationCount));
+      setAllRecords(
+        allData.filter(
+          (val) =>
+            val?.receivedOrganizationIds?.split(",")?.length ===
+            val?.totalOrganizationCount
+        )
+      );
     } else if (value === "0") {
       // console.log(value, "all status");
       setAllRecords(payrollBatches?.items);
     } else {
       // console.log(value, "pending status");
-      setAllRecords(allData.filter((val) => val?.receivedOrganizationIds?.split(",")?.length !== val?.totalOrganizationCount));
+      setAllRecords(
+        allData.filter(
+          (val) =>
+            val?.receivedOrganizationIds?.split(",")?.length !==
+            val?.totalOrganizationCount
+        )
+      );
     }
   };
 
@@ -762,12 +780,23 @@ const PayrollBatch = (props) => {
                                         payrollConstants.PAID_STATUS) &&
                                       groupByBatchData[type]?.[0]
                                         ?.receivedOrganizationIds &&
-                                      groupByBatchData[
-                                        type
-                                      ][0].receivedOrganizationIds?.split(",")
-                                        ?.length !==
-                                        groupByBatchData[type]?.[0]
-                                          ?.totalOrganizationCount && (
+                                      ((!isOrganizationPortal &&
+                                        groupByBatchData[
+                                          type
+                                        ][0].receivedOrganizationIds?.split(",")
+                                          ?.length !==
+                                          groupByBatchData[type]?.[0]
+                                            ?.totalOrganizationCount) ||
+                                        (isOrganizationPortal &&
+                                          !groupByBatchData[
+                                            type
+                                          ][0]?.receivedOrganizationIds
+                                            ?.split(",")
+                                            ?.includes(
+                                              groupByBatchData[
+                                                type
+                                              ]?.[0]?.socialOrganizationId?.toString()
+                                            ))) && (
                                         <>
                                           <span>
                                             {/* {payrollConstants.CONFIRMED} */}
@@ -795,12 +824,23 @@ const PayrollBatch = (props) => {
                                       )}
                                     {groupByBatchData[type]?.[0]?.status ===
                                       payrollConstants.RECEIVED_STATUS &&
-                                      groupByBatchData[
+                                      ((groupByBatchData[
                                         type
                                       ][0].receivedOrganizationIds?.split(",")
                                         ?.length ===
                                         groupByBatchData[type]?.[0]
-                                          ?.totalOrganizationCount && (
+                                          ?.totalOrganizationCount &&
+                                        isOrganizationPortal) ||
+                                        (isOrganizationPortal &&
+                                          groupByBatchData[
+                                            type
+                                          ][0]?.receivedOrganizationIds
+                                            ?.split(",")
+                                            ?.includes(
+                                              groupByBatchData[
+                                                type
+                                              ]?.[0]?.socialOrganizationId?.toString()
+                                            ))) && (
                                         <>
                                           <span>
                                             {/* {payrollConstants.CONFIRMED} */}
@@ -885,8 +925,15 @@ const PayrollBatch = (props) => {
                                       </>
                                     )}
                                     {isOrganizationPortal &&
-                                      groupByBatchData[type]?.[0]?.status !==
-                                        payrollConstants.RECEIVED_STATUS && (
+                                      !groupByBatchData[
+                                        type
+                                      ][0]?.receivedOrganizationIds
+                                        ?.split(",")
+                                        ?.includes(
+                                          groupByBatchData[
+                                            type
+                                          ]?.[0]?.socialOrganizationId?.toString()
+                                        ) && (
                                         <Tooltip title="Confirm Payment Receipt">
                                           <Link
                                             to="#"
@@ -907,8 +954,15 @@ const PayrollBatch = (props) => {
                                         </Tooltip>
                                       )}
                                     {isOrganizationPortal &&
-                                      groupByBatchData[type]?.[0]?.status ===
-                                        payrollConstants.RECEIVED_STATUS && (
+                                      groupByBatchData[
+                                        type
+                                      ][0]?.receivedOrganizationIds
+                                        ?.split(",")
+                                        ?.includes(
+                                          groupByBatchData[
+                                            type
+                                          ]?.[0]?.socialOrganizationId?.toString()
+                                        ) && (
                                         <Tooltip title="Received">
                                           <span className="bi-check-square-fill fs-5"></span>
                                         </Tooltip>
@@ -1200,7 +1254,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1410,7 +1464,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
