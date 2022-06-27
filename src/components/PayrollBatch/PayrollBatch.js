@@ -127,7 +127,7 @@ const PayrollBatch = (props) => {
   let allGroupData;
   const allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
   useEffect(() => {
-    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted));
+    setAllRecords(payrollBatches?.items?.filter((item) => item?.receivedOrganizationIds?.split(",")?.length !== item?.totalOrganizationCount));
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -150,7 +150,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: payrollConstants.RECEIVED_STATUS },
+    { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
@@ -256,15 +256,15 @@ const PayrollBatch = (props) => {
   const onFilter = (type, value) => {
     // console.log(type, value);
     setSelectedStatus(value);
-    if (value === "5") {
+    if (value === "2") {
       // console.log(value, "received status");
-      setAllRecords(allData.filter((val) => val?.status.toString() === value));
+      setAllRecords(allData.filter((val) => val?.receivedOrganizationIds?.split(",")?.length === val?.totalOrganizationCount));
     } else if (value === "0") {
       // console.log(value, "all status");
       setAllRecords(payrollBatches?.items);
     } else {
       // console.log(value, "pending status");
-      setAllRecords(allData.filter((val) => val?.status.toString() !== "5"));
+      setAllRecords(allData.filter((val) => val?.receivedOrganizationIds?.split(",")?.length !== val?.totalOrganizationCount));
     }
   };
 
@@ -381,7 +381,7 @@ const PayrollBatch = (props) => {
                   <div className="col-md-6 mt-2">
                     <select
                       className="form-select"
-                      defaultValue={""}
+                      defaultValue={1}
                       onChange={(e) => onFilter("status", e.target.value)}
                     >
                       <option value={"All"} key={"default"} disabled>
