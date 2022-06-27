@@ -391,7 +391,7 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
-              {(isCorporatePortal || isBluePencilPortal) && (
+              {(isCorporatePortal || isBluePencilPortal || isOrganizationPortal) && (
                 <div className="row mb-4">
                   <div className="col-md-6 mt-2">
                     <h6 className="mt-2">Filter By</h6>
@@ -830,7 +830,7 @@ const PayrollBatch = (props) => {
                                         ?.length ===
                                         groupByBatchData[type]?.[0]
                                           ?.totalOrganizationCount &&
-                                        isOrganizationPortal) ||
+                                        !isOrganizationPortal) ||
                                         (isOrganizationPortal &&
                                           groupByBatchData[
                                             type
@@ -1006,7 +1006,7 @@ const PayrollBatch = (props) => {
                                 {currentView ===
                                   payrollConstants.ORGANIZATION_VIEW && (
                                   <td className="ant-table-cell">
-                                    {batch.socialOrganizationName}
+                                    {batch?.socialOrganizationName}
                                   </td>
                                 )}
                                 {/* {!corporateId && (
@@ -1016,11 +1016,11 @@ const PayrollBatch = (props) => {
                           )} */}
                                 {!corporateId && (
                                   <td className="ant-table-cell">
-                                    {batch.corporateName}
+                                    {batch?.corporateName}
                                   </td>
                                 )}
                                 <td className="ant-table-cell">
-                                  {moment(batch.createdDate).format(
+                                  {batch?.createdDate && moment(batch?.createdDate).format(
                                     "MMM, YYYY"
                                   )}
                                 </td>
@@ -1034,11 +1034,11 @@ const PayrollBatch = (props) => {
                                       showReferenceNote(batch?.referenceNote)
                                     }
                                   >
-                                    {batch.referenceId}
+                                    {batch?.referenceId}
                                   </Link>
                                 </td>
                                 <td className="ant-table-cell">
-                                  {batch.status ===
+                                  {batch?.status ===
                                     payrollConstants.COMPLETED_STATUS && (
                                     <>
                                       <span>
@@ -1048,7 +1048,7 @@ const PayrollBatch = (props) => {
                                       <Progress percent={25} showInfo={false} />
                                     </>
                                   )}
-                                  {batch.status ===
+                                  {batch?.status ===
                                     payrollConstants.CONFIRMED_STATUS && (
                                     <>
                                       <span>
