@@ -122,7 +122,6 @@ const PayrollBatch = (props) => {
   }, [currentPage]);
 
   const groupByBatch = () => {
-    // console.log("payrollBatches?.itemssss", allRecords);
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
       return acc;
@@ -130,7 +129,7 @@ const PayrollBatch = (props) => {
   };
   let allGroupData;
   useEffect(() => {
-    setAllRecords(payrollBatches?.items);
+    setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted));
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -1228,15 +1227,15 @@ const PayrollBatch = (props) => {
                       {ReactHtmlParser(actionContent)}
                       {actionType !== payrollConstants.COMPLETE_BATCH && (
                         <>
-                          <div className="row mt-4 mb-2">
+                          {/* <div className="row mt-4 mb-2">
                             <div className="col-md-4">
                               <strong>Corporate Name:</strong>
                             </div>
                             <div className="col-md-8">
                               {selectedBatch?.corporateName}
                             </div>
-                          </div>
-                          <div className="row mb-2">
+                          </div> */}
+                          <div className="row mt-4 mb-2">
                             <div className="col-md-4">
                               <strong>Batch ID:</strong>
                             </div>
@@ -1275,22 +1274,32 @@ const PayrollBatch = (props) => {
                               )}
                             </div>
                           </div>
-                          <div className="row mb-2">
-                            <div className="col-md-4">
-                              <strong>Reference ID:</strong>
+                          {(selectedBatch?.referenceId ||
+                            selectedBatch?.adminreferenceId) && (
+                            <div className="row mb-2">
+                              <div className="col-md-4">
+                                <strong>Reference ID:</strong>
+                              </div>
+                              <div className="col-md-8">
+                                {isOrganizationPortal
+                                  ? selectedBatch?.adminreferenceId
+                                  : selectedBatch?.referenceId}
+                              </div>
                             </div>
-                            <div className="col-md-8">
-                              {selectedBatch?.referenceId}
+                          )}
+                          {(selectedBatch?.referenceId ||
+                            selectedBatch?.adminreferenceId) && (
+                            <div className="row mb-2">
+                              <div className="col-md-4">
+                                <strong>Reference Note:</strong>
+                              </div>
+                              <div className="col-md-8">
+                                {isOrganizationPortal
+                                  ? selectedBatch?.adminreferenceNote
+                                  : selectedBatch?.referenceNote}
+                              </div>
                             </div>
-                          </div>
-                          <div className="row mb-2">
-                            <div className="col-md-4">
-                              <strong>Reference Note:</strong>
-                            </div>
-                            <div className="col-md-8">
-                              {selectedBatch?.referenceNote}
-                            </div>
-                          </div>
+                          )}
                         </>
                       )}
                       {actionType === payrollConstants.COMPLETE_BATCH && (
