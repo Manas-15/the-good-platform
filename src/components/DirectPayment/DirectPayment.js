@@ -29,8 +29,8 @@ let charityProgramsOption = [];
 let accordionData;
 const paymentStatusOption = [
   { label: "All", value: "All" },
-  { label: "Processed", value: "Processed" },
-  { label: "Not Processed", value: "Not Processed" }
+  { label: "Processed", value: "True" },
+  { label: "Not Processed", value: "False" }
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
@@ -78,7 +78,7 @@ const DirectPayment = (props) => {
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("Not Processed");
+  const [selectedStatus, setSelectedStatus] = useState("False");
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -119,7 +119,7 @@ const DirectPayment = (props) => {
   useEffect(() => {
     console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
-    filter("status", "Not Processed");
+    filter("status", "False");
   }, []);
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
@@ -133,7 +133,7 @@ const DirectPayment = (props) => {
     console.log("changeeeeeeeeeeeeeee", value, type);
     setSelectedStatus(value);
     setIsFilter(true);
-    fetchResults("");
+    // fetchResults("");
     // if (value && value !== "all") {
     //   setRecords(
     //     transactions?.directPayments?.filter(
@@ -257,11 +257,12 @@ const DirectPayment = (props) => {
     searchByEmployeeName,
     searchByCorporateName,
     searchByAmount,
-    selectedStatus
+    selectedStatus,
+    currentPage,
   ]);
-  useEffect(() => {
-    fetchResults("");
-  }, [currentPage]);
+  // useEffect(() => {
+  //   fetchResults("");
+  // }, [currentPage]);
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
@@ -415,7 +416,7 @@ const DirectPayment = (props) => {
             <div className="col-md-6">
               <select
                 className="form-select"
-                defaultValue={"Not Processed"}
+                defaultValue={"False"}
                 onChange={(e) => filter("status", e.target.value)}
               >
                 {paymentStatusOption.map((status, index) => (
