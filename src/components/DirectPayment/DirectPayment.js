@@ -260,9 +260,7 @@ const DirectPayment = (props) => {
     selectedStatus,
     currentPage,
   ]);
-  // useEffect(() => {
-  //   fetchResults("");
-  // }, [currentPage]);
+
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
@@ -347,6 +345,13 @@ const DirectPayment = (props) => {
     setOpenDialog(false);
     setSelectedPreference(null);
   };
+
+  const myBatch = allRecords?.filter((item) =>
+    checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
+  );
+
+  console.log(myBatch);
+
   const createBatch = () => {
     if (isBluePencilPortal) {
       dispatch(
@@ -366,7 +371,6 @@ const DirectPayment = (props) => {
             ),
         })
       );
-      // fetchResults("");
       const data = allRecords?.filter(
         (item) => !checkedPreference?.preferenceId?.includes(item?.Id)
       );
@@ -433,6 +437,7 @@ const DirectPayment = (props) => {
         <div className="col-md-12 text-right">
           {isBluePencilPortal && (
             <Link
+              to=""
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
             >
@@ -448,6 +453,7 @@ const DirectPayment = (props) => {
           )}
           {isBluePencilPortal && (
             <Link
+              to=""
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
             >
@@ -465,6 +471,7 @@ const DirectPayment = (props) => {
           )}
           {isBluePencilPortal && (
             <Link
+              to=""
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
             >
@@ -680,6 +687,7 @@ const DirectPayment = (props) => {
                               <span className="ant-typography font-weight-bold">
                                 <Tooltip title="Show detail">
                                   <Link
+                                    to=""
                                     onClick={() =>
                                       showAccountDetail(transaction)
                                     }
@@ -698,6 +706,7 @@ const DirectPayment = (props) => {
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title={transaction?.charityName}>
                                 <Link
+                                  to=""
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   {" "}
@@ -718,6 +727,7 @@ const DirectPayment = (props) => {
                               <span className="ant-typography font-weight-bold">
                                 <Tooltip title="Show detail">
                                   <Link
+                                    to=""
                                     onClick={() =>
                                       showAccountDetail(transaction)
                                     }
@@ -734,6 +744,7 @@ const DirectPayment = (props) => {
                             <td className="ant-table-cell">
                               <Tooltip title="Show detail">
                                 <Link
+                                  to=""
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
@@ -784,6 +795,7 @@ const DirectPayment = (props) => {
                                 <div className="d-flex">
                                   <Tooltip title="Download">
                                     <Link
+                                      to=""
                                       className="text-decoration-underline"
                                       onClick={() =>
                                         downlad(transaction?.transactionId)
@@ -794,6 +806,7 @@ const DirectPayment = (props) => {
                                   </Tooltip>
                                   <Tooltip title="Email">
                                     <Link
+                                      to=""
                                       className="text-decoration-underline"
                                       onClick={() =>
                                         setEmailSend(transaction?.transactionId)
@@ -883,7 +896,7 @@ const DirectPayment = (props) => {
                                       className="ant-table-row ant-table-row-level-0"
                                     >
                                       {/* <td className="ant-table-cell">
-                                        <Link
+                                        <Link to=""
                                           onClick={() =>
                                             props?.showBatchDetail(
                                               batch?.batchId
