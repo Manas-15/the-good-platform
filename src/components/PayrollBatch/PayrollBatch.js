@@ -59,18 +59,15 @@ const PayrollBatch = (props) => {
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
   const [openDialog, setOpenDialog] = useState(false);
-  // const [checked, setChecked] = useState(false);
   const [isBatchDetail, setIsBatchDetail] = useState(false);
   const [selectedBatchId, setSelectedBatchId] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedBatch, setSelectedBatch] = useState();
-  // const [updateType, setUpdateType] = useState("");
-  // const [updatedValue, setUpdatedValue] = useState();
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
-  const [searchValue, setSearchValue] = useState("");
-  const [selectedKeySearch, setSelectedKeySearch] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
+  // const [selectedKeySearch, setSelectedKeySearch] = useState("");
   const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState([]);
   const [selected, setSelected] = useState();
@@ -128,6 +125,7 @@ const PayrollBatch = (props) => {
     }, {});
   };
   let allGroupData;
+  const allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
   useEffect(() => {
     setAllRecords(payrollBatches?.items?.filter((item) => !item?.isDeleted));
   }, [payrollBatches?.items]);
@@ -255,37 +253,19 @@ const PayrollBatch = (props) => {
     setSelectedBatchId(null);
   };
 
-  //  PENDING_STATUS: 1,
-  // COMPLETED_STATUS: 2,
-  // CONFIRMED_STATUS: 3,
-  // PAID_STATUS: 4,
-  // RECEIVED_STATUS: 5,
-
-  // const myData = Object.keys(groupByBatchData)?.map((type, index) => {
-  //   console.log(groupByBatchData[type]?.[0]?.status);
-  // });
-  // console.log(myData);
-
-  // setRecords(
-  //       transactions?.directPayments?.filter(
-  //         (record) => record?.directBatchPaymentStatus?.toString() === value
-  //       )
-
-  const onFilter = (value) => {
-    console.log(value);
+  const onFilter = (type, value) => {
+    // console.log(type, value);
     setSelectedStatus(value);
-    allGroupData = groupByBatch();
-    setGroupByBatchData(allGroupData);
-    console.log(allGroupData);
-    if (value) {
-      console.log(value);
-      setGroupByBatchData(
-        Object.keys(allGroupData)?.filter(
-          (type, index) => allGroupData[type]?.[0]?.status.toString() === value
-        )
-      );
+    if (value === "5") {
+      // console.log(value, "received status");
+      setAllRecords(allData.filter((val) => val?.status.toString() === value));
+    } else if (value === "0") {
+      // console.log(value, "all status");
+      setAllRecords(payrollBatches?.items);
+    } else {
+      // console.log(value, "pending status");
+      setAllRecords(allData.filter((val) => val?.status.toString() !== "5"));
     }
-    console.log(groupByBatchData);
   };
 
   //************************************************************************* */
@@ -402,9 +382,9 @@ const PayrollBatch = (props) => {
                     <select
                       className="form-select"
                       defaultValue={""}
-                      onChange={(e) => onFilter(e.target.value)}
+                      onChange={(e) => onFilter("status", e.target.value)}
                     >
-                      <option value={""} key={"default"} disabled>
+                      <option value={"All"} key={"default"} disabled>
                         Status
                       </option>
                       {statusOption.map((status, index) => (
