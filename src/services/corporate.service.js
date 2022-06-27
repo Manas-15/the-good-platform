@@ -28,6 +28,7 @@ function registerCorporate(data) {
   );
 }
 function updateCorporate(corporate) {
+  console.log(corporate, "service pageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   return axios.post(
     process.env.REACT_APP_API_URL + "api/editCorporate/",
     corporate
