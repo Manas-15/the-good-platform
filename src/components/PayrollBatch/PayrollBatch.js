@@ -72,7 +72,6 @@ const PayrollBatch = (props) => {
   const [allRecords, setAllRecords] = useState([]);
   const [selected, setSelected] = useState();
   const [groupByBatchData, setGroupByBatchData] = useState({});
-  const [selectedStatus, setSelectedStatus] = useState("Not Processed");
 
   const [openPaidSimulator, setOpenPaidSimulator] = useState(false);
   const [currentView, setCurrentView] = useState(
@@ -127,17 +126,21 @@ const PayrollBatch = (props) => {
   let allGroupData;
   const allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
   useEffect(() => {
-    setAllRecords(payrollBatches?.items?.filter((item) => item?.receivedOrganizationIds?.split(",")?.length !== item?.totalOrganizationCount));
+    setAllRecords(
+      payrollBatches?.items?.filter(
+        (item) =>
+          item?.receivedOrganizationIds?.split(",")?.length !==
+          item?.totalOrganizationCount
+      )
+    );
   }, [payrollBatches?.items]);
 
   useEffect(() => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
     setGroupByBatchData(allGroupData);
-    // filter("status", "false");
   }, [allRecords]);
 
-  // console.log(groupByBatchData);
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -226,10 +229,7 @@ const PayrollBatch = (props) => {
   };
   const confirm = (values) => {
     handleClose();
-    // if (values) {
-    //   values.batchId = selectedBatch?.batchId;
-    //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
-    // }
+
     dispatch(payrollBatchActions.updateBatchStatus(values));
     console.log(
       "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
@@ -253,52 +253,29 @@ const PayrollBatch = (props) => {
     setSelectedBatchId(null);
   };
 
-  const onFilter = (type, value) => {
-    // console.log(type, value);
-    setSelectedStatus(value);
+  const onFilter = (value) => {
     if (value === "2") {
-      // console.log(value, "received status");
-      setAllRecords(allData.filter((val) => val?.receivedOrganizationIds?.split(",")?.length === val?.totalOrganizationCount));
+      setAllRecords(
+        allData.filter(
+          (val) =>
+            val?.receivedOrganizationIds?.split(",")?.length ===
+            val?.totalOrganizationCount
+          // console.log(val?.totalOrganizationCount)
+          // console.log(val?.totalOrganizationCount)
+        )
+      );
     } else if (value === "0") {
-      // console.log(value, "all status");
       setAllRecords(payrollBatches?.items);
     } else {
-      // console.log(value, "pending status");
-      setAllRecords(allData.filter((val) => val?.receivedOrganizationIds?.split(",")?.length !== val?.totalOrganizationCount));
+      setAllRecords(
+        allData.filter(
+          (val) =>
+            val?.receivedOrganizationIds?.split(",")?.length !==
+            val?.totalOrganizationCount
+        )
+      );
     }
   };
-
-  //************************************************************************* */
-  // const filter = (value) => {
-  //   console.log(value);
-  //   if (value && value === payrollConstants.PENDING_STATUS.toString()) {
-  //     setAllRecords(
-  //       records?.filter(
-  //         (record) =>
-  //           !record?.receivedOrganizationIds ||
-  //           (record?.status === payrollConstants.RECEIVED_STATUS &&
-  //             record?.totalOrganizationCount !==
-  //               record?.receivedOrganizationIds?.split(",")?.length)
-  //       )
-  //     );
-  //   } else if (value && value === payrollConstants.RECEIVED_STATUS.toString()) {
-  //     setAllRecords(
-  //       records?.filter(
-  //         (record) =>
-  //           record?.status === payrollConstants.RECEIVED_STATUS &&
-  //           record?.totalOrganizationCount ===
-  //             record?.receivedOrganizationIds?.split(",")?.length
-  //       )
-  //     );
-  //   } else {
-  //     setAllRecords(records);
-  //   }
-  //   if (selectedKeySearch && searchValue) {
-  //     onSearchChange(searchValue, selectedKeySearch);
-  //   }
-  // };
-
-  //************************************************************************* */
 
   const onSearchChange = (e, selected) => {
     const keyword = e;
@@ -382,9 +359,9 @@ const PayrollBatch = (props) => {
                     <select
                       className="form-select"
                       defaultValue={1}
-                      onChange={(e) => onFilter("status", e.target.value)}
+                      onChange={(e) => onFilter(e.target.value)}
                     >
-                      <option value={"All"} key={"default"} disabled>
+                      <option value={""} key={"default"} disabled>
                         Status
                       </option>
                       {statusOption.map((status, index) => (
