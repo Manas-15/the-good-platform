@@ -273,20 +273,20 @@ const PayrollBatch = (props) => {
   //       )
 
   const onFilter = (value) => {
-    // console.log(value);
-    // setSelectedStatus(value);
-    // allGroupData = groupByBatch();
-    // setGroupByBatchData(allGroupData);
-    // console.log(allGroupData);
-    // if (value) {
-    //   console.log(value);
-    //   setGroupByBatchData(
-    //     Object.keys(allGroupData)?.filter(
-    //       (type, index) => allGroupData[type]?.[0]?.status.toString() === value
-    //     )
-    //   );
-    // }
-    // console.log(groupByBatchData);
+    console.log(value);
+    setSelectedStatus(value);
+    allGroupData = groupByBatch();
+    setGroupByBatchData(allGroupData);
+    console.log(allGroupData);
+    if (value) {
+      console.log(value);
+      setGroupByBatchData(
+        Object.keys(allGroupData)?.filter(
+          (type, index) => allGroupData[type]?.[0]?.status.toString() === value
+        )
+      );
+    }
+    console.log(groupByBatchData);
   };
 
   //************************************************************************* */
