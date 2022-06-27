@@ -28,9 +28,9 @@ import "rsuite/dist/rsuite.min.css";
 let charityProgramsOption = [];
 let accordionData;
 const paymentStatusOption = [
-  { label: "All", value: "all" },
-  { label: "Processed", value: "true" },
-  { label: "Not Processed", value: "false" }
+  { label: "All", value: "All" },
+  { label: "Processed", value: "True" },
+  { label: "Not Processed", value: "False" }
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
@@ -45,7 +45,6 @@ const DirectPayment = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState(records);
-  console.log(allRecords?.length);
 
   const transactions = useSelector((state) => state.transactionsHistory);
   // console.log(transactions);
@@ -79,7 +78,7 @@ const DirectPayment = (props) => {
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("Not Processed");
+  const [selectedStatus, setSelectedStatus] = useState("False");
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -120,8 +119,8 @@ const DirectPayment = (props) => {
   useEffect(() => {
     console.log("coming to riect payment >>>>>>>>>>>>");
     setRecords(transactions?.directPayments);
-    filter("status", "false");
-  }, [transactions?.directPayments]);
+    filter("status", "False");
+  }, []);
   useEffect(() => {
     setTotalCount(transactions?.totalCount);
   }, [transactions?.totalCount]);
@@ -131,17 +130,19 @@ const DirectPayment = (props) => {
   }, [records]);
 
   const filter = (type, value) => {
+    console.log("changeeeeeeeeeeeeeee", value, type);
     setSelectedStatus(value);
     setIsFilter(true);
-    if (value && value !== "all") {
-      setRecords(
-        transactions?.directPayments?.filter(
-          (record) => record?.directBatchPaymentStatus?.toString() === value
-        )
-      );
-    } else {
-      setRecords(transactions?.directPayments);
-    }
+    // fetchResults("");
+    // if (value && value !== "all") {
+    //   setRecords(
+    //     transactions?.directPayments?.filter(
+    //       (record) => record?.directBatchPaymentStatus?.toString() === value
+    //     )
+    //   );
+    // } else {
+    //   setRecords(transactions?.directPayments);
+    // }
   };
 
   const resultAccordionData = (key) => {
@@ -241,6 +242,7 @@ const DirectPayment = (props) => {
         searchByProgramName: searchByProgramName,
         searchByCorporateName: searchByCorporateName,
         searchByAmount: searchByAmount,
+        selectedStatus: selectedStatus,
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
@@ -254,9 +256,13 @@ const DirectPayment = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount
+    searchByAmount,
+    selectedStatus,
+    currentPage,
   ]);
-
+  // useEffect(() => {
+  //   fetchResults("");
+  // }, [currentPage]);
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
@@ -276,10 +282,6 @@ const DirectPayment = (props) => {
       return acc;
     }, {});
   };
-  console.log(transactions?.directPayments);
-  console.log(records);
-  console.log(allRecords);
-
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
     console.log(name, checked);
@@ -325,12 +327,6 @@ const DirectPayment = (props) => {
     }
     // console.log("ddddddddddddddddd", checkedPreference);
   };
-
-  console.log(
-    allRecords?.map((item) =>
-      checkedPreference?.preferenceId?.includes(item?.Id)
-    )
-  );
   if (isBluePencilPortal) {
     if (currentView === payrollConstants.ORGANIZATION_VIEW) {
       accordionData = groupBy("socialOrg");
@@ -420,7 +416,7 @@ const DirectPayment = (props) => {
             <div className="col-md-6">
               <select
                 className="form-select"
-                defaultValue={"false"}
+                defaultValue={"False"}
                 onChange={(e) => filter("status", e.target.value)}
               >
                 {paymentStatusOption.map((status, index) => (
@@ -964,7 +960,6 @@ const DirectPayment = (props) => {
           </div>
         </div>
       )}
-
       <Pagination
         className="pagination-bar mt-4"
         currentPage={currentPage}
