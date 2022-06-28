@@ -618,10 +618,9 @@ const PayrollBatch = (props) => {
                                 Organization Name
                               </th>
                             )}
-
-                            {!corporateId && (
+                            {/* {!corporateId && (
                               <th className="ant-table-cell">Corporate Name</th>
-                            )}
+                            )} */}
                             <th className="ant-table-cell">Month</th>
                             <th className="ant-table-cell">
                               Amount (
@@ -686,14 +685,14 @@ const PayrollBatch = (props) => {
                               {batch?.corporateId}
                             </td>
                           )} */}
-                                  {!corporateId && (
+                                  {/* {!corporateId && (
                                     <td className="ant-table-cell">
                                       {
                                         groupByBatchData[type]?.[0]
                                           ?.corporateName
                                       }
                                     </td>
-                                  )}
+                                  )} */}
                                   <td className="ant-table-cell">
                                     {moment(
                                       groupByBatchData[type]?.[0]?.createdDate

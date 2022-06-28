@@ -18,7 +18,7 @@ import {
   viewPortalConstants,
   payrollConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -30,13 +30,13 @@ let accordionData;
 const paymentStatusOption = [
   { label: "All", value: "All" },
   { label: "Processed", value: "True" },
-  { label: "Not Processed", value: "False" },
+  { label: "Not Processed", value: "False" }
   // { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 const date = new Date();
@@ -87,13 +87,13 @@ const DirectPayment = (props) => {
   const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
   const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
   const [checkedPreference, setCheckedPreference] = useState({
-    preferenceId: [],
+    preferenceId: []
   });
   const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -158,7 +158,7 @@ const DirectPayment = (props) => {
             batchDate,
             charityName,
             corporateName,
-            socialOrg,
+            socialOrg
           }
         ) => {
           const temp = {
@@ -168,7 +168,7 @@ const DirectPayment = (props) => {
             batchDate: "",
             charityName: "",
             corporateName: "",
-            socialOrg: "",
+            socialOrg: ""
           };
           c[batchId] = c[batchId] || temp;
           c[batchId].employeeName += employeeName;
@@ -208,7 +208,7 @@ const DirectPayment = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -247,7 +247,7 @@ const DirectPayment = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
+          : null
       })
     );
   };
@@ -259,13 +259,13 @@ const DirectPayment = (props) => {
     searchByCorporateName,
     searchByAmount,
     selectedStatus,
-    currentPage,
+    currentPage
   ]);
 
   const selectionRange = {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: "selection"
   };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -294,22 +294,22 @@ const DirectPayment = (props) => {
       const singleSocialPreferenceId = new Set(prefenreceID);
       prefenreceID = [...singleSocialPreferenceId];
       setCheckedPreference({
-        preferenceId: allRecords?.map((val) => val.Id),
+        preferenceId: allRecords?.map((val) => val.Id)
       });
     } else if (name === "allSelect" && !checked) {
       // console.log("222222222222222222");
       setCheckedPreference({
-        preferenceId: [],
+        preferenceId: []
       });
     } else if (checked) {
       // console.log("33333333333333333333");
       setCheckedPreference({
-        preferenceId: [...preferenceId, items?.Id],
+        preferenceId: [...preferenceId, items?.Id]
       });
     } else {
       // console.log("44444444444444");
       setCheckedPreference({
-        preferenceId: preferenceId?.filter((val) => val !== items?.Id),
+        preferenceId: preferenceId?.filter((val) => val !== items?.Id)
       });
     }
     // For all Check & Uncheck
@@ -347,11 +347,11 @@ const DirectPayment = (props) => {
     setSelectedPreference(null);
   };
 
-  const myBatch = allRecords?.filter((item) =>
-    checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
-  );
+  // const myBatch = allRecords?.filter((item) =>
+  //   checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
+  // );
 
-  console.log(myBatch);
+  // console.log(myBatch);
 
   const createBatch = () => {
     if (isBluePencilPortal) {
@@ -368,7 +368,7 @@ const DirectPayment = (props) => {
             .reduce(
               (total, currentValue) => (total = total + currentValue?.amount),
               0
-            ),
+            )
         })
       );
       const data = allRecords?.filter(
@@ -437,7 +437,7 @@ const DirectPayment = (props) => {
         <div className="col-md-12 text-right">
           {isBluePencilPortal && (
             <Link
-              to=""
+              to="/direct-payment"
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
             >
@@ -453,7 +453,7 @@ const DirectPayment = (props) => {
           )}
           {isBluePencilPortal && (
             <Link
-              to=""
+              to="/direct-payment"
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
             >
@@ -471,7 +471,7 @@ const DirectPayment = (props) => {
           )}
           {isBluePencilPortal && (
             <Link
-              to=""
+              to="/direct-payment"
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
             >
@@ -645,9 +645,9 @@ const DirectPayment = (props) => {
                       {!isOrganizationView && (
                         <th className="ant-table-cell">Organization</th>
                       )}
-                      {!employeeId && !isCorporatePortal && (
+                      {/* {!employeeId && !isCorporatePortal && (
                         <th className="ant-table-cell">Corporate</th>
-                      )}
+                      )} */}
                       <th className="ant-table-cell">Transaction ID</th>
                       <th className="ant-table-cell">Donation</th>
                       <th className="ant-table-cell">Payment Date</th>
@@ -687,7 +687,7 @@ const DirectPayment = (props) => {
                               <span className="ant-typography font-weight-bold">
                                 <Tooltip title="Show detail">
                                   <Link
-                                    to=""
+                                    to="/direct-payment"
                                     onClick={() =>
                                       showAccountDetail(transaction)
                                     }
@@ -706,7 +706,7 @@ const DirectPayment = (props) => {
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title={transaction?.charityName}>
                                 <Link
-                                  to=""
+                                  to="/direct-payment"
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   {" "}
@@ -727,7 +727,7 @@ const DirectPayment = (props) => {
                               <span className="ant-typography font-weight-bold">
                                 <Tooltip title="Show detail">
                                   <Link
-                                    to=""
+                                    to="/direct-payment"
                                     onClick={() =>
                                       showAccountDetail(transaction)
                                     }
@@ -740,11 +740,10 @@ const DirectPayment = (props) => {
                               </span>
                             </td>
                           )}
-                          {!employeeId && !isCorporatePortal && (
+                          {/* {!employeeId && !isCorporatePortal && (
                             <td className="ant-table-cell">
                               <Tooltip title="Show detail">
                                 <Link
-                                  to=""
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
@@ -753,7 +752,7 @@ const DirectPayment = (props) => {
                                 </Link>
                               </Tooltip>
                             </td>
-                          )}
+                          )} */}
                           <td className="ant-table-cell">
                             {transaction?.transactionId}
                           </td>
@@ -795,7 +794,6 @@ const DirectPayment = (props) => {
                                 <div className="d-flex">
                                   <Tooltip title="Download">
                                     <Link
-                                      to=""
                                       className="text-decoration-underline"
                                       onClick={() =>
                                         downlad(transaction?.transactionId)
@@ -806,7 +804,6 @@ const DirectPayment = (props) => {
                                   </Tooltip>
                                   <Tooltip title="Email">
                                     <Link
-                                      to=""
                                       className="text-decoration-underline"
                                       onClick={() =>
                                         setEmailSend(transaction?.transactionId)
@@ -873,7 +870,7 @@ const DirectPayment = (props) => {
                                     </th>
                                   )}
                                   <th className="ant-table-cell">Program</th>
-                                  <th className="ant-table-cell">Corporate</th>
+                                  {/* <th className="ant-table-cell">Corporate</th> */}
                                   <th className="ant-table-cell">Month</th>
                                   <th className="ant-table-cell">
                                     Amount (
@@ -896,7 +893,7 @@ const DirectPayment = (props) => {
                                       className="ant-table-row ant-table-row-level-0"
                                     >
                                       {/* <td className="ant-table-cell">
-                                        <Link to=""
+                                        <Link
                                           onClick={() =>
                                             props?.showBatchDetail(
                                               batch?.batchId
@@ -921,9 +918,9 @@ const DirectPayment = (props) => {
                                       <td className="ant-table-cell">
                                         {item?.charityName}
                                       </td>
-                                      <td className="ant-table-cell">
+                                      {/* <td className="ant-table-cell">
                                         {item?.corporateName}
-                                      </td>
+                                      </td> */}
                                       <td className="ant-table-cell">
                                         {moment(item?.createdDate).format(
                                           "MMM, YYYY"
@@ -999,7 +996,7 @@ const DirectPayment = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
@@ -1139,7 +1136,7 @@ const DirectPayment = (props) => {
                     ? item?.employeeName
                     : null
                 )
-              ),
+              )
             ].length
           }
           totalProgram={
@@ -1150,7 +1147,7 @@ const DirectPayment = (props) => {
                     ? item?.charityName
                     : null
                 )
-              ),
+              )
             ].length
           }
           totalAmount={
