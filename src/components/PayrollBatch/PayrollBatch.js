@@ -391,7 +391,9 @@ const PayrollBatch = (props) => {
               <h1 className="ant-typography customHeading">Payroll Batch</h1>
             </div>
             <div className="col-md-6 text-right">
-              {(isCorporatePortal || isBluePencilPortal || isOrganizationPortal) && (
+              {(isCorporatePortal ||
+                isBluePencilPortal ||
+                isOrganizationPortal) && (
                 <div className="row mb-4">
                   <div className="col-md-6 mt-2">
                     <h6 className="mt-2">Filter By</h6>
@@ -1020,9 +1022,10 @@ const PayrollBatch = (props) => {
                                   </td>
                                 )}
                                 <td className="ant-table-cell">
-                                  {batch?.createdDate && moment(batch?.createdDate).format(
-                                    "MMM, YYYY"
-                                  )}
+                                  {batch?.createdDate &&
+                                    moment(batch?.createdDate).format(
+                                      "MMM, YYYY"
+                                    )}
                                 </td>
                                 <td className="ant-table-cell">
                                   {batch?.amount?.toLocaleString()}
