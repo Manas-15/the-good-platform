@@ -17,11 +17,13 @@ export function payrollBatch(state = {}, action) {
         error: action.error
       };
     case payrollConstants.UPDATE_BATCH_STATUS_REQUEST:
+      console.log("action?.data.................", action?.data)
       return {
         ...state,
         loading: true,
         batchId: action?.data?.batchId,
-        requestType: action?.data?.requestType
+        requestType: action?.data?.requestType,
+        socialId: action?.data?.socialId
       };
     case payrollConstants.UPDATE_BATCH_STATUS_SUCCESS:
       console.log("dddddddddddddddddddd reducer", state?.items);
@@ -66,11 +68,11 @@ export function payrollBatch(state = {}, action) {
                 // }
               }
               if (state?.requestType === payrollConstants?.RECEIVE) {
-                // const splitReciveOrgs = item?.receivedOrganizationIds?.split(",")
+                const splitReciveOrgs = item?.receivedOrganizationIds?.split(",")
                 return {
                   ...item,
-                  status: payrollConstants?.RECEIVED_STATUS
-                  // receivedOrganizationIds: splitReciveOrgs?.length > 0 ? splitReciveOrgs.push("9").toString() : "9"
+                  status: payrollConstants?.RECEIVED_STATUS,
+                  receivedOrganizationIds: splitReciveOrgs?.length > 0 ? splitReciveOrgs.push(state?.socialId).toString() : state?.socialId?.toString()
                 };
               }
             }

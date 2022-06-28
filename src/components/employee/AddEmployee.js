@@ -22,8 +22,7 @@ const initialValues = {
   email: "",
   employeeId: "",
   pan: "",
-  corporateProfileId: "7",
-  corporateId: "",
+  corporateProfileId: " ",
   organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
@@ -99,7 +98,7 @@ const AddEmployee = () => {
   const addEmployeeRegister = (values) => {
     values.state = state;
     values.country = country;
-    values.corporateId = corporateId;
+    values.corporateProfileId = corporateId;
     console.log(values);
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
@@ -248,11 +247,14 @@ const AddEmployee = () => {
                   <Field
                     name="pan"
                     type="text"
+                    style={{ textTransform: "uppercase" }}
+                    maxLength={10}
                     className={
                       "form-control" +
                       (errors.pan && touched.pan ? " is-invalid" : "")
                     }
                   />
+
                   <ErrorMessage
                     name="pan"
                     component="div"

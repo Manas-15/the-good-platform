@@ -368,7 +368,7 @@ function addEmployee(employee) {
         if (res?.data?.email) {
           dispatch(alertActions.error(res?.data?.email?.[0]));
         } else {
-          history.push("/corporates/:corporateId/employees");
+          history.push(`/corporates/${employee.corporateProfileId}/employees`);
           dispatch(alertActions.success("Employee added successfully"));
         }
       },

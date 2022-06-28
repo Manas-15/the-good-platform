@@ -67,12 +67,16 @@ export function employee(state = initialState, action) {
         error: action.error,
       };
     case employeeConstants.ADD_EMPLOYEE_REQUEST:
-      return { addinguser: true };
+      console.log("Reducer requestttttttttttttt");
+      return { ...state, addingEmployee: true };
     case employeeConstants.ADD_EMPLOYEE_SUCCESS:
-      return {};
+      console.log("Reducer sucesssssssssss");
+      console.log(action);
+      return { ...state, addingEmployee: false };
     case employeeConstants.ADD_EMPLOYEE_FAILURE:
-      console.log("eeeeeeeeeeeeeeee error");
-      return {};
+      console.log("reducer error");
+      return { ...state, addingEmployee: false };
+
     case employeeConstants.GET_EMPLOYEE_REQUEST:
       return { updatingEmployee: true };
     case employeeConstants.GET_EMPLOYEE_SUCCESS:

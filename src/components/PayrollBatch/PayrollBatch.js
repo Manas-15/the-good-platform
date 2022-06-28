@@ -256,7 +256,7 @@ const PayrollBatch = (props) => {
   const onFilter = (value) => {
     if (value === "2") {
       setAllRecords(
-        allData.filter(
+        allData?.filter(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length ===
             val?.totalOrganizationCount
@@ -268,7 +268,7 @@ const PayrollBatch = (props) => {
       setAllRecords(payrollBatches?.items);
     } else {
       setAllRecords(
-        allData.filter(
+        allData?.filter(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length !==
             val?.totalOrganizationCount
@@ -577,7 +577,6 @@ const PayrollBatch = (props) => {
                                 Organization Name
                               </th>
                             )}
-
                             {/* {!corporateId && (
                               <th className="ant-table-cell">Corporate Name</th>
                             )} */}

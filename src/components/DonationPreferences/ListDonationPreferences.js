@@ -83,7 +83,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     if (action === "Delete") {
       setActionTitle(`Remove Confirmation`);
       setActionContent(
-        `Are you sure want to remove from your donation preferences?<p class="mt-4"><strong>Organization:</strong> ${
+        `Are you sure want to remove from your donation preferences?<p className="mt-4"><strong>Organization:</strong> ${
           item?.socialOrganization
         }</p><p><strong>Program:</strong> ${
           item?.charityProgram

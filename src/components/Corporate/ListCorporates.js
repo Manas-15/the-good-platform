@@ -166,7 +166,7 @@ const ListCorporates = () => {
                                         )
                                       }
                                     >
-                                      <i class="bi bi-x-circle custom-color fs-5 ms-2"></i>
+                                      <i className="bi bi-x-circle custom-color fs-5 ms-2"></i>
                                     </Link>
                                   </Tooltip>
                                 ) : null}

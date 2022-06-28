@@ -32,6 +32,8 @@ const ListEmployees = (props) => {
   const isSuperadminView = location.state;
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
+  console.log(employees?.items);
+
   const hiddenFileInput = useRef(null);
   // const user = useSelector((state) => state.employee.user);
   // Pagination
@@ -482,16 +484,6 @@ const ListEmployees = (props) => {
               >
                 Confirm
               </button>
-              {/* <Link onClick={() => isBulkUpload(false)} className="mr-3">
-                Cancel
-              </Link>
-              <button
-                type="button"
-                className="btn btn-custom btn-sm"
-                onClick={goNext}
-              >
-                Next
-              </button> */}
             </div>
           </div>
           <table className="table preview_csv_table mt-4">
@@ -527,53 +519,6 @@ const ListEmployees = (props) => {
           </table>
         </div>
       )}
-      {/* {isImportNextStep && (
-        <div className="mt-4">
-          <div className="row mt-4">
-            <div className="col-md-6 d-flex">
-              <Link onClick={prvBack}>
-                <i className="bi bi-arrow-90deg-left fs-6" />
-                &nbsp;Back &nbsp;
-              </Link>
-              <h5>Customized Fields</h5>
-            </div>
-            <div className="col-md-6 text-right">
-              <Link onClick={() => isBulkUpload(false)} className="mr-3">
-                Cancel
-              </Link>
-              <button
-                type="button"
-                className="btn btn-custom btn-sm"
-                onClick={confimUpload}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-          <table className="table preview_csv_table mt-4">
-            <thead>
-              <tr>
-                {selectedFieldTypes?.map((header, index) => (
-                  <td className="ellipsis-div">
-                    <strong>{header.replace("_", " ").toUpperCase()}</strong>
-                  </td>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="scrollbar scrollbar-black bordered-black thin square">
-              {finalData?.map((data, index) => (
-                <tr key={index + 1}>
-                  {data?.map((item, i) => (
-                    <td className="ellipsis-div">
-                      <div>{item}</div>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )} */}
     </div>
   );
 };

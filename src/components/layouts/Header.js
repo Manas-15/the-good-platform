@@ -58,7 +58,8 @@ const Header = () => {
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
             ? " - " + selectedCorporate?.corporate?.organizationName
             : ""}
-          {currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
+          {currentView?.currentView ===
+          viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
             ? " - " + selectedOrganization?.organization?.name
             : ""}
         </h4>

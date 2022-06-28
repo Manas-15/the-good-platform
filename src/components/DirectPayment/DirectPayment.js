@@ -244,15 +244,17 @@ const DirectPayment = (props) => {
         searchByCorporateName: searchByCorporateName,
         searchByAmount: searchByAmount,
         selectedStatus: selectedStatus,
-        startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
+        startDate: dateRange
+          ? moment(dateRange[0]).format("YYYY-MM-DD")
+          : moment().add(-30, "days").format("YYYY-MM-DD"),
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
+          : moment().add(1, "days").format("YYYY-MM-DD"),
       })
     );
   };
   useEffect(() => {
-    fetchResults("");
+    fetchResults(null);
   }, [
     searchByProgramName,
     searchByEmployeeName,
@@ -431,6 +433,7 @@ const DirectPayment = (props) => {
         <div className="col-md-12 text-right">
           {isBluePencilPortal && (
             <Link
+              to="/direct-payment"
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.LIST_VIEW)}
             >
@@ -446,6 +449,7 @@ const DirectPayment = (props) => {
           )}
           {isBluePencilPortal && (
             <Link
+              to="/direct-payment"
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.ORGANIZATION_VIEW)}
             >
@@ -463,6 +467,7 @@ const DirectPayment = (props) => {
           )}
           {isBluePencilPortal && (
             <Link
+              to="/direct-payment"
               className="fs-6 text-decoration-underline mr-3"
               onClick={() => setCurrentView(payrollConstants.PROGRAM_VIEW)}
             >
@@ -585,8 +590,9 @@ const DirectPayment = (props) => {
           </div>
 
           <div className="col-md-4 text-right">
-            {selectedStatus !== "true" &&
-              currentView === payrollConstants.LIST_VIEW && (
+            {selectedStatus !== "True" &&
+              currentView === payrollConstants.LIST_VIEW &&
+              allRecords?.length > 0 && (
                 <button
                   className="btn btn-custom"
                   onClick={() =>
@@ -614,18 +620,21 @@ const DirectPayment = (props) => {
                     <tr>
                       <th>
                         <div className="form-check me-2">
-                          <input
-                            type="checkbox"
-                            name="allSelect"
-                            checked={
-                              allRecords?.length > 0 &&
-                              allRecords?.filter(
-                                (item) => item?.isChecked !== true
-                              ).length < 1
-                            }
-                            className="form-check-input"
-                            onChange={(e) => handleCheck(e, allRecords)}
-                          />
+                          {selectedStatus !== "True" &&
+                            allRecords?.length > 0 && (
+                              <input
+                                type="checkbox"
+                                name="allSelect"
+                                checked={
+                                  allRecords?.length > 0 &&
+                                  allRecords?.filter(
+                                    (item) => item?.isChecked !== true
+                                  ).length < 1
+                                }
+                                className="form-check-input"
+                                onChange={(e) => handleCheck(e, allRecords)}
+                              />
+                            )}
                         </div>
                       </th>
                       {/* <th>Batch ID</th> */}
@@ -678,6 +687,7 @@ const DirectPayment = (props) => {
                               <span className="ant-typography font-weight-bold">
                                 <Tooltip title="Show detail">
                                   <Link
+                                    to="/direct-payment"
                                     onClick={() =>
                                       showAccountDetail(transaction)
                                     }
@@ -696,6 +706,7 @@ const DirectPayment = (props) => {
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title={transaction?.charityName}>
                                 <Link
+                                  to="/direct-payment"
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
@@ -715,6 +726,7 @@ const DirectPayment = (props) => {
                               <span className="ant-typography font-weight-bold">
                                 <Tooltip title="Show detail">
                                   <Link
+                                    to="/direct-payment"
                                     onClick={() =>
                                       showAccountDetail(transaction)
                                     }
@@ -728,18 +740,18 @@ const DirectPayment = (props) => {
                             </td>
                           )}
                           {/* {!employeeId && !isCorporatePortal && (
-                              <td className="ant-table-cell">
-                                <Tooltip title="Show detail">
-                                  <Link
-                                    onClick={() => showAccountDetail(transaction)}
-                                  >
-                                    <span className="custom-color">
-                                      {transaction?.corporateName}
-                                    </span>
-                                  </Link>
-                                </Tooltip>
-                              </td>
-                            )} */}
+                            <td className="ant-table-cell">
+                              <Tooltip title="Show detail">
+                                <Link
+                                  onClick={() => showAccountDetail(transaction)}
+                                >
+                                  <span className="custom-color">
+                                    {transaction?.corporateName}
+                                  </span>
+                                </Link>
+                              </Tooltip>
+                            </td>
+                          )} */}
                           <td className="ant-table-cell">
                             {transaction?.transactionId}
                           </td>
@@ -857,7 +869,7 @@ const DirectPayment = (props) => {
                                     </th>
                                   )}
                                   <th className="ant-table-cell">Program</th>
-                                  <th className="ant-table-cell">Corporate</th>
+                                  {/* <th className="ant-table-cell">Corporate</th> */}
                                   <th className="ant-table-cell">Month</th>
                                   <th className="ant-table-cell">
                                     Amount (
@@ -905,9 +917,9 @@ const DirectPayment = (props) => {
                                       <td className="ant-table-cell">
                                         {item?.charityName}
                                       </td>
-                                      <td className="ant-table-cell">
+                                      {/* <td className="ant-table-cell">
                                         {item?.corporateName}
-                                      </td>
+                                      </td> */}
                                       <td className="ant-table-cell">
                                         {moment(item?.createdDate).format(
                                           "MMM, YYYY"
