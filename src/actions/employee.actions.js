@@ -365,6 +365,10 @@ function addEmployee(employee) {
     employeeService.addEmployee(employee).then(
       (res) => {
         dispatch(success(res));
+        console.log(
+          employee?.corporateProfileId,
+          "employee elssssssssssssssss"
+        );
         if (res?.data?.email) {
           dispatch(alertActions.error(res?.data?.email?.[0]));
         } else {
