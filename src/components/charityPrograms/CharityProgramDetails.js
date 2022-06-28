@@ -520,7 +520,7 @@ const CharityProgramDetails = (props) => {
                                 <div className="donor">
                                   <div className="section">
                                     {/* <img src="/assets/img/no-image.png" /> */}
-                                    <div class="name-circle">
+                                    <div className="name-circle">
                                       {user?.name?.split(" ")?.[0]?.charAt(0)}
                                       {user?.name?.split(" ")?.pop()?.charAt(0)}
                                     </div>
@@ -542,7 +542,7 @@ const CharityProgramDetails = (props) => {
                                 <div className="donor">
                                   <div className="section">
                                     {/* <img src="/assets/img/no-image.png" /> */}
-                                    <div class="name-circle">
+                                    <div className="name-circle">
                                       {user?.name?.split(" ")?.[0]?.charAt(0)}
                                       {user?.name?.split(" ")?.pop()?.charAt(0)}
                                     </div>
