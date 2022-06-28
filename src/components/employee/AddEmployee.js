@@ -23,7 +23,6 @@ const initialValues = {
   employeeId: "",
   pan: "",
   corporateProfileId: "7",
-  corporateId: "",
   organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
@@ -99,7 +98,7 @@ const AddEmployee = () => {
   const addEmployeeRegister = (values) => {
     values.state = state;
     values.country = country;
-    values.corporateId = corporateId;
+    values.corporateProfileId = corporateId;
     console.log(values);
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
