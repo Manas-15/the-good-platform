@@ -347,12 +347,6 @@ const DirectPayment = (props) => {
     setSelectedPreference(null);
   };
 
-  const myBatch = allRecords?.filter((item) =>
-    checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
-  );
-
-  console.log(myBatch);
-
   const createBatch = () => {
     if (isBluePencilPortal) {
       dispatch(
