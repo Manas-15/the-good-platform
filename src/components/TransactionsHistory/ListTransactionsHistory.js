@@ -398,6 +398,7 @@ const ListTransactionsHistory = (props) => {
                     {!isOrganizationView && (
                       <th className="ant-table-cell">Organization</th>
                     )}
+
                     {!employeeId && !isCorporatePortal && (
                       <th className="ant-table-cell">Corporate</th>
                     )}
@@ -432,7 +433,6 @@ const ListTransactionsHistory = (props) => {
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title="Show detail">
                                 <Link
-                                  to="#"
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
@@ -445,14 +445,18 @@ const ListTransactionsHistory = (props) => {
                         )}
                         <td className="ant-table-cell">
                           <span className="ant-typography font-weight-bold">
-                            <Tooltip title="Show detail">
+                            <Tooltip title={transaction?.charityName}>
                               <Link
-                                to="#"
                                 onClick={() => showAccountDetail(transaction)}
                               >
                                 {" "}
                                 <span className="custom-color">
-                                  {transaction?.charityName}
+                                  {transaction?.charityName?.length > 25
+                                    ? transaction?.charityName?.substring(
+                                        0,
+                                        22
+                                      ) + "..."
+                                    : transaction?.charityName}
                                 </span>
                               </Link>
                             </Tooltip>
@@ -463,7 +467,6 @@ const ListTransactionsHistory = (props) => {
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title="Show detail">
                                 <Link
-                                  to="#"
                                   onClick={() => showAccountDetail(transaction)}
                                 >
                                   <span className="custom-color">
@@ -478,7 +481,6 @@ const ListTransactionsHistory = (props) => {
                           <td className="ant-table-cell">
                             <Tooltip title="Show detail">
                               <Link
-                                to="#"
                                 onClick={() => showAccountDetail(transaction)}
                               >
                                 <span className="custom-color">

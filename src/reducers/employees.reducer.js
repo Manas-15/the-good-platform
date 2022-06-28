@@ -133,7 +133,7 @@ export function employee(state = initialState, action) {
       return { savingEmployeePassword: true };
     case employeeConstants.GET_CORPORATES_SUCCESS:
       return {
-        corporates: action?.data?.data?.data?.data
+        corporates: action?.data?.data?.data?.data,
       };
     case employeeConstants.GET_CORPORATES_FAILURE:
       return { error: action.error };
