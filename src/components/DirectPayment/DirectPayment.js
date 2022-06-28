@@ -596,8 +596,8 @@ const DirectPayment = (props) => {
           </div>
 
           <div className="col-md-4 text-right">
-            {selectedStatus !== "true" &&
-              currentView === payrollConstants.LIST_VIEW && (
+            {selectedStatus !== "True" &&
+              currentView === payrollConstants.LIST_VIEW && allRecords?.length > 0 && (
                 <button
                   className="btn btn-custom"
                   onClick={() =>
@@ -625,7 +625,7 @@ const DirectPayment = (props) => {
                     <tr>
                       <th>
                         <div className="form-check me-2">
-                          <input
+                          {selectedStatus !== "True" && allRecords?.length > 0 && <input
                             type="checkbox"
                             name="allSelect"
                             checked={
@@ -636,7 +636,7 @@ const DirectPayment = (props) => {
                             }
                             className="form-check-input"
                             onChange={(e) => handleCheck(e, allRecords)}
-                          />
+                          />}
                         </div>
                       </th>
                       {/* <th>Batch ID</th> */}

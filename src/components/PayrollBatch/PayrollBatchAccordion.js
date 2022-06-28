@@ -676,7 +676,7 @@ const PayrollBatchAccordion = (props) => {
           </Modal>
         </>
       )}
-      {props?.allRecords?.length === 0 && (
+      {/* {props?.allRecords?.length === 0 && (
         <div className="card text-center m-4 p-4">
           {isOrganizationPortal && (
             <strong>
@@ -701,7 +701,7 @@ const PayrollBatchAccordion = (props) => {
             </strong>
           )}
         </div>
-      )}
+      )} */}
       {isBatchDetail && (
         <PayrollBatchDetail
           batchId={selectedBatchId}

@@ -265,7 +265,7 @@ const PayrollBatch = (props) => {
     if (value === "2") {
       // console.log(value, "received status");
       setAllRecords(
-        allData.filter(
+        allData?.filter(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length ===
             val?.totalOrganizationCount
@@ -277,7 +277,7 @@ const PayrollBatch = (props) => {
     } else {
       // console.log(value, "pending status");
       setAllRecords(
-        allData.filter(
+        allData?.filter(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length !==
             val?.totalOrganizationCount
