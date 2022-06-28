@@ -244,15 +244,17 @@ const DirectPayment = (props) => {
         searchByCorporateName: searchByCorporateName,
         searchByAmount: searchByAmount,
         selectedStatus: selectedStatus,
-        startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
+        startDate: dateRange
+          ? moment(dateRange[0]).format("YYYY-MM-DD")
+          : moment().add(-30, "days").format("YYYY-MM-DD"),
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null
+          : moment().format("YYYY-MM-DD")
       })
     );
   };
   useEffect(() => {
-    fetchResults("");
+    fetchResults(null);
   }, [
     searchByProgramName,
     searchByEmployeeName,
