@@ -249,7 +249,7 @@ const DirectPayment = (props) => {
           : moment().add(-30, "days").format("YYYY-MM-DD"),
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : moment().format("YYYY-MM-DD")
+          : moment().add(1, "days").format("YYYY-MM-DD")
       })
     );
   };
@@ -597,7 +597,8 @@ const DirectPayment = (props) => {
 
           <div className="col-md-4 text-right">
             {selectedStatus !== "True" &&
-              currentView === payrollConstants.LIST_VIEW && allRecords?.length > 0 && (
+              currentView === payrollConstants.LIST_VIEW &&
+              allRecords?.length > 0 && (
                 <button
                   className="btn btn-custom"
                   onClick={() =>
@@ -625,18 +626,21 @@ const DirectPayment = (props) => {
                     <tr>
                       <th>
                         <div className="form-check me-2">
-                          {selectedStatus !== "True" && allRecords?.length > 0 && <input
-                            type="checkbox"
-                            name="allSelect"
-                            checked={
-                              allRecords?.length > 0 &&
-                              allRecords?.filter(
-                                (item) => item?.isChecked !== true
-                              ).length < 1
-                            }
-                            className="form-check-input"
-                            onChange={(e) => handleCheck(e, allRecords)}
-                          />}
+                          {selectedStatus !== "True" &&
+                            allRecords?.length > 0 && (
+                              <input
+                                type="checkbox"
+                                name="allSelect"
+                                checked={
+                                  allRecords?.length > 0 &&
+                                  allRecords?.filter(
+                                    (item) => item?.isChecked !== true
+                                  ).length < 1
+                                }
+                                className="form-check-input"
+                                onChange={(e) => handleCheck(e, allRecords)}
+                              />
+                            )}
                         </div>
                       </th>
                       {/* <th>Batch ID</th> */}

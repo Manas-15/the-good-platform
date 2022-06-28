@@ -9,7 +9,7 @@ import Pagination from "../Shared/Pagination";
 import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 let goodplatformFields = [
   { label: "First Name", value: "firstName" },
@@ -21,7 +21,7 @@ let goodplatformFields = [
   { label: "PAN", value: "pan" },
   { label: "Joining Date", value: "joiningDate" },
   { label: "Country", value: "country" },
-  { label: "Status", value: "status" },
+  { label: "Status", value: "status" }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -59,7 +59,7 @@ const ListEmployees = (props) => {
       employeeActions.getEmployees({
         corporateId: corporateId,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   }, [currentPage]);
@@ -124,7 +124,7 @@ const ListEmployees = (props) => {
             fieldType.push("select_field");
             goodplatformFields = [
               ...goodplatformFields,
-              { label: "Select Field", value: "select_field" },
+              { label: "Select Field", value: "select_field" }
             ];
           }
         }
