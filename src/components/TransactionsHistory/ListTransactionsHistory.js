@@ -573,7 +573,7 @@ const ListTransactionsHistory = (props) => {
                                 </div>
                               )
                             ) : (
-                              <span className="text-warning">Pending</span>
+                              <span className="text-warning text-uppercase">Pending</span>
                             )}
                           </td>
                         )}
