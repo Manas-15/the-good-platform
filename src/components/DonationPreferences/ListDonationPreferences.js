@@ -47,7 +47,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const [selectedPreference, setSelectedPreference] = useState();
   const [records, setAllRecords] = useState([]);
   const [updateType, setUpdateType] = useState("");
-  const [updatedValue, setUpdatedValue] = useState();
+  const [updatedValue, setUpdatedValue] = useState([]);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -170,18 +170,15 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   };
   const showConsent = (preference, type) => {
     setOpen(true);
-    setSelectedPreference(preference);
-    setUpdateType(type);
+    // setSelectedPreference(preference);
+    // setUpdateType(type);
   };
   const updateDonationPreference = () => {
     preferenceForm.employeePreferenceId =
       selectedPreference.employeePreferenceId;
     preferenceForm.type = updateType;
     if (updateType === donationPreferenceConstants.AMOUNT) {
-      preferenceForm.donationAmount = updatedValue.replace(
-        /\B(?=(\d{3})+(?!\d))/g,
-        ","
-      );
+      preferenceForm.donationAmount = updatedValue.replace(/,/g, "");
       preferenceForm.donationConsent = `${
         donationsConsent?.consent
       } [Frequency: ${
@@ -189,7 +186,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
           ? donationPreferenceConstants.MONTHLY
           : donationPreferenceConstants.ONCE
       }]`;
-      // preferenceForm.frequency = selectedPreference?.frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     }
     if (updateType === donationPreferenceConstants.FREQUENCY) {
       preferenceForm.frequency =
@@ -212,23 +208,25 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const setPage = (page) => {
     setCurrentPage(page);
   };
+
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
 
   const changeAmount = (e, id) => {
     const { value } = e.target;
-    let newAmount = [...items];
-    // newAmount = newAmount.map((val) => {
-    //   if (val?.employeePreferenceId == id) {
-    //     // console.log(val?.donationAmount, value);
-    //     // val?.donationAmount = value;
-    //   }
-    //   return val;
-    // });
-    // setAllRecords(newAmount);
-    setUpdatedValue(value);
+    const newItems = [...items];
+    console.log(newItems);
+    console.log(value);
+    let newAmount = newItems.map((val) => {
+      if (val?.employeePreferenceId === id) {
+        val.donationAmount = value;
+      }
+      return val;
+    });
+    setUpdatedValue(newAmount);
   };
+  console.log(updatedValue);
 
   return (
     <div className="customContainer  program-list">
@@ -305,11 +303,15 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 size="10"
                                 maxLength={10}
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
-                                value={updatedValue}
+                                // value={updatedValue}
                                 className="form-control"
                                 onBlur={() =>
-                                  updatedValue &&
-                                  updatedValue !== preference?.donationAmount
+                                  updatedValue?.filter(
+                                    (val) =>
+                                      val?.employeePreferenceId ===
+                                      preference?.employeePreferenceId
+                                  )?.[0]?.donationAmount ===
+                                  preference?.donationAmount
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT
