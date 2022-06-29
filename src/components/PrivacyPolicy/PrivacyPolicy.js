@@ -6,7 +6,7 @@ const PrivacyPolicy = (props) => {
       <div className="col-md-4">
         <div className="authForm setPasswordLeftContent">
           <h1 className="textHeading">Welcome back to The Good Platform!</h1>
-          <img height="350" src="/assets/img/smartphone2.png" />
+          <img height="350" src="/assets/img/smartphone2.png" alt="smart-phone"/>
         </div>
       </div>
       <div className="col-md-8 mt-3">

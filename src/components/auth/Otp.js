@@ -23,14 +23,16 @@ const Otp = (props) => {
           return dispatch(
             employeeActions.validateOtp({
               userId: user.user_id,
-              otp: code
+              otp: code,
+              validOtp: user.otp
             })
           );
         } else if (code.length === 6 && user?.user_type === 4) {
           return dispatch(
             employeeActions.validateOtp({
               userId: user.user_id,
-              otp: code
+              otp: code,
+              validOtp: user.otp
             })
           );
         }
