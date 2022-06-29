@@ -43,6 +43,11 @@ const IndividualForm = ({ type }) => {
 
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [showPassword, setShowPassword] = useState("false");
+
+  const toggleShowPassword = (e) => {
+    setShowPassword(!showPassword);
+  };
 
   const individualRegister = (values) => {
     setSubmitted(true);
@@ -162,7 +167,7 @@ const IndividualForm = ({ type }) => {
                     <div className="col-md-12">
                       <Field
                         name="password"
-                        type="password"
+                        type={showPassword ? "password" : "text"}
                         placeholder="Password*"
                         className={
                           "form-control" +
@@ -171,6 +176,16 @@ const IndividualForm = ({ type }) => {
                             : "")
                         }
                       />
+                      {showPassword ? (
+                        <div onClick={(e) => toggleShowPassword(e)}>
+                          <i class="bi bi-eye-slash"></i>
+                        </div>
+                      ) : (
+                        <div onClick={(e) => toggleShowPassword(e)}>
+                          <i class="bi bi-eye"></i>
+                        </div>
+                      )}
+
                       <ErrorMessage
                         name="password"
                         component="div"

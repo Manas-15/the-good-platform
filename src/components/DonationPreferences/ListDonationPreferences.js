@@ -284,7 +284,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                               <input
                                 name="amount"
                                 type="text"
-                                size="4"
+                                size="10"
                                 maxLength={10}
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
                                 className="form-control"

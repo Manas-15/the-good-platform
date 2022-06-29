@@ -124,14 +124,17 @@ const PayrollBatch = (props) => {
     }, {});
   };
   let allGroupData;
-  const allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
+  const allData =
+    payrollBatches?.item?.length > 0 &&
+    payrollBatches?.items?.filter((item) => !item?.isDeleted);
   useEffect(() => {
     setAllRecords(
-      payrollBatches?.items?.filter(
-        (item) =>
-          item?.receivedOrganizationIds?.split(",")?.length !==
-          item?.totalOrganizationCount
-      )
+      payrollBatches?.item?.length > 0 &&
+        payrollBatches?.items?.filter(
+          (item) =>
+            item?.receivedOrganizationIds?.split(",")?.length !==
+            item?.totalOrganizationCount
+        )
     );
   }, [payrollBatches?.items]);
 

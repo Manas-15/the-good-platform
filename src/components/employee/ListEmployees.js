@@ -19,8 +19,12 @@ let goodplatformFields = [
   { label: "Employee ID", value: "employeeId" },
   { label: "Gender", value: "gender" },
   { label: "PAN", value: "pan" },
+  { label: "Date of Birth", value: "dateOfBirth" },
   { label: "Joining Date", value: "joiningDate" },
+  { label: "Address", value: "address" },
+  { label: "Region", value: "Region" },
   { label: "Country", value: "country" },
+  { label: "Zip", value: "Zip" },
   { label: "Status", value: "status" },
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
@@ -171,11 +175,10 @@ const ListEmployees = (props) => {
   },
   {});
   const confimUpload = () => {
-    // console.log("ssssssssssssssssssssss selected", changesField);
     const formData = new FormData();
     formData.append("file", selectedFile, selectedFile?.name);
     formData.append("tblHeader", JSON.stringify(changesField));
-
+    formData.append("corporateId", corporateId);
     dispatch(employeeActions.bulkImport(formData));
   };
   const onHandleChange = (e) => {
@@ -474,7 +477,7 @@ const ListEmployees = (props) => {
             </div>
 
             <div className="col-md-6 text-right">
-              <Link onClick={() => isBulkUpload(false)} className="mr-3">
+              <Link onClick={goBack} className="mr-3">
                 Cancel
               </Link>
               <button

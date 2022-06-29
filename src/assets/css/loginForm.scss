@@ -95,7 +95,7 @@ body {
     box-sizing: border-box;
     border-radius: 6px;
     height: 48px;
-    font-family: 'Inter';
+    font-family: "Inter";
     font-style: normal;
     font-weight: 500;
     font-size: 13px;
@@ -246,6 +246,14 @@ body {
 .bi-eye-slash {
   cursor: pointer;
   position: absolute;
+  font-size: 16px;
+  top: 10px;
+  right: 10%;
+}
+.bi-eye {
+  cursor: pointer;
+  position: absolute;
+  font-size: 16px;
   top: 10px;
   right: 10%;
 }
