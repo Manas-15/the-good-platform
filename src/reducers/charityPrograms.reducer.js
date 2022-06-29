@@ -3,19 +3,37 @@ import { charityProgramConstants } from "../constants";
 export function charityPrograms(state = {}, action) {
   switch (action.type) {
     case charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST:
+      console.log(">>>>>>>>>>>> action?.data", action);
       return {
         loading: true
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
+      console.log(
+        "action?.charityPrograms?.data",
+        action?.charityPrograms?.data
+      );
       return {
-        items: action?.charityPrograms?.data?.charity_list.length
-          ? action?.charityPrograms?.data?.charity_list?.map?.((item) => {
-              if (item?.unitPrice === undefined) {
-                return { ...item, unitPrice: 500 };
-              }
-              return item;
-            })
-          : action?.charityPrograms?.data?.charity_list
+        items: {
+          sponsored: action?.charityPrograms?.data?.charity_list[
+            "sponsored"
+          ]?.map((charity) => {
+            return { ...charity, unitPrice: 500 };
+          }),
+          others: action?.charityPrograms?.data?.charity_list["others"]?.map(
+            (charity) => {
+              return { ...charity, unitPrice: 500 };
+            }
+          )
+        }
+
+        // items: action?.charityPrograms?.data?.charity_list.length
+        //   ? action?.charityPrograms?.data?.charity_list?.map?.((item) => {
+        //       if (item?.unitPrice === undefined) {
+        //         return { ...item, unitPrice: 500 };
+        //       }
+        //       return item;
+        //     })
+        //   : action?.charityPrograms?.data?.charity_list
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_FAILURE:
       return {
@@ -149,7 +167,7 @@ export function charityPrograms(state = {}, action) {
       return {
         ...state,
         loading: true,
-        programId: action?.program?.programId,
+        programId: action?.program?.programId
       };
     case charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_SUCCESS:
       return {
@@ -167,12 +185,12 @@ export function charityPrograms(state = {}, action) {
         //     return item;
         //   }),
         // },
-        loading: false,
+        loading: false
       };
     case charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_FAILURE:
       return {
         error: action.error,
-        loading: false,
+        loading: false
       };
 
     case charityProgramConstants.GET_PROGRAM_DETAIL_REQUEST:

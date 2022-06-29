@@ -63,7 +63,7 @@ const CharityPrograms = (props) => {
         isCorporatePortal
           ? {
               corporateId: selectedCorporate?.corporate?.corporateId,
-              socialId: selectedOrganization?.id,
+              orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id
             }
@@ -77,7 +77,7 @@ const CharityPrograms = (props) => {
           : {
               uuid: user?.uuid,
               userId: user?.user_id,
-              socialId: selectedOrganization?.id,
+              orgId: selectedOrganization?.id,
               userType: userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
@@ -348,9 +348,9 @@ const CharityPrograms = (props) => {
                   <span>
                     <RedoOutlined className="fs-5" />
                     {charityProgramConstants.OTHERS} (
-                    {charityPrograms?.items?.other
+                    {charityPrograms?.items?.others
                       ? SearchCharityHelper(
-                          charityPrograms?.items?.other,
+                          charityPrograms?.items?.others,
                           searchText
                         ).length
                       : 0}
@@ -364,10 +364,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items?.others,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items?.others
                     }
                     setCharity={setCharity}
                     tabType={tabType}
@@ -378,10 +378,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items?.others,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items?.others
                     }
                     setCharity={setCharity}
                     tabType={tabType}
