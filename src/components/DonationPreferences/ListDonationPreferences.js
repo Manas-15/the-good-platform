@@ -289,9 +289,8 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
                                 className="form-control"
                                 onBlur={() =>
-                                  updatedValue &&
-                                  updateType ===
-                                    donationPreferenceConstants.AMOUNT
+                                  updatedValue && updatedValue !==
+                                  preference?.donationAmount
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT
