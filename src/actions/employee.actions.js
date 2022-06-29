@@ -133,22 +133,20 @@ function validateOtp(data, from) {
     dispatch(request({ data }));
 
     employeeService.validateOtp(data).then(
-      (data) => {
-        dispatch(success(data));
-        if (data?.data?.msg === "Invalid OTP") {
+      (res) => {
+        dispatch(success(res));
+        if (res?.data?.msg === "Invalid OTP") {
           // history.push("/otp");
           history.push({
             pathname: "/otp",
-            state: { otp: data?.data?.otp }
+            state: { otp: data?.validOtp }
           });
-          dispatch(alertActions.error(data?.data?.msg));
+          dispatch(alertActions.error(res?.data?.msg));
         } else {
           localStorage.setItem("otpVerified", true);
-
-          console.log(">>>>>>>>>>>>>", data?.data?.user_type);
-          if (data?.data?.user_type === userConstants.EMPLOYEE) {
+          if (res?.data?.user_type === userConstants.EMPLOYEE) {
             dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
-          } else if (data?.data?.user_type === userConstants.INDIVIDUAL) {
+          } else if (res?.data?.user_type === userConstants.INDIVIDUAL) {
             dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
           }
           history.push("/");
