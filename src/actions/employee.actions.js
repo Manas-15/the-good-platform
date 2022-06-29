@@ -98,8 +98,11 @@ function login(data, from) {
             const res = JSON.stringify(data?.data);
             localStorage.setItem("user", JSON.stringify(data?.data));
             // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
-
-            history.push("/otp");
+            // history.push("/otp");
+            history.push({
+              pathname: "/otp",
+              state: { otp: data?.data?.otp }
+            });
           }
         },
         (error) => {

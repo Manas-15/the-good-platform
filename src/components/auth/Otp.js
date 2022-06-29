@@ -40,10 +40,11 @@ const Otp = (props) => {
   }
   return (
     <div className="text-center card p-4">
-      <h3 className="mb-4">
-        Enter one time password (OTP) - {props?.location?.state?.otp}
+      <h3 className="mb-2">
+        Enter one time password (OTP)
       </h3>
-      <p>
+      <h3>{props?.location?.state?.otp}</h3>
+      <p className="mt-2 mb-3">
         One time password has been sent to your email id {user?.email}. Please
         enter the same here to login.
       </p>
