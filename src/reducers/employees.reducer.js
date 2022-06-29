@@ -124,11 +124,11 @@ export function employee(state = initialState, action) {
         error: action.error,
       };
     case employeeConstants.BULK_IMPORT_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, actionRequest: true };
     case employeeConstants.BULK_IMPORT_SUCCESS:
-      return { ...state, items: action?.data?.data?.employee };
+      return { ...state, items: action?.data?.data?.employee, actionRequest: false };
     case employeeConstants.BULK_IMPORT_FAILURE:
-      return { ...state, error: action.error };
+      return { ...state, error: action.error, actionRequest: false };
     case employeeConstants.GET_CORPORATES_REQUEST:
       return { savingEmployeePassword: true };
     case employeeConstants.GET_CORPORATES_SUCCESS:
