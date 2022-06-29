@@ -19,8 +19,6 @@ import donationsConsent from "./../../config/donationsConsent.json";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { Progress, Tooltip, Switch } from "antd";
 import ReactHtmlParser from "react-html-parser";
-// import DonateHeader from "./../CharityPrograms/DonateHeader";
-// import Donate from "./../CharityPrograms/Donate";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -156,7 +154,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
-    updateDonationPreference();
+    d();
   };
   const closeCheck = (selectedPreference) => {
     setChecked(false);
@@ -174,12 +172,15 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     setSelectedPreference(preference);
     setUpdateType(type);
   };
-  const updateDonationPreference = () => {
+  const d = () => {
     preferenceForm.employeePreferenceId =
       selectedPreference.employeePreferenceId;
     preferenceForm.type = updateType;
     if (updateType === donationPreferenceConstants.AMOUNT) {
-      preferenceForm.donationAmount = updatedValue.replace(/,/g, "");
+      preferenceForm.donationAmount = updatedValue.replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        ","
+      );
       preferenceForm.donationConsent = `${
         donationsConsent?.consent
       } [Frequency: ${
@@ -197,9 +198,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
       preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`;
     }
     preferenceForm.isConsentCheck = true;
-    dispatch(
-      donationPreferenceActions.updateDonationPreference(preferenceForm)
-    );
+    dispatch(donationPreferenceActions.d(preferenceForm));
   };
   if (preferences.loading) {
     document.getElementById("root").classList.add("loading");
@@ -212,6 +211,14 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
+
+  const changeAmount = (e, index) => {
+    // console.log(e, index);
+    // if (index === index) {
+    setUpdatedValue(e.target.value.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    // }
+  };
+
   return (
     <div className="customContainer  program-list">
       {preferences.loading && <Loader />}
@@ -287,17 +294,18 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 size="10"
                                 maxLength={10}
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
+                                value={updatedValue}
                                 className="form-control"
                                 onBlur={() =>
-                                  updatedValue && updatedValue !==
-                                  preference?.donationAmount
+                                  updatedValue &&
+                                  updatedValue !== preference?.donationAmount
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT
                                       )
                                     : null
                                 }
-                                onInput={(e) => setUpdatedValue(e.target.value)}
+                                onInput={(e) => changeAmount(e, index)}
                                 id={`amount${preference?.employeePreferenceId}`}
                                 disabled={isCorporatePortal}
                               />
