@@ -161,7 +161,6 @@ const EmployeeForm = ({ type }) => {
                         name="firstName"
                         type="text"
                         placeholder="First Name*"
-                        // asterisk={"#db3131"}
                         maxLength={50}
                         className={
                           "form-control" +
