@@ -45,7 +45,11 @@ function login(data, from) {
                 // history.push("/dashboard");
                 // dispatch(alertActions.success("Loggedin successful"));
                 // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
-                history.push("/otp");
+                // history.push("/otp");
+                history.push({
+                  pathname: "/otp",
+                  state: { otp: res?.data?.otp }
+                });
               } else {
                 // if(!res?.data?.approve) {
                 //   dispatch(
@@ -357,14 +361,18 @@ function employeeAccountRequest(actionValues) {
   }
 }
 function bulkImport(formData) {
-  console.log(">>>>>>>>>>>>>>>>> comingggggggggggggg", formData)
+  console.log(">>>>>>>>>>>>>>>>> comingggggggggggggg", formData);
   return (dispatch) => {
     dispatch(request(formData));
     employeeService.bulkImport(formData).then(
       (data) => {
         dispatch(success(data));
-        console.log(">>>>>>>>>>>>>>>>>", formData, `"/corporates/${formData?.corporateId}/employees"`)
-        history.push({pathname:`"/corporates/1/employees"`});
+        console.log(
+          ">>>>>>>>>>>>>>>>>",
+          formData,
+          `"/corporates/${formData?.corporateId}/employees"`
+        );
+        history.push({ pathname: `"/corporates/1/employees"` });
         dispatch(alertActions.success(`Employee imported successfully`));
       },
       (error) => {
