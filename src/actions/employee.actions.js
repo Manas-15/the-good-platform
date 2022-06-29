@@ -136,7 +136,11 @@ function validateOtp(data, from) {
       (data) => {
         dispatch(success(data));
         if (data?.data?.msg === "Invalid OTP") {
-          history.push("/otp");
+          // history.push("/otp");
+          history.push({
+            pathname: "/otp",
+            state: { otp: data?.data?.otp }
+          });
           dispatch(alertActions.error(data?.data?.msg));
         } else {
           localStorage.setItem("otpVerified", true);
