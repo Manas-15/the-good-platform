@@ -6,7 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -28,14 +28,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
@@ -212,6 +212,24 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
+  const keyDownHandler = (event, preference) => {
+    console.log(
+      "User pressed: ",
+      event.key,
+      updatedValue,
+      preference?.donationAmount
+    );
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (
+        updatedValue &&
+        updatedValue?.toString()?.replace(/,/g, "") !==
+          preference?.donationAmount?.toString()?.replace(/,/g, "")
+      ) {
+        showConsent(preference, donationPreferenceConstants.AMOUNT);
+      }
+    }
+  };
   return (
     <div className="customContainer  program-list">
       {preferences.loading && <Loader />}
@@ -288,9 +306,13 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 maxLength={10}
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
                                 className="form-control"
+                                onKeyDown={(e) => keyDownHandler(e, preference)}
                                 onBlur={() =>
-                                  updatedValue && updatedValue !==
-                                  preference?.donationAmount
+                                  updatedValue &&
+                                  updatedValue.toString()?.replace(/,/g, "") !==
+                                    preference?.donationAmount
+                                      .toString()
+                                      ?.replace(/,/g, "")
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT
