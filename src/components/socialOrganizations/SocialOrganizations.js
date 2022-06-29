@@ -207,14 +207,14 @@ const SocialOrganizations = () => {
                 <span>
                   <RedoOutlined className="fs-5" />
                   {socialOrganizationConstants.OTHERS} (
-                  {socialOrganizations?.items
+                  {socialOrganizations?.items?.others
                     ? searchText &&
                       tabType === socialOrganizationConstants.OTHERS
                       ? SearchHelper(
-                          socialOrganizations?.items,
+                          socialOrganizations?.items?.others,
                           searchText
                         ).length
-                      : socialOrganizations?.items?.length
+                      : socialOrganizations?.items?.others?.length
                     : 0}
                   )
                 </span>
@@ -226,10 +226,10 @@ const SocialOrganizations = () => {
                 items={
                   searchText && tabType === socialOrganizationConstants.OTHERS
                     ? SearchHelper(
-                        socialOrganizations?.items,
+                        socialOrganizations?.items?.others,
                         searchText
                       )
-                    : socialOrganizations?.items
+                    : socialOrganizations?.items?.others
                 }
               />
             </TabPane>

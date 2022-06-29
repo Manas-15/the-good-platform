@@ -348,9 +348,9 @@ const CharityPrograms = (props) => {
                   <span>
                     <RedoOutlined className="fs-5" />
                     {charityProgramConstants.OTHERS} (
-                    {charityPrograms?.items
+                    {charityPrograms?.items?.other
                       ? SearchCharityHelper(
-                          charityPrograms?.items,
+                          charityPrograms?.items?.other,
                           searchText
                         ).length
                       : 0}
@@ -364,10 +364,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items,
+                            charityPrograms?.items?.other,
                             searchText
                           )
-                        : charityPrograms?.items
+                        : charityPrograms?.items?.other
                     }
                     setCharity={setCharity}
                     tabType={tabType}
@@ -378,10 +378,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items,
+                            charityPrograms?.items?.other,
                             searchText
                           )
-                        : charityPrograms?.items
+                        : charityPrograms?.items?.other
                     }
                     setCharity={setCharity}
                     tabType={tabType}
