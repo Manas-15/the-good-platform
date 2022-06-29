@@ -45,6 +45,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
+  const [records, setAllRecords] = useState([]);
   const [updateType, setUpdateType] = useState("");
   const [updatedValue, setUpdatedValue] = useState();
   const [actionType, setActionType] = useState("");
@@ -154,7 +155,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
-    d();
+    updateDonationPreference();
   };
   const closeCheck = (selectedPreference) => {
     setChecked(false);
@@ -172,7 +173,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     setSelectedPreference(preference);
     setUpdateType(type);
   };
-  const d = () => {
+  const updateDonationPreference = () => {
     preferenceForm.employeePreferenceId =
       selectedPreference.employeePreferenceId;
     preferenceForm.type = updateType;
@@ -198,7 +199,10 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
       preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`;
     }
     preferenceForm.isConsentCheck = true;
-    dispatch(donationPreferenceActions.d(preferenceForm));
+    // console.log(preferenceForm);
+    dispatch(
+      donationPreferenceActions.updateDonationPreference(preferenceForm)
+    );
   };
   if (preferences.loading) {
     document.getElementById("root").classList.add("loading");
@@ -212,11 +216,18 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
 
-  const changeAmount = (e, index) => {
-    // console.log(e, index);
-    // if (index === index) {
-    setUpdatedValue(e.target.value.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-    // }
+  const changeAmount = (e, id) => {
+    const { value } = e.target;
+    let newAmount = [...items];
+    // newAmount = newAmount.map((val) => {
+    //   if (val?.employeePreferenceId == id) {
+    //     // console.log(val?.donationAmount, value);
+    //     // val?.donationAmount = value;
+    //   }
+    //   return val;
+    // });
+    // setAllRecords(newAmount);
+    setUpdatedValue(value);
   };
 
   return (
@@ -305,7 +316,12 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                       )
                                     : null
                                 }
-                                onInput={(e) => changeAmount(e, index)}
+                                onChange={(e) =>
+                                  changeAmount(
+                                    e,
+                                    preference?.employeePreferenceId
+                                  )
+                                }
                                 id={`amount${preference?.employeePreferenceId}`}
                                 disabled={isCorporatePortal}
                               />
