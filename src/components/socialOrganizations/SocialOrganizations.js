@@ -61,6 +61,7 @@ const SocialOrganizations = () => {
       socialOrganizationActions.getSocialOrganizations({
         pageNumber: currentPage.toString(),
         employeeId: isEmployeePortal ? user?.emp_id : null,
+        userId: user?.user_id,
         corporateId: isCorporatePortal
           ? selectedCorporate?.corporate?.corporateId
           : user?.corporateId,
@@ -164,7 +165,7 @@ const SocialOrganizations = () => {
       </div>
       {socialOrganizations.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
-        {loggedInUserType !== userConstants.INDIVIDUAL && (
+        {user?.user_id === 7 && (
           <Tabs
             defaultActiveKey={socialOrganizationConstants.SPONSORED}
             onChange={changeTab}
@@ -206,14 +207,14 @@ const SocialOrganizations = () => {
                 <span>
                   <RedoOutlined className="fs-5" />
                   {socialOrganizationConstants.OTHERS} (
-                  {socialOrganizations?.items?.others
+                  {socialOrganizations?.items
                     ? searchText &&
                       tabType === socialOrganizationConstants.OTHERS
                       ? SearchHelper(
-                          socialOrganizations?.items?.others,
+                          socialOrganizations?.items,
                           searchText
                         ).length
-                      : socialOrganizations?.items?.others?.length
+                      : socialOrganizations?.items?.length
                     : 0}
                   )
                 </span>
@@ -225,10 +226,10 @@ const SocialOrganizations = () => {
                 items={
                   searchText && tabType === socialOrganizationConstants.OTHERS
                     ? SearchHelper(
-                        socialOrganizations?.items?.others,
+                        socialOrganizations?.items,
                         searchText
                       )
-                    : socialOrganizations?.items?.others
+                    : socialOrganizations?.items
                 }
               />
             </TabPane>

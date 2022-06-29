@@ -36,6 +36,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const selectedCharity = useSelector(
     (state) => state?.selectedCharity?.charity
   );
+  const selectedOrganization = useSelector(
+    (state) => state?.selectedOrganization?.organization
+  );
   const currentPortal = useSelector((state) => state.currentView);
   // const beforeUnrpomoteMsg = useSelector(
   //   (state) => state?.charityPrograms?.checkBeforeUnpromoteMsg
@@ -121,8 +124,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         : actionType === charityProgramConstants.PROMOTE &&
           charityProgramActions.operateSponsorRequest({
             corporateId: selectedCorporate?.corporate?.corporateId,
-            socialId: selectedProgram?.soicalId,
-            charityId: selectedProgram?.charityId
+            socialId: selectedOrganization?.id,
+            charityId: selectedCharity?.id
           })
     );
   };

@@ -64,7 +64,8 @@ const CharityPrograms = (props) => {
           ? {
               corporateId: selectedCorporate?.corporate?.corporateId,
               socialId: selectedOrganization?.id,
-              userType: userConstants.CORPORATE_VIEW
+              userType: userConstants.CORPORATE_VIEW,
+              userId: user?.user_id
             }
           : isIndividualPortal
           ? {
@@ -75,6 +76,7 @@ const CharityPrograms = (props) => {
             }
           : {
               uuid: user?.uuid,
+              userId: user?.user_id,
               socialId: selectedOrganization?.id,
               userType: userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
@@ -346,9 +348,9 @@ const CharityPrograms = (props) => {
                   <span>
                     <RedoOutlined className="fs-5" />
                     {charityProgramConstants.OTHERS} (
-                    {charityPrograms?.items?.other
+                    {charityPrograms?.items
                       ? SearchCharityHelper(
-                          charityPrograms?.items?.other,
+                          charityPrograms?.items,
                           searchText
                         ).length
                       : 0}
@@ -362,10 +364,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items
                     }
                     setCharity={setCharity}
                     tabType={tabType}
@@ -376,10 +378,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items
                     }
                     setCharity={setCharity}
                     tabType={tabType}
