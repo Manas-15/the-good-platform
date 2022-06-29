@@ -2,26 +2,21 @@ import React, { useState } from "react";
 import OtpInput from "react-otp-input";
 // import OtpTimer from "otp-timer";
 import { employeeActions } from "../../actions";
-// import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { Form } from "formik";
 
 const Otp = (props) => {
-  console.log(">>>>>>>>>>>>>>>>>> otp", props);
   const [submitted, setSubmitted] = useState(false);
   const user = useSelector((state) => state.employee.user);
   // const user = JSON.parse(localStorage.getItem("user"));
   const [code, setCode] = useState("");
   const handleChange = (code) => setCode(code);
   const dispatch = useDispatch();
-  // const location = useLocation();
   // const handleClick = () => {
   //   //desired function to be performed on clicking resend button
   // };
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
-
     {
       (() => {
         if (code.length === 6 && user?.user_type === 3) {
