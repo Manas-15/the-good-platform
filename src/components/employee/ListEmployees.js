@@ -207,8 +207,6 @@ const ListEmployees = (props) => {
       setRecords(employees?.items);
     }
   };
-  console.log(records);
-
   return (
     <div className="customContainer">
       <div className="row mb-4">
