@@ -45,11 +45,11 @@ function login(data, from) {
                 // history.push("/dashboard");
                 // dispatch(alertActions.success("Loggedin successful"));
                 // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
-                // history.push("/otp");
-                history.push({
-                  pathname: "/otp",
-                  state: { otp: res?.data?.otp }
-                });
+                history.push("/otp");
+                // history.push({
+                //   pathname: "/otp",
+                //   state: { otp: res?.data?.otp }
+                // });
               } else {
                 // if(!res?.data?.approve) {
                 //   dispatch(
@@ -98,11 +98,11 @@ function login(data, from) {
             const res = JSON.stringify(data?.data);
             localStorage.setItem("user", JSON.stringify(data?.data));
             // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
-            // history.push("/otp");
-            history.push({
-              pathname: "/otp",
-              state: { otp: data?.data?.otp }
-            });
+            history.push("/otp");
+            // history.push({
+            //   pathname: "/otp",
+            //   state: { otp: data?.data?.otp }
+            // });
           }
         },
         (error) => {
@@ -136,11 +136,11 @@ function validateOtp(data, from) {
       (res) => {
         dispatch(success(res));
         if (res?.data?.msg === "Invalid OTP") {
-          // history.push("/otp");
-          history.push({
-            pathname: "/otp",
-            state: { otp: data?.validOtp }
-          });
+          history.push("/otp");
+          // history.push({
+          //   pathname: "/otp",
+          //   state: { otp: data?.validOtp }
+          // });
           dispatch(alertActions.error(res?.data?.msg));
         } else {
           localStorage.setItem("otpVerified", true);
