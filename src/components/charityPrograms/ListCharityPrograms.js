@@ -124,8 +124,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         : actionType === charityProgramConstants.PROMOTE &&
           charityProgramActions.operateSponsorRequest({
             corporateId: selectedCorporate?.corporate?.corporateId,
-            socialId: selectedOrganization?.id,
-            charityId: selectedCharity?.id
+            organisationId: selectedOrganization?.id,
+            organisationName: selectedOrganization?.name,
+            charityId: selectedCharity?.id,
+            charityName: selectedCharity?.charityName,
+            soicalName: selectedCharity?.soicalName,
           })
     );
   };
