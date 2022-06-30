@@ -75,21 +75,22 @@ const CorporatesPortal = () => {
       <div className="row mb-4">
         <div className="col-md-4 offset-md-3">
           {corporates.loading && <Loader />}
-          {corporates?.items && corporates?.items.length > 0 ? (
+          {corporates?.items?.data && corporates?.items?.data.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
-                {corporates?.items
-                  ?.filter((val) => {
+              {/* .filter((val) => {
                     return val?.isActive === true;
                   })
+                  ? */}
+                {corporates?.items?.data
                   ?.map((corporate, index) => {
                     return (
                       <li key={index + 1}>
                         <Link
-                          to={`/corporates/${corporate.corporateId}/employees`}
+                          to={`/corporates/${corporate?.id}/employees`}
                           onClick={() => setCorporate(corporate)}
                         >
-                          {corporate?.organizationName}
+                          {corporate?.name}
                         </Link>
                       </li>
                     );

@@ -8,7 +8,7 @@ export function corporates(state = {}, action) {
       };
     case corporateConstants.GET_CORPORATES_SUCCESS:
       return {
-        items: action.corporates?.data?.corporates,
+        items: action.corporates?.data?.data,
       };
     case corporateConstants.GET_CORPORATES_FAILURE:
       return {
