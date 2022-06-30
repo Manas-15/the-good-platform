@@ -348,10 +348,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 //     : null
                                 // }
                                 onChange={
-                                  (e) =>
-                                    setUpdatedValue(
-                                      e.target.value
-                                    )
+                                  (e) => setUpdatedValue(e.target.value)
                                   // changeAmount(
                                   //   e,
                                   //   preference?.employeePreferenceId

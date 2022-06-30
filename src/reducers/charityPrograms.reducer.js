@@ -7,10 +7,6 @@ export function charityPrograms(state = {}, action) {
         loading: true
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
-      console.log(
-        "action?.charityPrograms?.data",
-        action?.charityPrograms?.data
-      );
       return {
         items: {
           sponsored: action?.charityPrograms?.data?.charity_list[
@@ -24,7 +20,6 @@ export function charityPrograms(state = {}, action) {
             }
           )
         }
-
         // items: action?.charityPrograms?.data?.charity_list.length
         //   ? action?.charityPrograms?.data?.charity_list?.map?.((item) => {
         //       if (item?.unitPrice === undefined) {
