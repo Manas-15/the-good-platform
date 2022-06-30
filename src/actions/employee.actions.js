@@ -14,6 +14,7 @@ export const employeeActions = {
   setEmployeePassword,
   setPasswordValid,
   employeeAccountRequest,
+  addEmployee,
   bulkImport,
   getCorporates
 };
@@ -365,6 +366,44 @@ function employeeAccountRequest(actionValues) {
     return { type: employeeConstants.EMPLOYEE_ACTION_FAILURE, error };
   }
 }
+
+function addEmployee(employee) {
+  console.log(employee, "employee actionnnnnnnnnn");
+  return (dispatch) => {
+    dispatch(request(employee));
+    employeeService.addEmployee(employee).then(
+      (res) => {
+        dispatch(success(res));
+        console.log(
+          employee?.corporateProfileId,
+          "employee elssssssssssssssss"
+        );
+        if (res?.data?.email) {
+          dispatch(alertActions.error(res?.data?.email?.[0]));
+        } else {
+          history.push(`/corporates/${employee.corporateProfileId}/employees`);
+          dispatch(alertActions.success("Employee added successfully"));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(employee) {
+    return { type: employeeConstants.ADD_EMPLOYEE_REQUEST, employee };
+  }
+  function success(employee) {
+    console.log(employee, "after sucesssssssssss");
+    return { type: employeeConstants.ADD_EMPLOYEE_SUCCESS, employee };
+  }
+  function failure(error) {
+    return { type: employeeConstants.ADD_EMPLOYEE_FAILURE, error };
+  }
+}
+
 function bulkImport(formData) {
   console.log(">>>>>>>>>>>>>>>>> comingggggggggggggg", formData);
   return (dispatch) => {

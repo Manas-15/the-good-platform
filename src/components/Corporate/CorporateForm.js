@@ -326,6 +326,8 @@ const CorporateForm = ({ type, id }) => {
                 <Field
                   name="corporatePan"
                   type="text"
+                  style={{ textTransform: "uppercase" }}
+                  maxLength={10}
                   className={
                     "form-control" +
                     (errors.corporatePan && touched.corporatePan
@@ -333,6 +335,7 @@ const CorporateForm = ({ type, id }) => {
                       : "")
                   }
                 />
+
                 <ErrorMessage
                   name="corporatePan"
                   component="div"
@@ -467,7 +470,6 @@ const CorporateForm = ({ type, id }) => {
               <div className="col-md-8">
                 <CountryDropdown
                   name="country"
-                  // value={id ? console.log("editManas") : console.log("manas")}
                   value={id ? editCountry : country}
                   onChange={(val) =>
                     id ? selectEditCountry(val) : selectCountry(val)

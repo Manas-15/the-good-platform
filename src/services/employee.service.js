@@ -16,6 +16,7 @@ export const employeeService = {
   setEmployeePassword,
   logout,
   employeeAccountRequest,
+  addEmployee,
   bulkImport,
   getCorporates,
 };
@@ -42,11 +43,12 @@ function logout() {
 }
 async function getEmployees(data) {
   return await axios.get(process.env.REACT_APP_API_URL + "api/employee_list/", {
-    params: data
+    params: data,
   });
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
 async function register(data, userType) {
+  console.log(data);
   if (userType === userConstants.EMPLOYEE) {
     return await axios.post(
       process.env.REACT_APP_API_URL + "api/employee_register/",
@@ -82,7 +84,7 @@ async function setPasswordValid(data) {
   return await axios.get(
     process.env.REACT_APP_API_URL + "api/verify_set_password/",
     {
-      params: data
+      params: data,
     }
   );
 }
@@ -109,17 +111,28 @@ function handleResponse(response) {
     return data;
   });
 }
+
+function addEmployee(data) {
+  console.log(data, "add employee dataaaaa");
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/employee_register/",
+    data
+  );
+}
+
 async function bulkImport(formData) {
   return await axios.post(
     process.env.REACT_APP_API_URL + "api/fileUpload/",
     formData,
     {
       headers: {
-        "Content-Type": "multipart/form-data"
-      }
+        "Content-Type": "multipart/form-data",
+      },
     }
   );
 }
 async function getCorporates(formData) {
-  return await axios.get(process.env.REACT_APP_API_URL + "remote_api/corporateList/");
+  return await axios.get(
+    process.env.REACT_APP_API_URL + "remote_api/corporateList/"
+  );
 }

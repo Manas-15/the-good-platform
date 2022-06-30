@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: ""
+  socialId: "",
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -72,7 +72,6 @@ const PayrollBatch = (props) => {
   const [allRecords, setAllRecords] = useState([]);
   const [selected, setSelected] = useState();
   const [groupByBatchData, setGroupByBatchData] = useState({});
-  const [selectedStatus, setSelectedStatus] = useState("Not Processed");
 
   const [openPaidSimulator, setOpenPaidSimulator] = useState(false);
   const [currentView, setCurrentView] = useState(
@@ -112,7 +111,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
     // filter("All");
@@ -125,14 +124,17 @@ const PayrollBatch = (props) => {
     }, {});
   };
   let allGroupData;
-  const allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
+  const allData =
+    payrollBatches?.item?.length > 0 &&
+    payrollBatches?.items?.filter((item) => !item?.isDeleted);
   useEffect(() => {
     setAllRecords(
-      payrollBatches?.items?.filter(
-        (item) =>
-          item?.receivedOrganizationIds?.split(",")?.length !==
-          item?.totalOrganizationCount
-      )
+      payrollBatches?.item?.length > 0 &&
+        payrollBatches?.items?.filter(
+          (item) =>
+            item?.receivedOrganizationIds?.split(",")?.length !==
+            item?.totalOrganizationCount
+        )
     );
   }, [payrollBatches?.items]);
 
@@ -140,10 +142,8 @@ const PayrollBatch = (props) => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
     setGroupByBatchData(allGroupData);
-    // filter("status", "false");
   }, [allRecords]);
 
-  // console.log(groupByBatchData);
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -156,7 +156,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: payrollConstants.COMPLETED_STATUS }
+    { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
@@ -174,7 +174,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote
+        referenceNote: values?.referenceNote,
       })
     );
     hidePaidSimulator();
@@ -232,10 +232,7 @@ const PayrollBatch = (props) => {
   };
   const confirm = (values) => {
     handleClose();
-    // if (values) {
-    //   values.batchId = selectedBatch?.batchId;
-    //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
-    // }
+
     dispatch(payrollBatchActions.updateBatchStatus(values));
     console.log(
       "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
@@ -259,23 +256,20 @@ const PayrollBatch = (props) => {
     setSelectedBatchId(null);
   };
 
-  const onFilter = (type, value) => {
-    // console.log(type, value);
-    setSelectedStatus(value);
+  const onFilter = (value) => {
     if (value === "2") {
-      // console.log(value, "received status");
       setAllRecords(
         allData?.filter(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length ===
             val?.totalOrganizationCount
+          // console.log(val?.totalOrganizationCount)
+          // console.log(val?.totalOrganizationCount)
         )
       );
     } else if (value === "0") {
-      // console.log(value, "all status");
       setAllRecords(payrollBatches?.items);
     } else {
-      // console.log(value, "pending status");
       setAllRecords(
         allData?.filter(
           (val) =>
@@ -285,38 +279,6 @@ const PayrollBatch = (props) => {
       );
     }
   };
-
-  //************************************************************************* */
-  // const filter = (value) => {
-  //   console.log(value);
-  //   if (value && value === payrollConstants.PENDING_STATUS.toString()) {
-  //     setAllRecords(
-  //       records?.filter(
-  //         (record) =>
-  //           !record?.receivedOrganizationIds ||
-  //           (record?.status === payrollConstants.RECEIVED_STATUS &&
-  //             record?.totalOrganizationCount !==
-  //               record?.receivedOrganizationIds?.split(",")?.length)
-  //       )
-  //     );
-  //   } else if (value && value === payrollConstants.RECEIVED_STATUS.toString()) {
-  //     setAllRecords(
-  //       records?.filter(
-  //         (record) =>
-  //           record?.status === payrollConstants.RECEIVED_STATUS &&
-  //           record?.totalOrganizationCount ===
-  //             record?.receivedOrganizationIds?.split(",")?.length
-  //       )
-  //     );
-  //   } else {
-  //     setAllRecords(records);
-  //   }
-  //   if (selectedKeySearch && searchValue) {
-  //     onSearchChange(searchValue, selectedKeySearch);
-  //   }
-  // };
-
-  //************************************************************************* */
 
   const onSearchChange = (e, selected) => {
     const keyword = e;
@@ -402,9 +364,9 @@ const PayrollBatch = (props) => {
                     <select
                       className="form-select"
                       defaultValue={1}
-                      onChange={(e) => onFilter("status", e.target.value)}
+                      onChange={(e) => onFilter(e.target.value)}
                     >
-                      <option value={"All"} key={"default"} disabled>
+                      <option value={""} key={"default"} disabled>
                         Status
                       </option>
                       {statusOption.map((status, index) => (
@@ -1256,7 +1218,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting
+                  isSubmitting,
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1466,7 +1428,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

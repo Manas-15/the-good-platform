@@ -6,7 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -19,8 +19,6 @@ import donationsConsent from "./../../config/donationsConsent.json";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { Progress, Tooltip, Switch } from "antd";
 import ReactHtmlParser from "react-html-parser";
-// import DonateHeader from "./../CharityPrograms/DonateHeader";
-// import Donate from "./../CharityPrograms/Donate";
 
 const preferenceForm = {
   employeePreferenceId: "",
@@ -28,18 +26,21 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
-  console.log(items, "filter itemmmmmmmmmm");
+  // console.log(items, "filter itemmmmmmmmmm");
+  const a = items;
+  console.log(a);
+
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
@@ -47,8 +48,9 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [checked, setChecked] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
+  const [records, setAllRecords] = useState([]);
   const [updateType, setUpdateType] = useState("");
-  const [updatedValue, setUpdatedValue] = useState();
+  const [updatedValue, setUpdatedValue] = useState([]);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -187,7 +189,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
           ? donationPreferenceConstants.MONTHLY
           : donationPreferenceConstants.ONCE
       }]`;
-      // preferenceForm.frequency = selectedPreference?.frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
     }
     if (updateType === donationPreferenceConstants.FREQUENCY) {
       preferenceForm.frequency =
@@ -197,6 +198,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
       preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`;
     }
     preferenceForm.isConsentCheck = true;
+    // console.log(preferenceForm);
     dispatch(
       donationPreferenceActions.updateDonationPreference(preferenceForm)
     );
@@ -209,9 +211,28 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const setPage = (page) => {
     setCurrentPage(page);
   };
+
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
+  const keyDownHandler = (event, preference) => {
+    console.log(
+      "User pressed: ",
+      event.key,
+      updatedValue,
+      preference?.donationAmount
+    );
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (
+        updatedValue &&
+        updatedValue?.toString()?.replace(/,/g, "") !==
+          preference?.donationAmount?.toString()?.replace(/,/g, "")
+      ) {
+        showConsent(preference, donationPreferenceConstants.AMOUNT);
+      }
+    }
+  };
   return (
     <div className="customContainer  program-list">
       {preferences.loading && <Loader />}
@@ -284,20 +305,58 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                               <input
                                 name="amount"
                                 type="text"
-                                size="4"
+                                size="10"
                                 maxLength={10}
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
+                                // value={
+                                //   updatedValue?.length > 0 && updatedValue
+                                //     ? updatedValue?.toLocaleString()
+                                //     : preference?.donationAmount?.toLocaleString()
+                                // }
+                                // value={updatedValue
+                                //   ?.filter(
+                                //     (val) =>
+                                //       val?.employeePreferenceId ===
+                                //       preference?.employeePreferenceId
+                                //   )?.[0]
+                                //   ?.donationAmount?.toLocaleString()}
                                 className="form-control"
+                                onKeyDown={(e) => keyDownHandler(e, preference)}
                                 onBlur={() =>
-                                  updatedValue && updatedValue !==
-                                  preference?.donationAmount
+                                  updatedValue &&
+                                  updatedValue.toString()?.replace(/,/g, "") !==
+                                    preference?.donationAmount
+                                      .toString()
+                                      ?.replace(/,/g, "")
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT
                                       )
                                     : null
                                 }
-                                onInput={(e) => setUpdatedValue(e.target.value)}
+                                // onBlur={() =>
+                                //   updatedValue?.filter(
+                                //     (val) =>
+                                //       val?.employeePreferenceId ===
+                                //       preference?.employeePreferenceId
+                                //   )?.[0]?.donationAmount !==
+                                //   preference?.donationAmount
+                                //     ? showConsent(
+                                //         preference,
+                                //         donationPreferenceConstants.AMOUNT
+                                //       )
+                                //     : null
+                                // }
+                                onChange={
+                                  (e) =>
+                                    setUpdatedValue(
+                                      e.target.value
+                                    )
+                                  // changeAmount(
+                                  //   e,
+                                  //   preference?.employeePreferenceId
+                                  // )
+                                }
                                 id={`amount${preference?.employeePreferenceId}`}
                                 disabled={isCorporatePortal}
                               />

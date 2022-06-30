@@ -49,7 +49,7 @@ export const EmployeeSchema = Yup.object().shape({
     .email("Invalid email address"),
   employeeId: Yup.string().required("Employee ID is required"),
   pan: Yup.string().required("PAN is required"),
-  corporateProfileId: Yup.string().required("Please select organization"),
+  corporateProfileId: Yup.string().required("Please select corporate"),
   organizationJoiningDate: Yup.date()
     .nullable()
     .required("Organization joining date is required"),
