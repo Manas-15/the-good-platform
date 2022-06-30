@@ -310,7 +310,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
                                 // value={
                                 //   updatedValue?.length > 0 && updatedValue
-                                //     ? updatedValue.toLocaleString()
+                                //     ? updatedValue?.toLocaleString()
                                 //     : preference?.donationAmount?.toLocaleString()
                                 // }
                                 // value={updatedValue
