@@ -165,7 +165,7 @@ const SocialOrganizations = () => {
       </div>
       {socialOrganizations.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
-        {user?.user_id === 7 && (
+        {user?.user_id && (
           <Tabs
             defaultActiveKey={socialOrganizationConstants.SPONSORED}
             onChange={changeTab}

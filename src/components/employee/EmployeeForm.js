@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { corporateActions } from "../../actions";
 import { Link } from "react-router-dom";
 import { EmployeeSchema } from "../Validations";
 import { useHistory } from "react-router-dom";
@@ -23,7 +24,6 @@ const initialValues = {
   employeeId: "",
   pan: "",
   corporateProfileId: "",
-  organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
   address: "",
@@ -31,7 +31,7 @@ const initialValues = {
   state: "",
   country: "",
   userType: 3,
-  password: "test@%^@#1023"
+  password: ""
 };
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
@@ -88,12 +88,19 @@ const EmployeeForm = ({ type }) => {
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const addinguser = useSelector((state) => state.employee.addinguser);
+  const corporates = useSelector((state) => state.corporates);
   const selectedCorporate = useSelector(
     (state) => state.selectedCorporate.corporate
   );
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
-
+  const [showPassword, setShowPassword] = useState("false");
+  const toggleShowPassword = (e) => {
+    setShowPassword(!showPassword);
+  };
+  useEffect(() => {
+    dispatch(corporateActions.getCorporates());
+  }, []);
   const employeeRegister = (values) => {
     values.state = state;
     values.country = country;
@@ -111,10 +118,6 @@ const EmployeeForm = ({ type }) => {
   const selectState = (state) => {
     setState(state);
   };
-  useEffect(() => {
-    initialValues.corporateProfileId = selectedCorporate?.id;
-    console.log("initialValues ....................", initialValues);
-  }, [selectedCorporate?.id]);
   return (
     <>
       <div className="row align-items-center authFormMargin">
@@ -150,7 +153,7 @@ const EmployeeForm = ({ type }) => {
                 isSubmitting
                 /* and other goodies */
               }) => (
-                <Form>
+                <Form autoComplete="false">
                   <h5 className="text-center cardHeading">
                     Create your account
                   </h5>
@@ -245,6 +248,33 @@ const EmployeeForm = ({ type }) => {
                     </div>
                   </div>
                   <div className="row mb-4">
+                  <div className="col-md-12">
+                  <Field
+                    name="password"
+                    // disabled={id}
+                    placeholder="Password"
+                    type={showPassword ? "password" : "text"}
+                    className={
+                      "form-control" +
+                      (errors.password && touched.password ? " is-invalid" : "")
+                    }                    
+                  />
+                  {showPassword ? (
+                      <div onClick={(e) => toggleShowPassword(e)}>
+                        <i class="bi bi-eye-slash"></i>
+                      </div>
+                    ) : (
+                      <div onClick={(e) => toggleShowPassword(e)}>
+                        <i class="bi bi-eye"></i>
+                      </div>
+                    )}
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+                <div className="row mb-4"></div>
                     {/* <div className="col-md-4">
                 <label className="mt-1">PAN Number</label>
               </div> */}
@@ -267,14 +297,36 @@ const EmployeeForm = ({ type }) => {
                       />
                     </div>
                   </div>
-                  <div className="row mb-4">
-                    {/* <div className="col-md-4">
-                <label className="mt-1">Organization Joining Date</label>
-              </div> */}
+                  <div className="row mb-4">  
+                  <div className="col-md-12">
+                  <Field
+                        name="corporateProfileId"
+                        as="select"
+                        className={
+                          "form-select" +
+                          (errors.corporateProfileId && touched.corporateProfileId ? " is-invalid" : "")
+                        }
+                      >
+                        <option value="">Select Organization</option>
+                        {corporates?.items?.data?.map((corporate, index) => (
+                          <option value={corporate?.id} key={index}>
+                            {corporate?.name}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorMessage
+                        name="corporateProfileId"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+      </div>   
+      {errors.color && <div className="input-feedback">{errors.color}</div>}
+              </div>
+                  {/* <div className="row mb-4">
                     <div className="col-md-12">
                       <FormDatePicker errors={errors} touched={touched} />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="row mb-4">
                     {/* <div className="col-md-4">
                 <label className="mt-1">Gender</label>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
-import { EmployeeSchema } from "../Validations";
+import { EmployeeByCorporateSchema } from "../Validations";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
@@ -83,7 +83,10 @@ const AddEmployee = () => {
   const addingEmployee = useSelector(
     (state) => state?.employee?.addingEmployee
   );
-
+  const [showPassword, setShowPassword] = useState("false");
+  const toggleShowPassword = (e) => {
+    setShowPassword(!showPassword);
+  };
   const addEmployeeRegister = (values) => {
     values.state = state;
     values.country = country;
@@ -111,7 +114,6 @@ const AddEmployee = () => {
     employeeId: "",
     pan: "",
     corporateProfileId: selectedCorporate?.id,
-    organizationJoiningDate: "",
     gender: "",
     contactNumber: "",
     address: "",
@@ -119,7 +121,7 @@ const AddEmployee = () => {
     state: "",
     country: "",
     userType: 3,
-    password: "test@%^@#1023"
+    password: ""
   };
   // useEffect(() => {
   //   initialValues.corporateProfileId = selectedCorporate?.id;
@@ -130,7 +132,7 @@ const AddEmployee = () => {
       <div style={{ width: "650px" }}>
         <Formik
           initialValues={initialValues}
-          validationSchema={EmployeeSchema}
+          validationSchema={EmployeeByCorporateSchema}
           onSubmit={(values, { setSubmitting }) => {
             values.organizationJoiningDate = moment(
               values.organizationJoiningDate
@@ -225,6 +227,38 @@ const AddEmployee = () => {
               <div className="row mb-4">
                 <div className="col-md-4">
                   <label className="mt-1">
+                    Password<span className="text-danger">*</span>
+                  </label>
+                </div>
+                <div className="col-md-8">
+                  <Field
+                    name="password"
+                    // disabled={id}
+                    type={showPassword ? "password" : "text"}
+                    className={
+                      "form-control" +
+                      (errors.password && touched.password ? " is-invalid" : "")
+                    }                    
+                  />
+                  {showPassword ? (
+                      <div onClick={(e) => toggleShowPassword(e)}>
+                        <i class="bi bi-eye-slash"></i>
+                      </div>
+                    ) : (
+                      <div onClick={(e) => toggleShowPassword(e)}>
+                        <i class="bi bi-eye"></i>
+                      </div>
+                    )}
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+              </div>
+              <div className="row mb-4">
+                <div className="col-md-4">
+                  <label className="mt-1">
                     Employee ID<span className="text-danger">*</span>
                   </label>
                 </div>
@@ -272,14 +306,14 @@ const AddEmployee = () => {
                 </div>
               </div>
 
-              <div className="row mb-4">
+              {/* <div className="row mb-4">
                 <div className="col-md-4">
                   <label className="mt-1">Organization Joining Date</label>
                 </div>
                 <div className="col-md-8">
                   <FormDatePicker errors={errors} touched={touched} />
                 </div>
-              </div>
+              </div> */}
 
               <div className="row mb-4">
                 <div className="col-md-4">

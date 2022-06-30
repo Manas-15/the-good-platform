@@ -96,7 +96,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
                     </div>
                     <div className="donations">
                       <i className="bi-person fs-5"></i>
-                      &nbsp;&nbsp;1,108 Donations
+                      &nbsp;&nbsp;1,108 Donors
                     </div>
                   </div>
                   <div className="days-donations">
