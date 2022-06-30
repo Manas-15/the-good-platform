@@ -77,24 +77,23 @@ const CorporatesPortal = () => {
           {corporates.loading && <Loader />}
           {corporates?.items?.data && corporates?.items?.data.length > 0 ? (
             <div className="card corporates-lunchpad">
-              <ul className="pl-0">
-              {/* .filter((val) => {
+              <ul className="pl-0 overflow-auto">
+                {/* .filter((val) => {
                     return val?.isActive === true;
                   })
                   ? */}
-                {corporates?.items?.data
-                  ?.map((corporate, index) => {
-                    return (
-                      <li key={index + 1}>
-                        <Link
-                          to={`/corporates/${corporate?.id}/employees`}
-                          onClick={() => setCorporate(corporate)}
-                        >
-                          {corporate?.name}
-                        </Link>
-                      </li>
-                    );
-                  })}
+                {corporates?.items?.data?.map((corporate, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <Link
+                        to={`/corporates/${corporate?.id}/employees`}
+                        onClick={() => setCorporate(corporate)}
+                      >
+                        {corporate?.name}
+                      </Link>
+                    </li>
+                  );
+                })}
                 <li key={"logout"} className="logout">
                   <Link onClick={logout}>Logout</Link>
                 </li>

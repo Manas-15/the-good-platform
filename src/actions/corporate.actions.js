@@ -12,7 +12,7 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   // getCorporateById,
-  corporateAccountRequest,
+  corporateAccountRequest
 };
 
 function getCorporates() {
@@ -127,7 +127,7 @@ function updateCorporate(corporate) {
 
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate,
+      corporate
     };
   }
   function failure(error) {

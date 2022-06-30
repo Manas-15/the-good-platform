@@ -113,7 +113,6 @@ function handleResponse(response) {
 }
 
 function addEmployee(data) {
-  console.log(data, "add employee dataaaaa");
   return axios.post(
     process.env.REACT_APP_API_URL + "api/employee_register/",
     data

@@ -374,10 +374,6 @@ function addEmployee(employee) {
     employeeService.addEmployee(employee).then(
       (res) => {
         dispatch(success(res));
-        console.log(
-          employee?.corporateProfileId,
-          "employee elssssssssssssssss"
-        );
         if (res?.data?.email) {
           dispatch(alertActions.error(res?.data?.email?.[0]));
         } else {
@@ -396,7 +392,6 @@ function addEmployee(employee) {
     return { type: employeeConstants.ADD_EMPLOYEE_REQUEST, employee };
   }
   function success(employee) {
-    console.log(employee, "after sucesssssssssss");
     return { type: employeeConstants.ADD_EMPLOYEE_SUCCESS, employee };
   }
   function failure(error) {

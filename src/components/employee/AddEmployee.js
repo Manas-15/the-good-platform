@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { EmployeeSchema } from "../Validations";
@@ -16,23 +16,7 @@ import {
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  employeeId: "",
-  pan: "",
-  corporateProfileId: " ",
-  organizationJoiningDate: "",
-  gender: "",
-  contactNumber: "",
-  address: "",
-  city: "",
-  state: "",
-  country: "",
-  userType: 3,
-  password: "test@%^@#1023",
-};
+
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
   { value: "2", label: "Help Donar" },
@@ -88,18 +72,21 @@ const AddEmployee = () => {
   const corporateId = useSelector(
     (state) => state?.selectedCorporate?.corporate?.corporateId
   );
+  const selectedCorporate = useSelector((state) => state.selectedCorporate.corporate);
   const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const addinguser = useSelector((state) => state.employee.addinguser);
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const addingEmployee = useSelector(
+    (state) => state?.employee?.addingEmployee
+  );
 
   const addEmployeeRegister = (values) => {
     values.state = state;
     values.country = country;
-    values.corporateProfileId = corporateId;
-    console.log(values);
+    values.corporateProfileId = selectedCorporate?.id;
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
@@ -116,6 +103,27 @@ const AddEmployee = () => {
   const selectState = (state) => {
     setState(state);
   };
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    employeeId: "",
+    pan: "",
+    corporateProfileId: selectedCorporate?.id,
+    organizationJoiningDate: "",
+    gender: "",
+    contactNumber: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    userType: 3,
+    password: "test@%^@#1023",
+  };
+  // useEffect(() => {
+  //   initialValues.corporateProfileId = selectedCorporate?.id;
+  //   console.log('initialValues ....................', initialValues)
+  // }, [selectedCorporate?.id]);
   return (
     <>
       <div style={{ width: "650px" }}>
@@ -397,13 +405,11 @@ const AddEmployee = () => {
                     <button
                       type="submit"
                       className="btn btn-custom btn-block"
-                      //   disabled={addingCorporate}
+                        disabled={addingEmployee}
                     >
-                      {/* {addingCorporate && (
+                      {addingEmployee && (
                         <span className="spinner-border spinner-border-sm mr-1"></span>
-                      )} */}
-
-                      {/* <span className="spinner-border spinner-border-sm mr-1"></span> */}
+                      )}
                       {"Add"}
                     </button>
                   </div>

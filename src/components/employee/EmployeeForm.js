@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { EmployeeSchema } from "../Validations";
@@ -22,7 +22,7 @@ const initialValues = {
   email: "",
   employeeId: "",
   pan: "",
-  corporateProfileId: 7,
+  corporateProfileId: "",
   organizationJoiningDate: "",
   gender: "",
   contactNumber: "",
@@ -88,6 +88,7 @@ const EmployeeForm = ({ type }) => {
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const addinguser = useSelector((state) => state.employee.addinguser);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate.corporate);
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
@@ -102,15 +103,16 @@ const EmployeeForm = ({ type }) => {
       dispatch(employeeActions.register(values, userConstants.EMPLOYEE));
     }
   };
-
-  console.log(country, state);
-
   const selectCountry = (country) => {
     setCountry(country);
   };
   const selectState = (state) => {
     setState(state);
   };
+  useEffect(() => {
+    initialValues.corporateProfileId = selectedCorporate?.id;
+    console.log('initialValues ....................', initialValues)
+  }, [selectedCorporate?.id]);
   return (
     <>
       <div className="row align-items-center authFormMargin">
