@@ -344,10 +344,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 onChange={
                                   (e) =>
                                     setUpdatedValue(
-                                      e.target.value.replace(
-                                        /\B(?=(\d{3})+(?!\d))/g,
-                                        ","
-                                      )
+                                      e.target.value
                                     )
                                   // changeAmount(
                                   //   e,
