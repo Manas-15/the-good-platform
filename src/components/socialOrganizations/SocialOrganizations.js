@@ -63,7 +63,7 @@ const SocialOrganizations = () => {
         employeeId: isEmployeePortal ? user?.emp_id : null,
         userId: user?.user_id,
         corporateId: isCorporatePortal
-          ? selectedCorporate?.corporate?.corporateId
+          ? selectedCorporate?.corporate?.id
           : user?.corporateId,
         pageSize: pageSize.toString(),
         // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,

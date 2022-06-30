@@ -62,7 +62,7 @@ const CharityPrograms = (props) => {
       charityProgramActions.getCharityPrograms(
         isCorporatePortal
           ? {
-              corporateId: selectedCorporate?.corporate?.corporateId,
+              corporateId: selectedCorporate?.corporate?.id,
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id
@@ -80,7 +80,7 @@ const CharityPrograms = (props) => {
               orgId: selectedOrganization?.id,
               userType: userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
-                ? selectedCorporate?.corporate?.corporateId
+                ? selectedCorporate?.corporate?.id
                 : user?.corporateId
             }
       )
