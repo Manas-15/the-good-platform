@@ -37,7 +37,10 @@ const actionInitialValues = {
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
-  console.log(items, "filter itemmmmmmmmmm");
+  // console.log(items, "filter itemmmmmmmmmm");
+  const a = items;
+  console.log(a);
+
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
@@ -170,8 +173,8 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   };
   const showConsent = (preference, type) => {
     setOpen(true);
-    // setSelectedPreference(preference);
-    // setUpdateType(type);
+    setSelectedPreference(preference);
+    setUpdateType(type);
   };
   const updateDonationPreference = () => {
     preferenceForm.employeePreferenceId =
@@ -213,19 +216,20 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
 
-  const changeAmount = (e, id) => {
-    const { value } = e.target;
-    const newItems = [...items];
-    console.log(newItems);
-    console.log(value);
-    let newAmount = newItems.map((val) => {
-      if (val?.employeePreferenceId === id) {
-        val.donationAmount = value;
-      }
-      return val;
-    });
-    setUpdatedValue(newAmount);
-  };
+  // const changeAmount = (e, id) => {
+  //   const { value } = e.target;
+  //   let newItems = [...a];
+
+  //   console.log(value);
+  //   const newAmount = newItems.map((val) => {
+  //     if (val?.employeePreferenceId === id) {
+  //       val.donationAmount = value;
+  //       // console.log(value.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  //     }
+  //     return val;
+  //   });
+  //   setUpdatedValue(newAmount);
+  // };
   console.log(updatedValue);
 
   return (
@@ -303,26 +307,52 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 size="10"
                                 maxLength={10}
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
-                                // value={updatedValue}
+                                // value={
+                                //   updatedValue?.length > 0 && updatedValue
+                                //     ? updatedValue.toLocaleString()
+                                //     : preference?.donationAmount?.toLocaleString()
+                                // }
+                                // value={updatedValue
+                                //   ?.filter(
+                                //     (val) =>
+                                //       val?.employeePreferenceId ===
+                                //       preference?.employeePreferenceId
+                                //   )?.[0]
+                                //   ?.donationAmount?.toLocaleString()}
                                 className="form-control"
                                 onBlur={() =>
-                                  updatedValue?.filter(
-                                    (val) =>
-                                      val?.employeePreferenceId ===
-                                      preference?.employeePreferenceId
-                                  )?.[0]?.donationAmount ===
-                                  preference?.donationAmount
+                                  updatedValue !== preference?.donationAmount
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT
                                       )
                                     : null
                                 }
-                                onChange={(e) =>
-                                  changeAmount(
-                                    e,
-                                    preference?.employeePreferenceId
-                                  )
+                                // onBlur={() =>
+                                //   updatedValue?.filter(
+                                //     (val) =>
+                                //       val?.employeePreferenceId ===
+                                //       preference?.employeePreferenceId
+                                //   )?.[0]?.donationAmount !==
+                                //   preference?.donationAmount
+                                //     ? showConsent(
+                                //         preference,
+                                //         donationPreferenceConstants.AMOUNT
+                                //       )
+                                //     : null
+                                // }
+                                onChange={
+                                  (e) =>
+                                    setUpdatedValue(
+                                      e.target.value.replace(
+                                        /\B(?=(\d{3})+(?!\d))/g,
+                                        ","
+                                      )
+                                    )
+                                  // changeAmount(
+                                  //   e,
+                                  //   preference?.employeePreferenceId
+                                  // )
                                 }
                                 id={`amount${preference?.employeePreferenceId}`}
                                 disabled={isCorporatePortal}
