@@ -366,9 +366,7 @@ function employeeAccountRequest(actionValues) {
     return { type: employeeConstants.EMPLOYEE_ACTION_FAILURE, error };
   }
 }
-
 function addEmployee(employee) {
-  console.log(employee, "employee actionnnnnnnnnn");
   return (dispatch) => {
     dispatch(request(employee));
     employeeService.addEmployee(employee).then(

@@ -164,13 +164,13 @@ const CharityPrograms = (props) => {
           </div>
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 mb-2">
         <h5>Categories</h5>
       </div>
       <div className="row mb-4">
         <div className="col">
           <div
-            className={`categotyButton`}
+            className={`categotyButton pl-0`}
             onClick={() =>
               setSelectedCategory(charityProgramConstants.ALL_CATEGORY)
             }

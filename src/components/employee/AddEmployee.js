@@ -12,20 +12,19 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData,
+  CountryRegionData
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
-
 
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
   { value: "2", label: "Help Donar" },
-  { value: "3", label: "Universe Donar" },
+  { value: "3", label: "Universe Donar" }
 ];
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" },
+  { value: "Transgender", label: "Transgender" }
 ];
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -72,7 +71,9 @@ const AddEmployee = () => {
   const corporateId = useSelector(
     (state) => state?.selectedCorporate?.corporate?.corporateId
   );
-  const selectedCorporate = useSelector((state) => state.selectedCorporate.corporate);
+  const selectedCorporate = useSelector(
+    (state) => state.selectedCorporate.corporate
+  );
   const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
@@ -118,7 +119,7 @@ const AddEmployee = () => {
     state: "",
     country: "",
     userType: 3,
-    password: "test@%^@#1023",
+    password: "test@%^@#1023"
   };
   // useEffect(() => {
   //   initialValues.corporateProfileId = selectedCorporate?.id;
@@ -145,7 +146,7 @@ const AddEmployee = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
+            isSubmitting
             /* and other goodies */
           }) => (
             <Form>
@@ -405,7 +406,7 @@ const AddEmployee = () => {
                     <button
                       type="submit"
                       className="btn btn-custom btn-block"
-                        disabled={addingEmployee}
+                      disabled={addingEmployee}
                     >
                       {addingEmployee && (
                         <span className="spinner-border spinner-border-sm mr-1"></span>

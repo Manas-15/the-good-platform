@@ -114,16 +114,16 @@ export function charityPrograms(state = {}, action) {
       };
     case charityProgramConstants.OPERATE_DENY_SUCCESS:
       const denyCharity = state?.items?.["sponsored"]?.filter(
-        (element) => element.charityId === state.programId
+        (element) => element.id === state.programId
       );
       return {
         ...state,
         items: {
-          other: state?.items?.["other"]
-            ? [...state?.items?.["other"], denyCharity[0]]
+          others: state?.items?.["others"]
+            ? [...state?.items?.["others"], denyCharity[0]]
             : [denyCharity[0]],
           sponsored: state?.items?.["sponsored"]?.filter(function (charity) {
-            return charity.charityId !== denyCharity[0]?.charityId;
+            return charity.id !== denyCharity[0]?.id;
           })
         },
         loading: false

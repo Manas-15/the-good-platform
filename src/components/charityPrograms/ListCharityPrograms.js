@@ -112,8 +112,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         : actionType === charityProgramConstants.UNPROMOTE
         ? charityProgramActions.operateDenyRequest({
             corporateId: selectedCorporate?.corporate?.id,
-            socialId: selectedProgram?.soicalId,
-            programId: selectedProgram?.charityId
+            socialId: selectedCharity?.organisationId,
+            programId: selectedCharity?.id
           })
         : actionType === charityProgramConstants.BULK_PROMOTE
         ? charityProgramActions.operateBulkSponsorRequest({
@@ -128,7 +128,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
             organisationName: selectedOrganization?.name,
             charityId: selectedCharity?.id,
             charityName: selectedCharity?.charityName,
-            soicalName: selectedCharity?.soicalName,
+            soicalName: selectedCharity?.soicalName
           })
     );
   };
@@ -188,9 +188,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         ? charityProgramActions.checkBeforeBulkUnpromote({
             socialId: item?.socialId,
             programId: item?.programId,
-            corporateId: isCorporatePortal
-              ? item?.id
-              : user?.corporateId
+            corporateId: isCorporatePortal ? item?.id : user?.corporateId
           })
         : action === charityProgramConstants.UNPROMOTE &&
             charityProgramActions.checkBeforeUnpromote({
