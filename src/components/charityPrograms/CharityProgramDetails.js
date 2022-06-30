@@ -52,8 +52,9 @@ const CharityProgramDetails = (props) => {
     dispatch(
       charityProgramActions.getProgramDetail({
         socialId: selectedOrganization?.organization?.id,
-        programId: selectedCharity?.charity?.charityId,
+        programId: selectedCharity?.charity?.id,
         loggedInUserType: loggedInUserType,
+        userId: user?.user_id
       })
     );
   }, []);
@@ -155,7 +156,7 @@ const CharityProgramDetails = (props) => {
                     </div>
                   )}
                 <h1 className="ant-typography customHeading">
-                  {selectedCharity?.charity?.charityName}
+                  {programDetail?.name}
                 </h1>
                 <h6 className="mb-3">
                   by {selectedCharity?.charity?.soicalName}
@@ -199,7 +200,7 @@ const CharityProgramDetails = (props) => {
                           <span className="detail-content">Donors</span>
                         </div>
                         <div className="col-md-6 p-1">
-                          <span className="detail-label">15</span>
+                          <span className="detail-label">{programDetail?.duration ? programDetail?.duration : 15}</span>
                           <span className="detail-content">Days</span>
                         </div>
                       </div>
@@ -215,10 +216,7 @@ const CharityProgramDetails = (props) => {
                   </div>
                   <div className="row mt-3">
                     <div className="col-md-12 text-justify">
-                      Distribute ration at the identified cluster of villages to
-                      the BPL beneficiaries holding valid identify proof and
-                      ration card. Ration Kits will be provided to the family of
-                      more than one member.
+                      {programDetail?.description}
                     </div>
                   </div>
                   <div className="row mt-3">
@@ -253,17 +251,19 @@ const CharityProgramDetails = (props) => {
                       <div className="col-md-12">
                         <strong>Description</strong>
                         <p>
-                          Distribute ration at the identified cluster of
-                          villages to the BPL beneficiaries holding valid
-                          identify proof and ration card. Ration Kits will be
-                          provided to the family of more than one member.
+                         {programDetail?.description}
                         </p>
-                        What is the duration for this program?
-                        <p>2022-04-19 - 2022-08-31</p>
+                        <div  className="mt-3 mb-3">
+                          What is the duration for this program?
+                          <p>{programDetail?.durationFrom} - {programDetail?.durationTo}</p>
+                        </div>
+                        <div  className="mt-3 mb-3">
+                          <p>Total no. of beneficiaries: {programDetail?.totalNumberOfBeneficiaries}</p>
+                        </div>
                         Who do you aim to benefit with this program?
-                        <p>Beneficiary</p>
-                        <div className="row">
-                          <div className="col-md-6">
+                        <p className="mt-2">Beneficiary</p>
+                        <div className="row mt-2">
+                          <div className="col-md-6 pl-0">
                             <div className={`categotyButton`}>
                               <label
                                 className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
@@ -278,7 +278,21 @@ const CharityProgramDetails = (props) => {
                         </div>
                         <p className="mt-4">Target Category</p>
                         <div className="row">
-                          <div className="col-md-6 mb-4">
+                          {programDetail?.typesOfBeneficiaries?.map((beneficiery) => (
+                            <div className="col-md-6 mb-4 pl-0">
+                            <div className={`categotyButton`}>
+                              <label
+                                className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                              >
+                                <span>
+                                  <img src="/assets/img/women.png" />{" "}
+                                  {beneficiery}
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          ))}
+                          {/* <div className="col-md-6 mb-4">
                             <div className={`categotyButton`}>
                               <label
                                 className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
@@ -325,7 +339,7 @@ const CharityProgramDetails = (props) => {
                                 </span>
                               </label>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -355,7 +369,7 @@ const CharityProgramDetails = (props) => {
                       </div>
                     </div>
                   </TabPane>
-                  <TabPane tab={"Our Plan"} key={"pur_plan"}>
+                  {/* <TabPane tab={"Our Plan"} key={"pur_plan"}>
                     <div className="row mt-4 program-list">
                       <div className="row mt-3">
                         <div className="col-md-12">
@@ -394,8 +408,8 @@ const CharityProgramDetails = (props) => {
                         </div>
                       </div>
                     </div>
-                  </TabPane>
-                  <TabPane tab={"Budget"} key={"budget"}>
+                  </TabPane> */}
+                  {/* <TabPane tab={"Budget"} key={"budget"}>
                     <div className="row mt-4 program-list">
                       <div className="row mt-3">
                         <div className="col-md-12">
@@ -412,6 +426,25 @@ const CharityProgramDetails = (props) => {
                               },
                             }}
                           />
+                        </div>
+                      </div>
+                    </div>
+                  </TabPane> */}
+                  <TabPane tab={"Geography"} key={"geography"}>
+                    <div className="row">
+                      <div className="row mt-3">
+                        <div className="card col-md-6 p-2 mb-3">
+                          {programDetail?.geographyModel?.map((item) => (
+                            <div>
+                              <p><strong>District:</strong> {item?.district}</p>
+                              <p><strong>City:</strong> {item?.city}</p>
+                              <p><strong>State:</strong> {item?.state}</p>
+                              <p><strong>Taluk:</strong> {item?.taluk}</p>
+                              <p><strong>PostalCode:</strong> {item?.postalCode}</p>
+                              <p><strong>Latitude:</strong> {item?.latitude}</p>
+                              <p><strong>Longitude:</strong> {item?.longitude}</p>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>

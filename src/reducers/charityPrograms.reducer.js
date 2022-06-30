@@ -85,8 +85,8 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.charityId
       };
     case charityProgramConstants.OPERATE_SPONSOR_SUCCESS:
-      const operateCharity = state?.items?.["other"]?.filter(
-        (element) => element.charityId === state.programId
+      const operateCharity = state?.items?.["others"]?.filter(
+        (element) => element.id === state.programId
       );
       return {
         ...state,
@@ -94,8 +94,8 @@ export function charityPrograms(state = {}, action) {
           sponsored: state?.items?.["sponsored"]
             ? [...state?.items?.["sponsored"], operateCharity[0]]
             : [operateCharity[0]],
-          other: state?.items?.["other"]?.filter(function (charity) {
-            return charity.charityId !== operateCharity[0]?.charityId;
+          others: state?.items?.["others"]?.filter(function (charity) {
+            return charity.id !== operateCharity[0]?.id;
           })
         },
         loading: false
@@ -201,11 +201,15 @@ export function charityPrograms(state = {}, action) {
     case charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS:
       return {
         ...state,
-        selectedprogramDetail: {
+        // selectedprogramDetail: {
+        //   ...action?.programDetail?.data?.data,
+        //   unitPrice: 500
+        // },
+        // programDetail: action?.programDetail?.data?.data,
+        programDetail: {
           ...action?.programDetail?.data?.data,
           unitPrice: 500
         },
-        programDetail: action?.programDetail?.data,
         loading: false
       };
     case charityProgramConstants.OPERATE_DENY_FAILURE:

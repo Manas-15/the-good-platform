@@ -72,7 +72,7 @@ function checkBeforeBulkUnpromote(data) {
 function getProgramDetail(data) {
   return axios.get(
     process.env.REACT_APP_API_URL +
-      (data?.userType === userConstants.INDIVIDUAL_VIEW
+      (data?.userType === userConstants.INDIVIDUAL_VIEW || data?.userId
         ? "remote_api/charity_details/"
         : "api/programDetails/"),
     {
