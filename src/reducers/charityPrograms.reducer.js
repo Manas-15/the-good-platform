@@ -3,7 +3,6 @@ import { charityProgramConstants } from "../constants";
 export function charityPrograms(state = {}, action) {
   switch (action.type) {
     case charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST:
-      console.log(">>>>>>>>>>>> action?.data", action);
       return {
         loading: true
       };

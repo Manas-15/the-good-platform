@@ -6,7 +6,9 @@ import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedCorporate = useSelector(
+    (state) => state?.selectedCorporate?.corporate
+  );
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
   const loggedInUser = useSelector((state) => state.user);
   const selectedOrganization = useSelector(
@@ -38,7 +40,7 @@ const Sidebar = () => {
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to={`/corporates/${selectedCorporate?.corporate?.corporateId}/employees`}
+                  to={`/corporates/${selectedCorporate?.id}/employees`}
                   activeClassName="active"
                 >
                   <i className="bi bi-people-fill"></i>
@@ -86,7 +88,7 @@ const Sidebar = () => {
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to={`/corporates/${selectedCorporate?.corporate?.corporateId}/payroll-batch`}
+                  to={`/corporates/${selectedCorporate?.id}/payroll-batch`}
                   activeClassName="active"
                 >
                   <i className="bi bi-hdd-stack"></i>
@@ -117,7 +119,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -132,7 +134,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
