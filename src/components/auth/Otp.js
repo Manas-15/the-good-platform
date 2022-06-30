@@ -2,25 +2,21 @@ import React, { useState } from "react";
 import OtpInput from "react-otp-input";
 // import OtpTimer from "otp-timer";
 import { employeeActions } from "../../actions";
-// import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { Form } from "formik";
 
-const Otp = () => {
+const Otp = (props) => {
   const [submitted, setSubmitted] = useState(false);
   const user = useSelector((state) => state.employee.user);
   // const user = JSON.parse(localStorage.getItem("user"));
   const [code, setCode] = useState("");
   const handleChange = (code) => setCode(code);
   const dispatch = useDispatch();
-  // const location = useLocation();
   // const handleClick = () => {
   //   //desired function to be performed on clicking resend button
   // };
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
-
     {
       (() => {
         if (code.length === 6 && user?.user_type === 3) {
@@ -28,6 +24,7 @@ const Otp = () => {
             employeeActions.validateOtp({
               userId: user.user_id,
               otp: code,
+              validOtp: user.otp
             })
           );
         } else if (code.length === 6 && user?.user_type === 4) {
@@ -35,6 +32,7 @@ const Otp = () => {
             employeeActions.validateOtp({
               userId: user.user_id,
               otp: code,
+              validOtp: user.otp
             })
           );
         }
@@ -44,8 +42,11 @@ const Otp = () => {
   }
   return (
     <div className="text-center card p-4">
-      <h3 className="mb-4">Enter one time password (OTP)</h3>
-      <p>
+      <h3 className="mb-2">
+        Enter one time password (OTP)
+      </h3>
+      <h3>{user?.otp}</h3>
+      <p className="mt-2 mb-3">
         One time password has been sent to your email id {user?.email}. Please
         enter the same here to login.
       </p>
@@ -66,11 +67,11 @@ const Otp = () => {
               fontSize: "20px",
               color: "#000",
               fontWeight: "400",
-              caretColor: "blue",
+              caretColor: "blue"
             }}
             focusStyle={{
               border: "1px solid #CFD3DB",
-              outline: "none",
+              outline: "none"
             }}
           />
         </div>

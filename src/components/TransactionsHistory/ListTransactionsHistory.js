@@ -33,7 +33,6 @@ const initialValues = {
   transactionId: "",
 };
 const { afterToday } = DateRangePicker;
-const date = new Date();
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
   console.log(records);
@@ -64,9 +63,7 @@ const ListTransactionsHistory = (props) => {
   const [searchByCorporateName, setSearchByCorporateName] = useState("");
   const [searchByProgramName, setSearchByProgramName] = useState("");
   const [searchByAmount, setSearchByAmount] = useState("");
-  const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
-  const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedRange, setSelectedRange] = useState([]);
