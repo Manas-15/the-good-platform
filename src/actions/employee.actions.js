@@ -18,7 +18,6 @@ export const employeeActions = {
   bulkImport,
   getCorporates
 };
-
 function login(data, from) {
   if (data?.loginType === "Employee") {
     return (dispatch) => {
