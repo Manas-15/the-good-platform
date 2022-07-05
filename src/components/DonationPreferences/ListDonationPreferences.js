@@ -37,9 +37,7 @@ const actionInitialValues = {
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
-  // console.log(items, "filter itemmmmmmmmmm");
-  const a = items;
-  console.log(a);
+
 
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
