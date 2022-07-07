@@ -11,8 +11,8 @@ export const corporateActions = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  // getCorporateById,
   corporateAccountRequest,
+  samlConfigure,
 };
 
 function getCorporates() {
@@ -40,35 +40,7 @@ function getCorporates() {
   }
 }
 
-// function getCorporateById(data) {
-//   // console.log(data, "By idddddd");
-//   return (dispatch) => {
-//     dispatch(request());
-
-//     corporateService.getCorporateById(data).then(
-//       (data) => dispatch(success(data)),
-
-//       (error) => {
-//         dispatch(failure(error.toString()));
-//         dispatch(alertActions.error(error.toString()));
-//       }
-//     );
-//   };
-
-//   function request() {
-//     return { type: corporateConstants.GET_CORPORATES_REQUEST_BY_ID };
-//   }
-//   function success(data) {
-//     // console.log(data, "success data");
-//     return { type: corporateConstants.GET_CORPORATES_SUCCESS_BY_ID, data };
-//   }
-//   function failure(error) {
-//     return { type: corporateConstants.GET_CORPORATES_FAILURE_BY_ID, error };
-//   }
-// }
-
 function addCorporate(corporate, type) {
-  // console.log(corporate, type, "corporate actions");
   return (dispatch) => {
     dispatch(request(corporate));
 
@@ -231,5 +203,35 @@ function corporateAccountRequest(actionValues) {
   }
   function failure(error) {
     return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };
+  }
+}
+
+function samlConfigure(samlValues) {
+  return (dispatch) => {
+    console.log(samlValues, "saml requestttttttttt");
+    dispatch(request(samlValues));
+    corporateService.samlConfigure(samlValues).then(
+      (res) => {
+        console.log(samlValues, "saml before sucesssss");
+
+        dispatch(success(res));
+        dispatch(alertActions.success("SAML Configure saved successfully"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+  function request(samlValues) {
+    return { type: corporateConstants.SAML_CONFIGURE_REQUEST, samlValues };
+  }
+  function success(samlValues) {
+    console.log(samlValues, "saml after sucesssss");
+
+    return { type: corporateConstants.SAML_CONFIGURE_SUCCESS, samlValues };
+  }
+  function failure(error) {
+    return { type: corporateConstants.SAML_CONFIGURE_FAILURE, error };
   }
 }

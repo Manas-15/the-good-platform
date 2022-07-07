@@ -9,18 +9,14 @@ export const corporateService = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  // getCorporateById,
   corporateAccountRequest,
+  samlConfigure,
 };
 
 function getCorporates() {
   return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list");
 }
 
-// function getCorporateById(id) {
-//   // console.log(id, "api page data");
-//   return axios.get(process.env.REACT_APP_API_URL + `api/corporate_list/${id}`);
-// }
 function registerCorporate(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporate_register/",
@@ -70,4 +66,13 @@ function handleResponse(response) {
 
     return data;
   });
+}
+
+function samlConfigure(data) {
+  console.log(data, "saml api call");
+
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporateSetting/",
+    data
+  );
 }
