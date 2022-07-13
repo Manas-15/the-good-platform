@@ -37,6 +37,7 @@ import OthersSignUp from "../components/Auth/OthersSignUp";
 import { userConstants } from "./../constants";
 import DirectPayment from "../components/DirectPayment/DirectPayment";
 import ListIndividuals from "../components/Individual/ListIndividuals";
+import SsoSettings from "../components/SsoSettings/SsoSettings";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -169,6 +170,7 @@ const CreateRoutes = () => {
                 path="/account-summary"
                 component={ListTransactionsHistory}
               />
+              <Route exact path="/sso-configuration" component={SsoSettings} />
               <Route
                 exact
                 path="/employee/:employeeId/account-summary"

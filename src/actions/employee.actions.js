@@ -16,7 +16,7 @@ export const employeeActions = {
   employeeAccountRequest,
   addEmployee,
   bulkImport,
-  getCorporates,
+  getCorporates
 };
 
 function login(data, from) {
@@ -47,6 +47,10 @@ function login(data, from) {
                 // dispatch(alertActions.success("Loggedin successful"));
                 // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
                 history.push("/otp");
+                // history.push({
+                //   pathname: "/otp",
+                //   state: { otp: res?.data?.otp }
+                // });
               } else {
                 // if(!res?.data?.approve) {
                 //   dispatch(
@@ -95,8 +99,11 @@ function login(data, from) {
             const res = JSON.stringify(data?.data);
             localStorage.setItem("user", JSON.stringify(data?.data));
             // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
-
             history.push("/otp");
+            // history.push({
+            //   pathname: "/otp",
+            //   state: { otp: data?.data?.otp }
+            // });
           }
         },
         (error) => {
@@ -127,18 +134,20 @@ function validateOtp(data, from) {
     dispatch(request({ data }));
 
     employeeService.validateOtp(data).then(
-      (data) => {
-        dispatch(success(data));
-        if (data?.data?.msg === "Invalid OTP") {
+      (res) => {
+        dispatch(success(res));
+        if (res?.data?.msg === "Invalid OTP") {
           history.push("/otp");
-          dispatch(alertActions.error(data?.data?.msg));
+          // history.push({
+          //   pathname: "/otp",
+          //   state: { otp: data?.validOtp }
+          // });
+          dispatch(alertActions.error(res?.data?.msg));
         } else {
           localStorage.setItem("otpVerified", true);
-
-          console.log(">>>>>>>>>>>>>", data?.data?.user_type);
-          if (data?.data?.user_type === userConstants.EMPLOYEE) {
+          if (res?.data?.user_type === userConstants.EMPLOYEE) {
             dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
-          } else if (data?.data?.user_type === userConstants.INDIVIDUAL) {
+          } else if (res?.data?.user_type === userConstants.INDIVIDUAL) {
             dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
           }
           history.push("/");
@@ -241,7 +250,7 @@ function register(employee, userType) {
         } else {
           history.push({
             pathname: "/thank-you",
-            state: { userType: userType },
+            state: { userType: userType }
           });
         }
       },
@@ -396,11 +405,19 @@ function addEmployee(employee) {
 }
 
 function bulkImport(formData) {
+  console.log(">>>>>>>>>>>>>>>>> comingggggggggggggg", formData);
   return (dispatch) => {
     dispatch(request(formData));
     employeeService.bulkImport(formData).then(
-      () => {
-        dispatch(success());
+      (data) => {
+        dispatch(success(data));
+        console.log(
+          ">>>>>>>>>>>>>>>>>",
+          formData,
+          `"/corporates/${formData?.corporateId}/employees"`
+        );
+        history.push({ pathname: `"/corporates/1/employees"` });
+        dispatch(alertActions.success(`Employee imported successfully`));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -408,11 +425,10 @@ function bulkImport(formData) {
       }
     );
   };
-
   function request(formData) {
     return {
       type: employeeConstants.BULK_IMPORT_REQUEST,
-      formData,
+      formData
     };
   }
   function success(formData) {
@@ -438,7 +454,7 @@ function getCorporates() {
 
   function request() {
     return {
-      type: employeeConstants.GET_CORPORATES_REQUEST,
+      type: employeeConstants.GET_CORPORATES_REQUEST
     };
   }
   function success(data) {

@@ -208,7 +208,6 @@ const ListEmployees = (props) => {
       setRecords(employees?.items);
     }
   };
-  // console.log(isSuperadminView);
 
   return (
     <div className="customContainer">

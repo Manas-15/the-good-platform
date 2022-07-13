@@ -470,7 +470,6 @@ const CorporateForm = ({ type, id }) => {
               <div className="col-md-8">
                 <CountryDropdown
                   name="country"
-                  // value={id ? console.log("editManas") : console.log("manas")}
                   value={id ? editCountry : country}
                   onChange={(val) =>
                     id ? selectEditCountry(val) : selectCountry(val)

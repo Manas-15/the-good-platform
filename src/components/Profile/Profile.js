@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Profile = () => {
-  const user = useSelector((state) => state.employee.user);
   return (
     <>
       <section className="section profile">
@@ -24,16 +23,16 @@ const Profile = () => {
                 <h2>Kevin Anderson</h2>
                 <h3>Web Designer</h3>
                 <div className="social-links mt-2">
-                  <a href="#" className="twitter">
+                  <a href="https://twitter.com/" target="_blank" className="twitter">
                     <i className="bi bi-twitter"></i>
                   </a>
-                  <a href="#" className="facebook">
+                  <a href="https://facebook.com/" target="_blank" className="facebook">
                     <i className="bi bi-facebook"></i>
                   </a>
-                  <a href="#" className="instagram">
+                  <a href="https://www.instagram.com/" target="_blank" className="instagram">
                     <i className="bi bi-instagram"></i>
                   </a>
-                  <a href="#" className="linkedin">
+                  <a href="https://www.linkedin.com/" target="_blank" className="linkedin">
                     <i className="bi bi-linkedin"></i>
                   </a>
                 </div>

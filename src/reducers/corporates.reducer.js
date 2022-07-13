@@ -93,6 +93,13 @@ export function corporates(state = {}, action) {
       };
     case corporateConstants.CORPORATE_ACTION_FAILURE:
       return { items: state.items, error: action.error };
+
+    case corporateConstants.SAML_CONFIGURE_REQUEST:
+      return { samlConfigure: true };
+    case corporateConstants.SAML_CONFIGURE_SUCCESS:
+      return { samlConfigure: false };
+    case corporateConstants.SAML_CONFIGURE_FAILURE:
+      return { samlConfigure: false };
     default:
       return state;
   }
