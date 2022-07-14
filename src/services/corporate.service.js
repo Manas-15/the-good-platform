@@ -14,13 +14,9 @@ export const corporateService = {
 };
 
 function getCorporates() {
-  return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list");
+  return axios.get(process.env.REACT_APP_API_URL + "remote_api/corporateList/"); //process.env.REACT_APP_API_URL + "api/corporate_list"
 }
 
-// function getCorporateById(id) {
-//   // console.log(id, "api page data");
-//   return axios.get(process.env.REACT_APP_API_URL + `api/corporate_list/${id}`);
-// }
 function registerCorporate(data) {
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporate_register/",

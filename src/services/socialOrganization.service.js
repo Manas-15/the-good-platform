@@ -10,7 +10,8 @@ export const socialOrganizationService = {
 async function getSocialOrganizations(data) {
   if (data?.loggedInUserType === userConstants.INDIVIDUAL) {
     return await axios.post(
-      process.env.REACT_APP_API_URL + "remote_api/get_social_organization/", data
+      process.env.REACT_APP_API_URL + "remote_api/get_social_organization/",
+      data
     );
   } else {
     if (data["loggedInUserType"] === userConstants.CORPORATE) {

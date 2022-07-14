@@ -54,11 +54,12 @@ const Header = () => {
       </div>
       <nav className="header-nav ms-auto">
         <h4 className="current-view">
-          {currentView?.currentView}{" "}
+          {currentView?.currentView}
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
-            ? " - " + selectedCorporate?.corporate?.organizationName
+            ? " - " + selectedCorporate?.corporate?.name
             : ""}
-          {currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
+          {currentView?.currentView ===
+          viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
             ? " - " + selectedOrganization?.organization?.name
             : ""}
         </h4>

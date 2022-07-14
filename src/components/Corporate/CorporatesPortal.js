@@ -8,11 +8,12 @@ import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
 const actionInitialValues = {
   userId: "",
-  requestType: ""
+  requestType: "",
 };
 const CorporatesPortal = () => {
   let history = useHistory();
-  const corporates = useSelector((state) => state.corporates);
+  const corporates = useSelector((state) => state?.corporates?.items);
+  console.log(corporates, "ttttttttttttttttttt");
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const CorporatesPortal = () => {
     dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
   };
   const handleClose = () => setOpen(false);
-  if (corporates.loading) {
+  if (corporates?.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
     document.getElementById("root").classList.remove("loading");
@@ -74,22 +75,22 @@ const CorporatesPortal = () => {
       </div>
       <div className="row mb-4">
         <div className="col-md-4 offset-md-3">
-          {corporates.loading && <Loader />}
-          {corporates?.items && corporates?.items.length > 0 ? (
+          {corporates?.loading && <Loader />}
+          {corporates?.data && corporates?.data.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
-                {corporates?.items
+                {corporates?.data
                   ?.filter((val) => {
-                    return val?.isActive === true;
+                    return val?.approvalStatus === "APPROVED";
                   })
                   ?.map((corporate, index) => {
                     return (
                       <li key={index + 1}>
                         <Link
-                          to={`/corporates/${corporate.corporateId}/employees`}
+                          to={`/corporates/${corporate.id}/employees`}
                           onClick={() => setCorporate(corporate)}
                         >
-                          {corporate?.organizationName}
+                          {corporate?.name}
                         </Link>
                       </li>
                     );
