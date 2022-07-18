@@ -12,10 +12,10 @@ function getSocialOrganizations(data) {
 
     socialOrganizationService.getSocialOrganizations(data).then(
       (socialOrganizations) => {
-        if(socialOrganizations?.data?.msg){
+        if (socialOrganizations?.data?.msg) {
           dispatch(alertActions.error(socialOrganizations?.data?.msg));
-        }else{
-          dispatch(success(socialOrganizations))
+        } else {
+          dispatch(success(socialOrganizations));
         }
       },
       (error) => {

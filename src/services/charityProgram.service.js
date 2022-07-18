@@ -17,7 +17,6 @@ function getCharityPrograms(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/social_charity_list/", {
   //   params: data,
   // });
-  console.log("data?.userType", data?.userType);
   if (data?.userType === userConstants.INDIVIDUAL_VIEW) {
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
       params: data,
@@ -70,9 +69,12 @@ function checkBeforeBulkUnpromote(data) {
   );
 }
 function getProgramDetail(data) {
+  console.log(data);
+  console.log(data?.loggedInUserType);
+  console.log(typeof data?.loggedInUserType, userConstants.INDIVIDUAL);
   return axios.get(
-    process.env.REACT_APP_API_URL +
-      (data?.userType === userConstants.INDIVIDUAL_VIEW
+    process.env.REACT_APP_API_URL + //"remote_api/  /",
+      (data?.loggedInUserType === userConstants.INDIVIDUAL
         ? "remote_api/charity_details/"
         : "api/programDetails/"),
     {

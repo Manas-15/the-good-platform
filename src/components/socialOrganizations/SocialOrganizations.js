@@ -27,6 +27,7 @@ const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
+  console.log(socialOrganizations);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
@@ -52,11 +53,6 @@ const SocialOrganizations = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    // console.log(
-    //   "loggedInUser?.loggedInUserType",
-    //   loggedInUserType,
-    //   currentPage
-    // );
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
         pageNumber: currentPage.toString(),
@@ -72,6 +68,7 @@ const SocialOrganizations = () => {
       })
     );
   }, [currentPage]);
+
   const setPage = (page) => {
     setCurrentPage(page);
   };

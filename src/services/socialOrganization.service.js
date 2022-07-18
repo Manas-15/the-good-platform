@@ -23,6 +23,10 @@ async function getSocialOrganizations(data) {
         }
       );
     } else {
+      // return await axios.post(
+      //   process.env.REACT_APP_API_URL + "remote_api/get_social_organization/",
+      //   data
+      // );
       return await axios.get(
         process.env.REACT_APP_API_URL + "api/social_program_list/",
         {

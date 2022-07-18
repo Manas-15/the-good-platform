@@ -138,7 +138,7 @@ const CharityProgramDetails = (props) => {
     <>
       {loggedInUserType === userConstants.INDIVIDUAL && (
         <ProgramDetailsIndividual
-          programId={selectedCharity?.charity?.id.toString()}
+          programId={selectedCharity?.charity?.id?.toString()}
         />
       )}
       {loggedInUserType !== userConstants.INDIVIDUAL && (
