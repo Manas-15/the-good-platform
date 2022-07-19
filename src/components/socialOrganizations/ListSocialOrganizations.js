@@ -6,7 +6,7 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   charityProgramConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { selectedOrganizationActions } from "../../actions";
 import * as moment from "moment";
@@ -147,7 +147,7 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                                 pathname: `/social-organizations/${urlSlug(
                                   socialOrganization?.name
                                 )}`,
-                                tabType: tabType,
+                                tabType: tabType
                               }}
                               onClick={() =>
                                 setOrganization(socialOrganization)

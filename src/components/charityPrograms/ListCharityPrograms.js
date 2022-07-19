@@ -309,9 +309,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setAllItems(tempUser);
     }
   };
-  // console.log(checked);
-  console.log(checkedProgram);
-
   return (
     <>
       <div className="ant-row">
