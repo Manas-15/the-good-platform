@@ -27,7 +27,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
       <div className="ant-col ant-col-24 mt-2">
         {items?.length > 0 ? (
           <div className="row">
-            {items.map((charityProgram, i) => (
+            {items?.map((charityProgram, i) => (
               <div className="col-md-4 card  p-0 ml-3">
                 <div className="img-sec">
                   <img

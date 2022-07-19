@@ -10,7 +10,7 @@ import {
   payrollConstants,
   userConstants
 } from "../../constants";
-import { charityProgramActions } from "../../actions";
+import { charityProgramActions, selectedCharityActions } from "../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
 import { Tabs, Icon } from "antd";
@@ -51,7 +51,7 @@ const CharityPrograms = (props) => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
-    setSelectedCharity(null);
+    // setSelectedCharity(null);
   };
   // useEffect(() => {
   //   setTabType(props?.location?.tabType);
@@ -89,6 +89,9 @@ const CharityPrograms = (props) => {
   const setCharity = (charity) => {
     console.log("dddddddddddddddddddddd inside", charity);
     setSelectedCharity(charity);
+    if (charity) {
+      dispatch(selectedCharityActions.selectedCharity(charity));
+    }
     openNav();
   };
   const setType = (type) => {

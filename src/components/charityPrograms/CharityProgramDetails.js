@@ -4,9 +4,9 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
   userConstants,
-  charityProgramConstants,
+  charityProgramConstants
 } from "../../constants";
-import { charityProgramActions } from "../../actions";
+import { charityProgramActions, selectedCharityActions } from "../../actions";
 import { Progress, Tooltip, Tabs } from "antd";
 import users from "../../config/users.json";
 import { useDispatch, useSelector } from "react-redux";
@@ -85,7 +85,7 @@ const CharityProgramDetails = (props) => {
       : user?.corporateId,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
-    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
+    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`
   };
   const onScroll = () => {
     // if (listInnerRef.current) {
@@ -116,10 +116,10 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
   const data2 = {
     labels: ["Operations", "Communication", "Travel", "Administrative"],
@@ -130,11 +130,14 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
+  useEffect(() => {
+    dispatch(selectedCharityActions.selectedCharity(programDetail));
+  }, [programDetail]);
   return (
     <>
       {loggedInUserType === userConstants.INDIVIDUAL && (
@@ -200,7 +203,11 @@ const CharityProgramDetails = (props) => {
                           <span className="detail-content">Donors</span>
                         </div>
                         <div className="col-md-6 p-1">
-                          <span className="detail-label">{programDetail?.duration ? programDetail?.duration : 15}</span>
+                          <span className="detail-label">
+                            {programDetail?.duration
+                              ? programDetail?.duration
+                              : 15}
+                          </span>
                           <span className="detail-content">Days</span>
                         </div>
                       </div>
@@ -250,15 +257,19 @@ const CharityProgramDetails = (props) => {
                     <div className="row mt-4 program-list">
                       <div className="col-md-12">
                         <strong>Description</strong>
-                        <p>
-                         {programDetail?.description}
-                        </p>
-                        <div  className="mt-3 mb-3">
+                        <p>{programDetail?.description}</p>
+                        <div className="mt-3 mb-3">
                           What is the duration for this program?
-                          <p>{programDetail?.durationFrom} - {programDetail?.durationTo}</p>
+                          <p>
+                            {programDetail?.durationFrom} -{" "}
+                            {programDetail?.durationTo}
+                          </p>
                         </div>
-                        <div  className="mt-3 mb-3">
-                          <p>Total no. of beneficiaries: {programDetail?.totalNumberOfBeneficiaries}</p>
+                        <div className="mt-3 mb-3">
+                          <p>
+                            Total no. of beneficiaries:{" "}
+                            {programDetail?.totalNumberOfBeneficiaries}
+                          </p>
                         </div>
                         Who do you aim to benefit with this program?
                         <p className="mt-2">Beneficiary</p>
@@ -278,20 +289,22 @@ const CharityProgramDetails = (props) => {
                         </div>
                         <p className="mt-4">Target Category</p>
                         <div className="row">
-                          {programDetail?.typesOfBeneficiaries?.map((beneficiery) => (
-                            <div className="col-md-6 mb-4 pl-0">
-                            <div className={`categotyButton`}>
-                              <label
-                                className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
-                              >
-                                <span>
-                                  <img src="/assets/img/women.png" />{" "}
-                                  {beneficiery}
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                          ))}
+                          {programDetail?.typesOfBeneficiaries?.map(
+                            (beneficiery) => (
+                              <div className="col-md-6 mb-4 pl-0">
+                                <div className={`categotyButton`}>
+                                  <label
+                                    className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                                  >
+                                    <span>
+                                      <img src="/assets/img/women.png" />{" "}
+                                      {beneficiery}
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            )
+                          )}
                           {/* <div className="col-md-6 mb-4">
                             <div className={`categotyButton`}>
                               <label
@@ -436,13 +449,27 @@ const CharityProgramDetails = (props) => {
                         <div className="card col-md-6 p-2 mb-3">
                           {programDetail?.geographyModel?.map((item) => (
                             <div>
-                              <p><strong>District:</strong> {item?.district}</p>
-                              <p><strong>City:</strong> {item?.city}</p>
-                              <p><strong>State:</strong> {item?.state}</p>
-                              <p><strong>Taluk:</strong> {item?.taluk}</p>
-                              <p><strong>PostalCode:</strong> {item?.postalCode}</p>
-                              <p><strong>Latitude:</strong> {item?.latitude}</p>
-                              <p><strong>Longitude:</strong> {item?.longitude}</p>
+                              <p>
+                                <strong>District:</strong> {item?.district}
+                              </p>
+                              <p>
+                                <strong>City:</strong> {item?.city}
+                              </p>
+                              <p>
+                                <strong>State:</strong> {item?.state}
+                              </p>
+                              <p>
+                                <strong>Taluk:</strong> {item?.taluk}
+                              </p>
+                              <p>
+                                <strong>PostalCode:</strong> {item?.postalCode}
+                              </p>
+                              <p>
+                                <strong>Latitude:</strong> {item?.latitude}
+                              </p>
+                              <p>
+                                <strong>Longitude:</strong> {item?.longitude}
+                              </p>
                             </div>
                           ))}
                         </div>
