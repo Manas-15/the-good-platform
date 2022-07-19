@@ -206,7 +206,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/women.png" />{" "}
+                <img src="/assets/img/women.png" alt="Women" />{" "}
                 {charityProgramConstants.WOMEN_CATEGORY}
               </span>
             </label>
@@ -227,7 +227,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/youth.png" />{" "}
+                <img src="/assets/img/youth.png" alt="Youth" />{" "}
                 {charityProgramConstants.YOUTH_CATEGORY}
               </span>
             </label>
@@ -248,7 +248,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/elderly.png" />{" "}
+                <img src="/assets/img/elderly.png" alt="Elderly" />{" "}
                 {charityProgramConstants.ELDERLY_CATEGORY}
               </span>
             </label>
@@ -269,7 +269,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/children.png" />{" "}
+                <img src="/assets/img/children.png" alt="Children" />{" "}
                 {charityProgramConstants.CHILDREN_CATEGORY}
               </span>
             </label>

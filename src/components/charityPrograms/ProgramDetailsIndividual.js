@@ -169,7 +169,7 @@ const ProgramDetailsIndividual = (props) => {
                       ? selectedCharity?.charity?.imgUrl
                       : "/assets/img/charity3.jpg"
                   }
-                  alt="image"
+                  alt="Image"
                 />
               </div>
               <div className="col-md-4">
@@ -256,7 +256,10 @@ const ProgramDetailsIndividual = (props) => {
                                   className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
                                 >
                                   <span>
-                                    <img src="/assets/img/elderly.png" />{" "}
+                                    <img
+                                      src="/assets/img/elderly.png"
+                                      alt="Elderly"
+                                    />{" "}
                                     {beneficiary}
                                   </span>
                                 </label>

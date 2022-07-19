@@ -506,7 +506,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               >
                                 <img
                                   src="/assets/img/donate.png"
-                                  alt="donate"
+                                  alt="Donate"
                                   onMouseEnter={(event) =>
                                     (event.target.src =
                                       "/assets/img/donate-fill-red.png")

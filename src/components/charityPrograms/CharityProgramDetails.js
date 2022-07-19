@@ -180,7 +180,7 @@ const CharityProgramDetails = (props) => {
                         ? selectedCharity?.charity?.imgUrl
                         : "/assets/img/charity3.jpg"
                     }
-                    alt="image"
+                    alt="Image"
                   />
                 </div>
                 <div className="col-md-4">
@@ -280,7 +280,10 @@ const CharityProgramDetails = (props) => {
                                 className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
                               >
                                 <span>
-                                  <img src="/assets/img/elderly.png" />{" "}
+                                  <img
+                                    src="/assets/img/elderly.png"
+                                    alt="Elderly"
+                                  />{" "}
                                   {"People"}
                                 </span>
                               </label>
@@ -297,7 +300,10 @@ const CharityProgramDetails = (props) => {
                                     className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
                                   >
                                     <span>
-                                      <img src="/assets/img/women.png" />{" "}
+                                      <img
+                                        src="/assets/img/women.png"
+                                        alt="Women"
+                                      />{" "}
                                       {beneficiery}
                                     </span>
                                   </label>
