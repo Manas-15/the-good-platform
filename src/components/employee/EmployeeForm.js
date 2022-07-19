@@ -127,7 +127,11 @@ const EmployeeForm = ({ type }) => {
             <p className="textParagraph">
               Before we get started, let's quickly set up your account
             </p>
-            <img height="350" src="/assets/img/smartphone2.png" />
+            <img
+              height="350"
+              src="/assets/img/smartphone2.png"
+              alt="SmartPhone"
+            />
           </div>
         </div>
         <div className="col-md-5 formStyles">

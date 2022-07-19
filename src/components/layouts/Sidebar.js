@@ -55,7 +55,7 @@ const Sidebar = () => {
                   to="/social-organizations"
                   activeClassName="active"
                 >
-                  <img height="16" src="/assets/img/case.png" />
+                  <img height="16" src="/assets/img/case.png" alt="Case" />
                   <span className="menu-text">Programs</span>
                 </NavLink>
               </span>
@@ -231,7 +231,11 @@ const Sidebar = () => {
                           to="/dashboard"
                           activeClassName="active"
                         >
-                          <img height="20" src="/assets/img/dashboard.png" />
+                          <img
+                            height="20"
+                            src="/assets/img/dashboard.png"
+                            alt="Dashboard"
+                          />
                           <span className="menu-text">Dashboard</span>
                         </NavLink>
                       </span>
@@ -243,7 +247,11 @@ const Sidebar = () => {
                           to="/social-organizations"
                           activeClassName="active"
                         >
-                          <img height="16" src="/assets/img/case.png" />
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
                           <span className="menu-text">Programs</span>
                         </NavLink>
                       </span>
