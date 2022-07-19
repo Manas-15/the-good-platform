@@ -87,7 +87,6 @@ const CharityPrograms = (props) => {
     );
   }, []);
   const setCharity = (charity) => {
-    console.log("dddddddddddddddddddddd inside", charity);
     setSelectedCharity(charity);
     if (charity) {
       dispatch(selectedCharityActions.selectedCharity(charity));
