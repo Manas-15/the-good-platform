@@ -36,7 +36,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
                         ? "/assets/img/charity3.jpg"
                         : "/assets/img/charity4.jpg"
                     }
-                    alt="image"
+                    alt="Image"
                   />
                   <Tooltip title="80G Tax benefits available for INR donations">
                     <span className="tax-benefit">

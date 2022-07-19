@@ -21,7 +21,11 @@ const LoginForm = ({ submit, disable }) => {
             <p className="textParagraph">
               Enter your registered details here to get started
             </p>
-            <img height="350" src="/assets/img/smartphone2.png" />
+            <img
+              height="350"
+              src="/assets/img/smartphone2.png"
+              alt="SmartPhone"
+            />
           </div>
         </div>
         <div className="col-md-5 formStyles">

@@ -9,7 +9,7 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData,
+  CountryRegionData
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
@@ -25,14 +25,14 @@ const initialValues = {
   city: "",
   state: "",
   country: "",
-  userType: 4,
+  userType: 4
   //   password: "test@%^@#1023",
 };
 
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" },
+  { value: "Transgender", label: "Transgender" }
 ];
 
 const IndividualForm = ({ type }) => {
@@ -76,7 +76,11 @@ const IndividualForm = ({ type }) => {
             <p className="textParagraph">
               Before we get started, let's quickly set up your account
             </p>
-            <img height="350" src="/assets/img/smartphone2.png" />
+            <img
+              height="350"
+              src="/assets/img/smartphone2.png"
+              alt="SmartPhone"
+            />
           </div>
         </div>
         <div className="col-md-5 formStyles">
@@ -95,7 +99,7 @@ const IndividualForm = ({ type }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
+                isSubmitting
                 /* and other goodies */
               }) => (
                 <Form>

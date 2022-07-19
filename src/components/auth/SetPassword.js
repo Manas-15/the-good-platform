@@ -36,7 +36,7 @@ const SetPassword = (props) => {
       dispatch(
         employeeActions.setEmployeePassword({
           userId: userId,
-          password: values.password,
+          password: values.password
         })
       );
     }
@@ -49,7 +49,11 @@ const SetPassword = (props) => {
           <p className="textParagraph">
             Enter your registered details here to get started
           </p>
-          <img height="350" src="/assets/img/smartphone2.png" />
+          <img
+            height="350"
+            src="/assets/img/smartphone2.png"
+            alt="SmartPhone"
+          />
         </div>
       </div>
       <div className="col-md-5 formStyles">
@@ -68,7 +72,7 @@ const SetPassword = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form autoComplete="nope">
                 <h3>Set Password</h3>
