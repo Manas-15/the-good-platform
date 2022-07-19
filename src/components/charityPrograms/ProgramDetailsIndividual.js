@@ -3,7 +3,7 @@ import "./../../assets/css/charityProgramsList.scss";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { Progress, Tooltip, Tabs } from "antd";
 import users from "../../config/users.json";
@@ -74,7 +74,7 @@ const ProgramDetailsIndividual = (props) => {
       organisationId: programDetail?.organisationId,
       soicalName: selectedOrganization?.name,
       status: programDetail?.status,
-      unitPrice: 500,
+      unitPrice: 500
     },
     employee: user,
     corporateId: isCorporatePortal
@@ -82,7 +82,7 @@ const ProgramDetailsIndividual = (props) => {
       : user?.corporateId,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${programDetail?.name}`,
-    donationConsent: `${donationsConsent?.consent} [Frequency: ${"Monthly"}]`,
+    donationConsent: `${donationsConsent?.consent} [Frequency: ${"Monthly"}]`
   };
   const onScroll = () => {
     // if (listInnerRef.current) {
@@ -113,10 +113,10 @@ const ProgramDetailsIndividual = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
   const data2 = {
     labels: ["Operations", "Communication", "Travel", "Administrative"],
@@ -127,14 +127,14 @@ const ProgramDetailsIndividual = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
-  useEffect(() => {
-    dispatch(selectedCharityActions.selectedCharity(programDetail));
-  }, [programDetail]);
+  // useEffect(() => {
+  //   dispatch(selectedCharityActions.selectedCharity(programDetail));
+  // }, [programDetail]);
   return (
     <>
       <div className="ant-row">

@@ -135,7 +135,7 @@ const Donate = ({
           <>
             <div className="row mb-4">
               <div className="col-md-12">
-                <span className="bi-lock-fill fs-5 text-success"></span>Choose
+                <span className="bi-lock-fill fs-5 text-success"></span>
                 an amount to donate
               </div>
             </div>

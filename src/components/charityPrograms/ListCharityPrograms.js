@@ -25,6 +25,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
 
   const dispatch = useDispatch();
   const openNav = (charity) => {
+    console.log("11111111111111 openNav", charity);
     // document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
@@ -175,6 +176,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   // };
 
   const setSelectedCharity = (charity) => {
+    console.log("2222222222222222222222 coming here", charity);
     dispatch(selectedCharityActions.selectedCharity(charity));
     dispatch(selectedCharityTabActions.selectedTabType(tabType));
   };
@@ -410,7 +412,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 )}`,
                                 programName: charityProgram?.charityName
                               }}
-                              onClick={() => setSelectedCharity(charityProgram)}
+                              onClick={() => setCharity(charityProgram)}
                             >
                               <span className="ant-typography font-weight-bold custom-color">
                                 {charityProgram?.charityName?.length > 35

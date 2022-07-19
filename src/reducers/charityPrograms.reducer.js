@@ -5,14 +5,14 @@ export function charityPrograms(state = {}, action) {
     case charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST:
       return {
         loading: true,
-        userType: action?.userType
+        userType: action?.data?.userType
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
       return {
         ...state,
         loading: false,
         items:
-          state?.userType === userConstants.INDIVIDUAL_VIEW
+          state?.userType !== userConstants.INDIVIDUAL_VIEW
             ? {
                 sponsored: action?.charityPrograms?.data?.charity_list?.[
                   "sponsored"
@@ -198,6 +198,10 @@ export function charityPrograms(state = {}, action) {
         loading: true
       };
     case charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS:
+      console.log(
+        "action?.programDetail?.data?.data",
+        action?.programDetail?.data?.data
+      );
       return {
         ...state,
         // selectedprogramDetail: {
