@@ -238,17 +238,17 @@ const AddEmployee = () => {
                     className={
                       "form-control" +
                       (errors.password && touched.password ? " is-invalid" : "")
-                    }                    
+                    }
                   />
                   {showPassword ? (
-                      <div onClick={(e) => toggleShowPassword(e)}>
-                        <i class="bi bi-eye-slash"></i>
-                      </div>
-                    ) : (
-                      <div onClick={(e) => toggleShowPassword(e)}>
-                        <i class="bi bi-eye"></i>
-                      </div>
-                    )}
+                    <div onClick={(e) => toggleShowPassword(e)}>
+                      <i class="bi bi-eye-slash"></i>
+                    </div>
+                  ) : (
+                    <div onClick={(e) => toggleShowPassword(e)}>
+                      <i class="bi bi-eye"></i>
+                    </div>
+                  )}
                   <ErrorMessage
                     name="password"
                     component="div"
@@ -342,7 +342,6 @@ const AddEmployee = () => {
                   />
                 </div>
               </div>
-
               <hr />
               <h6>Communication Details</h6>
               <div className="row mb-4">

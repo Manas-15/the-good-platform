@@ -248,33 +248,35 @@ const EmployeeForm = ({ type }) => {
                     </div>
                   </div>
                   <div className="row mb-4">
-                  <div className="col-md-12">
-                  <Field
-                    name="password"
-                    // disabled={id}
-                    placeholder="Password"
-                    type={showPassword ? "password" : "text"}
-                    className={
-                      "form-control" +
-                      (errors.password && touched.password ? " is-invalid" : "")
-                    }                    
-                  />
-                  {showPassword ? (
-                      <div onClick={(e) => toggleShowPassword(e)}>
-                        <i class="bi bi-eye-slash"></i>
-                      </div>
-                    ) : (
-                      <div onClick={(e) => toggleShowPassword(e)}>
-                        <i class="bi bi-eye"></i>
-                      </div>
-                    )}
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </div>
-                <div className="row mb-4"></div>
+                    <div className="col-md-12">
+                      <Field
+                        name="password"
+                        // disabled={id}
+                        placeholder="Password"
+                        type={showPassword ? "password" : "text"}
+                        className={
+                          "form-control" +
+                          (errors.password && touched.password
+                            ? " is-invalid"
+                            : "")
+                        }
+                      />
+                      {showPassword ? (
+                        <div onClick={(e) => toggleShowPassword(e)}>
+                          <i class="bi bi-eye-slash"></i>
+                        </div>
+                      ) : (
+                        <div onClick={(e) => toggleShowPassword(e)}>
+                          <i class="bi bi-eye"></i>
+                        </div>
+                      )}
+                      <ErrorMessage
+                        name="password"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <div className="row mb-4"></div>
                     {/* <div className="col-md-4">
                 <label className="mt-1">PAN Number</label>
               </div> */}
@@ -297,17 +299,20 @@ const EmployeeForm = ({ type }) => {
                       />
                     </div>
                   </div>
-                  <div className="row mb-4">  
-                  <div className="col-md-12">
-                  <Field
+                  <div className="row mb-4">
+                    <div className="col-md-12">
+                      <Field
                         name="corporateProfileId"
                         as="select"
                         className={
                           "form-select" +
-                          (errors.corporateProfileId && touched.corporateProfileId ? " is-invalid" : "")
+                          (errors.corporateProfileId &&
+                          touched.corporateProfileId
+                            ? " is-invalid"
+                            : "")
                         }
                       >
-                        <option value="">Select Organization</option>
+                        <option value="">Select Corporate</option>
                         {corporates?.items?.data?.map((corporate, index) => (
                           <option value={corporate?.id} key={index}>
                             {corporate?.name}
@@ -319,9 +324,11 @@ const EmployeeForm = ({ type }) => {
                         component="div"
                         className="invalid-feedback"
                       />
-      </div>   
-      {errors.color && <div className="input-feedback">{errors.color}</div>}
-              </div>
+                    </div>
+                    {errors.color && (
+                      <div className="input-feedback">{errors.color}</div>
+                    )}
+                  </div>
                   {/* <div className="row mb-4">
                     <div className="col-md-12">
                       <FormDatePicker errors={errors} touched={touched} />

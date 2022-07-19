@@ -1,33 +1,38 @@
-import { charityProgramConstants } from "../constants";
+import { charityProgramConstants, userConstants } from "../constants";
 
 export function charityPrograms(state = {}, action) {
   switch (action.type) {
     case charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST:
       return {
-        loading: true
+        loading: true,
+        userType: action?.userType
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
       return {
-        items: {
-          sponsored: action?.charityPrograms?.data?.charity_list[
-            "sponsored"
-          ]?.map((charity) => {
-            return { ...charity, unitPrice: 500 };
-          }),
-          others: action?.charityPrograms?.data?.charity_list["others"]?.map(
-            (charity) => {
-              return { ...charity, unitPrice: 500 };
-            }
-          )
-        }
-        // items: action?.charityPrograms?.data?.charity_list.length
-        //   ? action?.charityPrograms?.data?.charity_list?.map?.((item) => {
-        //       if (item?.unitPrice === undefined) {
-        //         return { ...item, unitPrice: 500 };
-        //       }
-        //       return item;
-        //     })
-        //   : action?.charityPrograms?.data?.charity_list
+        ...state,
+        loading: false,
+        items:
+          state?.userType === userConstants.INDIVIDUAL_VIEW
+            ? {
+                sponsored: action?.charityPrograms?.data?.charity_list?.[
+                  "sponsored"
+                ]?.map((charity) => {
+                  return { ...charity, unitPrice: 500 };
+                }),
+                others: action?.charityPrograms?.data?.charity_list?.[
+                  "others"
+                ]?.map((charity) => {
+                  return { ...charity, unitPrice: 500 };
+                })
+              }
+            : action?.charityPrograms?.data?.charity_list?.length
+            ? action?.charityPrograms?.data?.charity_list?.map?.((item) => {
+                if (item?.unitPrice === undefined) {
+                  return { ...item, unitPrice: 500 };
+                }
+                return item;
+              })
+            : action?.charityPrograms?.data?.charity_list
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_FAILURE:
       return {
@@ -55,7 +60,7 @@ export function charityPrograms(state = {}, action) {
                 }
               : charity
           ),
-          other: state?.items["other"]?.map((charity) =>
+          other: state?.items["others"]?.map((charity) =>
             charity.charityId === state.charityId
               ? { ...charity, donated: true }
               : charity

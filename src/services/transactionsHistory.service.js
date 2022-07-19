@@ -2,6 +2,7 @@
 import { authHeader } from "../helpers";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { createLogger } from "redux-logger";
 
 export const transactionsHistoryService = {
   getDirectPayment,
@@ -17,7 +18,7 @@ function getTransactionsHistory(data) {
   });
 }
 function getDirectPayment(data) {
-  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
+  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: });
   return axios.get(process.env.REACT_APP_API_URL + "api/directPayment/", {
     params: data,
   });
@@ -32,12 +33,12 @@ function download80G(data) {
   });
 }
 function send80GEmail(data) {
-  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
-  return axios.post(
-    process.env.REACT_APP_API_URL + "api/send_80G_email/",
-    data
-  );
+  // return axios.corporate_list", { headers: authHeader() });
+  return axios.get(process.env.REACT_APP_API_URL + "api/send_80G_email/",
+  data
+)
 }
+
 function handleResponse(response) {
   return response.text().then((text) => {
     const data = text && JSON.parse(text);

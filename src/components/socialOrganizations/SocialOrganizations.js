@@ -7,11 +7,11 @@ import {
   paginationConstants,
   charityProgramConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import {
   selectedOrganizationActions,
-  socialOrganizationActions,
+  socialOrganizationActions
 } from "../../actions";
 import { Tabs, Icon } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
@@ -19,6 +19,7 @@ import Pagination from "../Shared/Pagination";
 import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";
+import { createLogger } from "redux-logger";
 
 // import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
@@ -27,6 +28,7 @@ const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
+  console.log(socialOrganizations);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
@@ -69,7 +71,7 @@ const SocialOrganizations = () => {
         // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
         loggedInUserType: loggedInUserType,
         individualId:
-          loggedInUserType === userConstants.INDIVIDUAL ? user?.uuid : null,
+          loggedInUserType === userConstants.INDIVIDUAL ? user?.uuid : null
       })
     );
   }, [currentPage]);
@@ -165,7 +167,7 @@ const SocialOrganizations = () => {
       </div>
       {socialOrganizations.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
-        {user?.user_id && (
+        {user?.user_id && loggedInUserType !== userConstants.INDIVIDUAL && (
           <Tabs
             defaultActiveKey={socialOrganizationConstants.SPONSORED}
             onChange={changeTab}
