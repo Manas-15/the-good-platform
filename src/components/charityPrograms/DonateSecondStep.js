@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DonationConsent from "../Shared/DonationConsent";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { PaymentSchema } from "../Validations";
@@ -142,7 +142,6 @@ const DonateSecondStep = ({
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`
   };
-  const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [paymentStep, setPaymentStep] = useState(false);
@@ -160,7 +159,7 @@ const DonateSecondStep = ({
     setPaymentValues(data);
     setPaymentStep(true);
   };
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   return (
     <div>
       {paymentStep ? (

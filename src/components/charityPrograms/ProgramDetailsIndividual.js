@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "./../../assets/css/charityProgramsList.scss";
 import {
   donationPreferenceConstants,
@@ -6,18 +6,18 @@ import {
   userConstants
 } from "../../constants";
 import { Progress, Tooltip, Tabs } from "antd";
-import users from "../../config/users.json";
+// import users from "../../config/users.json";
 import { Accordion } from "react-bootstrap";
 import Donate from "./Donate";
 import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
-import { charityProgramConstants } from "../../constants";
+// import { charityProgramConstants } from "../../constants";
 import { Chart, ArcElement } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+// import { Doughnut } from "react-chartjs-2";
 import donationsConsent from "../../config/donationsConsent.json";
 import selectedCharity from "../../config/selectedCharity.json";
 import { useDispatch, useSelector } from "react-redux";
-import { charityProgramActions, selectedCharityActions } from "../../actions";
+import { charityProgramActions } from "../../actions";
 const TabPane = Tabs.TabPane;
 Chart.register(ArcElement);
 

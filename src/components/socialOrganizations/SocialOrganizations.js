@@ -10,25 +10,24 @@ import {
   userConstants
 } from "../../constants";
 import {
-  selectedOrganizationActions,
+  // selectedOrganizationActions,
   socialOrganizationActions
 } from "../../actions";
-import { Tabs, Icon } from "antd";
+import { Tabs } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
-import Pagination from "../Shared/Pagination";
+// import Pagination from "../Shared/Pagination";
 import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";
-import { createLogger } from "redux-logger";
+// import { createLogger } from "redux-logger";
 
 // import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
 const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
-  let history = useHistory();
+  // let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
-  console.log(socialOrganizations);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
