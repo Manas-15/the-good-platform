@@ -70,7 +70,7 @@ const EmployeeDashboard = () => {
               <div className="col-xxl-4 col-md-6">
                 <div className="card info-card sales-card">
                   <div className="filter">
-                    <a className="icon" href="#" data-bs-toggle="dropdown">
+                    <a className="icon" href="/#" data-bs-toggle="dropdown">
                       <i className="bi bi-three-dots"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -78,17 +78,17 @@ const EmployeeDashboard = () => {
                         <h6>Filter</h6>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           Today
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           This Month
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           This Year
                         </a>
                       </li>
@@ -112,7 +112,7 @@ const EmployeeDashboard = () => {
               <div className="col-xxl-4 col-md-6">
                 <div className="card info-card revenue-card">
                   <div className="filter">
-                    <a className="icon" href="#" data-bs-toggle="dropdown">
+                    <a className="icon" href="/#" data-bs-toggle="dropdown">
                       <i className="bi bi-three-dots"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -120,17 +120,17 @@ const EmployeeDashboard = () => {
                         <h6>Filter</h6>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           Today
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           This Month
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           This Year
                         </a>
                       </li>
@@ -154,7 +154,7 @@ const EmployeeDashboard = () => {
               <div className="col-12">
                 <div className="card">
                   <div className="filter">
-                    <a className="icon" href="#" data-bs-toggle="dropdown">
+                    <a className="icon" href="/#" data-bs-toggle="dropdown">
                       <i className="bi bi-three-dots"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -162,12 +162,12 @@ const EmployeeDashboard = () => {
                         <h6>Filter</h6>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           Today
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           This Month
                         </a>
                       </li>
@@ -187,7 +187,7 @@ const EmployeeDashboard = () => {
               <div className="col-12">
                 <div className="card recent-sales overflow-auto">
                   <div className="filter">
-                    <a className="icon" href="#" data-bs-toggle="dropdown">
+                    <a className="icon" href="/#" data-bs-toggle="dropdown">
                       <i className="bi bi-three-dots"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -195,17 +195,17 @@ const EmployeeDashboard = () => {
                         <h6>Filter</h6>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           Today
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           This Month
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="/#">
                           This Year
                         </a>
                       </li>
@@ -271,7 +271,7 @@ const EmployeeDashboard = () => {
           <div className="col-lg-4">
             <div className="card">
               <div className="filter">
-                <a className="icon" href="#" data-bs-toggle="dropdown">
+                <a className="icon" href="/#" data-bs-toggle="dropdown">
                   <i className="bi bi-three-dots"></i>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -279,17 +279,17 @@ const EmployeeDashboard = () => {
                     <h6>Filter</h6>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a className="dropdown-item" href="/#">
                       Today
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a className="dropdown-item" href="/#">
                       This Month
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a className="dropdown-item" href="/#">
                       This Year
                     </a>
                   </li>
@@ -305,7 +305,7 @@ const EmployeeDashboard = () => {
                     <i className="bi bi-circle-fill activity-badge text-success align-self-start"></i>
                     <div className="activity-content">
                       Employee{" "}
-                      <a href="#" className="fw-bold text-dark">
+                      <a href="/#" className="fw-bold text-dark">
                         John Mark
                       </a>{" "}
                       added
@@ -316,7 +316,7 @@ const EmployeeDashboard = () => {
                     <i className="bi bi-circle-fill activity-badge text-danger align-self-start"></i>
                     <div className="activity-content">
                       Employee{" "}
-                      <a href="#" className="fw-bold text-dark">
+                      <a href="/#" className="fw-bold text-dark">
                         Sivam Dube
                       </a>{" "}
                       donated 20,000
@@ -327,7 +327,7 @@ const EmployeeDashboard = () => {
                     <i className="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
                     <div className="activity-content">
                       Employee{" "}
-                      <a href="#" className="fw-bold text-dark">
+                      <a href="/#" className="fw-bold text-dark">
                         Bikash Sarangi
                       </a>{" "}
                       added
@@ -338,7 +338,7 @@ const EmployeeDashboard = () => {
                     <i className="bi bi-circle-fill activity-badge text-info align-self-start"></i>
                     <div className="activity-content">
                       Tempore autem saepe{" "}
-                      <a href="#" className="fw-bold text-dark">
+                      <a href="/#" className="fw-bold text-dark">
                         occaecati voluptatem
                       </a>{" "}
                       tempore
