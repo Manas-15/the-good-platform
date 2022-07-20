@@ -23,6 +23,7 @@ export const employeeService = {
 async function login(data) {
   return await axios.post(`${process.env.REACT_APP_API_URL}api/login/`, data);
 }
+
 async function validateOtp(data) {
   return await axios.post(
     process.env.REACT_APP_API_URL + "api/validate_otp/",

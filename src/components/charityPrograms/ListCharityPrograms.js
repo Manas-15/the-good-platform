@@ -21,7 +21,7 @@ import urlSlug from "url-slug";
 // import { handleInputChange } from "react-select/dist/declarations/src/utils";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
-  // console.log(items, tabType);
+  console.log(items, tabType);
 
   const dispatch = useDispatch();
   const openNav = (charity) => {
@@ -43,7 +43,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [open, setOpen] = useState(false);
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  // console.log(isCorporatePortal);//true
+
+  const isOthersPortal =
+    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const isEmployeePortal =
     currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isIndividualPortal =
@@ -306,7 +308,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     }
   };
   // console.log(checked);
-  console.log(checkedProgram);
+  console.log(allItems);
 
   return (
     <>
@@ -405,13 +407,20 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             <Link
                               to={{
                                 pathname: `/social-organizations/programs/${urlSlug(
-                                  charityProgram?.charityName
+                                  charityProgram?.charityName ||
+                                    charityProgram?.name
                                 )}`,
-                                programName: charityProgram?.charityName,
+                                programName:
+                                  charityProgram?.charityName ||
+                                  charityProgram?.name,
                               }}
                               onClick={() => setSelectedCharity(charityProgram)}
                             >
                               <span className="ant-typography font-weight-bold custom-color">
+                                {charityProgram?.name?.length > 35
+                                  ? charityProgram?.name.substring(0, 32) +
+                                    "..."
+                                  : charityProgram?.name}
                                 {charityProgram?.charityName?.length > 35
                                   ? charityProgram?.charityName.substring(
                                       0,
@@ -424,6 +433,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         </td>
                         <td className="ant-table-cell">
                           {charityProgram?.soicalName}
+                          {charityProgram?.organisationName}
                         </td>
                         <td className="ant-table-cell">
                           {charityProgram?.category}
@@ -486,8 +496,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                           )}
                           {(isCorporatePortal ||
                             (isEmployeePortal && !charityProgram?.donated) ||
-                            (isIndividualPortal &&
-                              !charityProgram?.donated)) && (
+                            (isIndividualPortal && !charityProgram?.donated) ||
+                            (isOthersPortal && !charityProgram?.donated)) && (
                             <button
                               type="submit"
                               className="btn btn-sm mb-2"

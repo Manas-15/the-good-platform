@@ -31,6 +31,7 @@ const SocialOrganizations = () => {
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
+
   const user = useSelector((state) => state?.employee?.user);
   // const loggedInUser = useSelector((state) => state?.user);
   const [open, setOpen] = useState(false);
@@ -42,10 +43,14 @@ const SocialOrganizations = () => {
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSORED);
   const currentPortal = useSelector((state) => state.currentView);
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isEmployeePortal =
     currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isIndividualPortal =
+    currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
+  const isOthersPortal =
+    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
 
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
@@ -54,18 +59,28 @@ const SocialOrganizations = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
-      socialOrganizationActions.getSocialOrganizations({
-        pageNumber: currentPage.toString(),
-        employeeId: isEmployeePortal ? user?.emp_id : null,
-        corporateId: isCorporatePortal
-          ? selectedCorporate?.corporate?.corporateId
-          : user?.corporateId,
-        pageSize: pageSize.toString(),
-        // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-        loggedInUserType: loggedInUserType,
-        individualId:
-          loggedInUserType === userConstants.INDIVIDUAL ? user?.uuid : null,
-      })
+      socialOrganizationActions.getSocialOrganizations(
+        isIndividualPortal
+          ? {
+              pageNumber: currentPage.toString(),
+              employeeId: isEmployeePortal ? user?.emp_id : null,
+              corporateId: isCorporatePortal
+                ? selectedCorporate?.corporate?.corporateId
+                : user?.corporateId,
+              pageSize: pageSize.toString(),
+              // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+              loggedInUserType: loggedInUserType,
+              individualId:
+                loggedInUserType === userConstants.INDIVIDUAL
+                  ? user?.uuid
+                  : null,
+            }
+          : isOthersPortal
+          ? {
+              loggedInUserType: loggedInUserType,
+            }
+          : null
+      )
     );
   }, [currentPage]);
 
@@ -161,7 +176,7 @@ const SocialOrganizations = () => {
       </div>
       {socialOrganizations.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
-        {loggedInUserType !== userConstants.INDIVIDUAL && (
+        {loggedInUserType === userConstants.EMPLOYEE && (
           <Tabs
             defaultActiveKey={socialOrganizationConstants.SPONSORED}
             onChange={changeTab}
@@ -232,6 +247,29 @@ const SocialOrganizations = () => {
           </Tabs>
         )}
         {loggedInUserType === userConstants.INDIVIDUAL && (
+          <>
+            <ListSocialOrganizations
+              tabType={tabType}
+              items={
+                searchText
+                  ? SearchHelper(socialOrganizations?.items, searchText)
+                  : socialOrganizations?.items
+              }
+            />
+            {/* <Pagination
+              className="pagination-bar mt-4"
+              currentPage={currentPage}
+              totalCount={
+                socialOrganizations?.totalCount
+                  ? socialOrganizations?.totalCount
+                  : 0
+              }
+              pageSize={pageSize}
+              onPageChange={(page) => setPage(page)}
+            /> */}
+          </>
+        )}
+        {loggedInUserType === userConstants.CORPORATE && (
           <>
             <ListSocialOrganizations
               tabType={tabType}

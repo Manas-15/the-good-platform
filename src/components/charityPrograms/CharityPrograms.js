@@ -22,6 +22,7 @@ const TabPane = Tabs.TabPane;
 const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
+  console.log(charityPrograms);
   const selectedOrganizationId = useSelector(
     (state) => state?.selectedOrganization?.organization?.id
   );
@@ -42,6 +43,8 @@ const CharityPrograms = (props) => {
     charityProgramConstants.ALL_CATEGORY
   );
   const dispatch = useDispatch();
+  const isOthersPortal =
+    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isIndividualPortal =
@@ -60,7 +63,7 @@ const CharityPrograms = (props) => {
   useEffect(() => {
     dispatch(
       charityProgramActions.getCharityPrograms(
-        isCorporatePortal
+        isOthersPortal
           ? {
               corporateId: selectedCorporate?.corporate?.corporateId,
               socialId: selectedOrganization?.id,
@@ -273,7 +276,8 @@ const CharityPrograms = (props) => {
         </div>
       </div>
       <div className="ant-tabs-nav-wrap">
-        {currentPortal?.currentView === "Individual Portal" ? (
+        {currentPortal?.currentView === "Individual Portal" ||
+        "Others Portal" ? (
           <>
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms

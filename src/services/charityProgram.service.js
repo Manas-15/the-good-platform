@@ -14,13 +14,19 @@ export const charityProgramService = {
 };
 
 function getCharityPrograms(data) {
-  // return axios.get(process.env.REACT_APP_API_URL + "api/social_charity_list/", {
-  //   params: data,
-  // });
   if (data?.userType === userConstants.INDIVIDUAL_VIEW) {
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
       params: data,
     });
+  } else if (data?.userType === userConstants.CORPORATE_VIEW) {
+    console.log("inside corporate_view service");
+    return axios.get(
+      process.env.REACT_APP_TGP_API_URL +
+        "project-management/v1/validator/projects",
+      {
+        headers: authHeader(),
+      }
+    );
   } else {
     return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
       params: data,
