@@ -176,7 +176,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   // };
 
   const setSelectedCharity = (charity) => {
-    console.log("2222222222222222222222 coming here", charity);
     dispatch(selectedCharityActions.selectedCharity(charity));
     dispatch(selectedCharityTabActions.selectedTabType(tabType));
   };
