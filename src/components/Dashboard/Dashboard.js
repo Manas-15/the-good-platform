@@ -5,9 +5,8 @@ import { userConstants, viewPortalConstants } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
-  // const state = JSON.parse(localStorage.getItem("user"));
-  // const user_type = state?.employee?.user?.user_type;
   const loggedInUser = useSelector((state) => state?.user);
+  console.log(loggedInUser);
 
   const dispatch = useDispatch();
 
@@ -16,6 +15,10 @@ const Dashboard = () => {
       if (loggedInUser?.loggedinUserType === userConstants.INDIVIDUAL) {
         return dispatch(
           currentViewActions.currentView(viewPortalConstants.INDIVIDUAL_PORTAL)
+        );
+      } else if (loggedInUser?.loggedinUserType === userConstants.CORPORATE) {
+        dispatch(
+          currentViewActions.currentView(viewPortalConstants.OTHERS_PORTAL)
         );
       } else {
         dispatch(

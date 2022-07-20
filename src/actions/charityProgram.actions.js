@@ -15,8 +15,9 @@ export const charityProgramActions = {
 };
 
 function getCharityPrograms(data) {
+  console.log(data);
   return (dispatch) => {
-    dispatch(request());
+    dispatch(request(data));
     charityProgramService.getCharityPrograms(data).then(
       (charityPrograms) => dispatch(success(charityPrograms)),
 
@@ -27,8 +28,12 @@ function getCharityPrograms(data) {
     );
   };
 
-  function request() {
-    return { type: charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST };
+  function request(data) {
+    console.log(data);
+    return {
+      type: charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST,
+      data: data?.userType,
+    };
   }
   function success(charityPrograms) {
     return {

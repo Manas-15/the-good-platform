@@ -7,6 +7,7 @@ export const socialOrganizationActions = {
 };
 
 function getSocialOrganizations(data) {
+  console.log(data, "aaaaaaaaaa");
   return (dispatch) => {
     dispatch(request(data));
 
@@ -15,6 +16,7 @@ function getSocialOrganizations(data) {
         if (socialOrganizations?.data?.msg) {
           dispatch(alertActions.error(socialOrganizations?.data?.msg));
         } else {
+          console.log(socialOrganizations, "hhhhhhhhhhhhhhh");
           dispatch(success(socialOrganizations));
         }
       },
