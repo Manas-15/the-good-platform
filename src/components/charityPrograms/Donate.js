@@ -88,11 +88,17 @@ const Donate = ({
       : selectedCharity?.charityId
       ? selectedCharity?.charityId
       : selectedCharity?.id;
+    preferenceForm.charityProgramName = selectedCharity?.charityName
+      ? selectedCharity?.charityName
+      : null;
     preferenceForm.socialOrganizationId = repeatPreference
       ? selectedCharity?.socialOrganizationId
       : selectedCharity?.soicalId
       ? selectedCharity?.soicalId
       : selectedCharity?.organisationId;
+    preferenceForm.socialOrganizationName = selectedCharity?.soicalName
+      ? selectedCharity?.soicalName
+      : null;
     preferenceForm.donationAmount = selectedAmount;
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
