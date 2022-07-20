@@ -32,7 +32,6 @@ const EmployeeDashboard = () => {
       // },
     }
   };
-
   const labels = [
     "January",
     "February",
@@ -42,7 +41,6 @@ const EmployeeDashboard = () => {
     "June",
     "July"
   ];
-
   const data = {
     labels,
     datasets: [

@@ -26,7 +26,7 @@ const ProgramDetailsIndividual = (props) => {
   const dispatch = useDispatch();
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const programDetail = useSelector(
-    (state) => state?.charityPrograms?.selectedprogramDetail
+    (state) => state?.charityPrograms?.programDetail
   );
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization

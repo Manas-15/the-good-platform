@@ -18,7 +18,6 @@ import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import DonateHeader from "./DonateHeader";
 import { SearchCharityHelper, SearchHelper } from "../../helpers";
 const TabPane = Tabs.TabPane;
-
 const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
@@ -34,7 +33,6 @@ const CharityPrograms = (props) => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization?.organization
   );
-
   const [currentView, setCurrentView] = useState(
     charityProgramConstants.LIST_VIEW
   );
@@ -107,7 +105,6 @@ const CharityPrograms = (props) => {
     document.getElementById("root").classList.remove("loading");
   }
   const search = (value) => {
-    console.log("fffffffffffffffffffffff", tabType, value);
     setSearchText(value);
     // if(tabType === socialOrganizationConstants.SPONSORED){
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
