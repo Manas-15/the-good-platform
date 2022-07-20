@@ -142,7 +142,7 @@ const CharityProgramDetails = (props) => {
     <>
       {loggedInUserType === userConstants.INDIVIDUAL && (
         <ProgramDetailsIndividual
-          programId={selectedCharity?.charity?.id.toString()}
+          programId={selectedCharity?.charity?.id?.toString()}
         />
       )}
       {loggedInUserType !== userConstants.INDIVIDUAL && (
@@ -162,7 +162,10 @@ const CharityProgramDetails = (props) => {
                   {programDetail?.name}
                 </h1>
                 <h6 className="mb-3">
-                  by {selectedCharity?.charity?.soicalName}
+                  by{" "}
+                  {selectedCharity?.charity?.soicalName
+                    ? selectedCharity?.charity?.soicalName
+                    : selectedOrganization?.organization?.name}
                 </h6>
               </div>
             </div>
@@ -648,7 +651,7 @@ const CharityProgramDetails = (props) => {
                   >
                     <Donate
                       frequency={donationPreferenceConstants.ONCE}
-                      selectedCharity={initialValues.charity}
+                      selectedCharity={initialValues?.charity}
                       tabType={tabType}
                       from={"ProgramDetail"}
                     />
@@ -659,7 +662,7 @@ const CharityProgramDetails = (props) => {
                   >
                     <Donate
                       frequency={donationPreferenceConstants.MONTHLY}
-                      selectedCharity={initialValues.charity}
+                      selectedCharity={initialValues?.charity}
                       tabType={tabType}
                       from={"ProgramDetail"}
                     />

@@ -82,15 +82,19 @@ const Donate = ({
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedAmount);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedCharity);
     preferenceForm.corporateId = employee?.corporateId;
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = repeatPreference
       ? selectedCharity?.charityProgramId
-      : selectedCharity?.charityId;
+      : selectedCharity?.charityId
+      ? selectedCharity?.charityId
+      : selectedCharity?.id;
     preferenceForm.socialOrganizationId = repeatPreference
       ? selectedCharity?.socialOrganizationId
-      : selectedCharity?.soicalId;
+      : selectedCharity?.soicalId
+      ? selectedCharity?.soicalId
+      : selectedCharity?.organisationId;
     preferenceForm.donationAmount = selectedAmount;
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;

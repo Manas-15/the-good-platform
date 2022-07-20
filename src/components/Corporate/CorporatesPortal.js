@@ -75,7 +75,7 @@ const CorporatesPortal = () => {
       <div className="row mb-4">
         <div className="col-md-4 offset-md-3">
           {corporates.loading && <Loader />}
-          {corporates?.items?.data && corporates?.items?.data.length > 0 ? (
+          {corporates?.items?.data && corporates?.items?.data?.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0 overflow-auto">
                 {/* .filter((val) => {
