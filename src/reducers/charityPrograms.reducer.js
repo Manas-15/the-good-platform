@@ -198,10 +198,7 @@ export function charityPrograms(state = {}, action) {
         loading: true
       };
     case charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS:
-      console.log(
-        "action?.programDetail?.data?.data",
-        action?.programDetail?.data?.data
-      );
+      console.log(action?.programDetail?.data?.data);
       return {
         ...state,
         // selectedprogramDetail: {
@@ -215,7 +212,7 @@ export function charityPrograms(state = {}, action) {
         },
         loading: false
       };
-    case charityProgramConstants.OPERATE_DENY_FAILURE:
+    case charityProgramConstants.GET_PROGRAM_DETAIL_FAILURE:
       return {
         ...state,
         loading: false,
