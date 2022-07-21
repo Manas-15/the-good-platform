@@ -235,14 +235,8 @@ const PayrollBatch = (props) => {
   };
   const confirm = (values) => {
     handleClose();
-
     dispatch(payrollBatchActions.updateBatchStatus(values));
-    console.log(
-      "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
-      values
-    );
     const data = allRecords?.filter((item) => item?.batchId !== values.batchId);
-    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data);
     setAllRecords(data);
   };
   const handleClose = () => {
@@ -266,14 +260,11 @@ const PayrollBatch = (props) => {
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length ===
             val?.totalOrganizationCount
-          // console.log(val?.totalOrganizationCount)
-          // console.log(val?.totalOrganizationCount)
         )
       );
     } else if (value === "0") {
       setAllRecords(payrollBatches?.items);
     } else {
-      console.log(">>>>>>>>>>>>>>>> ", allData);
       setAllRecords(
         allData?.filter?.(
           (val) =>
