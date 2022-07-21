@@ -4,43 +4,43 @@ export function donationPreferences(state = {}, action) {
   switch (action.type) {
     case donationPreferenceConstants.GET_DONATION_PREFERENCES_REQUEST:
       return {
-        loading: true,
+        loading: true
       };
     case donationPreferenceConstants.GET_DONATION_PREFERENCES_SUCCESS:
       return {
         items: action?.preferences?.data?.preference,
-        totalCount: action?.preferences?.data?.count,
+        totalCount: action?.preferences?.data?.count
       };
     case donationPreferenceConstants.GET_DONATION_PREFERENCES_FAILURE:
       return {
-        error: action.error,
+        error: action.error
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_REQUEST:
       return {
         saved: false,
-        loading: true,
+        loading: true
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_SUCCESS:
       return {
-        saved: true,
+        saved: true
       };
     case donationPreferenceConstants.SAVE_DONATION_PREFERENCE_FAILURE:
       return {
         saved: false,
-        error: action.error,
+        error: action.error
       };
     case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_REQUEST:
       return {
         loading: true,
-        items: state.items,
+        items: state.items
       };
     case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_SUCCESS:
       return {
-        items: state.items,
+        items: state.items
       };
     case donationPreferenceConstants.UPDATE_DONATION_PREFERENCE_FAILURE:
       return {
-        error: action.error,
+        error: action.error
       };
     case donationPreferenceConstants.PREFERENCE_ACTION_REQUEST:
       return {
@@ -48,7 +48,7 @@ export function donationPreferences(state = {}, action) {
         items: state?.items,
         actionRequest: true,
         preferenceId: action?.donationPreferences?.preferenceId,
-        requestType: action?.donationPreferences?.requestType,
+        requestType: action?.donationPreferences?.requestType
       };
     case donationPreferenceConstants.PREFERENCE_ACTION_SUCCESS:
       const suspendPreference = state?.items?.["active"]?.filter(
@@ -75,7 +75,7 @@ export function donationPreferences(state = {}, action) {
                       ...item,
                       isDeleted:
                         state?.requestType ===
-                        donationPreferenceConstants?.DELETE,
+                        donationPreferenceConstants?.DELETE
                     };
                   }
                   return item;
@@ -98,7 +98,7 @@ export function donationPreferences(state = {}, action) {
                       ...item,
                       isDeleted:
                         state?.requestType ===
-                        donationPreferenceConstants?.DELETE,
+                        donationPreferenceConstants?.DELETE
                     };
                   }
                   return item;
@@ -112,8 +112,8 @@ export function donationPreferences(state = {}, action) {
                     preference.employeePreferenceId !==
                     suspendPreference[0]?.employeePreferenceId
                   );
-                }),
-        },
+                })
+        }
         // items: state?.items?.active?.map?.((item) => {
         //   if (item?.employeePreferenceId === state?.preferenceId) {
         //     if (state?.requestType === donationPreferenceConstants?.DELETE) {
@@ -141,35 +141,30 @@ export function donationPreferences(state = {}, action) {
         ...state,
         actionRequest: false,
         items: state.items,
-        error: action.error,
+        error: action.error
       };
     case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_REQUEST:
-      console.log(">>>>>>>>>>>>>>>>>>>>>> action?.data", action?.preference);
       return {
         ...state,
         loading: true,
-        preference: action?.preference,
+        preference: action?.preference
       };
     case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_SUCCESS:
-      console.log(
-        ">>>>>>>>>>>>>>>>>>>>>> state?.preference",
-        state?.preference
-      );
       return {
         ...state,
         items: {
           active: state?.items?.["active"]
             ? [...state?.items?.["active"], state?.preference]
             : [state?.preference],
-          complete: state?.items?.["complete"],
+          complete: state?.items?.["complete"]
         },
-        loading: false,
+        loading: false
       };
     case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.error,
+        error: action.error
       };
     default:
       return state;

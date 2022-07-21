@@ -198,7 +198,6 @@ export function charityPrograms(state = {}, action) {
         loading: true
       };
     case charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS:
-      console.log(action?.programDetail?.data?.data);
       return {
         ...state,
         // selectedprogramDetail: {

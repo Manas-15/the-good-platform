@@ -17,7 +17,6 @@ export function payrollBatch(state = {}, action) {
         error: action.error
       };
     case payrollConstants.UPDATE_BATCH_STATUS_REQUEST:
-      console.log("action?.data.................", action?.data);
       return {
         ...state,
         loading: true,
@@ -26,7 +25,6 @@ export function payrollBatch(state = {}, action) {
         socialId: action?.data?.socialId
       };
     case payrollConstants.UPDATE_BATCH_STATUS_SUCCESS:
-      console.log("dddddddddddddddddddd reducer", state?.items);
       return {
         ...state,
         items:
