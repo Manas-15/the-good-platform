@@ -142,7 +142,7 @@ const PayrollBatchDetail = (props) => {
       <div className="row mb-4">
         <div className="col-md-12">
           <h1 className="ant-typography customHeading">
-            Payroll Batch Detail -{preferences?.[0]?.batchId}(
+            Payroll Batch Detail - {preferences?.[0]?.batchId}(
             {preferences &&
               moment(preferences[0]?.batchDate).format("MMM YYYY")}
             )
@@ -552,9 +552,10 @@ const PayrollBatchDetail = (props) => {
                                         {(isBluePencilPortal ||
                                           isOrganizationView) && (
                                           <td className="ant-table-cell">
-                                            {moment(
-                                              preference.transactionDate
-                                            ).format("DD MMM YYYY")}
+                                            {preference?.transactionDate &&
+                                              moment(
+                                                preference?.transactionDate
+                                              ).format("DD MMM YYYY")}
                                           </td>
                                         )}
                                       </tr>
@@ -618,9 +619,10 @@ const PayrollBatchDetail = (props) => {
                         </td> */}
                           <td>{item?.donationAmount?.toLocaleString()}</td>
                           <td>
-                            {moment(item?.transactionDate).format(
-                              "DD MMM YYYY"
-                            )}
+                            {item?.transactionDate &&
+                              moment(item?.transactionDate).format(
+                                "DD MMM YYYY"
+                              )}
                           </td>
                         </tr>
                       ))}

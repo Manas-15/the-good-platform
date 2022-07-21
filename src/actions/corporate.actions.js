@@ -2,21 +2,17 @@ import { corporateConstants } from "../constants";
 import { corporateService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
-// import { handleInputChange } from "react-select/dist/declarations/src/utils";
-// import { alert } from "../reducers/alert.reducer";
 export const corporateActions = {
   addCorporate,
   deleteCorporate,
   updateCorporate,
   registerCorporate,
   getCorporates,
-  // getCorporateById,
   corporateAccountRequest
 };
 function getCorporates() {
   return (dispatch) => {
     dispatch(request());
-
     corporateService.getCorporates().then(
       (corporates) => dispatch(success(corporates)),
 
@@ -26,7 +22,6 @@ function getCorporates() {
       }
     );
   };
-
   function request() {
     return { type: corporateConstants.GET_CORPORATES_REQUEST };
   }
@@ -37,23 +32,9 @@ function getCorporates() {
     return { type: corporateConstants.GET_CORPORATES_FAILURE, error };
   }
 }
-
-//   function request() {
-//     return { type: corporateConstants.GET_CORPORATES_REQUEST_BY_ID };
-//   }
-//   function success(data) {
-//
-//     return { type: corporateConstants.GET_CORPORATES_SUCCESS_BY_ID, data };
-//   }
-//   function failure(error) {
-//     return { type: corporateConstants.GET_CORPORATES_FAILURE_BY_ID, error };
-//   }
-// }
-
 function addCorporate(corporate, type) {
   return (dispatch) => {
     dispatch(request(corporate));
-
     corporateService.addCorporate(corporate).then(
       (res) => {
         dispatch(success(res));
@@ -70,7 +51,6 @@ function addCorporate(corporate, type) {
       }
     );
   };
-
   function request(corporate) {
     return { type: corporateConstants.ADD_CORPORATE_REQUEST, corporate };
   }
@@ -81,7 +61,6 @@ function addCorporate(corporate, type) {
     return { type: corporateConstants.ADD_CORPORATE_FAILURE, error };
   }
 }
-
 function updateCorporate(corporate) {
   return (dispatch) => {
     dispatch(request(corporate));
@@ -124,7 +103,6 @@ function deleteCorporate(corporateId) {
       }
     );
   };
-
   function request(corporateId) {
     return { type: corporateConstants.DELETE_CORPORATE_REQUEST, corporateId };
   }
@@ -160,7 +138,6 @@ function registerCorporate(corporate, type) {
       }
     );
   };
-
   function request(corporate) {
     return { type: corporateConstants.ADD_CORPORATE_REQUEST, corporate };
   }
@@ -193,7 +170,6 @@ function corporateAccountRequest(actionValues) {
       }
     );
   };
-
   function request(corporate) {
     return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
   }
