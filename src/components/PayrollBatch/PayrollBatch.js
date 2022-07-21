@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: ""
+  socialId: "",
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -112,7 +112,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
     // filter("All");
@@ -156,7 +156,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: payrollConstants.COMPLETED_STATUS }
+    { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
@@ -174,7 +174,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote
+        referenceNote: values?.referenceNote,
       })
     );
     hidePaidSimulator();
@@ -232,17 +232,10 @@ const PayrollBatch = (props) => {
   };
   const confirm = (values) => {
     handleClose();
-    // if (values) {
-    //   values.batchId = selectedBatch?.batchId;
-    //   values.action = actionType === "Complete Batch" ? "Complete" : "Confirm";
-    // }
+
     dispatch(payrollBatchActions.updateBatchStatus(values));
-    console.log(
-      "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
-      values
-    );
+
     const data = allRecords?.filter((item) => item?.batchId !== values.batchId);
-    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data);
     setAllRecords(data);
   };
   const handleClose = () => {
@@ -1256,7 +1249,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting
+                  isSubmitting,
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1466,7 +1459,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

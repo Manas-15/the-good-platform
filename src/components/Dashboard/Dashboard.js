@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
   const loggedInUser = useSelector((state) => state?.user);
-  console.log(loggedInUser);
 
   const dispatch = useDispatch();
 

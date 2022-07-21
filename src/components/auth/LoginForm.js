@@ -8,7 +8,7 @@ import "./../../assets/css/loginForm.scss";
 
 const LoginForm = ({ submit, disable }) => {
   const [category, setCategory] = useState("Employee");
-  console.log(category);
+
   return (
     <>
       <div className="row align-items-center authFormMargin">
@@ -29,7 +29,6 @@ const LoginForm = ({ submit, disable }) => {
               validationSchema={LoginSchema}
               onSubmit={(values, event) => {
                 submit(values);
-                console.log(values);
               }}
             >
               {({

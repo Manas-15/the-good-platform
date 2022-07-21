@@ -119,7 +119,6 @@ const DonationPreferences = () => {
   };
 
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchByProgramName("");
     setSearchByEmployeeName("");
     setSearchByCorporateName("");

@@ -39,7 +39,6 @@ const actionInitialValues = {
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
-  console.log(items, "filter itemmmmmmmmmm");
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
@@ -289,8 +288,8 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
                                 className="form-control"
                                 onBlur={() =>
-                                  updatedValue && updatedValue !==
-                                  preference?.donationAmount
+                                  updatedValue &&
+                                  updatedValue !== preference?.donationAmount
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT

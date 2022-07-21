@@ -64,7 +64,6 @@ const PayrollSetting = (props) => {
     getData();
   }, [currentPage]);
   const handleOpenDialog = (action, item, type) => {
-    console.log(action, item, type, "ffffffffff");
     setOpenDialog(true);
     setActionType(action);
     setBatchType(type);

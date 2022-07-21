@@ -28,6 +28,7 @@ const CharityProgramDetails = (props) => {
   let charityFirstTwoChar, employeeFirstTwoChar;
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const selectedCharity = useSelector((state) => state.selectedCharity);
+
   const programDetail = useSelector(
     (state) => state?.charityPrograms?.programDetail
   );
@@ -48,23 +49,33 @@ const CharityProgramDetails = (props) => {
     (state) => state?.user?.loggedinUserType
   );
   const user = useSelector((state) => state.employee.user);
+  const indivisualLoggedUser =
+    loggedInUserType.toString() === userConstants.CORPORATE.toString();
+
   useEffect(() => {
     dispatch(
-      charityProgramActions.getProgramDetail({
-        socialId: selectedOrganization?.organization?.id,
-        programId: selectedCharity?.charity?.charityId,
-        loggedInUserType: loggedInUserType,
-      })
+      charityProgramActions.getProgramDetail(
+        indivisualLoggedUser
+          ? {
+              programId: selectedCharity?.charity?.id,
+              loggedInUserType: loggedInUserType,
+            }
+          : {
+              socialId: selectedOrganization?.organization?.id,
+              programId: selectedCharity?.charity?.id,
+              loggedInUserType: loggedInUserType,
+            }
+      )
     );
   }, []);
+
   if (selectedCharity) {
     charityFirstTwoChar = selectedCharity?.charityName
       ?.slice(0, 2)
       ?.toLowerCase();
     employeeFirstTwoChar = user?.name?.slice(0, 2)?.toLowerCase();
   }
-  // const programName = props?.location?.programName;
-  const imgUrl = props?.location?.imgUrl;
+
   const initialValues = {
     orderId: selectedCharity
       ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
@@ -134,6 +145,7 @@ const CharityProgramDetails = (props) => {
       },
     ],
   };
+
   return (
     <>
       {loggedInUserType === userConstants.INDIVIDUAL && (
@@ -155,7 +167,8 @@ const CharityProgramDetails = (props) => {
                     </div>
                   )}
                 <h1 className="ant-typography customHeading">
-                  {selectedCharity?.charity?.charityName}
+                  {selectedCharity?.charity?.charityName ||
+                    selectedCharity?.charity?.name}
                 </h1>
                 <h6 className="mb-3">
                   by {selectedCharity?.charity?.soicalName}

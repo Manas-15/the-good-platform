@@ -26,7 +26,6 @@ let accordionData, isCorporateView;
 
 const PayrollBatchDetail = (props) => {
   const preferences = useSelector((state) => state?.payrollSetting?.items);
-  console.log(preferences);
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
@@ -102,7 +101,6 @@ const PayrollBatchDetail = (props) => {
     }
   };
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchByProgramName("");
     setSearchByOrganizationName("");
     setSearchByAmount("");

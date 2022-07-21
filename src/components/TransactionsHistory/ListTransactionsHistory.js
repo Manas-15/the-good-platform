@@ -33,22 +33,21 @@ const initialValues = {
   transactionId: "",
 };
 const { afterToday } = DateRangePicker;
+
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
-  console.log(records);
   const [selected, setSelected] = useState();
-  // const [searchValue, setSearchValue] = useState("");
   const [allRecords, setAllRecords] = useState(records);
 
   const transactions = useSelector((state) => state.transactionsHistory);
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
-
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
   const employee = useSelector((state) => state.employee);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
   const loggedInUserType = useSelector(
@@ -79,6 +78,10 @@ const ListTransactionsHistory = (props) => {
     currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isOthersPortal =
+    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
+  const isIndividualPortal =
+    currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const isBluePencilView =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
@@ -118,7 +121,6 @@ const ListTransactionsHistory = (props) => {
     }
   };
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchByEmployeeName("");
     setSearchByCorporateName("");
     setSearchByProgramName("");
@@ -177,28 +179,51 @@ const ListTransactionsHistory = (props) => {
 
   const fetchResults = (dateRange) => {
     dispatch(
-      transactionsHistoryActions.getTransactionsHistory({
-        individualId:
-          loggedInUserType === userConstants.INDIVIDUAL
-            ? employee?.user?.uuid
-            : null,
-        employeeId:
-          loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
-        corporateId: isCorporatePortal
-          ? selectedCorporate?.corporate?.corporateId
-          : null,
-        socialId: isOrganizationView ? selectedOrganization?.id : null,
-        pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
-        searchByEmployeeName: searchByEmployeeName,
-        searchByProgramName: searchByProgramName,
-        searchByCorporateName: searchByCorporateName,
-        searchByAmount: searchByAmount,
-        startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
-        endDate: dateRange
-          ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
-      })
+      transactionsHistoryActions.getTransactionsHistory(
+        isIndividualPortal
+          ? {
+              individualId: employee?.user?.uuid,
+              employeeId:
+                loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
+              corporateId: isCorporatePortal
+                ? selectedCorporate?.corporate?.corporateId
+                : null,
+              socialId: isOrganizationView ? selectedOrganization?.id : null,
+              pageSize: pageSize,
+              offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+              searchByEmployeeName: searchByEmployeeName,
+              searchByProgramName: searchByProgramName,
+              searchByCorporateName: searchByCorporateName,
+              searchByAmount: searchByAmount,
+              startDate: dateRange
+                ? moment(dateRange[0]).format("YYYY-MM-DD")
+                : null,
+              endDate: dateRange
+                ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
+                : null,
+            }
+          : {
+              userId: user?.detail?.userId,
+              employeeId:
+                loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
+              corporateId: isCorporatePortal
+                ? selectedCorporate?.corporate?.corporateId
+                : null,
+              socialId: isOrganizationView ? selectedOrganization?.id : null,
+              pageSize: pageSize,
+              offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+              searchByEmployeeName: searchByEmployeeName,
+              searchByProgramName: searchByProgramName,
+              searchByCorporateName: searchByCorporateName,
+              searchByAmount: searchByAmount,
+              startDate: dateRange
+                ? moment(dateRange[0]).format("YYYY-MM-DD")
+                : null,
+              endDate: dateRange
+                ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
+                : null,
+            }
+      )
     );
   };
   useEffect(() => {
@@ -219,7 +244,6 @@ const ListTransactionsHistory = (props) => {
   const showAccountDetail = (item) => {
     setOpenAccountDetail(true);
     setSelectedAccount(item);
-    // console.log("aaaaaaaaaaaaa item", item);
   };
 
   return (
@@ -570,7 +594,9 @@ const ListTransactionsHistory = (props) => {
                                 </div>
                               )
                             ) : (
-                              <span className="text-warning text-uppercase">Pending</span>
+                              <span className="text-warning text-uppercase">
+                                Pending
+                              </span>
                             )}
                           </td>
                         )}

@@ -22,7 +22,7 @@ const TabPane = Tabs.TabPane;
 const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
-  console.log(charityPrograms);
+
   const selectedOrganizationId = useSelector(
     (state) => state?.selectedOrganization?.organization?.id
   );
@@ -58,7 +58,7 @@ const CharityPrograms = (props) => {
   };
   // useEffect(() => {
   //   setTabType(props?.location?.tabType);
-  //   console.log("props?.location?.tabType", props?.location?.tabType);
+  //
   // }, [props?.location?.tabType]);
   useEffect(() => {
     dispatch(
@@ -71,9 +71,9 @@ const CharityPrograms = (props) => {
             }
           : isIndividualPortal
           ? {
+              userType: userConstants.INDIVIDUAL_VIEW,
               // uuid: user?.uuid,
               // socialId: selectedOrganization?.id,
-              userType: userConstants.INDIVIDUAL_VIEW,
               // orgId: selectedOrganization?.id?.toString(),
             }
           : {
@@ -88,7 +88,6 @@ const CharityPrograms = (props) => {
     );
   }, []);
   const setCharity = (charity) => {
-    console.log("dddddddddddddddddddddd inside", charity);
     setSelectedCharity(charity);
     openNav();
   };
@@ -106,11 +105,10 @@ const CharityPrograms = (props) => {
     document.getElementById("root").classList.remove("loading");
   }
   const search = (value) => {
-    console.log("fffffffffffffffffffffff", tabType, value);
     setSearchText(value);
     // if(tabType === socialOrganizationConstants.SPONSORED){
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
+    //
     // }
   };
   return (
@@ -284,6 +282,7 @@ const CharityPrograms = (props) => {
                 items={charityPrograms?.items}
                 setCharity={setCharity}
                 tabType={tabType}
+                pathname={props.location.pathname}
               />
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
@@ -291,6 +290,7 @@ const CharityPrograms = (props) => {
                 items={charityPrograms?.items}
                 setCharity={setCharity}
                 tabType={tabType}
+                pathname={props.location.pathname}
               />
             )}
           </>
