@@ -21,9 +21,7 @@ const ListCorporates = () => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionId, setActionId] = useState("");
-
   const [actionType, setActionType] = useState("");
-
   const handleOpenDialog = (action, item, id) => {
     setOpen(true);
     setActionType(action);
@@ -46,11 +44,9 @@ const ListCorporates = () => {
     // }
   };
   const handleClose = () => setOpen(false);
-
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
-
   return (
     <div>
       <div className="row mb-4">
@@ -197,7 +193,6 @@ const ListCorporates = () => {
           </div>
         </div>
       </div>
-
       {open && (
         <ConfirmationDialog
           open={true}

@@ -247,7 +247,6 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Size</label>
@@ -277,7 +276,6 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Type</label>
@@ -317,7 +315,6 @@ const CorporateForm = ({ type, id }) => {
                       : "")
                   }
                 />
-
                 <ErrorMessage
                   name="corporatePan"
                   component="div"
@@ -460,7 +457,6 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-
             <div className="text-center">
               <div className="row">
                 <div className="col-md-4 offset-md-4 ">

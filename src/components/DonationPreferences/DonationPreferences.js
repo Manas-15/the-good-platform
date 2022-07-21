@@ -167,7 +167,6 @@ const DonationPreferences = () => {
   //   setSearchText(value);
   //   setSelected(selected);
   // };
-
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);

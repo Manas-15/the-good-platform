@@ -150,7 +150,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     }
     handleCloseDialog();
   };
-
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -206,7 +205,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const setPage = (page) => {
     setCurrentPage(page);
   };
-
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
