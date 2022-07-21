@@ -144,17 +144,12 @@ export function donationPreferences(state = {}, action) {
         error: action.error,
       };
     case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_REQUEST:
-      console.log(">>>>>>>>>>>>>>>>>>>>>> action?.data", action?.preference);
       return {
         ...state,
         loading: true,
         preference: action?.preference,
       };
     case donationPreferenceConstants.REPEAT_DONATION_PREFERENCE_SUCCESS:
-      console.log(
-        ">>>>>>>>>>>>>>>>>>>>>> state?.preference",
-        state?.preference
-      );
       return {
         ...state,
         items: {

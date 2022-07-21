@@ -19,7 +19,6 @@ function getCharityPrograms(data) {
       params: data,
     });
   } else if (data?.userType === userConstants.CORPORATE_VIEW) {
-    console.log("inside corporate_view service");
     return axios.get(
       process.env.REACT_APP_TGP_API_URL +
         "project-management/v1/validator/projects",
@@ -66,7 +65,6 @@ function checkBeforeUnpromote(data) {
   );
 }
 function checkBeforeBulkUnpromote(data) {
-  console.log(data);
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
@@ -75,16 +73,25 @@ function checkBeforeBulkUnpromote(data) {
   );
 }
 function getProgramDetail(data) {
-  console.log(data);
-  console.log(data?.loggedInUserType);
-  console.log(typeof data?.loggedInUserType, userConstants.INDIVIDUAL);
-  return axios.get(
-    process.env.REACT_APP_API_URL + //"remote_api/  /",
-      (data?.loggedInUserType === userConstants.INDIVIDUAL
-        ? "remote_api/charity_details/"
-        : "api/programDetails/"),
-    {
+  const id = data?.programId;
+  const corporateLoggedUser =
+    data?.loggedInUserType?.toString() === userConstants.CORPORATE?.toString();
+  const individualLoggedUser =
+    data?.loggedInUserType?.toString() === userConstants.INDIVIDUAL?.toString();
+
+  if (individualLoggedUser) {
+    return axios.get(
+      process.env.REACT_APP_API_URL + "remote_api/charity_details/",
+      { params: data }
+    );
+  } else if (corporateLoggedUser) {
+    return axios.get(
+      process.env.REACT_APP_TGP_API_URL + `project-management/v1/project/${id}`,
+      { headers: authHeader() }
+    );
+  } else {
+    return axios.get(process.env.REACT_APP_API_URL + "api/programDetails/", {
       params: data,
-    }
-  );
+    });
+  }
 }

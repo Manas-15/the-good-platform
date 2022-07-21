@@ -94,16 +94,12 @@ const EmployeeForm = ({ type }) => {
   const employeeRegister = (values) => {
     values.state = state;
     values.country = country;
-    console.log(values);
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
-      console.log(values.email);
       dispatch(employeeActions.register(values, userConstants.EMPLOYEE));
     }
   };
-
-  console.log(country, state);
 
   const selectCountry = (country) => {
     setCountry(country);
@@ -133,7 +129,6 @@ const EmployeeForm = ({ type }) => {
                   values.organizationJoiningDate
                 ).format("YYYY-MM-DD");
                 employeeRegister(values);
-                console.log(values);
               }}
             >
               {({

@@ -11,7 +11,6 @@ export const transactionsHistoryService = {
 };
 
 function getTransactionsHistory(data) {
-  // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
   return axios.get(process.env.REACT_APP_API_URL + "api/transaction_history/", {
     params: data,
   });

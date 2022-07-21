@@ -10,7 +10,6 @@ export const payrollService = {
   updateBatchStatus,
 };
 function processBatch(data) {
-  console.log(data);
   return axios.post(
     process.env.REACT_APP_API_URL + "api/save_batch_process_data/",
     data

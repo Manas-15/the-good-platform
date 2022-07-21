@@ -20,20 +20,17 @@ import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";
 
-// import Donate from "./../";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
 const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
-  console.log(socialOrganizations);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
 
   const user = useSelector((state) => state?.employee?.user);
-  // const loggedInUser = useSelector((state) => state?.user);
   const [open, setOpen] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
   const [actionType, setActionType] = useState("");
@@ -68,7 +65,6 @@ const SocialOrganizations = () => {
                 ? selectedCorporate?.corporate?.corporateId
                 : user?.corporateId,
               pageSize: pageSize.toString(),
-              // offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
               loggedInUserType: loggedInUserType,
               individualId:
                 loggedInUserType === userConstants.INDIVIDUAL
@@ -117,37 +113,14 @@ const SocialOrganizations = () => {
       setActionContent(`Are you sure to ${action.toLowerCase()}?`);
     }
   };
-  const handleChange = (id) => {
-    // let items = socialOrganizations?.items;
-    // if (e.target.value === "checkAll") {
-    //   items.forEach((item) => {
-    //     item.isChecked = e.target.checked;
-    //     allChecked = e.target.checked;
-    //   });
-    // } else {
-    //   items.find((item) => item.name === e.target.name).isChecked =
-    //     e.target.checked;
-    // }
-    const index = theArray.indexOf(id);
-    // console.log("ddddddddddddddddddd checked start", theArray);
-    if (index !== -1) {
-      theArray.splice(index, 1);
-    } else {
-      theArray.push(id);
-    }
-    // console.log("ddddddddddddddddddd checked end", theArray);
 
-    // setState({items:items, allChecked: allChecked});
-  };
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
   const search = (value) => {
-    // console.log("fffffffffffffffffffffff", tabType, value);
     setSearchText(value);
     // if(tabType === socialOrganizationConstants.SPONSORED){
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
     // }
   };
   return (

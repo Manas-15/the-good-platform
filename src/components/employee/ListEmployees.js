@@ -181,7 +181,6 @@ const ListEmployees = (props) => {
     dispatch(employeeActions.bulkImport(formData));
   };
   const onHandleChange = (e) => {
-    console.log("fired");
     setRecords(employees?.items);
     setSelected(e.target.value);
   };

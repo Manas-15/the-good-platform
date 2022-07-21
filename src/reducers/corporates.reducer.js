@@ -37,7 +37,6 @@ export function corporates(state = {}, action) {
     case corporateConstants.UPDATE_CORPORATE_REQUEST:
       return { updateCorporate: true };
     case corporateConstants.UPDATE_CORPORATE_SUCCESS:
-      console.log(action.corporates?.data, "reducersssssss");
       return { items: action.corporates?.data?.corporates };
     case corporateConstants.UPDATE_CORPORATE_FAILURE:
       return {};
@@ -68,7 +67,6 @@ export function corporates(state = {}, action) {
         userId: action?.corporate?.userId,
       };
     case corporateConstants.CORPORATE_ACTION_SUCCESS:
-      console.log(state.requestType);
       return {
         items: state?.items?.map((item) => {
           if (item.userId === state.userId) {

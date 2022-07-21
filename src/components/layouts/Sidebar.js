@@ -8,21 +8,17 @@ const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
+
   const loggedInUser = useSelector((state) => state.user);
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-  // console.log(
-  //   "selectedCorporateselectedCorporate",
-  //   selectedCorporate,
-  //   selectedOrganization
-  // );
+
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
-  console.log(isSuperadminView);
   const isOrganizationView =
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
 
@@ -234,6 +230,7 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
+
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
                         <NavLink
@@ -246,6 +243,34 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
+                    {corporateLoggedinUser && (
+                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                        <span className="ant-menu-title-content">
+                          <NavLink
+                            className=" "
+                            to={`/employee/${user?.userId}/account-summary`}
+                            activeClassName="active"
+                          >
+                            <i className="bi bi-clock-history"></i>
+                            <span className="menu-text">Account Summary</span>
+                          </NavLink>
+                        </span>
+                      </li>
+                    )}
+                    {!corporateLoggedinUser && (
+                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                        <span className="ant-menu-title-content">
+                          <NavLink
+                            className=" "
+                            to={`/employee/${user?.uuid}/account-summary`}
+                            activeClassName="active"
+                          >
+                            <i className="bi bi-clock-history"></i>
+                            <span className="menu-text">Account Summary</span>
+                          </NavLink>
+                        </span>
+                      </li>
+                    )}
                     {!corporateLoggedinUser &&
                       loggedInUser?.loggedinUserType !==
                         userConstants.INDIVIDUAL && (
@@ -264,20 +289,6 @@ const Sidebar = () => {
                           </span>
                         </li>
                       )}
-                    {!corporateLoggedinUser && (
-                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                        <span className="ant-menu-title-content">
-                          <NavLink
-                            className=" "
-                            to={`/employee/${user?.uuid}/account-summary`}
-                            activeClassName="active"
-                          >
-                            <i className="bi bi-clock-history"></i>
-                            <span className="menu-text">Account Summary</span>
-                          </NavLink>
-                        </span>
-                      </li>
-                    )}
                   </>
                 )}
               </>

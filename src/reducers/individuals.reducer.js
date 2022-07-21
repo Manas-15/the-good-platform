@@ -7,7 +7,6 @@ export function individuals(state = {}, action) {
         loading: true,
       };
     case individualConstants.GET_INDIVIDUALS_SUCCESS:
-      // console.log(action);
       return {
         items: action.individuals?.data?.individual_list,
       };
@@ -23,11 +22,9 @@ export function individuals(state = {}, action) {
         userId: action?.individual?.userId,
       };
     case individualConstants.INDIVIDUAL_ACTION_SUCCESS:
-      console.log(state.requestType);
       return {
         items: state?.items?.map((item) => {
           if (item.userId === state.userId) {
-            console.log(state.requestType, "dddddddddrecudede");
             if (
               state.requestType === "Activate" ||
               state.requestType === "Inactivate"

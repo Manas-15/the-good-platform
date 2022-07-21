@@ -1,7 +1,6 @@
 import { charityProgramConstants } from "../constants";
 
 export function charityPrograms(state = {}, action) {
-  console.log(action);
   switch (action.type) {
     case charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST:
       return {
@@ -9,8 +8,6 @@ export function charityPrograms(state = {}, action) {
         userType: action?.data,
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
-      console.log(state);
-      console.log(action?.charityPrograms?.data?.data?.data);
       if (state?.userType === "Corporate") {
         return {
           items:
