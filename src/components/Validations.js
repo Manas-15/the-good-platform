@@ -49,17 +49,35 @@ export const EmployeeSchema = Yup.object().shape({
     .email("Invalid email address"),
   employeeId: Yup.string().required("Employee ID is required"),
   pan: Yup.string().required("PAN is required"),
-  corporateProfileId: Yup.string().required("Please select organization"),
-  organizationJoiningDate: Yup.date()
-    .nullable()
-    .required("Organization joining date is required"),
+  corporateProfileId: Yup.string().required("Please select corporate"),
+  password: Yup.string()
+  .required("Password is required"),
+  // organizationJoiningDate: Yup.date()
+  //   .nullable()
+  //   .required("Organization joining date is required"),
   gender: Yup.string().required("Please select gender"),
   contactNumber: Yup.string()
     .required("Contact number is required")
     .min(10, "Please enter valid phone number")
     .max(14, "Please enter valid phone number"),
 });
-
+export const EmployeeByCorporateSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .required("Employee email is required")
+    .email("Invalid email address"),
+  employeeId: Yup.string().required("Employee ID is required"),
+  pan: Yup.string().required("PAN is required"),
+  corporateProfileId: Yup.string().required("Please select corporate"),
+  password: Yup.string()
+  .required("Password is required"),
+  gender: Yup.string().required("Please select gender"),
+  contactNumber: Yup.string()
+    .required("Contact number is required")
+    .min(10, "Please enter valid phone number")
+    .max(14, "Please enter valid phone number"),
+});
 export const IndividualSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),

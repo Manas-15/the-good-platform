@@ -16,9 +16,10 @@ import CorporatesPortal from "../components/Corporate/CorporatesPortal";
 import ListEmployees from "../components/Employee/ListEmployees";
 import ListCorporates from "../components/Corporate/ListCorporates";
 import AddCorporate from "../components/Corporate/AddCorporate";
+import AddEmployee from "../components/Employee/AddEmployee";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
 import ListTransactionsHistory from "../components/TransactionsHistory/ListTransactionsHistory";
-import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
+// import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
@@ -32,7 +33,7 @@ import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 import SocialOrganizationsPortal from "../components/SocialOrganizations/SocialOrganizationsPortal";
 import SocialOrganizations from "../components/SocialOrganizations/SocialOrganizations";
 import IndividualSignUp from "../components/Auth/IndividualSignUp";
-import OthersSignUp from "../components/Auth/OthersSignUp";
+// import OthersSignUp from "../components/Auth/OthersSignUp";
 import { userConstants } from "./../constants";
 import DirectPayment from "../components/DirectPayment/DirectPayment";
 import ListIndividuals from "../components/Individual/ListIndividuals";
@@ -68,7 +69,7 @@ const CreateRoutes = () => {
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
-      message: message,
+      message: message
     });
   };
   return (
@@ -111,6 +112,7 @@ const CreateRoutes = () => {
                   component={DonationPreferences}
                 />
               )}
+
               <Route exact path="/corporates" component={CorporatesPortal} />
               <Route
                 exact
@@ -122,6 +124,7 @@ const CreateRoutes = () => {
                 path="/corporates/:corporateId/employees"
                 component={ListEmployees}
               />
+
               <Route
                 exact
                 path="/employee-donation-preference"
@@ -145,6 +148,7 @@ const CreateRoutes = () => {
                 component={ListIndividuals}
               />
               <Route exact path="/corporates/add" component={AddCorporate} />
+              <Route exact path="/employees/add" component={AddEmployee} />
               <Route
                 exact
                 path="/corporates/edit/:corporateId"

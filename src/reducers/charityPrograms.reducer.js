@@ -1,4 +1,4 @@
-import { charityProgramConstants } from "../constants";
+import { charityProgramConstants, userConstants } from "../constants";
 
 export function charityPrograms(state = {}, action) {
   switch (action.type) {
@@ -19,6 +19,28 @@ export function charityPrograms(state = {}, action) {
               return item;
             }),
         };
+      } else if (state?.userType === "Employee") {
+        // userType: action?.data?.userType
+
+        return {
+          ...state,
+          loading: false,
+          items:
+            state?.userType !== userConstants.INDIVIDUAL_VIEW
+              ? {
+                  sponsored: action?.charityPrograms?.data?.charity_list?.[
+                    "sponsored"
+                  ]?.map((charity) => {
+                    return { ...charity, unitPrice: 500 };
+                  }),
+                  others: action?.charityPrograms?.data?.charity_list?.[
+                    "others"
+                  ]?.map((charity) => {
+                    return { ...charity, unitPrice: 500 };
+                  }),
+                }
+              : action?.charityPrograms?.data?.charity_list?.length,
+        };
       } else {
         return {
           items: action?.charityPrograms?.data?.charity_list?.length
@@ -31,7 +53,6 @@ export function charityPrograms(state = {}, action) {
             : action?.charityPrograms?.data?.charity_list,
         };
       }
-
     case charityProgramConstants.GET_CHARITY_PROGRAMS_FAILURE:
       return {
         error: action.error,
@@ -58,7 +79,7 @@ export function charityPrograms(state = {}, action) {
                 }
               : charity
           ),
-          other: state?.items["other"]?.map((charity) =>
+          other: state?.items["others"]?.map((charity) =>
             charity.charityId === state.charityId
               ? { ...charity, donated: true }
               : charity
@@ -82,8 +103,8 @@ export function charityPrograms(state = {}, action) {
         programId: action?.program?.charityId,
       };
     case charityProgramConstants.OPERATE_SPONSOR_SUCCESS:
-      const operateCharity = state?.items?.["other"]?.filter(
-        (element) => element.charityId === state.programId
+      const operateCharity = state?.items?.["others"]?.filter(
+        (element) => element.id === state.programId
       );
       return {
         ...state,
@@ -91,8 +112,8 @@ export function charityPrograms(state = {}, action) {
           sponsored: state?.items?.["sponsored"]
             ? [...state?.items?.["sponsored"], operateCharity[0]]
             : [operateCharity[0]],
-          other: state?.items?.["other"]?.filter(function (charity) {
-            return charity.charityId !== operateCharity[0]?.charityId;
+          others: state?.items?.["others"]?.filter(function (charity) {
+            return charity.id !== operateCharity[0]?.id;
           }),
         },
         loading: false,
@@ -111,16 +132,16 @@ export function charityPrograms(state = {}, action) {
       };
     case charityProgramConstants.OPERATE_DENY_SUCCESS:
       const denyCharity = state?.items?.["sponsored"]?.filter(
-        (element) => element.charityId === state.programId
+        (element) => element.id === state.programId
       );
       return {
         ...state,
         items: {
-          other: state?.items?.["other"]
-            ? [...state?.items?.["other"], denyCharity[0]]
+          others: state?.items?.["others"]
+            ? [...state?.items?.["others"], denyCharity[0]]
             : [denyCharity[0]],
           sponsored: state?.items?.["sponsored"]?.filter(function (charity) {
-            return charity.charityId !== denyCharity[0]?.charityId;
+            return charity.id !== denyCharity[0]?.id;
           }),
         },
         loading: false,
@@ -196,16 +217,21 @@ export function charityPrograms(state = {}, action) {
         loading: true,
       };
     case charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS:
+      console.log(action?.programDetail?.data?.data);
       return {
         ...state,
-        selectedprogramDetail: {
+        // selectedprogramDetail: {
+        //   ...action?.programDetail?.data?.data,
+        //   unitPrice: 500
+        // },
+        // programDetail: action?.programDetail?.data?.data,
+        programDetail: {
           ...action?.programDetail?.data?.data,
           unitPrice: 500,
         },
-        programDetail: action?.programDetail?.data,
         loading: false,
       };
-    case charityProgramConstants.OPERATE_DENY_FAILURE:
+    case charityProgramConstants.GET_PROGRAM_DETAIL_FAILURE:
       return {
         ...state,
         loading: false,

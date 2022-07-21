@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -30,12 +30,14 @@ let goodplatformFields = [
 let pageSize = paginationConstants?.PAGE_SIZE;
 
 const ListEmployees = (props) => {
+  console.log(props);
+  let history = useHistory();
   let location = useLocation();
   const isSuperadminView = location.state;
-  // console.log(isSuperadminView);
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
-  // console.log(employees);
+  console.log(employees?.items);
+
   const hiddenFileInput = useRef(null);
   // const user = useSelector((state) => state.employee.user);
   // Pagination
@@ -44,7 +46,6 @@ const ListEmployees = (props) => {
   const [open, setOpen] = useState(false);
   const [isBulkUpload, setIsBulkUpload] = useState(false);
   const [isImportNextStep, setIsImportNextStep] = useState(false);
-  // const [formatBulkData, setFormatBulkData] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
@@ -218,33 +219,46 @@ const ListEmployees = (props) => {
           </h1>
         </div>
         {isSuperadminView === false ? (
-          <> </>
+          <>manas </>
         ) : isSuperadminView === true ? (
-          <> </>
+          <>santosh </>
         ) : (
           <div className="col-md-6" style={{ textAlign: "right" }}>
             {!isBulkUpload && !isImportNextStep && (
               <>
-                <button
-                  type="button"
-                  className="btn btn-custom"
-                  onClick={chooseFile}
-                >
-                  <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-                  Import Bulk Employee
-                </button>
-                <input
-                  type="file"
-                  accept=".xlsx, .xls, .csv"
-                  ref={hiddenFileInput}
-                  onChange={handleChange}
-                  style={{ display: "none" }}
-                />
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-custom me-3"
+                    onClick={() => history.push("/employees/add")}
+                  >
+                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                    Add Employee
+                  </button>
+                </>
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-custom me-3"
+                    onClick={chooseFile}
+                  >
+                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                    Import Bulk Employee
+                  </button>
+                  <input
+                    type="file"
+                    accept=".xlsx, .xls, .csv"
+                    ref={hiddenFileInput}
+                    onChange={handleChange}
+                    style={{ display: "none" }}
+                  />
+                </>
               </>
             )}
           </div>
         )}
       </div>
+
       {!isBulkUpload && !isImportNextStep && (
         <>
           <div className="ant-row searchContainer mt-3 py-4 align-center">
@@ -470,16 +484,6 @@ const ListEmployees = (props) => {
               >
                 Confirm
               </button>
-              {/* <Link onClick={() => isBulkUpload(false)} className="mr-3">
-                Cancel
-              </Link>
-              <button
-                type="button"
-                className="btn btn-custom btn-sm"
-                onClick={goNext}
-              >
-                Next
-              </button> */}
             </div>
           </div>
           <table className="table preview_csv_table mt-4">
@@ -515,53 +519,6 @@ const ListEmployees = (props) => {
           </table>
         </div>
       )}
-      {/* {isImportNextStep && (
-        <div className="mt-4">
-          <div className="row mt-4">
-            <div className="col-md-6 d-flex">
-              <Link onClick={prvBack}>
-                <i className="bi bi-arrow-90deg-left fs-6" />
-                &nbsp;Back &nbsp;
-              </Link>
-              <h5>Customized Fields</h5>
-            </div>
-            <div className="col-md-6 text-right">
-              <Link onClick={() => isBulkUpload(false)} className="mr-3">
-                Cancel
-              </Link>
-              <button
-                type="button"
-                className="btn btn-custom btn-sm"
-                onClick={confimUpload}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-          <table className="table preview_csv_table mt-4">
-            <thead>
-              <tr>
-                {selectedFieldTypes?.map((header, index) => (
-                  <td className="ellipsis-div">
-                    <strong>{header.replace("_", " ").toUpperCase()}</strong>
-                  </td>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="scrollbar scrollbar-black bordered-black thin square">
-              {finalData?.map((data, index) => (
-                <tr key={index + 1}>
-                  {data?.map((item, i) => (
-                    <td className="ellipsis-div">
-                      <div>{item}</div>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )} */}
     </div>
   );
 };

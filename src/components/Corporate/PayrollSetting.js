@@ -6,14 +6,14 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
-import { Button, Accordion } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 import "./../../assets/css/payroll.scss";
 import DatePicker from "react-datepicker";
@@ -21,23 +21,23 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ProcessHelper } from "./../../helpers";
 
 const actionInitialValues = {
-  preferenceId: "",
+  preferenceId: ""
 };
-let PageSize = paginationConstants?.PAGE_SIZE;
+// let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, batchId;
 const PayrollSetting = (props) => {
-  let history = useHistory();
+  // let history = useHistory();
   const preferences = useSelector((state) => state.payrollSetting);
-  const employee = useSelector((state) => state.employee.user);
+  // const employee = useSelector((state) => state.employee.user);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const currentPortal = useSelector((state) => state.currentView);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [checked, setChecked] = useState(false);
+  // const [checked, setChecked] = useState(false);
   const [isBatchView, setIsBatchView] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
-  const [updateType, setUpdateType] = useState("");
-  const [updatedValue, setUpdatedValue] = useState();
+  // const [updateType, setUpdateType] = useState("");
+  // const [updatedValue, setUpdatedValue] = useState();
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -54,9 +54,9 @@ const PayrollSetting = (props) => {
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
 
   // Pagination
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [offset, setOffset] = useState(10);
+  // const [page, setPage] = useState(1);
+  // const [limit, setLimit] = useState(5);
+  // const [offset, setOffset] = useState(10);
 
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
@@ -135,6 +135,13 @@ const PayrollSetting = (props) => {
     const finalData = {
       corporateId: isCorporatePortal
         ? selectedCorporate?.corporate?.corporateId
+          ? selectedCorporate?.corporate?.corporateId
+          : selectedCorporate?.corporate?.id
+        : null,
+      corporateName: isCorporatePortal
+        ? selectedCorporate?.corporate?.corporateName
+          ? selectedCorporate?.corporate?.corporateName
+          : null
         : null,
       totalAmount: data.reduce(
         (total, currentValue) => (total = total + currentValue.donationAmount),
@@ -142,7 +149,7 @@ const PayrollSetting = (props) => {
       ),
       items: data,
       batchType: batchType,
-      batchProcessType: "",
+      batchProcessType: ""
     };
     dispatch(payrollSettingActions.processBatch(finalData));
     getData();
@@ -168,7 +175,7 @@ const PayrollSetting = (props) => {
         requestType: "Batch",
         filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
           ? moment().format("MM-YYYY")
-          : moment(generateMonthYear).format("MM-YYYY"),
+          : moment(generateMonthYear).format("MM-YYYY")
         // pageSize: 1000,
         // offset: currentPage >= 2 ? currentPage * 10 - 10 : 0,
       })

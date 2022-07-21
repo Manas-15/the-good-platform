@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-// import socialOrganizations from "./../../config/socialOrganizations.json";
 import { useDispatch, useSelector } from "react-redux";
 import {
   socialOrganizationConstants,
@@ -9,13 +8,10 @@ import {
   viewPortalConstants,
   userConstants,
 } from "../../constants";
-import {
-  selectedOrganizationActions,
-  socialOrganizationActions,
-} from "../../actions";
-import { Tabs, Icon } from "antd";
+import { socialOrganizationActions } from "../../actions";
+import { Tabs } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
-import Pagination from "../Shared/Pagination";
+// import Pagination from "../Shared/Pagination";
 import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";
@@ -24,7 +20,6 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
 const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
-  let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
@@ -61,6 +56,7 @@ const SocialOrganizations = () => {
           ? {
               pageNumber: currentPage.toString(),
               employeeId: isEmployeePortal ? user?.emp_id : null,
+              userId: user?.user_id,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
                 : user?.corporateId,
@@ -75,7 +71,15 @@ const SocialOrganizations = () => {
           ? {
               loggedInUserType: loggedInUserType,
             }
-          : null
+          : {
+              pageNumber: currentPage.toString(),
+              corporateId: selectedCorporate?.corporate?.id,
+              employeeId: isEmployeePortal ? user?.emp_id : null,
+              individualId: user?.uuid,
+              loggedInUserType: loggedInUserType,
+              pageSize: pageSize.toString(),
+              userId: user?.user_id,
+            }
       )
     );
   }, [currentPage]);
@@ -149,7 +153,7 @@ const SocialOrganizations = () => {
       </div>
       {socialOrganizations.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
-        {loggedInUserType === userConstants.EMPLOYEE && (
+        {user?.user_id && loggedInUserType === userConstants.EMPLOYEE && (
           <Tabs
             defaultActiveKey={socialOrganizationConstants.SPONSORED}
             onChange={changeTab}

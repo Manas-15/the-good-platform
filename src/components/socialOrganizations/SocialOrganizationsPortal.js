@@ -33,6 +33,7 @@ const SocialOrganizationsPortal = () => {
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
         individualId: "social"
+        // userId: user?.user_id
       })
     );
   }, []);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
@@ -16,7 +15,6 @@ import DonateSecondStep from "./DonateSecondStep";
 import donationsConsent from "../../config/donationsConsent.json";
 import { history } from "../../helpers";
 import AddedDonationFromDetail from "./AddedDonationFromDetail";
-
 const preferenceForm = {
   corporateId: "",
   employeeId: "",
@@ -85,10 +83,20 @@ const Donate = ({
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = repeatPreference
       ? selectedCharity?.charityProgramId
-      : selectedCharity?.charityId;
+      : selectedCharity?.charityId
+      ? selectedCharity?.charityId
+      : selectedCharity?.id;
+    preferenceForm.charityProgramName = selectedCharity?.charityName
+      ? selectedCharity?.charityName
+      : null;
     preferenceForm.socialOrganizationId = repeatPreference
       ? selectedCharity?.socialOrganizationId
-      : selectedCharity?.soicalId;
+      : selectedCharity?.soicalId
+      ? selectedCharity?.soicalId
+      : selectedCharity?.organisationId;
+    preferenceForm.socialOrganizationName = selectedCharity?.soicalName
+      ? selectedCharity?.soicalName
+      : null;
     preferenceForm.donationAmount = selectedAmount;
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
@@ -133,7 +141,7 @@ const Donate = ({
           <>
             <div className="row mb-4">
               <div className="col-md-12">
-                <span className="bi-lock-fill fs-5 text-success"></span>Choose
+                <span className="bi-lock-fill fs-5 text-success"></span>
                 an amount to donate
               </div>
             </div>

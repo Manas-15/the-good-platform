@@ -231,7 +231,6 @@ const DonationPreferences = () => {
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
-
   const setRepeatCharity = (charity) => {
     document.getElementsByClassName("sidepanel")[0].classList.add("is-open");
     setGetRepeatCharity(charity);
@@ -322,7 +321,6 @@ const DonationPreferences = () => {
           )}
         </div>
       </div>
-
       {preferences.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
         <Tabs

@@ -338,10 +338,6 @@ const DirectPayment = (props) => {
     setSelectedPreference(null);
   };
 
-  // const myBatch = allRecords?.filter((item) =>
-  //   checkedPreference?.preferenceId?.includes(item?.Id) ? item : null
-  // );
-
   const createBatch = () => {
     if (isBluePencilPortal) {
       dispatch(
@@ -702,7 +698,6 @@ const DirectPayment = (props) => {
                                   to="/direct-payment"
                                   onClick={() => showAccountDetail(transaction)}
                                 >
-                                  {" "}
                                   <span className="custom-color">
                                     {transaction?.charityName?.length > 30
                                       ? transaction?.charityName?.substring(
@@ -886,7 +881,7 @@ const DirectPayment = (props) => {
                                       className="ant-table-row ant-table-row-level-0"
                                     >
                                       {/* <td className="ant-table-cell">
-                                        <Link
+                                        <Link 
                                           onClick={() =>
                                             props?.showBatchDetail(
                                               batch?.batchId

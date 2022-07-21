@@ -4,11 +4,14 @@ import { Link } from "react-router-dom";
 import { LoginSchema } from "../Validations";
 import { Button } from "react-bootstrap";
 import "./../../assets/css/loginForm.scss";
-// import { Form, Input, Button, Checkbox } from 'antd';
 
 const LoginForm = ({ submit, disable }) => {
   const [category, setCategory] = useState("Employee");
+  const [showPassword, setShowPassword] = useState("false");
 
+  const toggleShowPassword = (e) => {
+    setShowPassword(!showPassword);
+  };
   return (
     <>
       <div className="row align-items-center authFormMargin">
@@ -18,7 +21,11 @@ const LoginForm = ({ submit, disable }) => {
             <p className="textParagraph">
               Enter your registered details here to get started
             </p>
-            <img height="350" src="/assets/img/smartphone2.png" />
+            <img
+              height="350"
+              src="/assets/img/smartphone2.png"
+              alt="SmartPhone"
+            />
           </div>
         </div>
         <div className="col-md-5 formStyles">
@@ -112,7 +119,7 @@ const LoginForm = ({ submit, disable }) => {
                       <Field
                         name="password"
                         id="password"
-                        type="password"
+                        type={showPassword ? "password" : "text"}
                         placeholder=" "
                         className={
                           "form-control" +
@@ -121,7 +128,17 @@ const LoginForm = ({ submit, disable }) => {
                             : "")
                         }
                       />
-                      {/* <i class="bi bi-eye-slash fs-5" id="togglePassword"></i> */}
+
+                      {showPassword ? (
+                        <div onClick={(e) => toggleShowPassword(e)}>
+                          <i class="bi bi-eye-slash"></i>
+                        </div>
+                      ) : (
+                        <div onClick={(e) => toggleShowPassword(e)}>
+                          <i class="bi bi-eye"></i>
+                        </div>
+                      )}
+
                       <span>Password</span>
                     </label>
                     <ErrorMessage

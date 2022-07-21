@@ -316,6 +316,8 @@ const CorporateForm = ({ type, id }) => {
                 <Field
                   name="corporatePan"
                   type="text"
+                  style={{ textTransform: "uppercase" }}
+                  maxLength={10}
                   className={
                     "form-control" +
                     (errors.corporatePan && touched.corporatePan
@@ -323,6 +325,7 @@ const CorporateForm = ({ type, id }) => {
                       : "")
                   }
                 />
+
                 <ErrorMessage
                   name="corporatePan"
                   component="div"

@@ -10,7 +10,7 @@ import {
   payrollConstants,
   userConstants,
 } from "../../constants";
-import { charityProgramActions } from "../../actions";
+import { charityProgramActions, selectedCharityActions } from "../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
 import { Tabs, Icon } from "antd";
@@ -18,7 +18,6 @@ import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import DonateHeader from "./DonateHeader";
 import { SearchCharityHelper, SearchHelper } from "../../helpers";
 const TabPane = Tabs.TabPane;
-
 const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
@@ -35,7 +34,6 @@ const CharityPrograms = (props) => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization?.organization
   );
-
   const [currentView, setCurrentView] = useState(
     charityProgramConstants.LIST_VIEW
   );
@@ -54,7 +52,7 @@ const CharityPrograms = (props) => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
-    setSelectedCharity(null);
+    // setSelectedCharity(null);
   };
   // useEffect(() => {
   //   setTabType(props?.location?.tabType);
@@ -65,9 +63,13 @@ const CharityPrograms = (props) => {
       charityProgramActions.getCharityPrograms(
         isOthersPortal
           ? {
-              corporateId: selectedCorporate?.corporate?.corporateId,
-              socialId: selectedOrganization?.id,
+              corporateId: selectedCorporate?.corporate?.id,
+              orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
+              userId: user?.user_id,
+              // corporateId: selectedCorporate?.corporate?.corporateId,
+              // socialId: selectedOrganization?.id,
+              // userType: userConstants.CORPORATE_VIEW,
             }
           : isIndividualPortal
           ? {
@@ -78,17 +80,23 @@ const CharityPrograms = (props) => {
             }
           : {
               uuid: user?.uuid,
-              socialId: selectedOrganization?.id,
+              userId: user?.user_id,
+              orgId: selectedOrganization?.id,
               userType: userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
-                ? selectedCorporate?.corporate?.corporateId
+                ? selectedCorporate?.corporate?.id
                 : user?.corporateId,
+              // ? selectedCorporate?.corporate?.corporateId
+              // : user?.corporateId,
             }
       )
     );
   }, []);
   const setCharity = (charity) => {
     setSelectedCharity(charity);
+    if (charity) {
+      dispatch(selectedCharityActions.selectedCharity(charity));
+    }
     openNav();
   };
   const setType = (type) => {
@@ -163,13 +171,13 @@ const CharityPrograms = (props) => {
           </div>
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 mb-2">
         <h5>Categories</h5>
       </div>
       <div className="row mb-4">
         <div className="col">
           <div
-            className={`categotyButton`}
+            className={`categotyButton pl-0`}
             onClick={() =>
               setSelectedCategory(charityProgramConstants.ALL_CATEGORY)
             }
@@ -203,7 +211,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/women.png" />{" "}
+                <img src="/assets/img/women.png" alt="Women" />{" "}
                 {charityProgramConstants.WOMEN_CATEGORY}
               </span>
             </label>
@@ -224,7 +232,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/youth.png" />{" "}
+                <img src="/assets/img/youth.png" alt="Youth" />{" "}
                 {charityProgramConstants.YOUTH_CATEGORY}
               </span>
             </label>
@@ -245,7 +253,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/elderly.png" />{" "}
+                <img src="/assets/img/elderly.png" alt="Elderly" />{" "}
                 {charityProgramConstants.ELDERLY_CATEGORY}
               </span>
             </label>
@@ -266,7 +274,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/children.png" />{" "}
+                <img src="/assets/img/children.png" alt="Children" />{" "}
                 {charityProgramConstants.CHILDREN_CATEGORY}
               </span>
             </label>
@@ -350,9 +358,9 @@ const CharityPrograms = (props) => {
                   <span>
                     <RedoOutlined className="fs-5" />
                     {charityProgramConstants.OTHERS} (
-                    {charityPrograms?.items?.other
+                    {charityPrograms?.items?.others
                       ? SearchCharityHelper(
-                          charityPrograms?.items?.other,
+                          charityPrograms?.items?.others,
                           searchText
                         ).length
                       : 0}
@@ -366,10 +374,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items?.others,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items?.others
                     }
                     setCharity={setCharity}
                     tabType={tabType}
@@ -380,10 +388,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items?.others,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items?.others
                     }
                     setCharity={setCharity}
                     tabType={tabType}

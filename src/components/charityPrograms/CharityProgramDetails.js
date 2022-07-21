@@ -4,20 +4,20 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
   userConstants,
-  charityProgramConstants,
+  // charityProgramConstants
 } from "../../constants";
-import { charityProgramActions } from "../../actions";
+import { charityProgramActions, selectedCharityActions } from "../../actions";
 import { Progress, Tooltip, Tabs } from "antd";
-import users from "../../config/users.json";
+// import users from "../../config/users.json";
 import { useDispatch, useSelector } from "react-redux";
 import { Accordion } from "react-bootstrap";
 import Donate from "./Donate";
 import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
 import { Chart, ArcElement } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+// import { Doughnut } from "react-chartjs-2";
 import donationsConsent from "../../config/donationsConsent.json";
-import selectedCharity from "../../config/selectedCharity.json";
+// import selectedCharity from "../../config/selectedCharity.json";
 import ProgramDetailsIndividual from "./ProgramDetailsIndividual";
 import * as moment from "moment";
 const TabPane = Tabs.TabPane;
@@ -50,12 +50,20 @@ const CharityProgramDetails = (props) => {
   );
   const user = useSelector((state) => state.employee.user);
   const indivisualLoggedUser =
+    loggedInUserType.toString() === userConstants.INDIVIDUAL.toString();
+  const corporateLoggedUser =
     loggedInUserType.toString() === userConstants.CORPORATE.toString();
 
   useEffect(() => {
     dispatch(
       charityProgramActions.getProgramDetail(
         indivisualLoggedUser
+          ? {
+              socialId: selectedOrganization?.organization?.id,
+              programId: selectedCharity?.charity?.id,
+              loggedInUserType: loggedInUserType,
+            }
+          : corporateLoggedUser
           ? {
               programId: selectedCharity?.charity?.id,
               loggedInUserType: loggedInUserType,
@@ -64,6 +72,7 @@ const CharityProgramDetails = (props) => {
               socialId: selectedOrganization?.organization?.id,
               programId: selectedCharity?.charity?.id,
               loggedInUserType: loggedInUserType,
+              userId: user?.user_id,
             }
       )
     );
@@ -145,7 +154,9 @@ const CharityProgramDetails = (props) => {
       },
     ],
   };
-
+  useEffect(() => {
+    dispatch(selectedCharityActions.selectedCharity(programDetail));
+  }, [programDetail]);
   return (
     <>
       {loggedInUserType === userConstants.INDIVIDUAL && (
@@ -167,11 +178,13 @@ const CharityProgramDetails = (props) => {
                     </div>
                   )}
                 <h1 className="ant-typography customHeading">
-                  {selectedCharity?.charity?.charityName ||
-                    selectedCharity?.charity?.name}
+                  {programDetail?.name}
                 </h1>
                 <h6 className="mb-3">
-                  by {selectedCharity?.charity?.soicalName}
+                  by
+                  {selectedCharity?.charity?.soicalName
+                    ? selectedCharity?.charity?.soicalName
+                    : selectedOrganization?.organization?.name}
                 </h6>
               </div>
             </div>
@@ -189,7 +202,7 @@ const CharityProgramDetails = (props) => {
                         ? selectedCharity?.charity?.imgUrl
                         : "/assets/img/charity3.jpg"
                     }
-                    alt="image"
+                    alt="Image"
                   />
                 </div>
                 <div className="col-md-4">
@@ -212,7 +225,11 @@ const CharityProgramDetails = (props) => {
                           <span className="detail-content">Donors</span>
                         </div>
                         <div className="col-md-6 p-1">
-                          <span className="detail-label">15</span>
+                          <span className="detail-label">
+                            {programDetail?.duration
+                              ? programDetail?.duration
+                              : 15}
+                          </span>
                           <span className="detail-content">Days</span>
                         </div>
                       </div>
@@ -228,10 +245,7 @@ const CharityProgramDetails = (props) => {
                   </div>
                   <div className="row mt-3">
                     <div className="col-md-12 text-justify">
-                      Distribute ration at the identified cluster of villages to
-                      the BPL beneficiaries holding valid identify proof and
-                      ration card. Ration Kits will be provided to the family of
-                      more than one member.
+                      {programDetail?.description}
                     </div>
                   </div>
                   <div className="row mt-3">
@@ -265,24 +279,33 @@ const CharityProgramDetails = (props) => {
                     <div className="row mt-4 program-list">
                       <div className="col-md-12">
                         <strong>Description</strong>
-                        <p>
-                          Distribute ration at the identified cluster of
-                          villages to the BPL beneficiaries holding valid
-                          identify proof and ration card. Ration Kits will be
-                          provided to the family of more than one member.
-                        </p>
-                        What is the duration for this program?
-                        <p>2022-04-19 - 2022-08-31</p>
+                        <p>{programDetail?.description}</p>
+                        <div className="mt-3 mb-3">
+                          What is the duration for this program?
+                          <p>
+                            {programDetail?.durationFrom} -{" "}
+                            {programDetail?.durationTo}
+                          </p>
+                        </div>
+                        <div className="mt-3 mb-3">
+                          <p>
+                            Total no. of beneficiaries:{" "}
+                            {programDetail?.totalNumberOfBeneficiaries}
+                          </p>
+                        </div>
                         Who do you aim to benefit with this program?
-                        <p>Beneficiary</p>
-                        <div className="row">
-                          <div className="col-md-6">
+                        <p className="mt-2">Beneficiary</p>
+                        <div className="row mt-2">
+                          <div className="col-md-6 pl-0">
                             <div className={`categotyButton`}>
                               <label
                                 className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
                               >
                                 <span>
-                                  <img src="/assets/img/elderly.png" />{" "}
+                                  <img
+                                    src="/assets/img/elderly.png"
+                                    alt="Elderly"
+                                  />{" "}
                                   {"People"}
                                 </span>
                               </label>
@@ -291,7 +314,26 @@ const CharityProgramDetails = (props) => {
                         </div>
                         <p className="mt-4">Target Category</p>
                         <div className="row">
-                          <div className="col-md-6 mb-4">
+                          {programDetail?.typesOfBeneficiaries?.map(
+                            (beneficiery) => (
+                              <div className="col-md-6 mb-4 pl-0">
+                                <div className={`categotyButton`}>
+                                  <label
+                                    className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                                  >
+                                    <span>
+                                      <img
+                                        src="/assets/img/women.png"
+                                        alt="Women"
+                                      />{" "}
+                                      {beneficiery}
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            )
+                          )}
+                          {/* <div className="col-md-6 mb-4">
                             <div className={`categotyButton`}>
                               <label
                                 className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
@@ -338,7 +380,7 @@ const CharityProgramDetails = (props) => {
                                 </span>
                               </label>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -368,7 +410,7 @@ const CharityProgramDetails = (props) => {
                       </div>
                     </div>
                   </TabPane>
-                  <TabPane tab={"Our Plan"} key={"pur_plan"}>
+                  {/* <TabPane tab={"Our Plan"} key={"pur_plan"}>
                     <div className="row mt-4 program-list">
                       <div className="row mt-3">
                         <div className="col-md-12">
@@ -407,8 +449,8 @@ const CharityProgramDetails = (props) => {
                         </div>
                       </div>
                     </div>
-                  </TabPane>
-                  <TabPane tab={"Budget"} key={"budget"}>
+                  </TabPane> */}
+                  {/* <TabPane tab={"Budget"} key={"budget"}>
                     <div className="row mt-4 program-list">
                       <div className="row mt-3">
                         <div className="col-md-12">
@@ -425,6 +467,39 @@ const CharityProgramDetails = (props) => {
                               },
                             }}
                           />
+                        </div>
+                      </div>
+                    </div>
+                  </TabPane> */}
+                  <TabPane tab={"Geography"} key={"geography"}>
+                    <div className="row">
+                      <div className="row mt-3">
+                        <div className="card col-md-6 p-2 mb-3">
+                          {programDetail?.geographyModel?.map((item) => (
+                            <div>
+                              <p>
+                                <strong>District:</strong> {item?.district}
+                              </p>
+                              <p>
+                                <strong>City:</strong> {item?.city}
+                              </p>
+                              <p>
+                                <strong>State:</strong> {item?.state}
+                              </p>
+                              <p>
+                                <strong>Taluk:</strong> {item?.taluk}
+                              </p>
+                              <p>
+                                <strong>PostalCode:</strong> {item?.postalCode}
+                              </p>
+                              <p>
+                                <strong>Latitude:</strong> {item?.latitude}
+                              </p>
+                              <p>
+                                <strong>Longitude:</strong> {item?.longitude}
+                              </p>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -595,7 +670,7 @@ const CharityProgramDetails = (props) => {
                   >
                     <Donate
                       frequency={donationPreferenceConstants.ONCE}
-                      selectedCharity={initialValues.charity}
+                      selectedCharity={initialValues?.charity}
                       tabType={tabType}
                       from={"ProgramDetail"}
                     />
@@ -606,7 +681,7 @@ const CharityProgramDetails = (props) => {
                   >
                     <Donate
                       frequency={donationPreferenceConstants.MONTHLY}
-                      selectedCharity={initialValues.charity}
+                      selectedCharity={initialValues?.charity}
                       tabType={tabType}
                       from={"ProgramDetail"}
                     />

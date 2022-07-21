@@ -4,7 +4,6 @@ import { alertActions } from "./";
 import { history } from "../helpers";
 // import { handleInputChange } from "react-select/dist/declarations/src/utils";
 // import { alert } from "../reducers/alert.reducer";
-
 export const corporateActions = {
   addCorporate,
   deleteCorporate,
@@ -12,9 +11,8 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   // getCorporateById,
-  corporateAccountRequest,
+  corporateAccountRequest
 };
-
 function getCorporates() {
   return (dispatch) => {
     dispatch(request());
@@ -106,7 +104,7 @@ function updateCorporate(corporate) {
   function success(corporate) {
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate,
+      corporate
     };
   }
   function failure(error) {

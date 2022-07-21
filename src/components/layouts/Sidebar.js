@@ -6,7 +6,9 @@ import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedCorporate = useSelector(
+    (state) => state?.selectedCorporate?.corporate
+  );
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
 
   const loggedInUser = useSelector((state) => state.user);
@@ -34,7 +36,7 @@ const Sidebar = () => {
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to={`/corporates/${selectedCorporate?.corporate?.corporateId}/employees`}
+                  to={`/corporates/${selectedCorporate?.id}/employees`}
                   activeClassName="active"
                 >
                   <i className="bi bi-people-fill"></i>
@@ -49,7 +51,7 @@ const Sidebar = () => {
                   to="/social-organizations"
                   activeClassName="active"
                 >
-                  <img height="16" src="/assets/img/case.png" />
+                  <img height="16" src="/assets/img/case.png" alt="Case" />
                   <span className="menu-text">Programs</span>
                 </NavLink>
               </span>
@@ -82,7 +84,7 @@ const Sidebar = () => {
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to={`/corporates/${selectedCorporate?.corporate?.corporateId}/payroll-batch`}
+                  to={`/corporates/${selectedCorporate?.id}/payroll-batch`}
                   activeClassName="active"
                 >
                   <i className="bi bi-hdd-stack"></i>
@@ -113,7 +115,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -128,7 +130,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -225,7 +227,11 @@ const Sidebar = () => {
                           to="/dashboard"
                           activeClassName="active"
                         >
-                          <img height="20" src="/assets/img/dashboard.png" />
+                          <img
+                            height="20"
+                            src="/assets/img/dashboard.png"
+                            alt="Dashboard"
+                          />
                           <span className="menu-text">Dashboard</span>
                         </NavLink>
                       </span>
@@ -238,7 +244,11 @@ const Sidebar = () => {
                           to="/social-organizations"
                           activeClassName="active"
                         >
-                          <img height="16" src="/assets/img/case.png" />
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
                           <span className="menu-text">Programs</span>
                         </NavLink>
                       </span>

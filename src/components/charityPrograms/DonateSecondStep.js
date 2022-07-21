@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DonationConsent from "../Shared/DonationConsent";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { PaymentSchema } from "../Validations";
@@ -78,7 +78,7 @@ const DonateSecondStep = ({
     employeeFirstTwoChar = employee?.name?.slice(0, 2)?.toLowerCase();
   }
   const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;    
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const initialValues = {
     orderId: selectedCharity
       ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
@@ -89,7 +89,9 @@ const DonateSecondStep = ({
       loggedInUserType === userConstants.INDIVIDUAL
         ? employee?.individual_id.toString()
         : isCorporatePortal
-        ? selectedCorporate?.corporate?.corporateId?.toString()
+        ? selectedCorporate?.corporate?.corporateId
+          ? selectedCorporate?.corporate?.corporateId?.toString()
+          : selectedCorporate?.corporate?.id?.toString()
         : employee?.uuid?.toString(),
     customerName: isCorporatePortal
       ? selectedCorporate?.corporate?.organizationName
@@ -120,12 +122,16 @@ const DonateSecondStep = ({
         ? null
         : isCorporatePortal
         ? selectedCorporate?.corporate?.corporateId
+          ? selectedCorporate?.corporate?.corporateId
+          : selectedCorporate?.corporate?.id
         : employee?.corporateId,
     userId:
       loggedInUserType === userConstants.INDIVIDUAL
         ? employee?.individual_id
         : isCorporatePortal
-        ? selectedCorporate?.corporate?.corporateId?.toString()
+        ? selectedCorporate?.corporate?.corporateId
+          ? selectedCorporate?.corporate?.corporateId?.toString()
+          : selectedCorporate?.corporate?.id?.toString()
         : employee?.emp_id?.toString(),
     userType:
       loggedInUserType === userConstants.INDIVIDUAL
@@ -136,7 +142,6 @@ const DonateSecondStep = ({
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`
   };
-  const [val, setVal] = useState();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [paymentStep, setPaymentStep] = useState(false);
@@ -154,7 +159,7 @@ const DonateSecondStep = ({
     setPaymentValues(data);
     setPaymentStep(true);
   };
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   return (
     <div>
       {paymentStep ? (

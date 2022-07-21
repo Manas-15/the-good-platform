@@ -1,23 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "./../../assets/css/charityProgramsList.scss";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { Progress, Tooltip, Tabs } from "antd";
-import users from "../../config/users.json";
+// import users from "../../config/users.json";
 import { Accordion } from "react-bootstrap";
 import Donate from "./Donate";
 import DonateHeader from "./DonateHeader";
 import { Link } from "react-router-dom";
-import { charityProgramConstants } from "../../constants";
+// import { charityProgramConstants } from "../../constants";
 import { Chart, ArcElement } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+// import { Doughnut } from "react-chartjs-2";
 import donationsConsent from "../../config/donationsConsent.json";
 import selectedCharity from "../../config/selectedCharity.json";
 import { useDispatch, useSelector } from "react-redux";
-import { charityProgramActions, selectedCharityActions } from "../../actions";
+import { charityProgramActions } from "../../actions";
 const TabPane = Tabs.TabPane;
 Chart.register(ArcElement);
 
@@ -26,7 +26,7 @@ const ProgramDetailsIndividual = (props) => {
   const dispatch = useDispatch();
   // const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const programDetail = useSelector(
-    (state) => state?.charityPrograms?.selectedprogramDetail
+    (state) => state?.charityPrograms?.programDetail
   );
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
@@ -74,7 +74,7 @@ const ProgramDetailsIndividual = (props) => {
       organisationId: programDetail?.organisationId,
       soicalName: selectedOrganization?.name,
       status: programDetail?.status,
-      unitPrice: 500,
+      unitPrice: 500
     },
     employee: user,
     corporateId: isCorporatePortal
@@ -82,7 +82,7 @@ const ProgramDetailsIndividual = (props) => {
       : user?.corporateId,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${programDetail?.name}`,
-    donationConsent: `${donationsConsent?.consent} [Frequency: ${"Monthly"}]`,
+    donationConsent: `${donationsConsent?.consent} [Frequency: ${"Monthly"}]`
   };
   const onScroll = () => {
     // if (listInnerRef.current) {
@@ -113,10 +113,10 @@ const ProgramDetailsIndividual = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
   const data2 = {
     labels: ["Operations", "Communication", "Travel", "Administrative"],
@@ -127,14 +127,14 @@ const ProgramDetailsIndividual = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
-  useEffect(() => {
-    dispatch(selectedCharityActions.selectedCharity(programDetail));
-  }, [programDetail]);
+  // useEffect(() => {
+  //   dispatch(selectedCharityActions.selectedCharity(programDetail));
+  // }, [programDetail]);
   return (
     <>
       <div className="ant-row">
@@ -169,7 +169,7 @@ const ProgramDetailsIndividual = (props) => {
                       ? selectedCharity?.charity?.imgUrl
                       : "/assets/img/charity3.jpg"
                   }
-                  alt="image"
+                  alt="Image"
                 />
               </div>
               <div className="col-md-4">
@@ -256,7 +256,10 @@ const ProgramDetailsIndividual = (props) => {
                                   className={`active ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
                                 >
                                   <span>
-                                    <img src="/assets/img/elderly.png" />{" "}
+                                    <img
+                                      src="/assets/img/elderly.png"
+                                      alt="Elderly"
+                                    />{" "}
                                     {beneficiary}
                                   </span>
                                 </label>

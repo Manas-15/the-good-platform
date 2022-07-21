@@ -14,10 +14,10 @@ export const employeeActions = {
   setEmployeePassword,
   setPasswordValid,
   employeeAccountRequest,
+  addEmployee,
   bulkImport,
   getCorporates,
 };
-
 function login(data, from) {
   if (data?.loginType === "Employee") {
     return (dispatch) => {
@@ -363,6 +363,37 @@ function employeeAccountRequest(actionValues) {
     return { type: employeeConstants.EMPLOYEE_ACTION_FAILURE, error };
   }
 }
+function addEmployee(employee) {
+  return (dispatch) => {
+    dispatch(request(employee));
+    employeeService.addEmployee(employee).then(
+      (res) => {
+        dispatch(success(res));
+        if (res?.data?.email) {
+          dispatch(alertActions.error(res?.data?.email?.[0]));
+        } else {
+          history.push(`/corporates/${employee.corporateProfileId}/employees`);
+          dispatch(alertActions.success("Employee added successfully"));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(employee) {
+    return { type: employeeConstants.ADD_EMPLOYEE_REQUEST, employee };
+  }
+  function success(employee) {
+    return { type: employeeConstants.ADD_EMPLOYEE_SUCCESS, employee };
+  }
+  function failure(error) {
+    return { type: employeeConstants.ADD_EMPLOYEE_FAILURE, error };
+  }
+}
+
 function bulkImport(formData) {
   return (dispatch) => {
     dispatch(request(formData));

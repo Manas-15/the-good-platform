@@ -9,7 +9,6 @@ export const corporateService = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  // getCorporateById,
   corporateAccountRequest,
 };
 

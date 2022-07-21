@@ -7,6 +7,7 @@ export const socialOrganizationActions = {
 };
 
 function getSocialOrganizations(data) {
+  console.log(data, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>actions page");
   return (dispatch) => {
     dispatch(request(data));
 

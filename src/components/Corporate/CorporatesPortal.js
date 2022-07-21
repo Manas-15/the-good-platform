@@ -95,6 +95,18 @@ const CorporatesPortal = () => {
                       </li>
                     );
                   })}
+                {/* {corporates?.items?.data?.map((corporate, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <Link
+                        to={`/corporates/${corporate?.id}/employees`}
+                        onClick={() => setCorporate(corporate)}
+                      >
+                        {corporate?.name}
+                      </Link>
+                    </li>
+                  );
+                })} */}
                 <li key={"logout"} className="logout">
                   <Link onClick={logout}>Logout</Link>
                 </li>
