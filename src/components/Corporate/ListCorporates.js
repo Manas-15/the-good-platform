@@ -9,16 +9,13 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const ListCorporates = () => {
   let location = useLocation();
   const data = location.state;
-  console.log(data);
-
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
-  console.log(corporates);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -28,7 +25,6 @@ const ListCorporates = () => {
   const [actionType, setActionType] = useState("");
 
   const handleOpenDialog = (action, item, id) => {
-    // console.log(action, item, id);
     setOpen(true);
     setActionType(action);
     // setSelectedCorporate(item);
@@ -38,8 +34,6 @@ const ListCorporates = () => {
       `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong> corporate?`
     );
   };
-  // console.log(actionType);
-
   const confirm = () => {
     handleClose();
     actionInitialValues.userId = actionId;
@@ -107,7 +101,7 @@ const ListCorporates = () => {
                                   className="text-black"
                                   to={{
                                     pathname: `/corporates/${corporate.corporateId}/employees`,
-                                    state: data?.isSuperadminView,
+                                    state: data?.isSuperadminView
                                   }}
                                 >
                                   {corporate?.organizationName}
@@ -129,7 +123,7 @@ const ListCorporates = () => {
                                     className="text-black"
                                     to={{
                                       pathname: `/corporates/edit/${corporate.corporateId}`,
-                                      state: corporate.corporateId,
+                                      state: corporate.corporateId
                                     }}
                                   >
                                     <i

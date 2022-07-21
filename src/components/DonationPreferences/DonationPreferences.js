@@ -117,9 +117,7 @@ const DonationPreferences = () => {
     );
     getData();
   };
-
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchByProgramName("");
     setSearchByEmployeeName("");
     setSearchByCorporateName("");
