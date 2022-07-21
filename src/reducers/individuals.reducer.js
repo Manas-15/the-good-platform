@@ -4,22 +4,22 @@ export function individuals(state = {}, action) {
   switch (action.type) {
     case individualConstants.GET_INDIVIDUALS_REQUEST:
       return {
-        loading: true,
+        loading: true
       };
     case individualConstants.GET_INDIVIDUALS_SUCCESS:
       return {
-        items: action.individuals?.data?.individual_list,
+        items: action.individuals?.data?.individual_list
       };
     case individualConstants.GET_INDIVIDUALS_FAILURE:
       return {
-        error: action.error,
+        error: action.error
       };
     case individualConstants.INDIVIDUAL_ACTION_REQUEST:
       return {
         items: state.items,
         actionRequest: true,
         requestType: action?.individual?.requestType,
-        userId: action?.individual?.userId,
+        userId: action?.individual?.userId
       };
     case individualConstants.INDIVIDUAL_ACTION_SUCCESS:
       return {
@@ -35,7 +35,7 @@ export function individuals(state = {}, action) {
           return item;
         }),
         requestType: null,
-        actionRequest: false,
+        actionRequest: false
       };
     case individualConstants.INDIVIDUAL_ACTION_FAILURE:
       return { items: state.items, error: action.error };

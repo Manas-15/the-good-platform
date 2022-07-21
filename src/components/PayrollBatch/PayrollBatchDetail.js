@@ -5,7 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
@@ -19,7 +19,7 @@ import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { Modal, Button } from "react-bootstrap";
 
 const actionInitialValues = {
-  preferenceId: "",
+  preferenceId: ""
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, isCorporateView;
@@ -48,7 +48,7 @@ const PayrollBatchDetail = (props) => {
     dispatch(
       payrollSettingActions.getBatchDetail({
         batchId: props?.batchId,
-        socialId: isOrganizationView ? selectedOrganization?.id : null,
+        socialId: isOrganizationView ? selectedOrganization?.id : null
       })
     );
   }, [props?.batchId]);

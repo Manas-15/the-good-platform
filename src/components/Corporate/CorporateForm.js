@@ -23,21 +23,20 @@ const initialValues = {
   city: "",
   state: "",
   country: "",
-  userType: "",
+  userType: ""
 };
 const sizeOptions = [
   { value: "1-50", label: "1-50" },
   { value: "50-100", label: "50-100" },
   { value: "100-500", label: "100-500" },
   { value: "500-1000", label: "500-1000" },
-  { value: ">1000", label: ">1000" },
+  { value: ">1000", label: ">1000" }
 ];
 const CorporateForm = ({ type, id }) => {
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
   const [editCorpData, setEditCorpData] = useState();
   const corporates = useSelector((state) => state.corporates);
-
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const [editCountry, setEditCountry] = useState("");
@@ -54,7 +53,6 @@ const CorporateForm = ({ type, id }) => {
   const corporateRegister = (values) => {
     values.state = id ? editState : state;
     values.country = id ? editCountry : country;
-
     setSubmitted(true);
     if (
       values.organizationName &&
@@ -65,16 +63,13 @@ const CorporateForm = ({ type, id }) => {
     ) {
       id
         ? dispatch(corporateActions.updateCorporate(values, type))
-        : // console.log(values, "edit apiiiiiiiiiii")
-          dispatch(corporateActions.addCorporate(values, type));
+        : dispatch(corporateActions.addCorporate(values, type));
     }
   };
-
   const filteredCorporateData = (id) => {
     const filteredCorpData = corporates?.items?.filter((val) => {
       return val.corporateId === id;
     });
-    // console.log(filteredCorpData[0]);
     setEditCorpData(filteredCorpData?.[0]);
   };
 
@@ -85,7 +80,6 @@ const CorporateForm = ({ type, id }) => {
   }, []);
 
   if (id) {
-    // console.log(id, "iddddddddddddddd");
     initialValues.corporateId = id;
     initialValues.organizationName = editCorpData?.organizationName;
     initialValues.email = editCorpData?.email;
@@ -138,7 +132,6 @@ const CorporateForm = ({ type, id }) => {
   const selectEditState = (state) => {
     setEditState(state);
   };
-
   return (
     <div style={{ width: "650px" }}>
       <Formik
@@ -146,7 +139,6 @@ const CorporateForm = ({ type, id }) => {
         initialValues={initialValues}
         validationSchema={CorporateSchema}
         onSubmit={(values, { setSubmitting }) => {
-          // console.log(values);
           corporateRegister(values);
         }}
       >
@@ -157,7 +149,7 @@ const CorporateForm = ({ type, id }) => {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
+          isSubmitting
           /* and other goodies */
         }) => (
           <Form>
@@ -255,7 +247,6 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Size</label>
@@ -285,7 +276,6 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="mt-1">Type</label>
@@ -325,7 +315,6 @@ const CorporateForm = ({ type, id }) => {
                       : "")
                   }
                 />
-
                 <ErrorMessage
                   name="corporatePan"
                   component="div"
@@ -439,9 +428,6 @@ const CorporateForm = ({ type, id }) => {
                 <RegionDropdown
                   name="state"
                   country={id ? editCountry : country}
-                  // value={
-                  //   id ? console.log("editSantosh") : console.log("santosh")
-                  // }
                   value={id ? editState : state}
                   onChange={(val) =>
                     id ? selectEditState(val) : selectState(val)
@@ -471,7 +457,6 @@ const CorporateForm = ({ type, id }) => {
                 />
               </div>
             </div>
-
             <div className="text-center">
               <div className="row">
                 <div className="col-md-4 offset-md-4 ">

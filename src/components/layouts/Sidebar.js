@@ -15,7 +15,6 @@ const Sidebar = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;

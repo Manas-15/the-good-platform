@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const individualService = {
   getIndividuals,
-  individualAccountRequest,
+  individualAccountRequest
 };
 
 function getIndividuals() {

@@ -5,7 +5,7 @@ import { history } from "../helpers";
 
 export const individualActions = {
   getIndividuals,
-  individualAccountRequest,
+  individualAccountRequest
 };
 
 function getIndividuals() {
@@ -54,7 +54,6 @@ function individualAccountRequest(actionValues, name) {
       }
     );
   };
-
   function request(individual) {
     return { type: individualConstants.INDIVIDUAL_ACTION_REQUEST, individual };
   }

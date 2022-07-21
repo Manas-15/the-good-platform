@@ -150,7 +150,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     }
     handleCloseDialog();
   };
-
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -194,7 +193,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
       preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`;
     }
     preferenceForm.isConsentCheck = true;
-    // console.log(preferenceForm);
     dispatch(
       donationPreferenceActions.updateDonationPreference(preferenceForm)
     );
@@ -207,17 +205,10 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const setPage = (page) => {
     setCurrentPage(page);
   };
-
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
   const keyDownHandler = (event, preference) => {
-    console.log(
-      "User pressed: ",
-      event.key,
-      updatedValue,
-      preference?.donationAmount
-    );
     if (event.key === "Enter") {
       event.preventDefault();
       if (

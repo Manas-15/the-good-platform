@@ -252,7 +252,6 @@ const PayrollBatch = (props) => {
     setIsBatchDetail(status);
     setSelectedBatchId(null);
   };
-
   const onFilter = (value) => {
     if (value?.toString() === "2") {
       setAllRecords(
@@ -274,13 +273,11 @@ const PayrollBatch = (props) => {
       );
     }
   };
-
   const onSearchChange = (e, selected) => {
     const keyword = e;
     allGroupData = groupByBatch();
     // if (keyword !== "") {
     //   const results = Object.keys(groupByBatchData)?.map((type, index) => {
-    //     console.log(type, index);
     // if (selected === "batchId") {
     //   if (
     //     groupByBatchData[type]?.[0]?.batchId
@@ -308,7 +305,6 @@ const PayrollBatch = (props) => {
     //   }
     // }
     // });
-    //   console.log("resultsresults", results);
     //   setGroupByBatchData(results);
     // } else {
     //   keyword === "" && setGroupByBatchData(allGroupData);
@@ -316,7 +312,6 @@ const PayrollBatch = (props) => {
     // setSearchValue(keyword);
     // setSelectedKeySearch(selected);
   };
-  // console.log(groupByBatchData);
   const onHandleChange = (e) => {
     setSelected(e.target.value);
   };
@@ -331,14 +326,9 @@ const PayrollBatch = (props) => {
   //     setGroupByBatchData(allGroupData);
   //   }
   // }, [selected]);
-
   // if (isBluePencilPortal || isOrganizationPortal) {
   //   allGroupData = groupByBatch();
-
-  //   console.log("dddddddddddddddddddd groupByBatch", allGroupData);
   // }
-
-  // console.log(isCorporatePortal);
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -399,7 +389,6 @@ const PayrollBatch = (props) => {
                       </select>
                     </div>
                   </div>
-
                   {selected === "batchId" && (
                     <div className="col-md-6">
                       <div>
@@ -527,7 +516,6 @@ const PayrollBatch = (props) => {
               )}
             </div>
           </div>
-
           {payrollBatches.loading && <Loader />}
           {allRecords?.length === 0 && (
             <div className="card p-4 text-center">
@@ -555,7 +543,6 @@ const PayrollBatch = (props) => {
               )}
             </div>
           )}
-
           {allRecords?.length > 0 &&
             (corporateId ||
               organizationId ||
@@ -929,7 +916,6 @@ const PayrollBatch = (props) => {
                                 </tr>
                               )
                             )}
-
                           {!isBluePencilPortal &&
                             !isOrganizationPortal &&
                             allRecords?.map((batch, index) => (
@@ -1184,7 +1170,6 @@ const PayrollBatch = (props) => {
                 </div>
               </div>
             )}
-
           <Pagination
             className="pagination-bar mt-4"
             currentPage={currentPage}

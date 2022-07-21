@@ -9,12 +9,11 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const ListIndividuals = () => {
   let location = useLocation();
   const data = location.state;
-
   let history = useHistory();
   const individuals = useSelector((state) => state.individuals);
   const dispatch = useDispatch();

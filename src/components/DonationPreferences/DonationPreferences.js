@@ -117,7 +117,6 @@ const DonationPreferences = () => {
     );
     getData();
   };
-
   const onHandleChange = (e) => {
     setSearchByProgramName("");
     setSearchByEmployeeName("");
@@ -168,7 +167,6 @@ const DonationPreferences = () => {
   //   setSearchText(value);
   //   setSelected(selected);
   // };
-
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);

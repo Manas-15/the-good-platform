@@ -170,7 +170,7 @@ const PayrollSetting = (props) => {
     const endOfMonth = moment().endOf("month");
     dispatch(
       payrollSettingActions.getDonationPreferences({
-        corporateId: selectedCorporate?.corporate?.corporateId,
+        corporateId: selectedCorporate?.corporate?.id,
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Batch",
         filterDate: moment(generateMonthYear).isBetween(startMonth, endOfMonth)
