@@ -60,7 +60,6 @@ const IndividualForm = ({ type }) => {
       dispatch(employeeActions.register(values, userConstants.INDIVIDUAL));
     }
   };
-  // console.log(country, state);
   const selectCountry = (country) => {
     setCountry(country);
   };

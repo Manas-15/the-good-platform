@@ -13,7 +13,7 @@ import {
   paginationConstants,
   viewPortalConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -25,17 +25,16 @@ const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 const ListTransactionsHistory = (props) => {
   const [records, setRecords] = useState([]);
-  console.log(records);
   const [selected, setSelected] = useState();
   // const [searchValue, setSearchValue] = useState("");
   const [allRecords, setAllRecords] = useState(records);
@@ -69,7 +68,7 @@ const ListTransactionsHistory = (props) => {
   const [selectedRange, setSelectedRange] = useState([]);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
 
   const isOrganizationView =
@@ -118,22 +117,18 @@ const ListTransactionsHistory = (props) => {
     }
   };
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchByEmployeeName("");
     setSearchByCorporateName("");
     setSearchByProgramName("");
     setSearchByAmount("");
-
     setSelected(e.target.value);
   };
-
   // const paymentStatusOption = [
   //   { label: "All", value: 0 },
   //   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   //   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
   //   { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
   // ];
-
   const filter = (type, value) => {
     setIsFilter(true);
     if (value && value !== "0") {
@@ -149,7 +144,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -197,7 +192,7 @@ const ListTransactionsHistory = (props) => {
         startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
         endDate: dateRange
           ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-          : null,
+          : null
       })
     );
   };
@@ -210,7 +205,7 @@ const ListTransactionsHistory = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount,
+    searchByAmount
   ]);
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -219,7 +214,6 @@ const ListTransactionsHistory = (props) => {
   const showAccountDetail = (item) => {
     setOpenAccountDetail(true);
     setSelectedAccount(item);
-    // console.log("aaaaaaaaaaaaa item", item);
   };
 
   return (
@@ -572,7 +566,9 @@ const ListTransactionsHistory = (props) => {
                                 </div>
                               )
                             ) : (
-                              <span className="text-warning text-uppercase">Pending</span>
+                              <span className="text-warning text-uppercase">
+                                Pending
+                              </span>
                             )}
                           </td>
                         )}
@@ -617,7 +613,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

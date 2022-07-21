@@ -27,17 +27,11 @@ const Payment = ({ paymentValues }) => {
   const cbs = (data) => {
     if (data?.order && data?.order?.status === paymentConstants.PAID) {
       // alert("order is paid. Call api to verify");
-      console.log("after paid received data >>>>>>>>>>>>>>>>", data);
       setPaymentStatus(paymentConstants.PAID);
       setPaymentSuccessErrorData(data);
     }
   };
   const cbf = (data) => {
-    // alert("cbf: " + data.order.errorText);
-    console.log("dddddd error payment ........... 1111111", {
-      ...data,
-      ...paymentValues
-    });
     setPaymentStatus(paymentConstants.ERROR);
     setPaymentSuccessErrorData(data);
     dispatch(

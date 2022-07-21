@@ -5,7 +5,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
@@ -19,14 +19,13 @@ import { payrollSettingActions } from "../../actions/payrollSetting.actions";
 import { Modal, Button } from "react-bootstrap";
 
 const actionInitialValues = {
-  preferenceId: "",
+  preferenceId: ""
 };
 let PageSize = paginationConstants?.PAGE_SIZE;
 let accordionData, isCorporateView;
 
 const PayrollBatchDetail = (props) => {
   const preferences = useSelector((state) => state?.payrollSetting?.items);
-  console.log(preferences);
   const selectedOrganization = useSelector(
     (state) => state?.selectedOrganization?.organization
   );
@@ -49,7 +48,7 @@ const PayrollBatchDetail = (props) => {
     dispatch(
       payrollSettingActions.getBatchDetail({
         batchId: props?.batchId,
-        socialId: isOrganizationView ? selectedOrganization?.id : null,
+        socialId: isOrganizationView ? selectedOrganization?.id : null
       })
     );
   }, [props?.batchId]);
@@ -102,7 +101,6 @@ const PayrollBatchDetail = (props) => {
     }
   };
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchByProgramName("");
     setSearchByOrganizationName("");
     setSearchByAmount("");

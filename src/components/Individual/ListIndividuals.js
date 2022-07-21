@@ -9,16 +9,13 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const ListIndividuals = () => {
   let location = useLocation();
   const data = location.state;
-  console.log(data);
-
   let history = useHistory();
   const individuals = useSelector((state) => state.individuals);
-  console.log(individuals);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");
@@ -28,7 +25,6 @@ const ListIndividuals = () => {
   const [actionType, setActionType] = useState("");
 
   const handleOpenDialog = (action, item, id) => {
-    console.log(action, item, id);
     setOpen(true);
     setActionType(action);
     // setSelectedCorporate(item);
@@ -41,7 +37,6 @@ const ListIndividuals = () => {
       } <strong>"${item}"</strong> individual user?`
     );
   };
-  console.log(actionType);
   const confirm = () => {
     handleClose();
     actionInitialValues.userId = actionId;
