@@ -19,7 +19,7 @@ import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
 import PayrollBatchAccordion from "./PayrollBatchAccordion";
-
+let allData;
 const completeInitialValues = {
   batchId: "",
   requestType: "",
@@ -124,18 +124,21 @@ const PayrollBatch = (props) => {
     }, {});
   };
   let allGroupData;
-  const allData =
-    payrollBatches?.item?.length > 0 &&
-    payrollBatches?.items?.filter((item) => !item?.isDeleted);
+
   useEffect(() => {
-    setAllRecords(
-      payrollBatches?.item?.length > 0 &&
+    if (payrollBatches?.item?.length > 0) {
+      allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
+      setAllRecords(
         payrollBatches?.items?.filter(
           (item) =>
             item?.receivedOrganizationIds?.split(",")?.length !==
             item?.totalOrganizationCount
         )
-    );
+      );
+    } else {
+      allData = payrollBatches?.items;
+      setAllRecords(payrollBatches?.items);
+    }
   }, [payrollBatches?.items]);
 
   useEffect(() => {
@@ -257,9 +260,9 @@ const PayrollBatch = (props) => {
   };
 
   const onFilter = (value) => {
-    if (value === "2") {
+    if (value?.toString() === "2") {
       setAllRecords(
-        allData?.filter(
+        allData?.filter?.(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length ===
             val?.totalOrganizationCount
@@ -270,8 +273,9 @@ const PayrollBatch = (props) => {
     } else if (value === "0") {
       setAllRecords(payrollBatches?.items);
     } else {
+      console.log(">>>>>>>>>>>>>>>> ", allData);
       setAllRecords(
-        allData?.filter(
+        allData?.filter?.(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length !==
             val?.totalOrganizationCount
