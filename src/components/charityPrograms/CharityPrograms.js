@@ -53,7 +53,6 @@ const CharityPrograms = (props) => {
   };
   // useEffect(() => {
   //   setTabType(props?.location?.tabType);
-  //   console.log("props?.location?.tabType", props?.location?.tabType);
   // }, [props?.location?.tabType]);
   useEffect(() => {
     dispatch(
@@ -108,7 +107,6 @@ const CharityPrograms = (props) => {
     setSearchText(value);
     // if(tabType === socialOrganizationConstants.SPONSORED){
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
     // }
   };
   return (

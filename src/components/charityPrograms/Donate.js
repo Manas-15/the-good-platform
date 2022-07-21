@@ -51,7 +51,6 @@ const Donate = ({
     currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
-    // console.log("selectedCharity ??????????????????????", selectedCharity);
     if (selectedCharity) {
       setSelectedAmount(
         selectedCharity?.employeePreferenceId
@@ -80,7 +79,6 @@ const Donate = ({
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedCharity);
     preferenceForm.corporateId = employee?.corporateId;
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = repeatPreference

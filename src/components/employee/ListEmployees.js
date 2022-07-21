@@ -9,7 +9,7 @@ import Pagination from "../Shared/Pagination";
 import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 let goodplatformFields = [
   { label: "First Name", value: "firstName" },
@@ -25,19 +25,16 @@ let goodplatformFields = [
   { label: "Region", value: "Region" },
   { label: "Country", value: "country" },
   { label: "Zip", value: "Zip" },
-  { label: "Status", value: "status" },
+  { label: "Status", value: "status" }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 
 const ListEmployees = (props) => {
-  console.log(props);
   let history = useHistory();
   let location = useLocation();
   const isSuperadminView = location.state;
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
-  console.log(employees?.items);
-
   const hiddenFileInput = useRef(null);
   // const user = useSelector((state) => state.employee.user);
   // Pagination
@@ -64,7 +61,7 @@ const ListEmployees = (props) => {
       employeeActions.getEmployees({
         corporateId: corporateId,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   }, [currentPage]);
@@ -100,7 +97,6 @@ const ListEmployees = (props) => {
     const fileUploaded = event.target.files[0];
     setSelectedFile(fileUploaded);
     handleFile(fileUploaded);
-    // console.log(fileUploaded);
   };
   const handleFile = (file) => {
     const fileExtension = file?.name?.split(".")?.pop();
@@ -115,9 +111,7 @@ const ListEmployees = (props) => {
       reader.readAsText(file);
       let finalData = [];
       reader.onload = () => {
-        // console.log(reader?.result);
         const allTextLines = reader?.result?.split(/\n/);
-        // console.log(allTextLines);
         setImportHeader(allTextLines[0].split(","));
         setImportFirstRecord(allTextLines[1].split(","));
 
@@ -129,7 +123,7 @@ const ListEmployees = (props) => {
             fieldType.push("select_field");
             goodplatformFields = [
               ...goodplatformFields,
-              { label: "Select Field", value: "select_field" },
+              { label: "Select Field", value: "select_field" }
             ];
           }
         }
@@ -182,7 +176,6 @@ const ListEmployees = (props) => {
     dispatch(employeeActions.bulkImport(formData));
   };
   const onHandleChange = (e) => {
-    console.log("fired");
     setRecords(employees?.items);
     setSelected(e.target.value);
   };
