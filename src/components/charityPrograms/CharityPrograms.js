@@ -53,7 +53,6 @@ const CharityPrograms = (props) => {
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
   };
-
   useEffect(() => {
     dispatch(
       charityProgramActions.getCharityPrograms(

@@ -16,10 +16,14 @@ import {
   selectedCharityTabActions,
 } from "../../actions";
 import urlSlug from "url-slug";
+// import DonateHeader from "./../CharityPrograms/DonateHeader";
+// import Donate from "./../CharityPrograms/Donate";
+// import { handleInputChange } from "react-select/dist/declarations/src/utils";
 
-const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
+const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const dispatch = useDispatch();
   const openNav = (charity) => {
+    // document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
 
@@ -47,7 +51,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
-
   const user = useSelector((state) => state.employee.user);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
@@ -91,7 +94,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
       );
     }
   };
-
   const confirm = () => {
     handleClose();
     dispatch(
@@ -223,33 +225,19 @@ const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
     setAllItems(items);
   }, [items]);
   // useEffect(() => {
-  //   console.log(
-  //     "beforeUnrpomoteMsg >>>>>>>>>>>>>>>",
-  //     selectedProgram,
-  //     Object.keys(selectedProgram).length > 0,
-  //     selectedProgram?.employeeCount
-  //   );
   //   if (Object.keys(selectedProgram).length > 0) {
   //     handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
   //   }
   // }, [selectedProgram]);
   // useEffect(() => {
-  //   console.log(
-  //     "bssssssssssssssssssss >>>>>>>>>>>>>>>",
-  //     selectedProgram,
-  //     Object.keys(selectedProgram).length > 0,
-  //     selectedProgram?.employeeCount
-  //   );
   //   if (Object.keys(selectedProgram).length > 0) {
   //     handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
   //   }
   // }, [selectedProgram?.employeeCount]);
   // useEffect(() => {
-  //   console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
   //   setSelectedProgram(selectedProgram)
   // }, [selectedProgram?.employeeCount]);
   // useEffect(() => {
-  //   console.log("beforeUnrpomoteMsg >>>>>>>>> ssssssssssssss >>>>>>", selectedProgram);
   //     setOpen(true);
   //     setActionType("Confirm");
   //     setActionTitle(`Confirm Confirmation`);

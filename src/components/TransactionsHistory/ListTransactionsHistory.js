@@ -125,17 +125,14 @@ const ListTransactionsHistory = (props) => {
     setSearchByCorporateName("");
     setSearchByProgramName("");
     setSearchByAmount("");
-
     setSelected(e.target.value);
   };
-
   // const paymentStatusOption = [
   //   { label: "All", value: 0 },
   //   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   //   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
   //   { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
   // ];
-
   const filter = (type, value) => {
     setIsFilter(true);
     if (value && value !== "0") {

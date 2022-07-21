@@ -400,7 +400,6 @@ function bulkImport(formData) {
     employeeService.bulkImport(formData).then(
       (data) => {
         dispatch(success(data));
-
         history.push({ pathname: `"/corporates/1/employees"` });
         dispatch(alertActions.success(`Employee imported successfully`));
       },

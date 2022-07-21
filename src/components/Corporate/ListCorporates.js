@@ -23,11 +23,8 @@ const ListCorporates = () => {
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionId, setActionId] = useState("");
-
   const [actionType, setActionType] = useState("");
-
   const handleOpenDialog = (action, item, id) => {
-    // console.log(action, item, id);
     setOpen(true);
     setActionType(action);
     // setSelectedCorporate(item);
@@ -37,8 +34,6 @@ const ListCorporates = () => {
       `Are you sure to ${action.toLowerCase()} <strong>"${item}"</strong> corporate?`
     );
   };
-  // console.log(actionType);
-
   const confirm = () => {
     handleClose();
     actionInitialValues.userId = actionId;
@@ -51,11 +46,9 @@ const ListCorporates = () => {
     // }
   };
   const handleClose = () => setOpen(false);
-
   useEffect(() => {
     dispatch(corporateActions.getCorporates());
   }, []);
-
   return (
     <div>
       <div className="row mb-4">
@@ -202,7 +195,6 @@ const ListCorporates = () => {
           </div>
         </div>
       </div>
-
       {open && (
         <ConfirmationDialog
           open={true}

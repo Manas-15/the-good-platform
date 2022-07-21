@@ -20,7 +20,6 @@ export function jwtInterceptor() {
     },
     (error) => {
       if (error.response.status === 401) {
-        console.log("eeeeeeeeeeeeee axios", error);
       }
       return error;
     }

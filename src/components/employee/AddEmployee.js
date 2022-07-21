@@ -94,13 +94,9 @@ const AddEmployee = () => {
     setSubmitted(true);
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
-      console.log(values.email);
       dispatch(employeeActions.addEmployee(values));
     }
   };
-
-  console.log(country, state);
-
   const selectCountry = (country) => {
     setCountry(country);
   };
@@ -125,7 +121,6 @@ const AddEmployee = () => {
   };
   // useEffect(() => {
   //   initialValues.corporateProfileId = selectedCorporate?.id;
-  //   console.log('initialValues ....................', initialValues)
   // }, [selectedCorporate?.id]);
   return (
     <>
@@ -138,7 +133,6 @@ const AddEmployee = () => {
               values.organizationJoiningDate
             ).format("YYYY-MM-DD");
             addEmployeeRegister(values);
-            // console.log(values);
           }}
         >
           {({

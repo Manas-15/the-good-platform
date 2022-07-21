@@ -281,10 +281,8 @@ const DirectPayment = (props) => {
   };
   const handleCheck = (e, items) => {
     const { name, checked } = e.target;
-
     const { preferenceId } = checkedPreference;
     setChecked(checked);
-
     if (name === "allSelect" && checked) {
       let prefenreceID = allRecords?.map((val) => val?.Id);
       const singleSocialPreferenceId = new Set(prefenreceID);

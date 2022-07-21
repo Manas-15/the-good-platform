@@ -117,7 +117,6 @@ const SocialOrganizations = () => {
       setActionContent(`Are you sure to ${action.toLowerCase()}?`);
     }
   };
-
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };

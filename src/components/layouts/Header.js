@@ -34,7 +34,6 @@ const Header = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -156,7 +155,7 @@ const Header = () => {
                       }
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView }
+                        state: { isSuperadminView },
                       }}
                     >
                       <i className="bi bi-person-circle"></i>
