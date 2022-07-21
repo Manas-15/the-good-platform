@@ -282,8 +282,8 @@ const CharityPrograms = (props) => {
         </div>
       </div>
       <div className="ant-tabs-nav-wrap">
-        {currentPortal?.currentView === "Individual Portal" ||
-        "Others Portal" ? (
+        {currentPortal?.currentView ===
+        ("Individual Portal" || "Others Portal") ? (
           <>
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
