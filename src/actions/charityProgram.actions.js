@@ -15,7 +15,6 @@ export const charityProgramActions = {
 };
 
 function getCharityPrograms(data) {
-  console.log(data);
   return (dispatch) => {
     dispatch(request(data));
     charityProgramService.getCharityPrograms(data).then(
@@ -29,7 +28,6 @@ function getCharityPrograms(data) {
   };
 
   function request(data) {
-    console.log(data);
     return {
       type: charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST,
       data: data?.userType,
@@ -94,7 +92,6 @@ function saveDonationPreference(data) {
 }
 function operateSponsorRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "Only Promoteeeee");
     dispatch(request(actionValues));
 
     charityProgramService.operateSponsorRequest(actionValues).then(
@@ -127,7 +124,6 @@ function operateSponsorRequest(actionValues) {
 }
 function operateBulkSponsorRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "Bulk Promoteeeeeeee");
     dispatch(request(actionValues));
 
     charityProgramService.operateBulkSponsorRequest(actionValues).then(
@@ -160,7 +156,6 @@ function operateBulkSponsorRequest(actionValues) {
 }
 function operateDenyRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
 
     charityProgramService.operateDenyRequest(actionValues).then(
@@ -193,7 +188,6 @@ function operateDenyRequest(actionValues) {
 }
 function checkBeforeUnpromote(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
 
     charityProgramService.checkBeforeUnpromote(actionValues).then(
@@ -233,7 +227,6 @@ function checkBeforeUnpromote(actionValues) {
 
 function checkBeforeBulkUnpromote(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
 
     charityProgramService.checkBeforeBulkUnpromote(actionValues).then(

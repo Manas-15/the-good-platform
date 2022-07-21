@@ -40,26 +40,11 @@ function getCorporates() {
   }
 }
 
-// function getCorporateById(data) {
-//   // console.log(data, "By idddddd");
-//   return (dispatch) => {
-//     dispatch(request());
-
-//     corporateService.getCorporateById(data).then(
-//       (data) => dispatch(success(data)),
-
-//       (error) => {
-//         dispatch(failure(error.toString()));
-//         dispatch(alertActions.error(error.toString()));
-//       }
-//     );
-//   };
-
 //   function request() {
 //     return { type: corporateConstants.GET_CORPORATES_REQUEST_BY_ID };
 //   }
 //   function success(data) {
-//     // console.log(data, "success data");
+//
 //     return { type: corporateConstants.GET_CORPORATES_SUCCESS_BY_ID, data };
 //   }
 //   function failure(error) {
@@ -68,7 +53,6 @@ function getCorporates() {
 // }
 
 function addCorporate(corporate, type) {
-  // console.log(corporate, type, "corporate actions");
   return (dispatch) => {
     dispatch(request(corporate));
 
@@ -102,13 +86,10 @@ function addCorporate(corporate, type) {
 
 function updateCorporate(corporate) {
   return (dispatch) => {
-    console.log(corporate, "valuessssssss");
     dispatch(request(corporate));
 
     corporateService.updateCorporate(corporate).then(
       (corporate) => {
-        console.log(corporate, "valuessssssss successssssss");
-
         dispatch(success(corporate));
         history.push("/list-corporates");
         dispatch(alertActions.success("Corporate Updated Successfully"));
@@ -123,8 +104,6 @@ function updateCorporate(corporate) {
     return { type: corporateConstants.UPDATE_CORPORATE_REQUEST, corporate };
   }
   function success(corporate) {
-    console.log(corporate, "after successsssss");
-
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
       corporate,
@@ -136,7 +115,6 @@ function updateCorporate(corporate) {
 }
 
 function deleteCorporate(corporateId) {
-  console.log(corporateId, "delete idddddd");
   return (dispatch) => {
     dispatch(request(corporateId));
 
@@ -200,7 +178,6 @@ function registerCorporate(corporate, type) {
 }
 function corporateAccountRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "actyon typeeeee");
     dispatch(request(actionValues));
     corporateService.corporateAccountRequest(actionValues).then(
       (msg) => {
@@ -226,7 +203,6 @@ function corporateAccountRequest(actionValues) {
     return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
   }
   function success(data) {
-    console.log(data);
     return { type: corporateConstants.CORPORATE_ACTION_SUCCESS, data };
   }
   function failure(error) {

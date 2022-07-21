@@ -34,7 +34,6 @@ function getIndividuals() {
 }
 function individualAccountRequest(actionValues, name) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
     individualService.individualAccountRequest(actionValues).then(
       (msg) => {
@@ -60,7 +59,6 @@ function individualAccountRequest(actionValues, name) {
     return { type: individualConstants.INDIVIDUAL_ACTION_REQUEST, individual };
   }
   function success(data) {
-    console.log(data);
     return { type: individualConstants.INDIVIDUAL_ACTION_SUCCESS, data };
   }
   function failure(error) {

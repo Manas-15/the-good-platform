@@ -14,11 +14,10 @@ const actionInitialValues = {
 const ListCorporates = () => {
   let location = useLocation();
   const data = location.state;
-  console.log(data);
 
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
-  console.log(corporates);
+
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [actionTitle, setActionTitle] = useState("");

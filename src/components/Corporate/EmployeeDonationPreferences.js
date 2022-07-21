@@ -147,7 +147,6 @@ const EmployeeDonationPreferences = () => {
     document.getElementById("root").classList.remove("loading");
   }
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchText("");
     setSelected(e.target.value);
   };

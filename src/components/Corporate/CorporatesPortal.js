@@ -13,7 +13,7 @@ const actionInitialValues = {
 const CorporatesPortal = () => {
   let history = useHistory();
   const corporates = useSelector((state) => state?.corporates?.items);
-  console.log(corporates, "ttttttttttttttttttt");
+
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);

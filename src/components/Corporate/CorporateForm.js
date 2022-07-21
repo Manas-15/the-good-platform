@@ -33,12 +33,11 @@ const sizeOptions = [
   { value: ">1000", label: ">1000" },
 ];
 const CorporateForm = ({ type, id }) => {
-  // console.log(type, id, "mmmmmmmmm");
   let history = useHistory();
   const [submitted, setSubmitted] = useState(false);
   const [editCorpData, setEditCorpData] = useState();
   const corporates = useSelector((state) => state.corporates);
-  console.log(corporates);
+
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const [editCountry, setEditCountry] = useState("");
@@ -56,11 +55,6 @@ const CorporateForm = ({ type, id }) => {
     values.state = id ? editState : state;
     values.country = id ? editCountry : country;
 
-    console.log(country, state); // passed
-    console.log(editCountry, editState);
-    console.log(values.country, values.state); // passed
-
-    console.log(values);
     setSubmitted(true);
     if (
       values.organizationName &&
@@ -131,21 +125,17 @@ const CorporateForm = ({ type, id }) => {
   );
 
   const selectCountry = (country) => {
-    console.log(country);
     setCountry(country);
   };
 
   const selectEditCountry = (country) => {
-    console.log(country);
     setEditCountry(country);
   };
 
   const selectState = (state) => {
-    console.log(state);
     setState(state);
   };
   const selectEditState = (state) => {
-    console.log(state);
     setEditState(state);
   };
 
