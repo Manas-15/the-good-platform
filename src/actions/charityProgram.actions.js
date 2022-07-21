@@ -89,9 +89,7 @@ function saveDonationPreference(data) {
 }
 function operateSponsorRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "Only Promoteeeee");
     dispatch(request(actionValues));
-
     charityProgramService.operateSponsorRequest(actionValues).then(
       (data) => {
         dispatch(success());
@@ -103,7 +101,6 @@ function operateSponsorRequest(actionValues) {
       }
     );
   };
-
   function request(program) {
     return {
       type: charityProgramConstants.OPERATE_SPONSOR_REQUEST,
@@ -122,9 +119,7 @@ function operateSponsorRequest(actionValues) {
 }
 function operateBulkSponsorRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "Bulk Promoteeeeeeee");
     dispatch(request(actionValues));
-
     charityProgramService.operateBulkSponsorRequest(actionValues).then(
       (data) => {
         dispatch(success());
@@ -155,9 +150,7 @@ function operateBulkSponsorRequest(actionValues) {
 }
 function operateDenyRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
-
     charityProgramService.operateDenyRequest(actionValues).then(
       (data) => {
         dispatch(success());
@@ -188,9 +181,7 @@ function operateDenyRequest(actionValues) {
 }
 function checkBeforeUnpromote(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
-
     charityProgramService.checkBeforeUnpromote(actionValues).then(
       (data) => {
         dispatch(success(data));
@@ -228,9 +219,7 @@ function checkBeforeUnpromote(actionValues) {
 
 function checkBeforeBulkUnpromote(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
-
     charityProgramService.checkBeforeBulkUnpromote(actionValues).then(
       (data) => {
         dispatch(success(data));

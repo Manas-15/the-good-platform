@@ -25,7 +25,6 @@ function login(data, from) {
       employeeService.login(data).then(
         (res) => {
           dispatch(success(res));
-          console.log("res?.data?.approve 111", res?.data);
           if (data?.loginType === "Others") {
             const result = JSON.stringify(res?.data);
             localStorage.setItem("accessToken", result);
@@ -243,7 +242,6 @@ function register(employee, userType) {
     employeeService.register(employee, userType).then(
       (data) => {
         dispatch(success());
-        // console.log("ddddddddddddddddd data", data?.data?.email);
         if (data?.data?.email) {
           dispatch(alertActions.error(data?.data?.email[0]));
         } else {
@@ -397,17 +395,11 @@ function addEmployee(employee) {
 }
 
 function bulkImport(formData) {
-  console.log(">>>>>>>>>>>>>>>>> comingggggggggggggg", formData);
   return (dispatch) => {
     dispatch(request(formData));
     employeeService.bulkImport(formData).then(
       (data) => {
         dispatch(success(data));
-        console.log(
-          ">>>>>>>>>>>>>>>>>",
-          formData,
-          `"/corporates/${formData?.corporateId}/employees"`
-        );
         history.push({ pathname: `"/corporates/1/employees"` });
         dispatch(alertActions.success(`Employee imported successfully`));
       },

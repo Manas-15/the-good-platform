@@ -8,7 +8,7 @@ export const userActions = {
   getDetail,
   loggedInUser,
   logout,
-  registerIndividual,
+  registerIndividual
 };
 
 function login(data, from) {
@@ -51,7 +51,6 @@ function getDetail() {
     userService.getDetail().then(
       (res) => {
         dispatch(success(res));
-        console.log("ssssssssssssssss user", res);
         localStorage.setItem("user", JSON.stringify(res?.data?.data));
         dispatch(loggedInUser(userConstants.CORPORATE));
         history.push("/dashboard");
