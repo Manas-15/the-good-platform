@@ -8,12 +8,11 @@ import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const CorporatesPortal = () => {
   let history = useHistory();
   const corporates = useSelector((state) => state?.corporates?.items);
-
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -79,22 +78,22 @@ const CorporatesPortal = () => {
           {corporates?.data && corporates?.data.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
-                {corporates?.data
-                  ?.filter((val) => {
+                {/* .filter((val) => {
                     return val?.approvalStatus === "APPROVED";
                   })
-                  ?.map((corporate, index) => {
-                    return (
-                      <li key={index + 1}>
-                        <Link
-                          to={`/corporates/${corporate.id}/employees`}
-                          onClick={() => setCorporate(corporate)}
-                        >
-                          {corporate?.name}
-                        </Link>
-                      </li>
-                    );
-                  })}
+                  ? */}
+                {corporates?.data?.map((corporate, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <Link
+                        to={`/corporates/${corporate.id}/employees`}
+                        onClick={() => setCorporate(corporate)}
+                      >
+                        {corporate?.name}
+                      </Link>
+                    </li>
+                  );
+                })}
                 {/* {corporates?.items?.data?.map((corporate, index) => {
                   return (
                     <li key={index + 1}>
