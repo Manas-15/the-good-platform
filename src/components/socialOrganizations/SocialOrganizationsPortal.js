@@ -32,8 +32,8 @@ const SocialOrganizationsPortal = () => {
   useEffect(() => {
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
-        individualId: "social",
-        userId: user?.user_id
+        individualId: "social"
+        // userId: user?.user_id
       })
     );
   }, []);

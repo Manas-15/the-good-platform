@@ -10,7 +10,7 @@ export const charityProgramService = {
   operateDenyRequest,
   checkBeforeUnpromote,
   checkBeforeBulkUnpromote,
-  getProgramDetail,
+  getProgramDetail
 };
 
 function getCharityPrograms(data) {
@@ -20,11 +20,11 @@ function getCharityPrograms(data) {
   console.log("data?.userType", data?.userType, data?.userId);
   if (data?.userType === userConstants.INDIVIDUAL_VIEW || data?.userId) {
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
-      params: data,
+      params: data
     });
   } else {
     return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
-      params: data,
+      params: data
     });
   }
 }
@@ -56,7 +56,7 @@ function checkBeforeUnpromote(data) {
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
-      params: data,
+      params: data
     }
   );
 }
@@ -65,7 +65,7 @@ function checkBeforeBulkUnpromote(data) {
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
-      params: data,
+      params: data
     }
   );
 }
@@ -76,7 +76,7 @@ function getProgramDetail(data) {
         ? "remote_api/charity_details/"
         : "api/programDetails/"),
     {
-      params: data,
+      params: data
     }
   );
 }

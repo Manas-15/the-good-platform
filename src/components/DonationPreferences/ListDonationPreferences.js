@@ -46,7 +46,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const [selectedPreference, setSelectedPreference] = useState();
   const [records, setAllRecords] = useState([]);
   const [updateType, setUpdateType] = useState("");
-  const [updatedValue, setUpdatedValue] = useState([]);
+  const [updatedValue, setUpdatedValue] = useState("");
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
