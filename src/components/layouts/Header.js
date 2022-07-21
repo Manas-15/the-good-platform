@@ -27,7 +27,6 @@ const Header = () => {
     // handleClose();
   };
   const currentView = useSelector((state) => state.currentView);
-  console.log(currentView);
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
 
@@ -35,8 +34,6 @@ const Header = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-
-  console.log(isSuperadminView);
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">

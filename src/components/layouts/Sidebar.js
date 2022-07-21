@@ -14,17 +14,11 @@ const Sidebar = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-  // console.log(
-  //   "selectedCorporateselectedCorporate",
-  //   selectedCorporate,
-  //   selectedOrganization
-  // );
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
-  console.log(isSuperadminView);
   const isOrganizationView =
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
 

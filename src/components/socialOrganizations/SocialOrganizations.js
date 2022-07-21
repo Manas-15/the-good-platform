@@ -53,11 +53,6 @@ const SocialOrganizations = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    // console.log(
-    //   "loggedInUser?.loggedInUserType",
-    //   loggedInUserType,
-    //   currentPage
-    // );
     dispatch(
       socialOrganizationActions.getSocialOrganizations({
         pageNumber: currentPage.toString(),
@@ -119,25 +114,20 @@ const SocialOrganizations = () => {
     //     e.target.checked;
     // }
     const index = theArray.indexOf(id);
-    // console.log("ddddddddddddddddddd checked start", theArray);
     if (index !== -1) {
       theArray.splice(index, 1);
     } else {
       theArray.push(id);
     }
-    // console.log("ddddddddddddddddddd checked end", theArray);
-
     // setState({items:items, allChecked: allChecked});
   };
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
   const search = (value) => {
-    // console.log("fffffffffffffffffffffff", tabType, value);
     setSearchText(value);
     // if(tabType === socialOrganizationConstants.SPONSORED){
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
     // }
   };
   return (
