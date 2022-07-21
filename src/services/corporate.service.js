@@ -19,7 +19,6 @@ function getCorporates() {
 }
 
 // function getCorporateById(id) {
-//   // console.log(id, "api page data");
 //   return axios.get(process.env.REACT_APP_API_URL + `api/corporate_list/${id}`);
 // }
 function registerCorporate(data) {
@@ -35,7 +34,6 @@ function updateCorporate(corporate) {
   );
 }
 function deleteCorporate(corporateId) {
-  // console.log(corporateId, "delete id in service page");
   return axios.post(
     process.env.REACT_APP_API_URL + "api/removeCorporate/",
     corporateId

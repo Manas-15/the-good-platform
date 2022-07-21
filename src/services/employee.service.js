@@ -18,7 +18,7 @@ export const employeeService = {
   employeeAccountRequest,
   addEmployee,
   bulkImport,
-  getCorporates,
+  getCorporates
 };
 
 async function login(data) {
@@ -43,12 +43,11 @@ function logout() {
 }
 async function getEmployees(data) {
   return await axios.get(process.env.REACT_APP_API_URL + "api/employee_list/", {
-    params: data,
+    params: data
   });
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
 async function register(data, userType) {
-  console.log(data);
   if (userType === userConstants.EMPLOYEE) {
     return await axios.post(
       process.env.REACT_APP_API_URL + "api/employee_register/",
@@ -84,7 +83,7 @@ async function setPasswordValid(data) {
   return await axios.get(
     process.env.REACT_APP_API_URL + "api/verify_set_password/",
     {
-      params: data,
+      params: data
     }
   );
 }
@@ -125,8 +124,8 @@ async function bulkImport(formData) {
     formData,
     {
       headers: {
-        "Content-Type": "multipart/form-data",
-      },
+        "Content-Type": "multipart/form-data"
+      }
     }
   );
 }
