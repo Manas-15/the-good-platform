@@ -16,15 +16,10 @@ import {
   selectedCharityTabActions,
 } from "../../actions";
 import urlSlug from "url-slug";
-// import DonateHeader from "./../CharityPrograms/DonateHeader";
-// import Donate from "./../CharityPrograms/Donate";
-// import { handleInputChange } from "react-select/dist/declarations/src/utils";
 
 const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
   const dispatch = useDispatch();
   const openNav = (charity) => {
-    console.log("11111111111111 openNav", charity);
-    // document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
 
@@ -42,9 +37,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
   //   (state) => state?.charityPrograms?.checkBeforeUnpromoteMsg
   // );
   const [open, setOpen] = useState(false);
+
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-
   const isOthersPortal =
     currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const isEmployeePortal =
@@ -112,7 +107,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
             socialId: selectedCharity?.organisationId,
             programId: selectedCharity?.id,
 
-            //   corporateId: selectedCorporate?.corporate?.corporateId,
+            // corporateId: selectedCorporate?.corporate?.corporateId,
             // socialId: selectedProgram?.soicalId,
             // programId: selectedProgram?.charityId,
           })
@@ -186,7 +181,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
 
   const checkBeforeUnpromote = async (action, item) => {
     setActionType(action);
-
     await dispatch(
       action === charityProgramConstants.BULK_UNPROMOTE
         ? charityProgramActions.checkBeforeBulkUnpromote({
@@ -422,7 +416,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType, pathname }) => {
                           <Tooltip title={charityProgram?.charityName}>
                             <Link
                               to={{
-                                pathname: `/social-organizations/programs/${urlSlug(
+                                pathname: `/social-organizations/${urlSlug(
+                                  selectedOrganization?.name
+                                )}/${urlSlug(
                                   charityProgram?.charityName ||
                                     charityProgram?.name
                                 )}`,

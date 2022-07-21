@@ -52,12 +52,8 @@ const CharityPrograms = (props) => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
-    // setSelectedCharity(null);
   };
-  // useEffect(() => {
-  //   setTabType(props?.location?.tabType);
-  //
-  // }, [props?.location?.tabType]);
+
   useEffect(() => {
     dispatch(
       charityProgramActions.getCharityPrograms(
@@ -290,7 +286,7 @@ const CharityPrograms = (props) => {
                 items={charityPrograms?.items}
                 setCharity={setCharity}
                 tabType={tabType}
-                pathname={props.location.pathname}
+                pathname={selectedOrganization?.name}
               />
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
@@ -298,7 +294,7 @@ const CharityPrograms = (props) => {
                 items={charityPrograms?.items}
                 setCharity={setCharity}
                 tabType={tabType}
-                pathname={props.location.pathname}
+                pathname={selectedOrganization?.name}
               />
             )}
           </>
