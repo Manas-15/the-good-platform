@@ -5,10 +5,10 @@ import { transactionsHistoryActions } from "../../actions";
 import Loader from "../Shared/Loader";
 import { Mail80GSchema } from "./../Validations";
 import * as moment from "moment";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import ReactHtmlParser from "react-html-parser";
-import { ProcessHelper, history } from "./../../helpers";
+import { ProcessHelper } from "./../../helpers";
 import { Accordion } from "react-bootstrap";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { payrollSettingActions } from "../../actions/payrollSetting.actions";
@@ -17,7 +17,6 @@ import {
   paginationConstants,
   viewPortalConstants,
   payrollConstants,
-  userConstants,
   donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
@@ -39,10 +38,10 @@ const initialValues = {
   transactionId: ""
 };
 const { afterToday } = DateRangePicker;
-const date = new Date();
+// const date = new Date();
 const DirectPayment = (props) => {
   const [selected, setSelected] = useState();
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
   const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState(records);
 
@@ -51,15 +50,15 @@ const DirectPayment = (props) => {
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
 
-  const selectedOrganization = useSelector(
-    (state) => state?.selectedOrganization?.organization
-  );
+  // const selectedOrganization = useSelector(
+  //   (state) => state?.selectedOrganization?.organization
+  // );
   const employee = useSelector((state) => state.employee);
   const dispatch = useDispatch();
   const employeeId = props?.match?.params?.employeeId;
-  const loggedInUserType = useSelector(
-    (state) => state?.user?.loggedinUserType
-  );
+  // const loggedInUserType = useSelector(
+  //   (state) => state?.user?.loggedinUserType
+  // );
   const [currentView, setCurrentView] = useState(payrollConstants?.LIST_VIEW);
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -69,10 +68,10 @@ const DirectPayment = (props) => {
   const [searchByCorporateName, setSearchByCorporateName] = useState("");
   const [searchByProgramName, setSearchByProgramName] = useState("");
   const [searchByAmount, setSearchByAmount] = useState("");
-  const [val, setVal] = useState(0);
+  // const [val, setVal] = useState(0);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
+  // const [isDateRangeFilter, setIsDateRangeFilter] = useState(false);
   const [openAccountDetail, setOpenAccountDetail] = useState(false);
   const [selectedPreference, setSelectedPreference] = useState();
   const [selectedAccount, setSelectedAccount] = useState();
@@ -83,12 +82,12 @@ const DirectPayment = (props) => {
   const [actionContent, setActionContent] = useState("");
   const [batchType, setBatchType] = useState("");
   const [generateMonthYear, setGenerateMonthYear] = useState(new Date());
-  const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
-  const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
+  // const [totalEmployeeInBatch, setTotalEmployeeInBatch] = useState([]);
+  // const [totalProgramInBatch, setTotalProgramInBatch] = useState([]);
   const [checkedPreference, setCheckedPreference] = useState({
     preferenceId: []
   });
-  const [allItems, setAllItems] = useState();
+  // const [allItems, setAllItems] = useState();
   const [checked, setChecked] = useState(false);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
@@ -260,11 +259,11 @@ const DirectPayment = (props) => {
     currentPage
   ]);
 
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: "selection"
-  };
+  // const selectionRange = {
+  //   startDate: new Date(),
+  //   endDate: new Date(),
+  //   key: "selection"
+  // };
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
     fetchResults(ranges);

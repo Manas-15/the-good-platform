@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   socialOrganizationConstants,
@@ -17,7 +17,7 @@ import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";
 
 let pageSize = paginationConstants?.PAGE_SIZE;
-let theArray = [];
+// let theArray = [];
 const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
@@ -26,11 +26,11 @@ const SocialOrganizations = () => {
   );
 
   const user = useSelector((state) => state?.employee?.user);
-  const [open, setOpen] = useState(false);
-  const [allChecked, setAllChecked] = useState(false);
-  const [actionType, setActionType] = useState("");
-  const [actionTitle, setActionTitle] = useState("");
-  const [actionContent, setActionContent] = useState("");
+  // const [open, setOpen] = useState(false);
+  // const [allChecked, setAllChecked] = useState(false);
+  // const [actionType, setActionType] = useState("");
+  // const [actionTitle, setActionTitle] = useState("");
+  // const [actionContent, setActionContent] = useState("");
   const [searchText, setSearchText] = useState("");
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSORED);
@@ -86,9 +86,9 @@ const SocialOrganizations = () => {
     );
   }, [currentPage]);
 
-  const setPage = (page) => {
-    setCurrentPage(page);
-  };
+  // const setPage = (page) => {
+  //   setCurrentPage(page);
+  // };
   useEffect(() => {
     setTotalCount(socialOrganizations?.totalCount);
   }, [socialOrganizations?.totalCount]);
@@ -107,18 +107,18 @@ const SocialOrganizations = () => {
         return "text-warning";
     }
   };
-  const handleOpen = (action, item) => {
-    setOpen(true);
-    setActionType(action);
-    setActionTitle(`${action} Confirmation`);
-    if (action === charityProgramConstants.UNPROMOTE) {
-      setActionContent(
-        `Are you sure you want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
-      );
-    } else {
-      setActionContent(`Are you sure to ${action.toLowerCase()}?`);
-    }
-  };
+  // const handleOpen = (action, item) => {
+  //   setOpen(true);
+  //   setActionType(action);
+  //   setActionTitle(`${action} Confirmation`);
+  //   if (action === charityProgramConstants.UNPROMOTE) {
+  //     setActionContent(
+  //       `Are you sure you want to unpromote?. Doing this would remove all the donation preferences set for the programs by the employees. Total 15 employees have set donation preference for the programs.`
+  //     );
+  //   } else {
+  //     setActionContent(`Are you sure to ${action.toLowerCase()}?`);
+  //   }
+  // };
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };

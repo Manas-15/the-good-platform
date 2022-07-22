@@ -1,7 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
 import { useSelector } from "react-redux";
-import { donationPreferenceConstants, payrollConstants } from "../../constants";
+import { donationPreferenceConstants } from "../../constants";
 import donationsConsent from "./../../config/donationsConsent.json";
 import { viewPortalConstants } from "../../constants";
 export default function DonationConsent({
