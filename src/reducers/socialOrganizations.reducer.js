@@ -9,7 +9,7 @@ export function socialOrganizations(state = {}, action) {
         individualId: action?.data?.individualId
       };
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS:
-      if (state?.userType === 2 || state?.individualId !== "social") {
+      if (state?.userType === 2 && state?.individualId !== "social") {
         return {
           items: action?.socialOrganizations?.data?.data?.data,
           totalCount: action?.socialOrganizations?.data?.data?.numberOfElements,
