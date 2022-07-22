@@ -32,7 +32,6 @@ export function employee(state = initialState, action) {
         loggingIn: true
       };
     case employeeConstants.OTHER_LOGIN_SUCCESS:
-      console.log("others login success", action?.data);
       return {
         loggedIn: true,
         user: action?.data?.data,
