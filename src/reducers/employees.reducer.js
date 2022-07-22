@@ -8,7 +8,6 @@ export function employee(state = initialState, action) {
         loggingIn: true
       };
     case employeeConstants.EMPLOYEE_LOGIN_SUCCESS:
-      console.log("action?.data?.data reducers", action?.data?.data);
       return {
         loggedIn: true,
         user: action?.data?.data,
@@ -27,6 +26,19 @@ export function employee(state = initialState, action) {
         otpVerified: false
       };
     case employeeConstants.INDIVIDUAL_LOGIN_FAILURE:
+      return { loggingIn: false };
+    case employeeConstants.OTHER_LOGIN_REQUEST:
+      return {
+        loggingIn: true
+      };
+    case employeeConstants.OTHER_LOGIN_SUCCESS:
+      console.log("others login success", action?.data);
+      return {
+        loggedIn: true,
+        user: action?.data?.data,
+        otpVerified: false
+      };
+    case employeeConstants.OTHER_LOGIN_FAILURE:
       return { loggingIn: false };
     case employeeConstants.VALIDATE_OTP_REQUEST:
       return {

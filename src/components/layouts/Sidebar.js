@@ -30,8 +30,6 @@ const Sidebar = () => {
     currentView?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   console.log(isIndividualView);
   const isTgpLoggedInView = user?.userRole;
-  console.log(isTgpLoggedInView, "ddddddddddddddddd isTgpLoggedInView");
-
   return (
     <aside id="sidebar" className="sidebar">
       <ul
