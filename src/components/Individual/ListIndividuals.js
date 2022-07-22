@@ -9,7 +9,7 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: ""
+  requestType: "",
 };
 const ListIndividuals = () => {
   let location = useLocation();

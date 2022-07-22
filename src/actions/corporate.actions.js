@@ -8,7 +8,7 @@ export const corporateActions = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  corporateAccountRequest
+  corporateAccountRequest,
 };
 function getCorporates() {
   return (dispatch) => {
@@ -82,7 +82,7 @@ function updateCorporate(corporate) {
   function success(corporate) {
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate
+      corporate,
     };
   }
   function failure(error) {

@@ -33,9 +33,7 @@ function download80G(data) {
 }
 function send80GEmail(data) {
   // return axios.corporate_list", { headers: authHeader() });
-  return axios.get(process.env.REACT_APP_API_URL + "api/send_80G_email/",
-  data
-)
+  return axios.get(process.env.REACT_APP_API_URL + "api/send_80G_email/", data);
 }
 
 function handleResponse(response) {

@@ -9,7 +9,7 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: ""
+  requestType: "",
 };
 const ListCorporates = () => {
   let location = useLocation();
@@ -99,7 +99,7 @@ const ListCorporates = () => {
                                   className="text-black"
                                   to={{
                                     pathname: `/corporates/${corporate.corporateId}/employees`,
-                                    state: data?.isSuperadminView
+                                    state: data?.isSuperadminView,
                                   }}
                                 >
                                   {corporate?.organizationName}
@@ -121,7 +121,7 @@ const ListCorporates = () => {
                                     className="text-black"
                                     to={{
                                       pathname: `/corporates/edit/${corporate.corporateId}`,
-                                      state: corporate.corporateId
+                                      state: corporate.corporateId,
                                     }}
                                   >
                                     <i

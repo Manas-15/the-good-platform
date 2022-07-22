@@ -17,7 +17,8 @@ function getCharityPrograms(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/social_charity_list/", {
   //   params: data,
   // });
-  if (data?.userType === userConstants.INDIVIDUAL_VIEW || data?.userId) {
+  console.log(data);
+  if (data?.userType === userConstants.INDIVIDUAL_VIEW) {
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
       params: data,
     });

@@ -67,7 +67,7 @@ const CreateRoutes = () => {
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
-      message: message
+      message: message,
     });
   };
   return (
@@ -98,7 +98,7 @@ const CreateRoutes = () => {
               />
               <Route
                 exact
-                path="/social-organizations/programs/:slug"
+                path="/social-organizations/:slug/:slug"
                 component={CharityProgramDetails}
               />
               {!isEmployeeView && (
