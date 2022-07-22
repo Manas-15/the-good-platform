@@ -38,7 +38,7 @@ const Sidebar = () => {
         className="ant-menu ant-menu-root ant-menu-inline ant-menu-light"
         id="sidebar-nav"
       >
-        {isEmployeeView ? (
+        {isCorporateView ? (
           <>
             <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
               <span className="ant-menu-title-content">
@@ -123,7 +123,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -138,7 +138,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -217,6 +217,66 @@ const Sidebar = () => {
                         <NavLink
                           className=" "
                           to={`/organization-account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                  </>
+                )}
+                {isEmployeeView && (
+                  <>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/dashboard"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="20"
+                            src="/assets/img/dashboard.png"
+                            alt="Dashboard"
+                          />
+                          <span className="menu-text">Dashboard</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/social-organizations"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
+                          <span className="menu-text">Programs</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/donation-preferences"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-sliders"></i>
+                          <span className="menu-text">Donation Preference</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
                           activeClassName="active"
                         >
                           <i className="bi bi-clock-history"></i>
