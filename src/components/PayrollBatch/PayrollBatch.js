@@ -517,33 +517,7 @@ const PayrollBatch = (props) => {
             </div>
           </div>
           {payrollBatches.loading && <Loader />}
-          {allRecords?.length === 0 && (
-            <div className="card p-4 text-center">
-              {isOrganizationPortal && (
-                <strong>
-                  No Payroll donation batch created by the Blue Pencil Admin
-                  till now.
-                  <br />
-                  You should wait a while till any donation reaches to you.
-                </strong>
-              )}
-              {isCorporatePortal && (
-                <strong>
-                  There is no Payroll Batch processed by you.
-                  <br />
-                  Please go to Donation preferences to process a batch now.
-                </strong>
-              )}
-              {isBluePencilPortal && (
-                <strong>
-                  No Payroll donation batch created by any corporate.
-                  <br />
-                  You should wait a while till any donation reaches to you.
-                </strong>
-              )}
-            </div>
-          )}
-          {allRecords?.length > 0 &&
+          {allRecords?.length > 0 ? (
             (corporateId ||
               organizationId ||
               currentView === payrollConstants.LIST_VIEW) && (
@@ -1169,7 +1143,33 @@ const PayrollBatch = (props) => {
                   </div>
                 </div>
               </div>
-            )}
+            )
+          ) : (
+            <div className="card p-4 text-center">
+              {isOrganizationPortal && (
+                <strong>
+                  No Payroll donation batch created by the Blue Pencil Admin
+                  till now.
+                  <br />
+                  You should wait a while till any donation reaches to you.
+                </strong>
+              )}
+              {isCorporatePortal && (
+                <strong>
+                  There is no Payroll Batch processed by you.
+                  <br />
+                  Please go to Donation preferences to process a batch now.
+                </strong>
+              )}
+              {isBluePencilPortal && (
+                <strong>
+                  No Payroll donation batch created by any corporate.
+                  <br />
+                  You should wait a while till any donation reaches to you.
+                </strong>
+              )}
+            </div>
+          )}
           <Pagination
             className="pagination-bar mt-4"
             currentPage={currentPage}
