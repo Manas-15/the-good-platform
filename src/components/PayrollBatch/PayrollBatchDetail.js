@@ -68,7 +68,7 @@ const PayrollBatchDetail = (props) => {
   } else if (currentView === payrollConstants.CORPORATE_VIEW) {
     accordionData = groupBy("corporateName");
   } else {
-    accordionData = groupBy("employeeName");
+    accordionData = groupBy("donor");
   }
   const isOrganizationView =
     currentPortal?.currentView ===
@@ -482,7 +482,7 @@ const PayrollBatchDetail = (props) => {
                                           !isBluePencilPortal && (
                                             <td className="ant-table-cell">
                                               <span className="ant-typography font-weight-bold">
-                                                {preference?.employeeName}
+                                                {preference?.donor}
                                               </span>
                                             </td>
                                           )}

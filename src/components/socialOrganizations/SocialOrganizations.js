@@ -60,6 +60,8 @@ const SocialOrganizations = () => {
               userId: user?.user_id,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
+                  ? selectedCorporate?.corporate?.corporateId
+                  : selectedCorporate?.corporate?.id
                 : user?.corporateId,
               pageSize: pageSize.toString(),
               loggedInUserType: loggedInUserType,
@@ -151,7 +153,7 @@ const SocialOrganizations = () => {
           </div>
         </div>
       </div>
-      {socialOrganizations.loading && <Loader />}
+      {socialOrganizations?.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
         {user?.user_id && loggedInUserType === userConstants.EMPLOYEE && (
           <Tabs

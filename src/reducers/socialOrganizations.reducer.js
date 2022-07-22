@@ -5,10 +5,11 @@ export function socialOrganizations(state = {}, action) {
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST:
       return {
         loading: true,
-        userType: action?.data?.loggedInUserType
+        userType: action?.data?.loggedInUserType,
+        individualId: action?.data?.individualId
       };
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS:
-      if (state?.userType === 2) {
+      if (state?.userType === 2 || state?.individualId !== "social") {
         return {
           items: action?.socialOrganizations?.data?.data?.data,
           totalCount: action?.socialOrganizations?.data?.data?.numberOfElements,
