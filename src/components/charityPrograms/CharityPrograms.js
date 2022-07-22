@@ -61,7 +61,8 @@ const CharityPrograms = (props) => {
               corporateId: selectedCorporate?.corporate?.id,
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
-              userId: user?.user_id
+              userId: user?.user_id,
+              userRole: user?.userRole
               // corporateId: selectedCorporate?.corporate?.corporateId,
               // socialId: selectedOrganization?.id,
               // userType: userConstants.CORPORATE_VIEW,
@@ -74,10 +75,12 @@ const CharityPrograms = (props) => {
               // orgId: selectedOrganization?.id?.toString(),
             }
           : {
-              uuid: user?.uuid,
+              // uuid: user?.uuid,
               userId: user?.user_id,
               orgId: selectedOrganization?.id,
-              userType: userConstants.EMPLOYEE_VIEW,
+              userType: isCorporatePortal
+                ? userConstants.CORPORATE_VIEW
+                : userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.id
                 : user?.corporateId

@@ -19,45 +19,39 @@ export const employeeActions = {
   getCorporates
 };
 function login(data, from) {
+  console.log("data?.loginType 11111111111", data?.loginType);
   if (data?.loginType === "Employee") {
     return (dispatch) => {
       dispatch(request({ data }));
       employeeService.login(data).then(
         (res) => {
           dispatch(success(res));
-          if (data?.loginType === "Others") {
-            const result = JSON.stringify(res?.data);
-            localStorage.setItem("accessToken", result);
-            dispatch(userActions.getDetail());
+
+          if (
+            !res?.data?.status &&
+            res?.data?.user_type === userConstants.INDIVIDUAL
+          ) {
+            dispatch(alertActions.error("Your account is currently blocked."));
           } else {
-            if (
-              !res?.data?.status &&
-              res?.data?.user_type === userConstants.INDIVIDUAL
-            ) {
-              dispatch(
-                alertActions.error("Your account is currently blocked.")
-              );
+            if (res?.data?.approve) {
+              const result = JSON.stringify(res?.data);
+              localStorage.setItem("user", JSON.stringify(res?.data));
+              // history.push("/dashboard");
+              // dispatch(alertActions.success("Loggedin successful"));
+              // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
+              history.push("/otp");
+              // history.push({
+              //   pathname: "/otp",
+              //   state: { otp: res?.data?.otp }
+              // });
             } else {
-              if (res?.data?.approve) {
-                const result = JSON.stringify(res?.data);
-                localStorage.setItem("user", JSON.stringify(res?.data));
-                // history.push("/dashboard");
-                // dispatch(alertActions.success("Loggedin successful"));
-                // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
-                history.push("/otp");
-                // history.push({
-                //   pathname: "/otp",
-                //   state: { otp: res?.data?.otp }
-                // });
-              } else {
-                // if(!res?.data?.approve) {
-                //   dispatch(
-                //     alertActions.error("Your account is currently blocked")
-                //   );
-                // } else {
-                dispatch(alertActions.error(res?.data?.msg));
-                // }
-              }
+              // if(!res?.data?.approve) {
+              //   dispatch(
+              //     alertActions.error("Your account is currently blocked")
+              //   );
+              // } else {
+              dispatch(alertActions.error(res?.data?.msg));
+              // }
             }
           }
         },
@@ -121,6 +115,42 @@ function login(data, from) {
     }
     function failure(error) {
       return { type: employeeConstants.INDIVIDUAL_LOGIN_FAILURE, error };
+    }
+  } else if (data?.loginType === "Others") {
+    return (dispatch) => {
+      dispatch(request({ data }));
+      employeeService.login(data).then(
+        (data) => {
+          dispatch(success(data));
+          console.log("data?.data", data?.data);
+          if (data?.data?.msg && data?.data?.msg !== "Login Success") {
+            dispatch(alertActions.error(data?.data?.msg));
+          } else {
+            const res = JSON.stringify(data?.data);
+            localStorage.setItem("user", JSON.stringify(data?.data));
+            history.push("/");
+          }
+        },
+        (error) => {
+          dispatch(failure(error.toString()));
+          dispatch(
+            alertActions.error(
+              error?.response?.data?.errors?.non_field_errors
+                ? error?.response?.data?.errors?.non_field_errors[0]
+                : error.toString()
+            )
+          );
+        }
+      );
+    };
+    function request(data) {
+      return { type: employeeConstants.OTHER_LOGIN_REQUEST, data };
+    }
+    function success(data) {
+      return { type: employeeConstants.OTHER_LOGIN_SUCCESS, data };
+    }
+    function failure(error) {
+      return { type: employeeConstants.OTHER_LOGIN_FAILURE, error };
     }
   }
 }
