@@ -6,7 +6,7 @@ import {
   paginationConstants,
   charityProgramConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { socialOrganizationActions } from "../../actions";
 import { Tabs } from "antd";
@@ -68,20 +68,24 @@ const SocialOrganizations = () => {
               individualId:
                 loggedInUserType === userConstants.INDIVIDUAL
                   ? user?.uuid
-                  : null,
+                  : null
             }
           : isOthersPortal
           ? {
-              loggedInUserType: loggedInUserType,
+              loggedInUserType: loggedInUserType
             }
           : {
               pageNumber: currentPage.toString(),
-              corporateId: user?.corporateId,
+              corporateId: isCorporatePortal
+                ? selectedCorporate?.corporate?.corporateId
+                  ? selectedCorporate?.corporate?.corporateId
+                  : selectedCorporate?.corporate?.id
+                : user?.corporateId,
               employeeId: isEmployeePortal ? user?.emp_id : null,
               individualId: user?.uuid,
               loggedInUserType: loggedInUserType,
               pageSize: pageSize.toString(),
-              userId: user?.user_id,
+              userId: user?.user_id
             }
       )
     );
