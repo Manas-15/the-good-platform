@@ -91,7 +91,7 @@ const AddEmployee = () => {
     values.state = state;
     values.country = country;
     values.corporateProfileId = selectedCorporate?.id;
-    setSubmitted(true);
+    values.corporateProfileName = selectedCorporate?.name;
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
       dispatch(employeeActions.addEmployee(values));
@@ -110,6 +110,7 @@ const AddEmployee = () => {
     employeeId: "",
     pan: "",
     corporateProfileId: selectedCorporate?.id,
+    corporateProfileName: selectedCorporate?.name,
     gender: "",
     contactNumber: "",
     address: "",
