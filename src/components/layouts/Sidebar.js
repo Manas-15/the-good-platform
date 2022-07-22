@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
   const selectedCorporate = useSelector(
     (state) => state?.selectedCorporate?.corporate
   );
@@ -17,11 +18,19 @@ const Sidebar = () => {
   );
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
+    currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isCorporateView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
   const isOrganizationView =
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+
+  const isIndividualView =
+    currentView?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
+  console.log(isIndividualView);
+  const isTgpLoggedInView = user?.userRole;
+  console.log(isEmployeeView, isSuperadminView, isOrganizationView);
 
   return (
     <aside id="sidebar" className="sidebar">
@@ -217,7 +226,7 @@ const Sidebar = () => {
                     </li>
                   </>
                 )}
-                {!isOrganizationView && (
+                {isIndividualView && (
                   <>
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
@@ -235,7 +244,6 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
-
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
                         <NavLink
@@ -252,52 +260,134 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
-                    {corporateLoggedinUser && (
-                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                        <span className="ant-menu-title-content">
-                          <NavLink
-                            className=" "
-                            to={`/employee/${user?.userId}/account-summary`}
-                            activeClassName="active"
-                          >
-                            <i className="bi bi-clock-history"></i>
-                            <span className="menu-text">Account Summary</span>
-                          </NavLink>
-                        </span>
-                      </li>
-                    )}
-                    {!corporateLoggedinUser && (
-                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                        <span className="ant-menu-title-content">
-                          <NavLink
-                            className=" "
-                            to={`/employee/${user?.uuid}/account-summary`}
-                            activeClassName="active"
-                          >
-                            <i className="bi bi-clock-history"></i>
-                            <span className="menu-text">Account Summary</span>
-                          </NavLink>
-                        </span>
-                      </li>
-                    )}
-                    {!corporateLoggedinUser &&
-                      loggedInUser?.loggedinUserType !==
-                        userConstants.INDIVIDUAL && (
-                        <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                          <span className="ant-menu-title-content">
-                            <NavLink
-                              className=" "
-                              to="/donation-preferences"
-                              activeClassName="active"
-                            >
-                              <i className="bi bi-handbag"></i>
-                              <span className="menu-text">
-                                Donation Preferences
-                              </span>
-                            </NavLink>
-                          </span>
-                        </li>
-                      )}
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                  </>
+                )}
+                {isTgpLoggedInView === "PAYMENT-ADMIN" && (
+                  <>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/dashboard"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="20"
+                            src="/assets/img/dashboard.png"
+                            alt="Dashboard"
+                          />
+                          <span className="menu-text">Dashboard</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/social-organizations"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
+                          <span className="menu-text">Programs</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/employee-donation-preference"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-sliders"></i>
+                          <span className="menu-text">Donation Preference</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/payroll-setting"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-gear"></i>
+                          <span className="menu-text">Payroll Setting</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/corporates/${selectedCorporate?.id}/payroll-batch`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-hdd-stack"></i>
+                          <span className="menu-text">Payroll Batch</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                  </>
+                )}
+                {isTgpLoggedInView === "FO-ADMIN" && (
+                  <>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/social-organizations"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
+                          <span className="menu-text">Programs</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
                   </>
                 )}
               </>

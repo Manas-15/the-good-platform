@@ -62,9 +62,6 @@ const CharityPrograms = (props) => {
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id,
-              // corporateId: selectedCorporate?.corporate?.corporateId,
-              // socialId: selectedOrganization?.id,
-              // userType: userConstants.CORPORATE_VIEW,
             }
           : isIndividualPortal
           ? {

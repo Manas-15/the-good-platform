@@ -58,9 +58,6 @@ function login(data, from) {
                 dispatch(alertActions.error(res?.data?.msg));
                 // }
               }
-              // dispatch(
-              //   alertActions.error("Your account is currently inactive.")
-              // );
             }
           }
         },
