@@ -184,6 +184,8 @@ const ListTransactionsHistory = (props) => {
                 loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
+                  ? selectedCorporate?.corporate?.corporateId
+                  : selectedCorporate?.corporate?.id
                 : null,
               socialId: isOrganizationView ? selectedOrganization?.id : null,
               pageSize: pageSize,
@@ -227,6 +229,8 @@ const ListTransactionsHistory = (props) => {
                 loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
+                  ? selectedCorporate?.corporate?.corporateId
+                  : selectedCorporate?.corporate?.id
                 : null,
               socialId: isOrganizationView ? selectedOrganization?.id : null,
               pageSize: pageSize,
