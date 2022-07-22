@@ -13,7 +13,7 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData,
+  CountryRegionData
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
@@ -24,6 +24,7 @@ const initialValues = {
   employeeId: "",
   pan: "",
   corporateProfileId: "",
+  corporateProfileName: "",
   gender: "",
   contactNumber: "",
   address: "",
@@ -31,17 +32,17 @@ const initialValues = {
   state: "",
   country: "",
   userType: 3,
-  password: "",
+  password: ""
 };
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
   { value: "2", label: "Help Donar" },
-  { value: "3", label: "Universe Donar" },
+  { value: "3", label: "Universe Donar" }
 ];
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" },
+  { value: "Transgender", label: "Transgender" }
 ];
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -104,8 +105,16 @@ const EmployeeForm = ({ type }) => {
   const employeeRegister = (values) => {
     values.state = state;
     values.country = country;
+    const splitCorporate = values?.corporateProfileId?.split("-");
+    values.corporateProfileId = splitCorporate?.[0];
+    values.corporateProfileName = splitCorporate?.[1];
     setSubmitted(true);
-    if (values.firstName && values.email && values.corporateProfileId) {
+    if (
+      values.firstName &&
+      values.email &&
+      values.corporateProfileId &&
+      values.corporateProfileName
+    ) {
       values.email = values.email.toLowerCase();
       dispatch(employeeActions.register(values, userConstants.EMPLOYEE));
     }
@@ -151,7 +160,7 @@ const EmployeeForm = ({ type }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
+                isSubmitting
                 /* and other goodies */
               }) => (
                 <Form autoComplete="false">
@@ -315,7 +324,10 @@ const EmployeeForm = ({ type }) => {
                       >
                         <option value="">Select Corporate</option>
                         {corporates?.items?.data?.map((corporate, index) => (
-                          <option value={corporate?.id} key={index}>
+                          <option
+                            value={corporate?.id + "-" + corporate?.name}
+                            key={index}
+                          >
                             {corporate?.name}
                           </option>
                         ))}

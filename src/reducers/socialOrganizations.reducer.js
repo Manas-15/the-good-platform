@@ -5,24 +5,26 @@ export function socialOrganizations(state = {}, action) {
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST:
       return {
         loading: true,
-        userType: action?.data?.loggedInUserType,
+        userType: action?.data?.loggedInUserType
       };
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS:
       if (state?.userType === 2) {
         return {
           items: action?.socialOrganizations?.data?.data?.data,
           totalCount: action?.socialOrganizations?.data?.data?.numberOfElements,
+          loading: false
         };
       } else {
         return {
           items: action?.socialOrganizations?.data?.social_organization,
           totalCount: action?.socialOrganizations?.data?.totalCount,
+          loading: false
         };
       }
-
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_FAILURE:
       return {
         error: action.error,
+        loading: false
       };
     default:
       return state;

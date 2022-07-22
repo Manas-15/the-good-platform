@@ -62,6 +62,9 @@ const CharityPrograms = (props) => {
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id,
+              // corporateId: selectedCorporate?.corporate?.corporateId,
+              // socialId: selectedOrganization?.id,
+              // userType: userConstants.CORPORATE_VIEW,
             }
           : isIndividualPortal
           ? {
@@ -274,8 +277,8 @@ const CharityPrograms = (props) => {
         </div>
       </div>
       <div className="ant-tabs-nav-wrap">
-        {currentPortal?.currentView === "Individual Portal" ||
-        "Others Portal" ? (
+        {currentPortal?.currentView ===
+        ("Individual Portal" || "Others Portal") ? (
           <>
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms

@@ -9,7 +9,6 @@ import Header from "../components/Layouts/Header";
 import Sidebar from "../components/Layouts/Sidebar";
 import { alertActions } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
-
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
 import CorporatesPortal from "../components/Corporate/CorporatesPortal";
@@ -37,7 +36,6 @@ import IndividualSignUp from "../components/Auth/IndividualSignUp";
 import { userConstants } from "./../constants";
 import DirectPayment from "../components/DirectPayment/DirectPayment";
 import ListIndividuals from "../components/Individual/ListIndividuals";
-
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
   // const user = useSelector((state) => state.employee.user);
@@ -93,7 +91,6 @@ const CreateRoutes = () => {
                 <Route exact path="/" component={Dashboard} />
               )}
               <Route exact path="/profile" component={Profile} />
-
               <Route
                 exact
                 path="/social-organizations/:slug"
@@ -104,7 +101,6 @@ const CreateRoutes = () => {
                 path="/social-organizations/:slug/:slug"
                 component={CharityProgramDetails}
               />
-
               {!isEmployeeView && (
                 <Route
                   exact
@@ -112,7 +108,6 @@ const CreateRoutes = () => {
                   component={DonationPreferences}
                 />
               )}
-
               <Route exact path="/corporates" component={CorporatesPortal} />
               <Route
                 exact
@@ -124,7 +119,6 @@ const CreateRoutes = () => {
                 path="/corporates/:corporateId/employees"
                 component={ListEmployees}
               />
-
               <Route
                 exact
                 path="/employee-donation-preference"
@@ -216,7 +210,6 @@ const CreateRoutes = () => {
                   path="/employees/sign-up"
                   component={EmployeeSignUp}
                 />
-
                 <Route
                   exact
                   path="/others/sign-up"

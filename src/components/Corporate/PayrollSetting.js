@@ -141,7 +141,7 @@ const PayrollSetting = (props) => {
       corporateName: isCorporatePortal
         ? selectedCorporate?.corporate?.corporateName
           ? selectedCorporate?.corporate?.corporateName
-          : null
+          : selectedCorporate?.corporate?.name
         : null,
       totalAmount: data.reduce(
         (total, currentValue) => (total = total + currentValue.donationAmount),
@@ -335,7 +335,7 @@ const PayrollSetting = (props) => {
                             <table>
                               <thead className="ant-table-thead">
                                 <tr>
-                                  <th className="ant-table-cell">Sr No.</th>
+                                  {/* <th className="ant-table-cell">Sr No.</th> */}
                                   {(currentView ===
                                     payrollConstants.ORGANIZATION_VIEW ||
                                     currentView ===
@@ -385,9 +385,9 @@ const PayrollSetting = (props) => {
                                       key={index + 1}
                                       className="ant-table-row ant-table-row-level-0"
                                     >
-                                      <td className="ant-table-cell">
+                                      {/* <td className="ant-table-cell">
                                         {i + 1}
-                                      </td>
+                                      </td> */}
                                       {(currentView ===
                                         payrollConstants.ORGANIZATION_VIEW ||
                                         currentView ===

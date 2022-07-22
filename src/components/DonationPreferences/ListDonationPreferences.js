@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,18 +6,17 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
-import Pagination from "./../Shared/Pagination";
+// import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
-import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
-import { Progress, Tooltip, Switch } from "antd";
+import { Tooltip } from "antd";
 import ReactHtmlParser from "react-html-parser";
 
 const preferenceForm = {
@@ -26,16 +25,16 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
-let pageSize = paginationConstants?.PAGE_SIZE;
+// let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);

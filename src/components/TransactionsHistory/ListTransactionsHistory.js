@@ -184,6 +184,8 @@ const ListTransactionsHistory = (props) => {
                 loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
+                  ? selectedCorporate?.corporate?.corporateId
+                  : selectedCorporate?.corporate?.id
                 : null,
               socialId: isOrganizationView ? selectedOrganization?.id : null,
               pageSize: pageSize,
@@ -197,7 +199,29 @@ const ListTransactionsHistory = (props) => {
                 : null,
               endDate: dateRange
                 ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-                : null,
+                : null
+              //           transactionsHistoryActions.getTransactionsHistory({
+              //   individualId:
+              //     loggedInUserType === userConstants.INDIVIDUAL
+              //       ? employee?.user?.uuid
+              //       : null,
+              //   employeeId:
+              //     loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
+              //   corporateId: isCorporatePortal
+              //     ? selectedCorporate?.corporate?.corporateId
+              //     : null,
+              //   socialId: isOrganizationView ? selectedOrganization?.id : null,
+              //   pageSize: pageSize,
+              //   offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+              //   searchByEmployeeName: searchByEmployeeName,
+              //   searchByProgramName: searchByProgramName,
+              //   searchByCorporateName: searchByCorporateName,
+              //   searchByAmount: searchByAmount,
+              //   startDate: dateRange ? moment(dateRange[0]).format("YYYY-MM-DD") : null,
+              //   endDate: dateRange
+              //     ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
+              //     : null
+              // })
             }
           : {
               userId: user?.detail?.userId,
@@ -205,6 +229,8 @@ const ListTransactionsHistory = (props) => {
                 loggedInUserType === userConstants.EMPLOYEE ? employeeId : null,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.corporateId
+                  ? selectedCorporate?.corporate?.corporateId
+                  : selectedCorporate?.corporate?.id
                 : null,
               socialId: isOrganizationView ? selectedOrganization?.id : null,
               pageSize: pageSize,
@@ -218,7 +244,7 @@ const ListTransactionsHistory = (props) => {
                 : null,
               endDate: dateRange
                 ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-                : null,
+                : null
             }
       )
     );

@@ -335,7 +335,7 @@ const ListEmployees = (props) => {
                   <table>
                     <thead className="ant-table-thead">
                       <tr>
-                        <th className="ant-table-cell">Sr No.</th>
+                        {/* <th className="ant-table-cell">Sr No.</th> */}
                         <th className="ant-table-cell">Name</th>
                         <th className="ant-table-cell">Email</th>
                         <th className="ant-table-cell">Phone</th>
@@ -350,11 +350,11 @@ const ListEmployees = (props) => {
                             key={index + 1}
                             className="ant-table-row ant-table-row-level-0"
                           >
-                            <td className="ant-table-cell">
+                            {/* <td className="ant-table-cell">
                               {currentPage >= 2
                                 ? currentPage * pageSize - pageSize + index + 1
                                 : index + 1}
-                            </td>
+                            </td> */}
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
                                 {employee?.name}

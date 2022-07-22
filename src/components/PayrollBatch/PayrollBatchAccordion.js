@@ -213,7 +213,6 @@ const PayrollBatchAccordion = (props) => {
       )
     );
   };
-
   return (
     <>
       {accordionData && !isBatchDetail && (
