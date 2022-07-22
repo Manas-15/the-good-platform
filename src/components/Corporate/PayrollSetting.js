@@ -141,7 +141,7 @@ const PayrollSetting = (props) => {
       corporateName: isCorporatePortal
         ? selectedCorporate?.corporate?.corporateName
           ? selectedCorporate?.corporate?.corporateName
-          : null
+          : selectedCorporate?.corporate?.name
         : null,
       totalAmount: data.reduce(
         (total, currentValue) => (total = total + currentValue.donationAmount),
