@@ -209,7 +209,7 @@ const PayrollBatch = (props) => {
         } for this batch?`
       );
     }
-    if (action === "Complete Batch") {
+    if (action === payrollConstants.COMPLETE_BATCH) {
       completeInitialValues.referenceNote = `Process batch for the month of ${moment().format(
         "MMMM"
       )} - ${item?.corporateName}`;
@@ -777,12 +777,14 @@ const PayrollBatch = (props) => {
                                     {corporateId &&
                                       groupByBatchData[type]?.[0]?.status ===
                                         payrollConstants.PENDING_STATUS && (
-                                        <Tooltip title="Complete">
+                                        <Tooltip
+                                          title={payrollConstants.COMPLETE}
+                                        >
                                           <Link
                                             to="#"
                                             onClick={() =>
                                               handleOpen(
-                                                "Complete Batch",
+                                                payrollConstants.COMPLETE_BATCH,
                                                 groupByBatchData[type]?.[0]
                                               )
                                             }
@@ -1045,7 +1047,10 @@ const PayrollBatch = (props) => {
                                         <Link
                                           to="#"
                                           onClick={() =>
-                                            handleOpen("Complete Batch", batch)
+                                            handleOpen(
+                                              payrollConstants.COMPLETE_BATCH,
+                                              batch
+                                            )
                                           }
                                         >
                                           <span className="bi-check-circle fs-5"></span>

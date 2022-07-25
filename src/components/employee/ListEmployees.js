@@ -52,7 +52,7 @@ const ListEmployees = (props) => {
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
   const [finalData, setFinalData] = useState([]);
-  const [records, setRecords] = useState("");
+  const [records, setRecords] = useState([]);
   const [selected, setSelected] = useState();
 
   const dispatch = useDispatch();
@@ -183,13 +183,13 @@ const ListEmployees = (props) => {
     if (value !== "") {
       const results = () => {
         if (selected === "name") {
-          return records?.filter((item) =>
+          return employees?.items?.filter?.((item) =>
             value
               ? item?.name?.toLowerCase()?.includes?.(value.toLowerCase())
               : item
           );
         } else if (selected === "email") {
-          return records?.filter((item) =>
+          return employees?.items?.filter?.((item) =>
             value
               ? item?.email?.toLowerCase()?.includes?.(value.toLowerCase())
               : item
