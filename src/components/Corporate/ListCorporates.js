@@ -9,7 +9,7 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const ListCorporates = () => {
   let location = useLocation();
@@ -98,11 +98,11 @@ const ListCorporates = () => {
                                 <Link
                                   className="text-black"
                                   to={{
-                                    pathname: `/corporates/${corporate.corporateId}/employees`,
-                                    state: data?.isSuperadminView,
+                                    pathname: `/corporates/${corporate.id}/employees`,
+                                    state: data?.isSuperadminView
                                   }}
                                 >
-                                  {corporate?.organizationName}
+                                  {corporate?.name}
                                 </Link>
                               </span>
                             </td>
@@ -110,7 +110,7 @@ const ListCorporates = () => {
                               {corporate?.employeeCount}
                             </td>
                             <td className="ant-table-cell">
-                              {moment(corporate?.createdDate).format(
+                              {moment(corporate?.createdOn).format(
                                 "DD MMM, YYYY"
                               )}
                             </td>
@@ -120,8 +120,8 @@ const ListCorporates = () => {
                                   <Link
                                     className="text-black"
                                     to={{
-                                      pathname: `/corporates/edit/${corporate.corporateId}`,
-                                      state: corporate.corporateId,
+                                      pathname: `/corporates/edit/${corporate.id}`,
+                                      state: corporate.id
                                     }}
                                   >
                                     <i
@@ -169,8 +169,8 @@ const ListCorporates = () => {
                                     onClick={() =>
                                       handleOpenDialog(
                                         "Delete",
-                                        corporate?.organizationName,
-                                        corporate?.corporateId
+                                        corporate?.name,
+                                        corporate?.id
                                       )
                                     }
                                   >
@@ -185,7 +185,7 @@ const ListCorporates = () => {
                   ) : (
                     <tr>
                       <td colSpan="6" className="text-center">
-                        No employees found
+                        No corporates found
                       </td>
                     </tr>
                   )}
