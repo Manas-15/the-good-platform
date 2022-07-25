@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   socialOrganizationActions,
@@ -10,10 +10,6 @@ import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
 import { viewPortalConstants } from "../../constants";
 // import corporates from "./../../config/corporates.json";
-const actionInitialValues = {
-  userId: "",
-  requestType: ""
-};
 const SocialOrganizationsPortal = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
@@ -27,10 +23,10 @@ const SocialOrganizationsPortal = () => {
     currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  const isIndividualPortal =
-    currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
-  const isOthersPortal =
-    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
+  // const isIndividualPortal =
+  //   currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
+  // const isOthersPortal =
+  //   currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const logout = () => {

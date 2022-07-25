@@ -32,7 +32,6 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 const ListEmployees = (props) => {
   let history = useHistory();
   let location = useLocation();
-  const isSuperadminView = location.state;
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
   const hiddenFileInput = useRef(null);
