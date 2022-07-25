@@ -97,7 +97,7 @@ const PayrollBatchAccordion = (props) => {
       setActionTitle(`${action}`);
       setActionContent(
         `Are you sure you want to ${
-          action == "Confirm Batch" ? "confirm" : "unconfirm"
+          action === "Confirm Batch" ? "confirm" : "unconfirm"
         } this batch?`
       );
     }

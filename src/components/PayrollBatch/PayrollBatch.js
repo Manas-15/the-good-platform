@@ -98,7 +98,6 @@ const PayrollBatch = (props) => {
       }"</strong>?`
     );
   };
-
   useEffect(() => {
     dispatch(
       payrollBatchActions.getPayrollBatch({
@@ -116,7 +115,6 @@ const PayrollBatch = (props) => {
     );
     // filter("All");
   }, [currentPage]);
-
   const groupByBatch = () => {
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
@@ -124,7 +122,6 @@ const PayrollBatch = (props) => {
     }, {});
   };
   let allGroupData;
-
   useEffect(() => {
     if (payrollBatches?.item?.length > 0) {
       allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
@@ -140,13 +137,11 @@ const PayrollBatch = (props) => {
       setAllRecords(payrollBatches?.items);
     }
   }, [payrollBatches?.items]);
-
   useEffect(() => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
-
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -162,7 +157,7 @@ const PayrollBatch = (props) => {
     { label: "Processed", value: payrollConstants.COMPLETED_STATUS }
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
       "MMMM"
     )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);
