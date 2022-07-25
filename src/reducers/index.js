@@ -34,7 +34,7 @@ const rootReducer = combineReducers({
   selectedOrganization,
   selectedCharity,
   selectedCharityTab,
-  user,
+  user
 });
 
 export default rootReducer;
