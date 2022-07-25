@@ -30,7 +30,7 @@ function getCharityPrograms(data) {
   function request(data) {
     return {
       type: charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST,
-      data: data?.userType
+      data: data
     };
   }
   function success(charityPrograms) {
