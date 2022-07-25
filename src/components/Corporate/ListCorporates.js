@@ -77,7 +77,7 @@ const ListCorporates = () => {
                     <th className="ant-table-cell">Name</th>
                     <th className="ant-table-cell">Employees</th>
                     <th className="ant-table-cell">Date Added</th>
-                    <th className="ant-table-cell">Actions</th>
+                    {/* <th className="ant-table-cell">Actions</th> */}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
@@ -114,7 +114,7 @@ const ListCorporates = () => {
                                 "DD MMM, YYYY"
                               )}
                             </td>
-                            <td className="ant-table-cell">
+                            {/* <td className="ant-table-cell">
                               <div className="ms-2">
                                 <Tooltip title="Edit">
                                   <Link
@@ -178,7 +178,7 @@ const ListCorporates = () => {
                                   </Link>
                                 </Tooltip>
                               </div>
-                            </td>
+                            </td> */}
                           </tr>
                         );
                       })
