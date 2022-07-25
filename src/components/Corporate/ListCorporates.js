@@ -81,40 +81,40 @@ const ListCorporates = () => {
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {corporates?.items && corporates?.items.length > 0 ? (
-                    corporates?.items
-                      ?.filter((val) => {
-                        return !val?.isDeleted;
-                      })
-                      ?.map((corporate, index) => {
-                        return (
-                          <tr
-                            className="ant-table-row ant-table-row-level-0"
-                            key={index}
-                          >
-                            <td className="ant-table-cell">{index + 1}</td>
-                            <td className="ant-table-cell">
-                              <span className="ant-typography font-weight-bold">
-                                <Link
-                                  className="text-black"
-                                  to={{
-                                    pathname: `/corporates/${corporate.id}/employees`,
-                                    state: data?.isSuperadminView
-                                  }}
-                                >
-                                  {corporate?.name}
-                                </Link>
-                              </span>
-                            </td>
-                            <td className="ant-table-cell">
-                              {corporate?.employeeCount}
-                            </td>
-                            <td className="ant-table-cell">
-                              {moment(corporate?.createdOn).format(
-                                "DD MMM, YYYY"
-                              )}
-                            </td>
-                            {/* <td className="ant-table-cell">
+                  {corporates?.items?.length > 0 ? (
+                    // ?.filter((val) => {
+                    //   return !val?.isDeleted;
+                    // })
+                    // ?
+                    corporates?.items?.map((corporate, index) => {
+                      return (
+                        <tr
+                          className="ant-table-row ant-table-row-level-0"
+                          key={index}
+                        >
+                          <td className="ant-table-cell">{index + 1}</td>
+                          <td className="ant-table-cell">
+                            <span className="ant-typography font-weight-bold">
+                              <Link
+                                className="text-black"
+                                to={{
+                                  pathname: `/corporates/${corporate.id}/employees`,
+                                  state: data?.isSuperadminView
+                                }}
+                              >
+                                {corporate?.name}
+                              </Link>
+                            </span>
+                          </td>
+                          <td className="ant-table-cell">
+                            {corporate?.employeeCount}
+                          </td>
+                          <td className="ant-table-cell">
+                            {moment(corporate?.createdOn).format(
+                              "DD MMM, YYYY"
+                            )}
+                          </td>
+                          {/* <td className="ant-table-cell">
                               <div className="ms-2">
                                 <Tooltip title="Edit">
                                   <Link
@@ -179,9 +179,9 @@ const ListCorporates = () => {
                                 </Tooltip>
                               </div>
                             </td> */}
-                          </tr>
-                        );
-                      })
+                        </tr>
+                      );
+                    })
                   ) : (
                     <tr>
                       <td colSpan="6" className="text-center">

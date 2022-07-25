@@ -44,6 +44,9 @@ const PayrollBatch = (props) => {
   const organizationId = props?.match?.params?.organizationId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector(
+    (state) => state?.selectedCorporate?.corporate
+  );
   const isOrganizationPortal =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;

@@ -75,14 +75,14 @@ const CorporatesPortal = () => {
       <div className="row mb-4">
         <div className="col-md-4 offset-md-3">
           {corporates?.loading && <Loader />}
-          {corporates?.data && corporates?.data.length > 0 ? (
+          {corporates?.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
                 {/* .filter((val) => {
                     return val?.approvalStatus === "APPROVED";
                   })
                   ? */}
-                {corporates?.data?.map((corporate, index) => {
+                {corporates?.map?.((corporate, index) => {
                   return (
                     <li key={index + 1}>
                       <Link
