@@ -4,26 +4,26 @@ export function user(state = {}, action) {
   switch (action.type) {
     case userConstants.USER_LOGIN_REQUEST:
       return {
-        loggingIn: true
+        loggingIn: true,
       };
     case userConstants.USER_LOGIN_SUCCESS:
       return {
         loggedIn: true,
         user: action?.data?.data,
-        otpVerified: false
+        otpVerified: false,
       };
     case userConstants.USER_LOGIN_FAILURE:
       return { loggingIn: false };
     case userConstants.USER_DETAIL_REQUEST:
       return {
         ...state,
-        loggingIn: true
+        loggingIn: true,
       };
     case userConstants.USER_DETAIL_SUCCESS:
       return {
         ...state,
         loggingIn: true,
-        detail: action?.data?.data?.data
+        detail: action?.data?.data?.data,
       };
     case userConstants.USER_DETAIL_FAILURE:
       return { ...state, loggingIn: false };
@@ -33,15 +33,15 @@ export function user(state = {}, action) {
       return {};
     case userConstants.GETALL_REQUEST:
       return {
-        loading: true
+        loading: true,
       };
     case userConstants.GETALL_SUCCESS:
       return {
-        items: action.users
+        items: action.users,
       };
     case userConstants.GETALL_FAILURE:
       return {
-        error: action.error
+        error: action.error,
       };
     case userConstants.DELETE_REQUEST:
       // add 'deleting:true' property to user being deleted
@@ -49,12 +49,12 @@ export function user(state = {}, action) {
         ...state,
         items: state.items.map((user) =>
           user.id === action.id ? { ...user, deleting: true } : user
-        )
+        ),
       };
     case userConstants.DELETE_SUCCESS:
       // remove deleted user from state
       return {
-        items: state.items.filter((user) => user.id !== action.id)
+        items: state.items.filter((user) => user.id !== action.id),
       };
     case userConstants.DELETE_FAILURE:
       // remove 'deleting:true' property and add 'deleteError:[error]' property to user
@@ -69,7 +69,7 @@ export function user(state = {}, action) {
           }
 
           return user;
-        })
+        }),
       };
     default:
       return state;

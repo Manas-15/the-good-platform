@@ -5,4 +5,6 @@ export const viewPortalConstants = {
   BLUE_PENCEIL_ADMIN_PORTAL: "Blue Pencil Admin Portal",
   SOCIAL_ORGANIZATION_PORTAL: "Social Organization Portal",
   INDIVIDUAL_PORTAL: "Individual Portal",
+  PAYMENT_ADMIN: "PAYMENT-ADMIN",
+  FO_ADMIN: "FO-ADMIN",
 };

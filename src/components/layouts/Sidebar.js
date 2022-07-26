@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
   const selectedCorporate = useSelector(
     (state) => state?.selectedCorporate?.corporate
   );
+
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
 
   const loggedInUser = useSelector((state) => state.user);
@@ -28,8 +28,8 @@ const Sidebar = () => {
 
   const isIndividualView =
     currentView?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
-  console.log(isIndividualView);
   const isTgpLoggedInView = user?.userRole;
+
   return (
     <aside id="sidebar" className="sidebar">
       <ul
@@ -121,7 +121,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView }
+                        state: { isSuperadminView },
                       }}
                       activeClassName="active"
                     >
@@ -136,7 +136,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView }
+                        state: { isSuperadminView },
                       }}
                       activeClassName="active"
                     >
@@ -332,7 +332,7 @@ const Sidebar = () => {
                     </li>
                   </>
                 )}
-                {isTgpLoggedInView === "PAYMENT-ADMIN" && (
+                {isTgpLoggedInView === viewPortalConstants.PAYMENT_ADMIN && (
                   <>
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
@@ -394,7 +394,11 @@ const Sidebar = () => {
                       <span className="ant-menu-title-content">
                         <NavLink
                           className=" "
-                          to={`/corporates/${selectedCorporate?.id}/payroll-batch`}
+                          to={`/corporates/${
+                            selectedCorporate
+                              ? selectedCorporate?.id
+                              : corporateLoggedinUser?.userId
+                          }/payroll-batch`}
                           activeClassName="active"
                         >
                           <i className="bi bi-hdd-stack"></i>
@@ -416,7 +420,7 @@ const Sidebar = () => {
                     </li>
                   </>
                 )}
-                {isTgpLoggedInView === "FO-ADMIN" && (
+                {isTgpLoggedInView === viewPortalConstants.FO_ADMIN && (
                   <>
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">

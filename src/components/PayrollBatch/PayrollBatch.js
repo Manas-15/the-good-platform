@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -24,18 +24,18 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: ""
+  socialId: "",
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -69,8 +69,8 @@ const PayrollBatch = (props) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
-  // const [searchValue, setSearchValue] = useState("");
-  // const [selectedKeySearch, setSelectedKeySearch] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [selectedKeySearch, setSelectedKeySearch] = useState("");
   const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState([]);
   const [selected, setSelected] = useState();
@@ -113,7 +113,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
       })
     );
     // filter("All");
@@ -157,7 +157,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: payrollConstants.COMPLETED_STATUS }
+    { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
@@ -175,7 +175,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote
+        referenceNote: values?.referenceNote,
       })
     );
     hidePaidSimulator();
@@ -274,41 +274,41 @@ const PayrollBatch = (props) => {
   const onSearchChange = (e, selected) => {
     const keyword = e;
     allGroupData = groupByBatch();
-    // if (keyword !== "") {
-    //   const results = Object.keys(groupByBatchData)?.map((type, index) => {
-    // if (selected === "batchId") {
-    //   if (
-    //     groupByBatchData[type]?.[0]?.batchId
-    //       ?.toLowerCase()
-    //       .startsWith(keyword.toLowerCase())
-    //   ) {
-    //     return groupByBatchData[type];
-    //   }
-    // } else if (selected === "referenceId") {
-    //   if (
-    //     groupByBatchData[type]?.[0]?.referenceId
-    //       ?.toLowerCase()
-    //       .startsWith(keyword.toLowerCase())
-    //   ) {
-    //     return groupByBatchData[type];
-    //   }
-    // } else {
-    //   if (
-    //     selected === "amount" &&
-    //     groupByBatchData[type]?.[0]?.amount
-    //       ?.toString()
-    //       .startsWith(keyword.toString())
-    //   ) {
-    //     return groupByBatchData[type];
-    //   }
-    // }
-    // });
-    //   setGroupByBatchData(results);
-    // } else {
-    //   keyword === "" && setGroupByBatchData(allGroupData);
-    // }
-    // setSearchValue(keyword);
-    // setSelectedKeySearch(selected);
+    if (keyword !== "") {
+      const results = Object.keys(groupByBatchData)?.map((type, index) => {
+        if (selected === "batchId") {
+          if (
+            groupByBatchData[type]?.[0]?.batchId
+              ?.toLowerCase()
+              .startsWith(keyword.toLowerCase())
+          ) {
+            return groupByBatchData[type];
+          }
+        } else if (selected === "referenceId") {
+          if (
+            groupByBatchData[type]?.[0]?.referenceId
+              ?.toLowerCase()
+              .startsWith(keyword.toLowerCase())
+          ) {
+            return groupByBatchData[type];
+          }
+        } else {
+          if (
+            selected === "amount" &&
+            groupByBatchData[type]?.[0]?.amount
+              ?.toString()
+              .startsWith(keyword.toString())
+          ) {
+            return groupByBatchData[type];
+          }
+        }
+      });
+      setGroupByBatchData(results);
+    } else {
+      keyword === "" && setGroupByBatchData(allGroupData);
+    }
+    setSearchValue(keyword);
+    setSelectedKeySearch(selected);
   };
   const onHandleChange = (e) => {
     setSelected(e.target.value);
@@ -1201,7 +1201,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting
+                  isSubmitting,
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1411,7 +1411,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

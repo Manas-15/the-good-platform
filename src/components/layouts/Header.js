@@ -15,6 +15,8 @@ const Header = () => {
     history.push("/");
   };
   const user = useSelector((state) => state.employee.user);
+  const users = JSON.parse(localStorage.getItem("user"));
+  const isTgpLoggedInView = users?.userRole;
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
@@ -51,7 +53,9 @@ const Header = () => {
       </div>
       <nav className="header-nav ms-auto">
         <h4 className="current-view">
-          {currentView?.currentView}
+          {users?.userRole
+            ? users?.userRole.replace("-", " ")
+            : currentView?.currentView}
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
             ? " - " + selectedCorporate?.corporate?.name
             : ""}
