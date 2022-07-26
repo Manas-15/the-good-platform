@@ -170,33 +170,15 @@ const PayrollBatch = (props) => {
     setOpenPaidSimulator(false);
   };
   const confirmPaid = (values) => {
-    const items = allRecords.map((item) => {
-      return {
-        batchId: item?.batchId,
-        amount: item?.amount,
-        charityProgram: item?.charityProgram,
-        corporateId: item?.corporateId,
-        corporateName: item?.corporateName,
-        socialOrganizationId: item?.socialOrganizationId,
-        socialOrganizationName: item?.socialOrganizationName,
-        charityId: item?.charityId,
-        charityProgram: item?.charityProgram
-      };
-    });
-    console.log(
-      ">>>>>>>>>>>>>>>>>> payrollBatches?.item <<<<<<<<<<<<<<<<<<<<<<",
-      items
+    dispatch(
+      payrollBatchActions.updateBatchStatus({
+        batchId: selectedBatch?.batchId,
+        requestType: payrollConstants.PAID,
+        referenceId: values?.referenceId,
+        referenceNote: values?.referenceNote
+      })
     );
-    // dispatch(
-    //   payrollBatchActions.updateBatchStatus({
-    //     batchId: selectedBatch?.batchId,
-    //     requestType: payrollConstants.PAID,
-    //     referenceId: values?.referenceId,
-    //     referenceNote: values?.referenceNote,
-    //     items: items
-    //   })
-    // );
-    // hidePaidSimulator();
+    hidePaidSimulator();
   };
   const handleOpen = (action, item) => {
     setOpen(true);

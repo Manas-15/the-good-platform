@@ -250,8 +250,8 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                 <tbody className="ant-table-tbody">
                   {items?.length > 0 ? (
                     items
-                      ?.filter((preference) => preference?.isDeleted === false)
-                      .map((preference, index) => (
+                      ?.filter?.((preference) => !preference?.isDeleted)
+                      .map?.((preference, index) => (
                         <tr
                           key={index + 1}
                           className="ant-table-row ant-table-row-level-0"
@@ -269,20 +269,22 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                             </td>
                           )}
                           <td className="ant-table-cell">
-                            <Tooltip title={preference.charityProgram}>
+                            <Tooltip title={preference?.charityProgram}>
                               <span className="ant-typography font-weight-bold">
-                                {preference.charityProgram?.length > 30
-                                  ? preference.charityProgram.substring(0, 27) +
-                                    "..."
-                                  : preference.charityProgram}
+                                {preference?.charityProgram?.length > 30
+                                  ? preference?.charityProgram?.substring(
+                                      0,
+                                      27
+                                    ) + "..."
+                                  : preference?.charityProgram}
                               </span>
                             </Tooltip>
                           </td>
                           <td className="ant-table-cell">
-                            {preference.socialOrganization}
+                            {preference?.socialOrganization}
                           </td>
                           <td className="ant-table-cell">
-                            {preference.category}
+                            {preference?.category}
                           </td>
                           <td className="ant-table-cell">
                             <form
@@ -300,7 +302,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                   updatedValue &&
                                   updatedValue.toString()?.replace(/,/g, "") !==
                                     preference?.donationAmount
-                                      .toString()
+                                      ?.toString()
                                       ?.replace(/,/g, "")
                                     ? showConsent(
                                         preference,
