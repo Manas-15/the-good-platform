@@ -125,6 +125,14 @@ const DonateSecondStep = ({
           ? selectedCorporate?.corporate?.corporateId
           : selectedCorporate?.corporate?.id
         : employee?.corporateId,
+    corporateName:
+      loggedInUserType === userConstants.INDIVIDUAL
+        ? null
+        : isCorporatePortal
+        ? selectedCorporate?.corporate?.name
+          ? selectedCorporate?.corporate?.name
+          : selectedCorporate?.corporate?.corporateName
+        : selectedCorporate?.corporate?.name,
     userId:
       loggedInUserType === userConstants.INDIVIDUAL
         ? employee?.individual_id

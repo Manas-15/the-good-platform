@@ -323,7 +323,7 @@ const EmployeeForm = ({ type }) => {
                         }
                       >
                         <option value="">Select Corporate</option>
-                        {corporates?.items?.data?.map((corporate, index) => (
+                        {corporates?.items?.map?.((corporate, index) => (
                           <option
                             value={corporate?.id + "-" + corporate?.name}
                             key={index}

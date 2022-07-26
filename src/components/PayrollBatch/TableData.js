@@ -122,7 +122,7 @@ const TableData = ({
     { label: "Processed", value: "10" }
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
       "MMMM"
     )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);

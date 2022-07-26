@@ -44,6 +44,9 @@ const PayrollBatch = (props) => {
   const organizationId = props?.match?.params?.organizationId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector(
+    (state) => state?.selectedCorporate?.corporate
+  );
   const isOrganizationPortal =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
@@ -98,7 +101,6 @@ const PayrollBatch = (props) => {
       }"</strong>?`
     );
   };
-
   useEffect(() => {
     dispatch(
       payrollBatchActions.getPayrollBatch({
@@ -116,7 +118,6 @@ const PayrollBatch = (props) => {
     );
     // filter("All");
   }, [currentPage]);
-
   const groupByBatch = () => {
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
@@ -124,7 +125,6 @@ const PayrollBatch = (props) => {
     }, {});
   };
   let allGroupData;
-
   useEffect(() => {
     if (payrollBatches?.item?.length > 0) {
       allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
@@ -140,13 +140,11 @@ const PayrollBatch = (props) => {
       setAllRecords(payrollBatches?.items);
     }
   }, [payrollBatches?.items]);
-
   useEffect(() => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
-
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -162,7 +160,7 @@ const PayrollBatch = (props) => {
     { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
       "MMMM"
     )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);
@@ -209,7 +207,7 @@ const PayrollBatch = (props) => {
         } for this batch?`
       );
     }
-    if (action === "Complete Batch") {
+    if (action === payrollConstants.COMPLETE_BATCH) {
       completeInitialValues.referenceNote = `Process batch for the month of ${moment().format(
         "MMMM"
       )} - ${item?.corporateName}`;
@@ -777,12 +775,14 @@ const PayrollBatch = (props) => {
                                     {corporateId &&
                                       groupByBatchData[type]?.[0]?.status ===
                                         payrollConstants.PENDING_STATUS && (
-                                        <Tooltip title="Complete">
+                                        <Tooltip
+                                          title={payrollConstants.COMPLETE}
+                                        >
                                           <Link
                                             to="#"
                                             onClick={() =>
                                               handleOpen(
-                                                "Complete Batch",
+                                                payrollConstants.COMPLETE_BATCH,
                                                 groupByBatchData[type]?.[0]
                                               )
                                             }
@@ -1045,7 +1045,10 @@ const PayrollBatch = (props) => {
                                         <Link
                                           to="#"
                                           onClick={() =>
-                                            handleOpen("Complete Batch", batch)
+                                            handleOpen(
+                                              payrollConstants.COMPLETE_BATCH,
+                                              batch
+                                            )
                                           }
                                         >
                                           <span className="bi-check-circle fs-5"></span>

@@ -4,17 +4,17 @@ export function payrollBatch(state = {}, action) {
   switch (action.type) {
     case payrollConstants.GET_PAYROLL_BATCH_REQUEST:
       return {
-        loading: true,
+        loading: true
       };
     case payrollConstants.GET_PAYROLL_BATCH_SUCCESS:
       return {
         items: action?.batches?.data?.adminbatch,
         totalCount: action?.batches?.data?.count,
-        loading: false,
+        loading: false
       };
     case payrollConstants.GET_PAYROLL_BATCH_FAILURE:
       return {
-        error: action.error,
+        error: action.error
       };
     case payrollConstants.UPDATE_BATCH_STATUS_REQUEST:
       return {
@@ -22,7 +22,7 @@ export function payrollBatch(state = {}, action) {
         loading: true,
         batchId: action?.data?.batchId,
         requestType: action?.data?.requestType,
-        socialId: action?.data?.socialId,
+        socialId: action?.data?.socialId
       };
     case payrollConstants.UPDATE_BATCH_STATUS_SUCCESS:
       return {
@@ -35,26 +35,26 @@ export function payrollBatch(state = {}, action) {
                 return {
                   ...item,
                   isDeleted: true,
-                  status: payrollConstants?.COMPLETED_STATUS,
+                  status: payrollConstants?.COMPLETED_STATUS
                 };
               }
               if (state?.requestType === payrollConstants?.CONFIRM) {
                 return {
                   ...item,
-                  status: payrollConstants?.CONFIRMED_STATUS,
+                  status: payrollConstants?.CONFIRMED_STATUS
                 };
               }
               if (state?.requestType === payrollConstants?.PAID) {
                 return {
                   ...item,
-                  status: payrollConstants?.PAID_STATUS,
+                  status: payrollConstants?.PAID_STATUS
                 };
               }
               if (state?.requestType === payrollConstants?.UNCONFIRM) {
                 return {
                   ...item,
                   status: payrollConstants?.COMPLETED_STATUS,
-                  isDeleted: true,
+                  isDeleted: true
                 };
                 // const index = state?.items?.indexOf(state?.batchId);
                 // state?.items?.splice(index, 1);
@@ -74,7 +74,7 @@ export function payrollBatch(state = {}, action) {
                   receivedOrganizationIds:
                     splitReciveOrgs?.length > 0
                       ? splitReciveOrgs.push(state?.socialId).toString()
-                      : state?.socialId?.toString(),
+                      : state?.socialId?.toString()
                 };
               }
             }
@@ -82,13 +82,13 @@ export function payrollBatch(state = {}, action) {
           }),
         loading: false,
         batchId: null,
-        requestType: null,
+        requestType: null
       };
     case payrollConstants.UPDATE_BATCH_STATUS_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.error,
+        error: action.error
       };
     default:
       return state;

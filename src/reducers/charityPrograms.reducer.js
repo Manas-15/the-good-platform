@@ -25,7 +25,7 @@ export function charityPrograms(state = {}, action) {
         state?.userType === "Corporate"
       ) {
         // userType: action?.data?.userType
-
+        console.log("11111111 inside reducers");
         return {
           ...state,
           loading: false,
@@ -43,18 +43,18 @@ export function charityPrograms(state = {}, action) {
                     return { ...charity, unitPrice: 500 };
                   })
                 }
-              : action?.charityPrograms?.data?.charity_list?.length
+              : action?.charityPrograms?.data?.charity_list?.map((charity) => {
+                  return { ...charity, unitPrice: 500 };
+                })
         };
       } else {
         return {
-          items: action?.charityPrograms?.data?.charity_list?.length
-            ? action?.charityPrograms?.data?.charity_list?.map?.((item) => {
-                if (item?.unitPrice === undefined) {
-                  return { ...item, unitPrice: 500 };
-                }
-                return item;
-              })
-            : action?.charityPrograms?.data?.charity_list
+          items: action?.charityPrograms?.data?.charity_list?.map?.((item) => {
+            if (item?.unitPrice === undefined) {
+              return { ...item, unitPrice: 500 };
+            }
+            return item;
+          })
         };
       }
     case charityProgramConstants.GET_CHARITY_PROGRAMS_FAILURE:

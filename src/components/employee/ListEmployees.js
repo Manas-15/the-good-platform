@@ -32,7 +32,6 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 const ListEmployees = (props) => {
   let history = useHistory();
   let location = useLocation();
-  const isSuperadminView = location.state;
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
   const hiddenFileInput = useRef(null);
@@ -52,7 +51,7 @@ const ListEmployees = (props) => {
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
   const [finalData, setFinalData] = useState([]);
-  const [records, setRecords] = useState("");
+  const [records, setRecords] = useState([]);
   const [selected, setSelected] = useState();
 
   const dispatch = useDispatch();
@@ -183,13 +182,13 @@ const ListEmployees = (props) => {
     if (value !== "") {
       const results = () => {
         if (selected === "name") {
-          return records?.filter((item) =>
+          return employees?.items?.filter?.((item) =>
             value
               ? item?.name?.toLowerCase()?.includes?.(value.toLowerCase())
               : item
           );
         } else if (selected === "email") {
-          return records?.filter((item) =>
+          return employees?.items?.filter?.((item) =>
             value
               ? item?.email?.toLowerCase()?.includes?.(value.toLowerCase())
               : item
@@ -212,47 +211,36 @@ const ListEmployees = (props) => {
             / Employees
           </h1>
         </div>
-        {isSuperadminView === false ? (
-          <>manas </>
-        ) : isSuperadminView === true ? (
-          <>santosh </>
-        ) : (
-          <div className="col-md-6" style={{ textAlign: "right" }}>
-            {!isBulkUpload && !isImportNextStep && (
-              <>
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-custom me-3"
-                    onClick={() => history.push("/employees/add")}
-                  >
-                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-                    Add Employee
-                  </button>
-                </>
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-custom me-3"
-                    onClick={chooseFile}
-                  >
-                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-                    Import Bulk Employee
-                  </button>
-                  <input
-                    type="file"
-                    accept=".xlsx, .xls, .csv"
-                    ref={hiddenFileInput}
-                    onChange={handleChange}
-                    style={{ display: "none" }}
-                  />
-                </>
-              </>
-            )}
-          </div>
-        )}
+        <div className="col-md-6" style={{ textAlign: "right" }}>
+          {!isBulkUpload && !isImportNextStep && (
+            <>
+              <button
+                type="button"
+                className="btn btn-custom me-3"
+                onClick={() => history.push("/employees/add")}
+              >
+                <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                Add Employee
+              </button>
+              <button
+                type="button"
+                className="btn btn-custom me-3"
+                onClick={chooseFile}
+              >
+                <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                Import Bulk Employee
+              </button>
+              <input
+                type="file"
+                accept=".xlsx, .xls, .csv"
+                ref={hiddenFileInput}
+                onChange={handleChange}
+                style={{ display: "none" }}
+              />
+            </>
+          )}
+        </div>
       </div>
-
       {!isBulkUpload && !isImportNextStep && (
         <>
           <div className="ant-row searchContainer mt-3 py-4 align-center">

@@ -27,6 +27,18 @@ export function employee(state = initialState, action) {
       };
     case employeeConstants.INDIVIDUAL_LOGIN_FAILURE:
       return { loggingIn: false };
+    case employeeConstants.OTHER_LOGIN_REQUEST:
+      return {
+        loggingIn: true
+      };
+    case employeeConstants.OTHER_LOGIN_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action?.data?.data,
+        otpVerified: false
+      };
+    case employeeConstants.OTHER_LOGIN_FAILURE:
+      return { loggingIn: false };
     case employeeConstants.VALIDATE_OTP_REQUEST:
       return {
         validitingOtp: true,

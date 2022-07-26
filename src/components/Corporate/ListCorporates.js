@@ -9,7 +9,7 @@ import * as moment from "moment";
 
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const ListCorporates = () => {
   let location = useLocation();
@@ -77,51 +77,51 @@ const ListCorporates = () => {
                     <th className="ant-table-cell">Name</th>
                     <th className="ant-table-cell">Employees</th>
                     <th className="ant-table-cell">Date Added</th>
-                    <th className="ant-table-cell">Actions</th>
+                    {/* <th className="ant-table-cell">Actions</th> */}
                   </tr>
                 </thead>
                 <tbody className="ant-table-tbody">
-                  {corporates?.items && corporates?.items.length > 0 ? (
-                    corporates?.items
-                      ?.filter((val) => {
-                        return !val?.isDeleted;
-                      })
-                      ?.map((corporate, index) => {
-                        return (
-                          <tr
-                            className="ant-table-row ant-table-row-level-0"
-                            key={index}
-                          >
-                            <td className="ant-table-cell">{index + 1}</td>
-                            <td className="ant-table-cell">
-                              <span className="ant-typography font-weight-bold">
-                                <Link
-                                  className="text-black"
-                                  to={{
-                                    pathname: `/corporates/${corporate.corporateId}/employees`,
-                                    state: data?.isSuperadminView,
-                                  }}
-                                >
-                                  {corporate?.organizationName}
-                                </Link>
-                              </span>
-                            </td>
-                            <td className="ant-table-cell">
-                              {corporate?.employeeCount}
-                            </td>
-                            <td className="ant-table-cell">
-                              {moment(corporate?.createdDate).format(
-                                "DD MMM, YYYY"
-                              )}
-                            </td>
-                            <td className="ant-table-cell">
+                  {corporates?.items?.length > 0 ? (
+                    // ?.filter((val) => {
+                    //   return !val?.isDeleted;
+                    // })
+                    // ?
+                    corporates?.items?.map((corporate, index) => {
+                      return (
+                        <tr
+                          className="ant-table-row ant-table-row-level-0"
+                          key={index}
+                        >
+                          <td className="ant-table-cell">{index + 1}</td>
+                          <td className="ant-table-cell">
+                            <span className="ant-typography font-weight-bold">
+                              <Link
+                                className="text-black"
+                                to={{
+                                  pathname: `/corporates/${corporate.id}/employees`,
+                                  state: data?.isSuperadminView
+                                }}
+                              >
+                                {corporate?.name}
+                              </Link>
+                            </span>
+                          </td>
+                          <td className="ant-table-cell">
+                            {corporate?.employeeCount}
+                          </td>
+                          <td className="ant-table-cell">
+                            {moment(corporate?.createdOn).format(
+                              "DD MMM, YYYY"
+                            )}
+                          </td>
+                          {/* <td className="ant-table-cell">
                               <div className="ms-2">
                                 <Tooltip title="Edit">
                                   <Link
                                     className="text-black"
                                     to={{
-                                      pathname: `/corporates/edit/${corporate.corporateId}`,
-                                      state: corporate.corporateId,
+                                      pathname: `/corporates/edit/${corporate.id}`,
+                                      state: corporate.id
                                     }}
                                   >
                                     <i
@@ -169,8 +169,8 @@ const ListCorporates = () => {
                                     onClick={() =>
                                       handleOpenDialog(
                                         "Delete",
-                                        corporate?.organizationName,
-                                        corporate?.corporateId
+                                        corporate?.name,
+                                        corporate?.id
                                       )
                                     }
                                   >
@@ -178,14 +178,14 @@ const ListCorporates = () => {
                                   </Link>
                                 </Tooltip>
                               </div>
-                            </td>
-                          </tr>
-                        );
-                      })
+                            </td> */}
+                        </tr>
+                      );
+                    })
                   ) : (
                     <tr>
                       <td colSpan="6" className="text-center">
-                        No employees found
+                        No corporates found
                       </td>
                     </tr>
                   )}

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   socialOrganizationConstants,
   paginationConstants,
-  charityProgramConstants,
   viewPortalConstants,
   userConstants,
 } from "../../constants";
@@ -100,18 +99,18 @@ const SocialOrganizations = () => {
   // const setOrganization = (organization) => {
   //   dispatch(selectedOrganizationActions.selectedOrganization(organization));
   // };
-  const renderClass = (param) => {
-    switch (param) {
-      case socialOrganizationConstants.APPROVED:
-        return "text-success";
-      case socialOrganizationConstants.REJECTED:
-        return "text-danger";
-      case socialOrganizationConstants.PENDING:
-        return "text-warning";
-      default:
-        return "text-warning";
-    }
-  };
+  // const renderClass = (param) => {
+  //   switch (param) {
+  //     case socialOrganizationConstants.APPROVED:
+  //       return "text-success";
+  //     case socialOrganizationConstants.REJECTED:
+  //       return "text-danger";
+  //     case socialOrganizationConstants.PENDING:
+  //       return "text-warning";
+  //     default:
+  //       return "text-warning";
+  //   }
+  // };
   // const handleOpen = (action, item) => {
   //   setOpen(true);
   //   setActionType(action);

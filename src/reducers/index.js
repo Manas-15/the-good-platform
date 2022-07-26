@@ -35,7 +35,7 @@ const MainReducer = combineReducers({
   selectedOrganization,
   selectedCharity,
   selectedCharityTab,
-  user,
+  user
 });
 
 const rootReducer = (state, action) => {
