@@ -53,7 +53,7 @@ export function payrollSetting(state = {}, action) {
           return {
             ...item,
             status: payrollConstants.PENDING_STATUS,
-            batchId: "Pending"
+            batchId: action?.preferences?.data?.batchId
           };
           // }
           // return item;
