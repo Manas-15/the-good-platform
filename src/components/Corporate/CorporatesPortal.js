@@ -8,11 +8,12 @@ import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
 const actionInitialValues = {
   userId: "",
-  requestType: ""
+  requestType: "",
 };
 const CorporatesPortal = () => {
   let history = useHistory();
-  const corporates = useSelector((state) => state?.corporates?.items);
+  const corporates = useSelector((state) => state?.corporates);
+
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -75,14 +76,14 @@ const CorporatesPortal = () => {
       <div className="row mb-4">
         <div className="col-md-4 offset-md-3">
           {corporates?.loading && <Loader />}
-          {corporates?.data && corporates?.data.length > 0 ? (
+          {corporates?.items?.data && corporates?.items?.data.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
                 {/* .filter((val) => {
                     return val?.approvalStatus === "APPROVED";
                   })
                   ? */}
-                {corporates?.data?.map((corporate, index) => {
+                {corporates?.items?.data?.map((corporate, index) => {
                   return (
                     <li key={index + 1}>
                       <Link

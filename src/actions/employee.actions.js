@@ -16,17 +16,15 @@ export const employeeActions = {
   employeeAccountRequest,
   addEmployee,
   bulkImport,
-  getCorporates
+  getCorporates,
 };
 function login(data, from) {
-  console.log("data?.loginType 11111111111", data?.loginType);
   if (data?.loginType === "Employee") {
     return (dispatch) => {
       dispatch(request({ data }));
       employeeService.login(data).then(
         (res) => {
           dispatch(success(res));
-
           if (
             !res?.data?.status &&
             res?.data?.user_type === userConstants.INDIVIDUAL
@@ -34,24 +32,10 @@ function login(data, from) {
             dispatch(alertActions.error("Your account is currently blocked."));
           } else {
             if (res?.data?.approve) {
-              const result = JSON.stringify(res?.data);
-              localStorage.setItem("user", JSON.stringify(res?.data));
-              // history.push("/dashboard");
-              // dispatch(alertActions.success("Loggedin successful"));
-              // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
+              // localStorage.setItem("user", JSON.stringify(res?.data));
               history.push("/otp");
-              // history.push({
-              //   pathname: "/otp",
-              //   state: { otp: res?.data?.otp }
-              // });
             } else {
-              // if(!res?.data?.approve) {
-              //   dispatch(
-              //     alertActions.error("Your account is currently blocked")
-              //   );
-              // } else {
               dispatch(alertActions.error(res?.data?.msg));
-              // }
             }
           }
         },
@@ -87,12 +71,7 @@ function login(data, from) {
           } else {
             const res = JSON.stringify(data?.data);
             localStorage.setItem("user", JSON.stringify(data?.data));
-            // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
             history.push("/otp");
-            // history.push({
-            //   pathname: "/otp",
-            //   state: { otp: data?.data?.otp }
-            // });
           }
         },
         (error) => {
@@ -122,7 +101,7 @@ function login(data, from) {
       employeeService.login(data).then(
         (data) => {
           dispatch(success(data));
-          console.log("data?.data", data?.data);
+
           if (data?.data?.msg && data?.data?.msg !== "Login Success") {
             dispatch(alertActions.error(data?.data?.msg));
           } else {
@@ -274,7 +253,7 @@ function register(employee, userType) {
         } else {
           history.push({
             pathname: "/thank-you",
-            state: { userType: userType }
+            state: { userType: userType },
           });
         }
       },
@@ -439,7 +418,7 @@ function bulkImport(formData) {
   function request(formData) {
     return {
       type: employeeConstants.BULK_IMPORT_REQUEST,
-      formData
+      formData,
     };
   }
   function success(formData) {
@@ -465,7 +444,7 @@ function getCorporates() {
 
   function request() {
     return {
-      type: employeeConstants.GET_CORPORATES_REQUEST
+      type: employeeConstants.GET_CORPORATES_REQUEST,
     };
   }
   function success(data) {

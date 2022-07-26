@@ -6,7 +6,7 @@ import {
   paginationConstants,
   charityProgramConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import { socialOrganizationActions } from "../../actions";
 import { Tabs } from "antd";
@@ -21,6 +21,7 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
+
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
@@ -44,7 +45,6 @@ const SocialOrganizations = () => {
   const isOthersPortal =
     currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
 
-  console.log(isIndividualPortal, isOthersPortal);
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -68,11 +68,11 @@ const SocialOrganizations = () => {
               individualId:
                 loggedInUserType === userConstants.INDIVIDUAL
                   ? user?.uuid
-                  : null
+                  : null,
             }
           : isOthersPortal
           ? {
-              loggedInUserType: loggedInUserType
+              loggedInUserType: loggedInUserType,
             }
           : {
               pageNumber: currentPage.toString(),
@@ -85,7 +85,7 @@ const SocialOrganizations = () => {
               individualId: user?.uuid,
               loggedInUserType: loggedInUserType,
               pageSize: pageSize.toString(),
-              userId: user?.user_id
+              userId: user?.user_id,
             }
       )
     );

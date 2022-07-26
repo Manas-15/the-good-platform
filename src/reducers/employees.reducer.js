@@ -5,47 +5,46 @@ export function employee(state = initialState, action) {
   switch (action.type) {
     case employeeConstants.EMPLOYEE_LOGIN_REQUEST:
       return {
-        loggingIn: true
+        loggingIn: true,
       };
     case employeeConstants.EMPLOYEE_LOGIN_SUCCESS:
-      console.log("action?.data?.data reducers", action?.data?.data);
       return {
         loggedIn: true,
         user: action?.data?.data,
-        otpVerified: false
+        otpVerified: false,
       };
     case employeeConstants.EMPLOYEE_LOGIN_FAILURE:
       return { loggingIn: false };
     case employeeConstants.INDIVIDUAL_LOGIN_REQUEST:
       return {
-        loggingIn: true
+        loggingIn: true,
       };
     case employeeConstants.INDIVIDUAL_LOGIN_SUCCESS:
       return {
         loggedIn: true,
         user: action?.data?.data,
-        otpVerified: false
+        otpVerified: false,
       };
     case employeeConstants.INDIVIDUAL_LOGIN_FAILURE:
       return { loggingIn: false };
     case employeeConstants.VALIDATE_OTP_REQUEST:
       return {
         validitingOtp: true,
-        user: state.user
+        user: state.user,
       };
     case employeeConstants.VALIDATE_OTP_SUCCESS:
       return {
-        user: state.user
+        user: state.user,
       };
     case employeeConstants.VALIDATE_OTP_FAILURE:
       return { validitingOtp: false };
     case employeeConstants.RESEND_OTP_REQUEST:
       return {
-        resendOtp: true
+        resendOtp: true,
       };
     case employeeConstants.RESEND_OTP_SUCCESS:
       return {
-        resentdOtp: true
+        resentdOtp: true,
       };
     case employeeConstants.RESEND_OTP_FAILURE:
       return { resendOtp: false };
@@ -54,18 +53,18 @@ export function employee(state = initialState, action) {
     case employeeConstants.GET_EMPLOYEES_REQUEST:
       return {
         loading: true,
-        user: state.user
+        user: state.user,
       };
     case employeeConstants.GET_EMPLOYEES_SUCCESS:
       return {
         user: state.user,
         items: action?.employees?.data?.employee,
-        totalCount: action?.employees?.data?.count
+        totalCount: action?.employees?.data?.count,
       };
     case employeeConstants.GET_EMPLOYEES_FAILURE:
       return {
         user: state.user,
-        error: action.error
+        error: action.error,
       };
     case employeeConstants.ADD_EMPLOYEE_REQUEST:
       return { ...state, addingEmployee: true };
@@ -103,7 +102,7 @@ export function employee(state = initialState, action) {
         items: state.items,
         actionRequest: true,
         employeeId: action?.employee?.userId,
-        requestType: action?.employee?.requestType
+        requestType: action?.employee?.requestType,
       };
     case employeeConstants.EMPLOYEE_ACTION_SUCCESS:
       return {
@@ -114,14 +113,14 @@ export function employee(state = initialState, action) {
             return { ...item, isApprove: state.requestType === "Approve" };
           }
           return item;
-        })
+        }),
       };
     case employeeConstants.EMPLOYEE_ACTION_FAILURE:
       return {
         ...state,
         actionRequest: false,
         items: state.items,
-        error: action.error
+        error: action.error,
       };
     case employeeConstants.BULK_IMPORT_REQUEST:
       return { ...state, loading: true, actionRequest: true };
@@ -129,7 +128,7 @@ export function employee(state = initialState, action) {
       return {
         ...state,
         items: action?.data?.data?.employee,
-        actionRequest: false
+        actionRequest: false,
       };
     case employeeConstants.BULK_IMPORT_FAILURE:
       return { ...state, error: action.error, actionRequest: false };
@@ -137,7 +136,7 @@ export function employee(state = initialState, action) {
       return { savingEmployeePassword: true };
     case employeeConstants.GET_CORPORATES_SUCCESS:
       return {
-        corporates: action?.data?.data?.data?.data
+        corporates: action?.data?.data?.data?.data,
       };
     case employeeConstants.GET_CORPORATES_FAILURE:
       return { error: action.error };
