@@ -27,7 +27,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
       <div className="ant-col ant-col-24 mt-2">
         {items?.length > 0 ? (
           <div className="row">
-            {items.map((charityProgram, i) => (
+            {items?.map((charityProgram, i) => (
               <div className="col-md-4 card  p-0 ml-3">
                 <div className="img-sec">
                   <img
@@ -36,7 +36,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
                         ? "/assets/img/charity3.jpg"
                         : "/assets/img/charity4.jpg"
                     }
-                    alt="image"
+                    alt="Image"
                   />
                   <Tooltip title="80G Tax benefits available for INR donations">
                     <span className="tax-benefit">
@@ -96,7 +96,7 @@ const CardCharityPrograms = ({ items, setCharity, tabType }) => {
                     </div>
                     <div className="donations">
                       <i className="bi-person fs-5"></i>
-                      &nbsp;&nbsp;1,108 Donations
+                      &nbsp;&nbsp;1,108 Donors
                     </div>
                   </div>
                   <div className="days-donations">

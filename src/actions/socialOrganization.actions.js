@@ -3,7 +3,7 @@ import { socialOrganizationService } from "../services";
 import { alertActions } from "./";
 
 export const socialOrganizationActions = {
-  getSocialOrganizations,
+  getSocialOrganizations
 };
 
 function getSocialOrganizations(data) {
@@ -12,10 +12,10 @@ function getSocialOrganizations(data) {
 
     socialOrganizationService.getSocialOrganizations(data).then(
       (socialOrganizations) => {
-        if(socialOrganizations?.data?.msg){
+        if (socialOrganizations?.data?.msg) {
           dispatch(alertActions.error(socialOrganizations?.data?.msg));
-        }else{
-          dispatch(success(socialOrganizations))
+        } else {
+          dispatch(success(socialOrganizations));
         }
       },
       (error) => {
@@ -28,19 +28,19 @@ function getSocialOrganizations(data) {
   function request(data) {
     return {
       type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST,
-      data,
+      data
     };
   }
   function success(socialOrganizations) {
     return {
       type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS,
-      socialOrganizations,
+      socialOrganizations
     };
   }
   function failure(error) {
     return {
       type: socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_FAILURE,
-      error,
+      error
     };
   }
 }

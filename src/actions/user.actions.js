@@ -2,7 +2,6 @@ import { userConstants } from "../constants";
 import { userService } from "../services";
 import { history } from "../helpers";
 import { alertActions } from "./";
-
 export const userActions = {
   login,
   getDetail,
@@ -10,7 +9,6 @@ export const userActions = {
   logout,
   registerIndividual,
 };
-
 function login(data, from) {
   return (dispatch) => {
     dispatch(request({ data }));
@@ -43,15 +41,13 @@ function login(data, from) {
     return { type: userConstants.USER_LOGIN_FAILURE, error };
   }
 }
-
 function getDetail() {
   return (dispatch) => {
     dispatch(request());
-
     userService.getDetail().then(
       (res) => {
         dispatch(success(res));
-        console.log("ssssssssssssssss user", res);
+
         localStorage.setItem("user", JSON.stringify(res?.data?.data));
         dispatch(loggedInUser(userConstants.CORPORATE));
         history.push("/dashboard");
@@ -62,7 +58,6 @@ function getDetail() {
       }
     );
   };
-
   function request() {
     return { type: userConstants.USER_DETAIL_REQUEST };
   }
@@ -79,7 +74,6 @@ function loggedInUser(view) {
 function logout(view) {
   return { type: "LOGOUT" };
 }
-
 function registerIndividual(individual) {
   return (dispatch) => {
     dispatch(request(individual));
@@ -95,7 +89,6 @@ function registerIndividual(individual) {
       }
     );
   };
-
   function request(individual) {
     return { type: userConstants.REGISTER_INDIVIDUAL_REQUEST, individual };
   }

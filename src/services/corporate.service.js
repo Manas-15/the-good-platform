@@ -10,11 +10,11 @@ export const corporateService = {
   registerCorporate,
   getCorporates,
   corporateAccountRequest,
-  samlConfigure,
+  samlConfigure
 };
 
 function getCorporates() {
-  return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list");
+  return axios.get(process.env.REACT_APP_API_URL + "remote_api/corporateList/"); //process.env.REACT_APP_API_URL + "api/corporate_list"
 }
 
 function registerCorporate(data) {
@@ -24,14 +24,12 @@ function registerCorporate(data) {
   );
 }
 function updateCorporate(corporate) {
-  console.log(corporate, "service pageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   return axios.post(
     process.env.REACT_APP_API_URL + "api/editCorporate/",
     corporate
   );
 }
 function deleteCorporate(corporateId) {
-  // console.log(corporateId, "delete id in service page");
   return axios.post(
     process.env.REACT_APP_API_URL + "api/removeCorporate/",
     corporateId

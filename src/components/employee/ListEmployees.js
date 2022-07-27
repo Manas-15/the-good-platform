@@ -9,7 +9,7 @@ import Pagination from "../Shared/Pagination";
 import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 let goodplatformFields = [
   { label: "First Name", value: "firstName" },
@@ -25,19 +25,15 @@ let goodplatformFields = [
   { label: "Region", value: "Region" },
   { label: "Country", value: "country" },
   { label: "Zip", value: "Zip" },
-  { label: "Status", value: "status" },
+  { label: "Status", value: "status" }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 
 const ListEmployees = (props) => {
-  console.log(props);
   let history = useHistory();
   let location = useLocation();
-  const isSuperadminView = location.state;
   const corporateId = props?.match?.params?.corporateId;
   const employees = useSelector((state) => state.employee);
-  console.log(employees?.items);
-
   const hiddenFileInput = useRef(null);
   // const user = useSelector((state) => state.employee.user);
   // Pagination
@@ -55,7 +51,7 @@ const ListEmployees = (props) => {
   const [importFirstRecord, setImportFirstRecord] = useState([]);
   const [selectedFieldTypes, setSelectedFieldTypes] = useState([]);
   const [finalData, setFinalData] = useState([]);
-  const [records, setRecords] = useState("");
+  const [records, setRecords] = useState([]);
   const [selected, setSelected] = useState();
 
   const dispatch = useDispatch();
@@ -64,7 +60,7 @@ const ListEmployees = (props) => {
       employeeActions.getEmployees({
         corporateId: corporateId,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   }, [currentPage]);
@@ -100,7 +96,6 @@ const ListEmployees = (props) => {
     const fileUploaded = event.target.files[0];
     setSelectedFile(fileUploaded);
     handleFile(fileUploaded);
-    // console.log(fileUploaded);
   };
   const handleFile = (file) => {
     const fileExtension = file?.name?.split(".")?.pop();
@@ -115,9 +110,7 @@ const ListEmployees = (props) => {
       reader.readAsText(file);
       let finalData = [];
       reader.onload = () => {
-        // console.log(reader?.result);
         const allTextLines = reader?.result?.split(/\n/);
-        // console.log(allTextLines);
         setImportHeader(allTextLines[0].split(","));
         setImportFirstRecord(allTextLines[1].split(","));
 
@@ -129,7 +122,7 @@ const ListEmployees = (props) => {
             fieldType.push("select_field");
             goodplatformFields = [
               ...goodplatformFields,
-              { label: "Select Field", value: "select_field" },
+              { label: "Select Field", value: "select_field" }
             ];
           }
         }
@@ -182,7 +175,6 @@ const ListEmployees = (props) => {
     dispatch(employeeActions.bulkImport(formData));
   };
   const onHandleChange = (e) => {
-    console.log("fired");
     setRecords(employees?.items);
     setSelected(e.target.value);
   };
@@ -190,13 +182,13 @@ const ListEmployees = (props) => {
     if (value !== "") {
       const results = () => {
         if (selected === "name") {
-          return records?.filter((item) =>
+          return employees?.items?.filter?.((item) =>
             value
               ? item?.name?.toLowerCase()?.includes?.(value.toLowerCase())
               : item
           );
         } else if (selected === "email") {
-          return records?.filter((item) =>
+          return employees?.items?.filter?.((item) =>
             value
               ? item?.email?.toLowerCase()?.includes?.(value.toLowerCase())
               : item
@@ -208,7 +200,6 @@ const ListEmployees = (props) => {
       setRecords(employees?.items);
     }
   };
-
   return (
     <div className="customContainer">
       <div className="row mb-4">
@@ -220,47 +211,36 @@ const ListEmployees = (props) => {
             / Employees
           </h1>
         </div>
-        {isSuperadminView === false ? (
-          <>manas </>
-        ) : isSuperadminView === true ? (
-          <>santosh </>
-        ) : (
-          <div className="col-md-6" style={{ textAlign: "right" }}>
-            {!isBulkUpload && !isImportNextStep && (
-              <>
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-custom me-3"
-                    onClick={() => history.push("/employees/add")}
-                  >
-                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-                    Add Employee
-                  </button>
-                </>
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-custom me-3"
-                    onClick={chooseFile}
-                  >
-                    <i className="bi bi-file-earmark-arrow-up mr-2"></i>
-                    Import Bulk Employee
-                  </button>
-                  <input
-                    type="file"
-                    accept=".xlsx, .xls, .csv"
-                    ref={hiddenFileInput}
-                    onChange={handleChange}
-                    style={{ display: "none" }}
-                  />
-                </>
-              </>
-            )}
-          </div>
-        )}
+        <div className="col-md-6" style={{ textAlign: "right" }}>
+          {!isBulkUpload && !isImportNextStep && (
+            <>
+              <button
+                type="button"
+                className="btn btn-custom me-3"
+                onClick={() => history.push("/employees/add")}
+              >
+                <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                Add Employee
+              </button>
+              <button
+                type="button"
+                className="btn btn-custom me-3"
+                onClick={chooseFile}
+              >
+                <i className="bi bi-file-earmark-arrow-up mr-2"></i>
+                Import Bulk Employee
+              </button>
+              <input
+                type="file"
+                accept=".xlsx, .xls, .csv"
+                ref={hiddenFileInput}
+                onChange={handleChange}
+                style={{ display: "none" }}
+              />
+            </>
+          )}
+        </div>
       </div>
-
       {!isBulkUpload && !isImportNextStep && (
         <>
           <div className="ant-row searchContainer mt-3 py-4 align-center">
@@ -343,7 +323,7 @@ const ListEmployees = (props) => {
                   <table>
                     <thead className="ant-table-thead">
                       <tr>
-                        <th className="ant-table-cell">Sr No.</th>
+                        {/* <th className="ant-table-cell">Sr No.</th> */}
                         <th className="ant-table-cell">Name</th>
                         <th className="ant-table-cell">Email</th>
                         <th className="ant-table-cell">Phone</th>
@@ -358,11 +338,11 @@ const ListEmployees = (props) => {
                             key={index + 1}
                             className="ant-table-row ant-table-row-level-0"
                           >
-                            <td className="ant-table-cell">
+                            {/* <td className="ant-table-cell">
                               {currentPage >= 2
                                 ? currentPage * pageSize - pageSize + index + 1
                                 : index + 1}
-                            </td>
+                            </td> */}
                             <td className="ant-table-cell">
                               <span className="ant-typography font-weight-bold">
                                 {employee?.name}

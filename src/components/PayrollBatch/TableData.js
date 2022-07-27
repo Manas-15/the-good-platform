@@ -21,6 +21,7 @@ import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
 import PayrollBatchAccordion from "./PayrollBatchAccordion";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
+import { TotalHelper } from "../../helpers";
 const TabPane = Tabs.TabPane;
 
 const completeInitialValues = {
@@ -122,7 +123,7 @@ const TableData = ({
     { label: "Processed", value: "10" }
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
       "MMMM"
     )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);
@@ -375,11 +376,14 @@ const TableData = ({
                   <>
                     <span>
                       {/* {payrollConstants.CONFIRMED} */}
-                      {75 +
-                        Math.round(
-                          25 / groupByBatchData[0]?.totalOrganizationCount
-                        )}
-                      % (Partially received by organizations)
+                      {TotalHelper(groupByBatchData[0]?.totalOrganizationCount)}
+                      % (`$
+                      {TotalHelper(
+                        groupByBatchData[0]?.totalOrganizationCount
+                      ) < 100
+                        ? "Partially received by organizations"
+                        : "Received by Social Organization"}
+                      `)
                     </span>
                     <Progress
                       percent={

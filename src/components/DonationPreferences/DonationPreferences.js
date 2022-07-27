@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -26,14 +26,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -78,7 +78,7 @@ const DonationPreferences = () => {
         employeeId: employee?.emp_id,
         userType: "Employee",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   };
@@ -117,9 +117,7 @@ const DonationPreferences = () => {
     );
     getData();
   };
-
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchByProgramName("");
     setSearchByEmployeeName("");
     setSearchByCorporateName("");
@@ -169,7 +167,6 @@ const DonationPreferences = () => {
   //   setSearchText(value);
   //   setSelected(selected);
   // };
-
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -232,7 +229,6 @@ const DonationPreferences = () => {
   const changeTab = (activeKey) => {
     setTabType(activeKey);
   };
-
   const setRepeatCharity = (charity) => {
     document.getElementsByClassName("sidepanel")[0].classList.add("is-open");
     setGetRepeatCharity(charity);
@@ -323,7 +319,6 @@ const DonationPreferences = () => {
           )}
         </div>
       </div>
-
       {preferences.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
         <Tabs

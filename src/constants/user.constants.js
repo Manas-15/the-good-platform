@@ -23,6 +23,6 @@ export const userConstants = {
   ORGANIZATION_VIEW: "Organization",
   CORPORATE_VIEW: "Corporate",
   INDIVIDUAL_VIEW: "Individual",
-  
-  LOGOUT : "LOGOUT"
+
+  LOGOUT: "LOGOUT",
 };

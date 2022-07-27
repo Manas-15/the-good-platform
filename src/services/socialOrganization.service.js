@@ -8,9 +8,10 @@ export const socialOrganizationService = {
 };
 
 async function getSocialOrganizations(data) {
-  if (data?.loggedInUserType === userConstants.INDIVIDUAL) {
+  if (data?.loggedInUserType === userConstants.INDIVIDUAL || data?.userId) {
     return await axios.post(
-      process.env.REACT_APP_API_URL + "remote_api/get_social_organization/", data
+      process.env.REACT_APP_API_URL + "remote_api/get_social_organization/",
+      data
     );
   } else {
     if (data["loggedInUserType"] === userConstants.CORPORATE) {
@@ -22,6 +23,10 @@ async function getSocialOrganizations(data) {
         }
       );
     } else {
+      // return await axios.post(
+      //   process.env.REACT_APP_API_URL + "remote_api/get_social_organization/",
+      //   data
+      // );
       return await axios.get(
         process.env.REACT_APP_API_URL + "api/social_program_list/",
         {

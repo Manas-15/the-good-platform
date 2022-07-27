@@ -15,6 +15,8 @@ const Header = () => {
     history.push("/");
   };
   const user = useSelector((state) => state.employee.user);
+  const users = JSON.parse(localStorage.getItem("user"));
+  const isTgpLoggedInView = users?.userRole;
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
@@ -27,7 +29,6 @@ const Header = () => {
     // handleClose();
   };
   const currentView = useSelector((state) => state.currentView);
-  console.log(currentView);
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
 
@@ -35,8 +36,6 @@ const Header = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-
-  console.log(isSuperadminView);
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -54,9 +53,11 @@ const Header = () => {
       </div>
       <nav className="header-nav ms-auto">
         <h4 className="current-view">
-          {currentView?.currentView}{" "}
+          {users?.userRole
+            ? users?.userRole.replace("-", " ")
+            : currentView?.currentView}
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
-            ? " - " + selectedCorporate?.corporate?.organizationName
+            ? " - " + selectedCorporate?.corporate?.name
             : ""}
           {currentView?.currentView ===
           viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL

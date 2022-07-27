@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
@@ -8,7 +7,7 @@ import { charityProgramActions } from "../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import DonationConsent from "../Shared/DonationConsent";
 import { charityProgramConstants } from "../../constants";
@@ -16,7 +15,6 @@ import DonateSecondStep from "./DonateSecondStep";
 import donationsConsent from "../../config/donationsConsent.json";
 import { history } from "../../helpers";
 import AddedDonationFromDetail from "./AddedDonationFromDetail";
-
 const preferenceForm = {
   corporateId: "",
   employeeId: "",
@@ -26,7 +24,7 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
   donationConsent: "",
-  repeat: "",
+  repeat: ""
 };
 const Donate = ({
   frequency,
@@ -34,10 +32,11 @@ const Donate = ({
   tabType,
   from,
   currentPortal,
-  repeatPreference,
+  repeatPreference
 }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
+  const otherUser = useSelector((state) => state.user);
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
@@ -53,7 +52,6 @@ const Donate = ({
     currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
-    // console.log("selectedCharity ??????????????????????", selectedCharity);
     if (selectedCharity) {
       setSelectedAmount(
         selectedCharity?.employeePreferenceId
@@ -82,15 +80,42 @@ const Donate = ({
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>> save", selectedAmount);
-    preferenceForm.corporateId = employee?.corporateId;
+    console.log(
+      ">>>>>>>>>>>>> selectedCharity",
+      selectedAmount,
+      selectedCharity
+    );
+    preferenceForm.corporateId = repeatPreference
+      ? selectedCharity?.corporateId
+      : employee?.corporateId
+      ? employee?.corporateId
+      : null;
+    preferenceForm.corporateName = repeatPreference
+      ? selectedCharity?.corporateName
+      : employee?.corporateName
+      ? employee?.corporateName
+      : null;
     preferenceForm.employeeId = employee?.emp_id;
     preferenceForm.charityProgramId = repeatPreference
       ? selectedCharity?.charityProgramId
-      : selectedCharity?.charityId;
+      : selectedCharity?.charityId
+      ? selectedCharity?.charityId
+      : selectedCharity?.id;
+    preferenceForm.charityProgramName = repeatPreference
+      ? selectedCharity?.charityProgram
+      : selectedCharity?.charityName
+      ? selectedCharity?.charityName
+      : null;
     preferenceForm.socialOrganizationId = repeatPreference
       ? selectedCharity?.socialOrganizationId
-      : selectedCharity?.soicalId;
+      : selectedCharity?.soicalId
+      ? selectedCharity?.soicalId
+      : selectedCharity?.organisationId;
+    preferenceForm.socialOrganizationName = repeatPreference
+      ? selectedCharity?.socialOrganization
+      : selectedCharity?.soicalName
+      ? selectedCharity?.soicalName
+      : null;
     preferenceForm.donationAmount = selectedAmount;
     preferenceForm.frequency =
       frequency === donationPreferenceConstants.MONTHLY ? 2 : 1;
@@ -135,7 +160,7 @@ const Donate = ({
           <>
             <div className="row mb-4">
               <div className="col-md-12">
-                <span className="bi-lock-fill fs-5 text-success"></span>Choose
+                <span className="bi-lock-fill fs-5 text-success"></span>
                 an amount to donate
               </div>
             </div>
@@ -206,7 +231,10 @@ const Donate = ({
                 </p>
               </div>
             </div>
-            {((tabType === charityProgramConstants.SPONSOR &&
+            {((otherUser?.detail?.userRole !==
+              (viewPortalConstants.PAYMENT_ADMIN ||
+                viewPortalConstants.FO_ADMIN) &&
+              tabType === charityProgramConstants.SPONSOR &&
               !isCorporatePortal &&
               !addedFromProgramDetail &&
               loggedInUserType !== userConstants.INDIVIDUAL) ||
@@ -234,7 +262,10 @@ const Donate = ({
             <div
               className={
                 "row mb-4 " +
-                ((tabType === charityProgramConstants.SPONSOR &&
+                ((otherUser?.detail?.userRole !==
+                  (viewPortalConstants.PAYMENT_ADMIN ||
+                    viewPortalConstants.FO_ADMIN) &&
+                  tabType === charityProgramConstants.SPONSOR &&
                   !isCorporatePortal &&
                   loggedInUserType !== userConstants.INDIVIDUAL) ||
                 repeatPreference
@@ -246,7 +277,10 @@ const Donate = ({
                 <button
                   className="btn btn-custom w-100 rounded-pill"
                   disabled={
-                    (tabType === charityProgramConstants.SPONSOR &&
+                    (otherUser?.detail?.userRole !==
+                      (viewPortalConstants.PAYMENT_ADMIN ||
+                        viewPortalConstants.FO_ADMIN) &&
+                      tabType === charityProgramConstants.SPONSOR &&
                       !isCorporatePortal &&
                       loggedInUserType !== userConstants.INDIVIDUAL) ||
                     repeatPreference
@@ -254,7 +288,10 @@ const Donate = ({
                       : false
                   }
                   onClick={
-                    (tabType === charityProgramConstants.SPONSOR &&
+                    (otherUser?.detail?.userRole !==
+                      (viewPortalConstants.PAYMENT_ADMIN ||
+                        viewPortalConstants.FO_ADMIN) &&
+                      tabType === charityProgramConstants.SPONSOR &&
                       !isCorporatePortal &&
                       loggedInUserType !== userConstants.INDIVIDUAL) ||
                     repeatPreference
@@ -263,7 +300,10 @@ const Donate = ({
                   }
                 >
                   <span className="fs-6 ml-2">
-                    {(tabType === charityProgramConstants.SPONSOR &&
+                    {(otherUser?.detail?.userRole !==
+                      (viewPortalConstants.PAYMENT_ADMIN ||
+                        viewPortalConstants.FO_ADMIN) &&
+                      tabType === charityProgramConstants.SPONSOR &&
                       !isCorporatePortal &&
                       loggedInUserType !== userConstants.INDIVIDUAL) ||
                     repeatPreference ? (

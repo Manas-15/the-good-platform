@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  charityProgramConstants,
+  charityProgramConstants
 } from "../../constants";
 import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import {
   charityProgramActions,
   selectedCharityActions,
-  selectedCharityTabActions,
+  selectedCharityTabActions
 } from "../../actions";
 import urlSlug from "url-slug";
 // import DonateHeader from "./../CharityPrograms/DonateHeader";
@@ -21,14 +21,11 @@ import urlSlug from "url-slug";
 // import { handleInputChange } from "react-select/dist/declarations/src/utils";
 
 const ListCharityPrograms = ({ items, setCharity, tabType }) => {
-  // console.log(items, tabType);
-
   const dispatch = useDispatch();
   const openNav = (charity) => {
     // document.getElementById("sidepanel").classList.add("is-open");
     setCharity(charity);
   };
-  // const charityPrograms = useSelector((state) => state?.charityPrograms?.items);
 
   const employeeCount = useSelector(
     (state) => state?.charityPrograms?.employeeCount
@@ -36,20 +33,24 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const selectedCharity = useSelector(
     (state) => state?.selectedCharity?.charity
   );
+  const selectedOrganization = useSelector(
+    (state) => state?.selectedOrganization?.organization
+  );
   const currentPortal = useSelector((state) => state.currentView);
   // const beforeUnrpomoteMsg = useSelector(
   //   (state) => state?.charityPrograms?.checkBeforeUnpromoteMsg
   // );
   const [open, setOpen] = useState(false);
+
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  // console.log(isCorporatePortal);//true
+  const isOthersPortal =
+    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const isEmployeePortal =
     currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
-  // console.log(selectedCorporate);
   const user = useSelector((state) => state.employee.user);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
@@ -60,7 +61,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [checkedProgram, setCheckedProgram] = useState({
     programId: [],
     corporateId: "",
-    socialId: "",
+    socialId: ""
   });
 
   // const [isSelectedAll, setIsSelectedAll] = useState(false);
@@ -68,7 +69,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [allItems, setAllItems] = useState([]);
 
   const handleOpen = (action, item) => {
-    console.log(action, item, "aaaaaaaaaaaaaaaaaaaaa"); //charityProgram
     setOpen(true);
     setActionType(action);
     setSelectedProgram(item);
@@ -94,35 +94,43 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       );
     }
   };
-  // console.log(socialId);
   const confirm = () => {
-    // console.log("selectedProgram >>>>>>>>>>>>>>>>", selectedProgram);
-    // console.log("selectedCharity >>>>>>>>>>>>>>>>", selectedCharity);
     handleClose();
     dispatch(
       actionType === charityProgramConstants.BULK_UNPROMOTE
         ? charityProgramActions.operateDenyRequest({
-            corporateId: checkedProgram?.corporateId,
+            corporateId: checkedProgram?.id,
             socialId: checkedProgram?.socialId,
-            programId: checkedProgram?.programId,
+            programId: checkedProgram?.programId
           })
         : actionType === charityProgramConstants.UNPROMOTE
         ? charityProgramActions.operateDenyRequest({
-            corporateId: selectedCorporate?.corporate?.corporateId,
-            socialId: selectedProgram?.soicalId,
-            programId: selectedProgram?.charityId,
+            corporateId: selectedCorporate?.corporate?.id,
+            socialId: selectedCharity?.organisationId,
+            programId: selectedCharity?.id
+
+            // corporateId: selectedCorporate?.corporate?.corporateId,
+            // socialId: selectedProgram?.soicalId,
+            // programId: selectedProgram?.charityId,
           })
         : actionType === charityProgramConstants.BULK_PROMOTE
         ? charityProgramActions.operateBulkSponsorRequest({
-            corporateId: checkedProgram?.corporateId,
+            corporateId: checkedProgram?.id,
             socialId: checkedProgram?.socialId,
-            charityId: checkedProgram?.programId,
+            charityId: checkedProgram?.programId
           })
         : actionType === charityProgramConstants.PROMOTE &&
           charityProgramActions.operateSponsorRequest({
-            corporateId: selectedCorporate?.corporate?.corporateId,
-            socialId: selectedProgram?.soicalId,
-            charityId: selectedProgram?.charityId,
+            corporateId: selectedCorporate?.corporate?.id,
+            organisationId: selectedOrganization?.id,
+            organisationName: selectedOrganization?.name,
+            charityId: selectedCharity?.id,
+            charityName: selectedCharity?.charityName,
+            soicalName: selectedCharity?.soicalName
+
+            // corporateId: selectedCorporate?.corporate?.corporateId,
+            // socialId: selectedProgram?.soicalId,
+            // charityId: selectedProgram?.charityId,
           })
     );
   };
@@ -174,25 +182,27 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   };
 
   const checkBeforeUnpromote = async (action, item) => {
-    console.log(action, item);
     setActionType(action);
-
     await dispatch(
       action === charityProgramConstants.BULK_UNPROMOTE
         ? charityProgramActions.checkBeforeBulkUnpromote({
             socialId: item?.socialId,
             programId: item?.programId,
-            corporateId: isCorporatePortal
-              ? item?.corporateId
-              : user?.corporateId,
+            corporateId: isCorporatePortal ? item?.id : user?.corporateId
+            // corporateId: isCorporatePortal
+            //   ? item?.corporateId
+            //   : user?.corporateId,
           })
         : action === charityProgramConstants.UNPROMOTE &&
             charityProgramActions.checkBeforeUnpromote({
               socialId: item?.soicalId,
               programId: item?.charityId,
               corporateId: isCorporatePortal
-                ? selectedCorporate?.corporate?.corporateId
-                : user?.corporateId,
+                ? selectedCorporate?.corporate?.id
+                : user?.corporateId
+
+              //  ? selectedCorporate?.corporate?.corporateId
+              // : user?.corporateId,
             })
     );
 
@@ -215,33 +225,19 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
     setAllItems(items);
   }, [items]);
   // useEffect(() => {
-  //   console.log(
-  //     "beforeUnrpomoteMsg >>>>>>>>>>>>>>>",
-  //     selectedProgram,
-  //     Object.keys(selectedProgram).length > 0,
-  //     selectedProgram?.employeeCount
-  //   );
   //   if (Object.keys(selectedProgram).length > 0) {
   //     handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
   //   }
   // }, [selectedProgram]);
   // useEffect(() => {
-  //   console.log(
-  //     "bssssssssssssssssssss >>>>>>>>>>>>>>>",
-  //     selectedProgram,
-  //     Object.keys(selectedProgram).length > 0,
-  //     selectedProgram?.employeeCount
-  //   );
   //   if (Object.keys(selectedProgram).length > 0) {
   //     handleOpen(charityProgramConstants.UNPROMOTE, selectedProgram);
   //   }
   // }, [selectedProgram?.employeeCount]);
   // useEffect(() => {
-  //   console.log("beforeUnrpomoteMsg >>>>>>>>>>>>>>>", selectedProgram, Object.keys(selectedProgram).length > 0, selectedProgram?.employeeCount);
   //   setSelectedProgram(selectedProgram)
   // }, [selectedProgram?.employeeCount]);
   // useEffect(() => {
-  //   console.log("beforeUnrpomoteMsg >>>>>>>>> ssssssssssssss >>>>>>", selectedProgram);
   //     setOpen(true);
   //     setActionType("Confirm");
   //     setActionTitle(`Confirm Confirmation`);
@@ -269,27 +265,34 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setSocialIdd(socialID[0]);
       setCheckedProgram({
         programId: allItems?.map((val) => val.charityId),
-        corporateId: selectedCorporate?.corporate?.corporateId,
-        socialId: socialID[0],
+        corporateId: selectedCorporate?.corporate?.id,
+        socialId: socialID[0]
+        //  corporateId: selectedCorporate?.corporate?.corporateId,
+        // socialId: socialID[0],
       });
     } else if (name === "allSelect" && !checked) {
-      console.log(name, checked);
       setCheckedProgram({
         programId: [],
-        corporateId: selectedCorporate?.corporate?.corporateId,
-        socialId: socialIdd,
+        corporateId: selectedCorporate?.corporate?.id,
+        socialId: socialIdd
+        //   corporateId: selectedCorporate?.corporate?.corporateId,
+        // socialId: socialIdd,
       });
     } else if (checked) {
       setCheckedProgram({
         programId: [...programId, items?.charityId],
-        corporateId: selectedCorporate?.corporate?.corporateId,
-        socialId: items?.soicalId,
+        corporateId: selectedCorporate?.corporate?.id,
+        socialId: items?.soicalId
+        // corporateId: selectedCorporate?.corporate?.corporateId,
+        // socialId: items?.soicalId,
       });
     } else {
       setCheckedProgram({
         programId: programId?.filter((val) => val !== items?.charityId),
-        corporateId: selectedCorporate?.corporate?.corporateId,
-        socialId: items?.soicalId,
+        corporateId: selectedCorporate?.corporate?.id,
+        socialId: items?.soicalId
+        // corporateId: selectedCorporate?.corporate?.corporateId,
+        // socialId: items?.soicalId,
       });
     }
     // For all Check & Uncheck
@@ -305,9 +308,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setAllItems(tempUser);
     }
   };
-  // console.log(checked);
-  console.log(checkedProgram);
-
   return (
     <>
       <div className="ant-row">
@@ -404,14 +404,23 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                           <Tooltip title={charityProgram?.charityName}>
                             <Link
                               to={{
-                                pathname: `/social-organizations/programs/${urlSlug(
-                                  charityProgram?.charityName
+                                pathname: `/social-organizations/${urlSlug(
+                                  selectedOrganization?.name
+                                )}/${urlSlug(
+                                  charityProgram?.charityName ||
+                                    charityProgram?.name
                                 )}`,
-                                programName: charityProgram?.charityName,
+                                programName:
+                                  charityProgram?.charityName ||
+                                  charityProgram?.name
                               }}
-                              onClick={() => setSelectedCharity(charityProgram)}
+                              onClick={() => setCharity(charityProgram)}
                             >
                               <span className="ant-typography font-weight-bold custom-color">
+                                {charityProgram?.name?.length > 35
+                                  ? charityProgram?.name.substring(0, 32) +
+                                    "..."
+                                  : charityProgram?.name}
                                 {charityProgram?.charityName?.length > 35
                                   ? charityProgram?.charityName.substring(
                                       0,
@@ -424,6 +433,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                         </td>
                         <td className="ant-table-cell">
                           {charityProgram?.soicalName}
+                          {charityProgram?.organisationName}
                         </td>
                         <td className="ant-table-cell">
                           {charityProgram?.category}
@@ -486,8 +496,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                           )}
                           {(isCorporatePortal ||
                             (isEmployeePortal && !charityProgram?.donated) ||
-                            (isIndividualPortal &&
-                              !charityProgram?.donated)) && (
+                            (isIndividualPortal && !charityProgram?.donated) ||
+                            (isOthersPortal && !charityProgram?.donated)) && (
                             <button
                               type="submit"
                               className="btn btn-sm mb-2"
@@ -503,7 +513,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                               >
                                 <img
                                   src="/assets/img/donate.png"
-                                  alt="donate"
+                                  alt="Donate"
                                   onMouseEnter={(event) =>
                                     (event.target.src =
                                       "/assets/img/donate-fill-red.png")

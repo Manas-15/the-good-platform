@@ -2,9 +2,6 @@ import { corporateConstants } from "../constants";
 import { corporateService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
-// import { handleInputChange } from "react-select/dist/declarations/src/utils";
-// import { alert } from "../reducers/alert.reducer";
-
 export const corporateActions = {
   addCorporate,
   deleteCorporate,
@@ -12,13 +9,11 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   corporateAccountRequest,
-  samlConfigure,
+  samlConfigure
 };
-
 function getCorporates() {
   return (dispatch) => {
     dispatch(request());
-
     corporateService.getCorporates().then(
       (corporates) => dispatch(success(corporates)),
 
@@ -28,7 +23,6 @@ function getCorporates() {
       }
     );
   };
-
   function request() {
     return { type: corporateConstants.GET_CORPORATES_REQUEST };
   }
@@ -39,11 +33,9 @@ function getCorporates() {
     return { type: corporateConstants.GET_CORPORATES_FAILURE, error };
   }
 }
-
 function addCorporate(corporate, type) {
   return (dispatch) => {
     dispatch(request(corporate));
-
     corporateService.addCorporate(corporate).then(
       (res) => {
         dispatch(success(res));
@@ -60,7 +52,6 @@ function addCorporate(corporate, type) {
       }
     );
   };
-
   function request(corporate) {
     return { type: corporateConstants.ADD_CORPORATE_REQUEST, corporate };
   }
@@ -71,16 +62,11 @@ function addCorporate(corporate, type) {
     return { type: corporateConstants.ADD_CORPORATE_FAILURE, error };
   }
 }
-
 function updateCorporate(corporate) {
   return (dispatch) => {
-    console.log(corporate, "valuessssssss");
     dispatch(request(corporate));
-
     corporateService.updateCorporate(corporate).then(
       (corporate) => {
-        console.log(corporate, "valuessssssss successssssss");
-
         dispatch(success(corporate));
         history.push("/list-corporates");
         dispatch(alertActions.success("Corporate Updated Successfully"));
@@ -95,23 +81,18 @@ function updateCorporate(corporate) {
     return { type: corporateConstants.UPDATE_CORPORATE_REQUEST, corporate };
   }
   function success(corporate) {
-    console.log(corporate, "after successsssss");
-
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate,
+      corporate
     };
   }
   function failure(error) {
     return { type: corporateConstants.UPDATE_CORPORATE_FAILURE, error };
   }
 }
-
 function deleteCorporate(corporateId) {
-  console.log(corporateId, "delete idddddd");
   return (dispatch) => {
     dispatch(request(corporateId));
-
     corporateService.deleteCorporate(corporateId).then(
       (corporateId) => {
         dispatch(success(corporateId));
@@ -123,7 +104,6 @@ function deleteCorporate(corporateId) {
       }
     );
   };
-
   function request(corporateId) {
     return { type: corporateConstants.DELETE_CORPORATE_REQUEST, corporateId };
   }
@@ -159,7 +139,6 @@ function registerCorporate(corporate, type) {
       }
     );
   };
-
   function request(corporate) {
     return { type: corporateConstants.ADD_CORPORATE_REQUEST, corporate };
   }
@@ -172,7 +151,6 @@ function registerCorporate(corporate, type) {
 }
 function corporateAccountRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "actyon typeeeee");
     dispatch(request(actionValues));
     corporateService.corporateAccountRequest(actionValues).then(
       (msg) => {
@@ -193,12 +171,10 @@ function corporateAccountRequest(actionValues) {
       }
     );
   };
-
   function request(corporate) {
     return { type: corporateConstants.CORPORATE_ACTION_REQUEST, corporate };
   }
   function success(data) {
-    console.log(data);
     return { type: corporateConstants.CORPORATE_ACTION_SUCCESS, data };
   }
   function failure(error) {

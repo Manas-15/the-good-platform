@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
@@ -21,14 +21,14 @@ const preferenceForm = {
   type: "",
   donationAmount: "",
   frequency: "",
-  isConsentCheck: "",
+  isConsentCheck: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -65,7 +65,7 @@ const EmployeeDonationPreferences = () => {
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Preference",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   }, [currentPage]);
@@ -147,7 +147,6 @@ const EmployeeDonationPreferences = () => {
     document.getElementById("root").classList.remove("loading");
   }
   const onHandleChange = (e) => {
-    console.log("fired");
     setSearchText("");
     setSelected(e.target.value);
   };

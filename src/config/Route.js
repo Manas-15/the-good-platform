@@ -9,7 +9,6 @@ import Header from "../components/Layouts/Header";
 import Sidebar from "../components/Layouts/Sidebar";
 import { alertActions } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
-
 import EmployeeSignUp from "../components/Auth/EmployeeSignUp";
 import EmployeeLogin from "../components/Auth/EmployeeLogin";
 import CorporatesPortal from "../components/Corporate/CorporatesPortal";
@@ -19,7 +18,7 @@ import AddCorporate from "../components/Corporate/AddCorporate";
 import AddEmployee from "../components/Employee/AddEmployee";
 import EmployeeDonationPreferences from "../components/Corporate/EmployeeDonationPreferences";
 import ListTransactionsHistory from "../components/TransactionsHistory/ListTransactionsHistory";
-import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
+// import ListSocialOrganizations from "../components/SocialOrganizations/ListSocialOrganizations";
 import Otp from "../components/Auth/Otp";
 import ForgotPassword from "../components/Auth/ForgotPassword";
 import SetPassword from "../components/Auth/SetPassword";
@@ -33,7 +32,7 @@ import PrivacyPolicy from "../components/PrivacyPolicy/PrivacyPolicy";
 import SocialOrganizationsPortal from "../components/SocialOrganizations/SocialOrganizationsPortal";
 import SocialOrganizations from "../components/SocialOrganizations/SocialOrganizations";
 import IndividualSignUp from "../components/Auth/IndividualSignUp";
-import OthersSignUp from "../components/Auth/OthersSignUp";
+// import OthersSignUp from "../components/Auth/OthersSignUp";
 import { userConstants } from "./../constants";
 import DirectPayment from "../components/DirectPayment/DirectPayment";
 import ListIndividuals from "../components/Individual/ListIndividuals";
@@ -70,7 +69,7 @@ const CreateRoutes = () => {
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
-      message: message,
+      message: message
     });
   };
   return (
@@ -94,7 +93,6 @@ const CreateRoutes = () => {
                 <Route exact path="/" component={Dashboard} />
               )}
               <Route exact path="/profile" component={Profile} />
-
               <Route
                 exact
                 path="/social-organizations/:slug"
@@ -102,10 +100,9 @@ const CreateRoutes = () => {
               />
               <Route
                 exact
-                path="/social-organizations/programs/:slug"
+                path="/social-organizations/:slug/:slug"
                 component={CharityProgramDetails}
               />
-
               {!isEmployeeView && (
                 <Route
                   exact
@@ -113,7 +110,6 @@ const CreateRoutes = () => {
                   component={DonationPreferences}
                 />
               )}
-
               <Route exact path="/corporates" component={CorporatesPortal} />
               <Route
                 exact
@@ -125,7 +121,6 @@ const CreateRoutes = () => {
                 path="/corporates/:corporateId/employees"
                 component={ListEmployees}
               />
-
               <Route
                 exact
                 path="/employee-donation-preference"
@@ -218,7 +213,6 @@ const CreateRoutes = () => {
                   path="/employees/sign-up"
                   component={EmployeeSignUp}
                 />
-
                 <Route
                   exact
                   path="/others/sign-up"

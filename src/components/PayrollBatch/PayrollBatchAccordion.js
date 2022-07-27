@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import { CompleteBatchSchema } from "./../Validations";
@@ -9,7 +9,7 @@ import {
   viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
-import Loader from "./../Shared/Loader";
+// import Loader from "./../Shared/Loader";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 import ReactHtmlParser from "react-html-parser";
@@ -17,10 +17,10 @@ import { Modal, Button } from "react-bootstrap";
 import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 import { Progress, Tooltip } from "antd";
-import { ProcessHelper, history } from "./../../helpers";
+import { ProcessHelper } from "./../../helpers";
 import { Accordion } from "react-bootstrap";
 import PayrollBatchDetail from "./PayrollBatchDetail";
-
+import { TotalHelper } from "../../helpers";
 const confirmInitialValues = {
   batchId: "",
   requestType: ""
@@ -35,14 +35,14 @@ const paidInitialValues = {
 };
 const PayrollBatchAccordion = (props) => {
   // let history = useHistory();
-  const payrollBatches = useSelector((state) => state.payrollBatch);
+  // const payrollBatches = useSelector((state) => state.payrollBatch);
   const currentPortal = useSelector((state) => state.currentView);
-  const batchId = props?.batchId;
+  // const batchId = props?.batchId;
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [referenceNote, setReferenceNote] = useState();
   const [openDialog, setOpenDialog] = useState(false);
-  const [checked, setChecked] = useState(false);
+  // const [checked, setChecked] = useState(false);
   const [isBatchDetail, setIsBatchDetail] = useState(false);
   const [selectedBatchId, setSelectedBatchId] = useState(false);
   const [openPaidSimulator, setOpenPaidSimulator] = useState(false);
@@ -58,15 +58,12 @@ const PayrollBatchAccordion = (props) => {
   const isBluePencilPortal =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
-
-  const isOrganizationPortal =
-    currentPortal?.currentView ===
-    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
-
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  // const isOrganizationPortal =
+  //   currentPortal?.currentView ===
+  //   viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+  // const isCorporatePortal =
+  //   currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   // const [currentView, setCurrentView] = useState(props?.viewType);
-
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,7 +97,7 @@ const PayrollBatchAccordion = (props) => {
       setActionTitle(`${action}`);
       setActionContent(
         `Are you sure you want to ${
-          action == "Confirm Batch" ? "confirm" : "unconfirm"
+          action === "Confirm Batch" ? "confirm" : "unconfirm"
         } this batch?`
       );
     }
@@ -216,7 +213,6 @@ const PayrollBatchAccordion = (props) => {
       )
     );
   };
-
   return (
     <>
       {accordionData && !isBatchDetail && (
@@ -381,13 +377,16 @@ const PayrollBatchAccordion = (props) => {
                                             <>
                                               <span>
                                                 {/* {payrollConstants.CONFIRMED} */}
-                                                {75 +
-                                                  Math.round(
-                                                    25 /
-                                                      batch?.totalOrganizationCount
-                                                  )}
-                                                % (Partially received by
-                                                organizations)
+                                                {TotalHelper(
+                                                  batch?.totalOrganizationCount
+                                                )}
+                                                % (
+                                                {TotalHelper(
+                                                  batch?.totalOrganizationCount
+                                                ) < 100
+                                                  ? "Received by all organizations"
+                                                  : "Partially received by organizations"}
+                                                )
                                               </span>
                                               <Progress
                                                 percent={

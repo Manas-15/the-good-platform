@@ -11,12 +11,12 @@ export const charityProgramActions = {
   operateDenyRequest,
   checkBeforeUnpromote,
   checkBeforeBulkUnpromote,
-  getProgramDetail,
+  getProgramDetail
 };
 
 function getCharityPrograms(data) {
   return (dispatch) => {
-    dispatch(request());
+    dispatch(request(data));
     charityProgramService.getCharityPrograms(data).then(
       (charityPrograms) => dispatch(success(charityPrograms)),
 
@@ -27,19 +27,22 @@ function getCharityPrograms(data) {
     );
   };
 
-  function request() {
-    return { type: charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST };
+  function request(data) {
+    return {
+      type: charityProgramConstants.GET_CHARITY_PROGRAMS_REQUEST,
+      data: data
+    };
   }
   function success(charityPrograms) {
     return {
       type: charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS,
-      charityPrograms,
+      charityPrograms
     };
   }
   function failure(error) {
     return {
       type: charityProgramConstants.GET_CHARITY_PROGRAMS_FAILURE,
-      error,
+      error
     };
   }
 }
@@ -54,7 +57,7 @@ function saveDonationPreference(data) {
             employeeId: data?.employeeId,
             userType: "Employee",
             pageSize: 10,
-            offset: 0,
+            offset: 0
           })
         );
         dispatch(
@@ -71,27 +74,25 @@ function saveDonationPreference(data) {
   function request(data) {
     return {
       type: charityProgramConstants.SAVE_DONATION_PREFERENCE_REQUEST,
-      data,
+      data
     };
   }
   function success(preferences) {
     return {
       type: charityProgramConstants.SAVE_DONATION_PREFERENCE_SUCCESS,
-      preferences,
+      preferences
     };
   }
   function failure(error) {
     return {
       type: charityProgramConstants.SAVE_DONATION_PREFERENCE_FAILURE,
-      error,
+      error
     };
   }
 }
 function operateSponsorRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "Only Promoteeeee");
     dispatch(request(actionValues));
-
     charityProgramService.operateSponsorRequest(actionValues).then(
       (data) => {
         dispatch(success());
@@ -103,11 +104,10 @@ function operateSponsorRequest(actionValues) {
       }
     );
   };
-
   function request(program) {
     return {
       type: charityProgramConstants.OPERATE_SPONSOR_REQUEST,
-      program,
+      program
     };
   }
   function success() {
@@ -116,15 +116,13 @@ function operateSponsorRequest(actionValues) {
   function failure(error) {
     return {
       type: charityProgramConstants.OPERATE_SPONSOR_FAILURE,
-      error,
+      error
     };
   }
 }
 function operateBulkSponsorRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues, "Bulk Promoteeeeeeee");
     dispatch(request(actionValues));
-
     charityProgramService.operateBulkSponsorRequest(actionValues).then(
       (data) => {
         dispatch(success());
@@ -140,7 +138,7 @@ function operateBulkSponsorRequest(actionValues) {
   function request(program) {
     return {
       type: charityProgramConstants.OPERATE_BULK_SPONSOR_REQUEST,
-      program,
+      program
     };
   }
   function success() {
@@ -149,15 +147,13 @@ function operateBulkSponsorRequest(actionValues) {
   function failure(error) {
     return {
       type: charityProgramConstants.OPERATE_BULK_SPONSOR_FAILURE,
-      error,
+      error
     };
   }
 }
 function operateDenyRequest(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
-
     charityProgramService.operateDenyRequest(actionValues).then(
       (data) => {
         dispatch(success());
@@ -173,7 +169,7 @@ function operateDenyRequest(actionValues) {
   function request(program) {
     return {
       type: charityProgramConstants.OPERATE_DENY_REQUEST,
-      program,
+      program
     };
   }
   function success() {
@@ -182,22 +178,16 @@ function operateDenyRequest(actionValues) {
   function failure(error) {
     return {
       type: charityProgramConstants.OPERATE_DENY_FAILURE,
-      error,
+      error
     };
   }
 }
 function checkBeforeUnpromote(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
-
     charityProgramService.checkBeforeUnpromote(actionValues).then(
       (data) => {
         dispatch(success(data));
-        // dispatch(alertActions.error(data?.data?.msg));
-        // if(data?.data?.msg){
-        //   dispatch(alertActions.error(data?.data?.msg));
-        // }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -209,35 +199,29 @@ function checkBeforeUnpromote(actionValues) {
   function request(program) {
     return {
       type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_REQUEST,
-      program,
+      program
     };
   }
   function success(data) {
     return {
       type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_SUCCESS,
-      data,
+      data
     };
   }
   function failure(error) {
     return {
       type: charityProgramConstants.CHECK_BEFORE_UNPROMOTE_FAILURE,
-      error,
+      error
     };
   }
 }
 
 function checkBeforeBulkUnpromote(actionValues) {
   return (dispatch) => {
-    console.log(actionValues);
     dispatch(request(actionValues));
-
     charityProgramService.checkBeforeBulkUnpromote(actionValues).then(
       (data) => {
         dispatch(success(data));
-        // dispatch(alertActions.error(data?.data?.msg));
-        // if(data?.data?.msg){
-        //   dispatch(alertActions.error(data?.data?.msg));
-        // }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -249,19 +233,19 @@ function checkBeforeBulkUnpromote(actionValues) {
   function request(program) {
     return {
       type: charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_REQUEST,
-      program,
+      program
     };
   }
   function success(data) {
     return {
       type: charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_SUCCESS,
-      data,
+      data
     };
   }
   function failure(error) {
     return {
       type: charityProgramConstants.CHECK_BEFORE_BULK_UNPROMOTE_FAILURE,
-      error,
+      error
     };
   }
 }
@@ -285,13 +269,13 @@ function getProgramDetail(data) {
   function success(programDetail) {
     return {
       type: charityProgramConstants.GET_PROGRAM_DETAIL_SUCCESS,
-      programDetail,
+      programDetail
     };
   }
   function failure(error) {
     return {
       type: charityProgramConstants.GET_PROGRAM_DETAIL_FAILURE,
-      error,
+      error
     };
   }
 }

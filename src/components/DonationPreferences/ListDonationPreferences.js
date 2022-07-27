@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { donationPreferenceActions } from "../../actions/donationPreference.actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,18 +6,17 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import { Link } from "react-router-dom";
-import Pagination from "./../Shared/Pagination";
+// import Pagination from "./../Shared/Pagination";
 import * as moment from "moment";
 import "./../../assets/css/donationPreference.scss";
 import donationsConsent from "./../../config/donationsConsent.json";
-import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
-import { Progress, Tooltip, Switch } from "antd";
+import { Tooltip } from "antd";
 import ReactHtmlParser from "react-html-parser";
 
 const preferenceForm = {
@@ -26,21 +25,17 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
-let pageSize = paginationConstants?.PAGE_SIZE;
+// let pageSize = paginationConstants?.PAGE_SIZE;
 const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
-  // console.log(items, "filter itemmmmmmmmmm");
-  const a = items;
-  console.log(a);
-
   let history = useHistory();
   const preferences = useSelector((state) => state.donationPreferences);
   const employee = useSelector((state) => state.employee.user);
@@ -50,7 +45,7 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const [selectedPreference, setSelectedPreference] = useState();
   const [records, setAllRecords] = useState([]);
   const [updateType, setUpdateType] = useState("");
-  const [updatedValue, setUpdatedValue] = useState([]);
+  const [updatedValue, setUpdatedValue] = useState("");
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
@@ -154,7 +149,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
     }
     handleCloseDialog();
   };
-
   const handleCheck = () => {
     setChecked(true);
     setOpen(false);
@@ -198,7 +192,6 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
       preferenceForm.donationConsent = `${donationsConsent?.consent} [Frequency: ${updatedValue}]`;
     }
     preferenceForm.isConsentCheck = true;
-    // console.log(preferenceForm);
     dispatch(
       donationPreferenceActions.updateDonationPreference(preferenceForm)
     );
@@ -211,27 +204,21 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   const setPage = (page) => {
     setCurrentPage(page);
   };
-
   useEffect(() => {
     setTotalCount(preferences?.totalCount);
   }, [preferences?.totalCount]);
-
-  // const changeAmount = (e, id) => {
-  //   const { value } = e.target;
-  //   let newItems = [...a];
-
-  //   console.log(value);
-  //   const newAmount = newItems.map((val) => {
-  //     if (val?.employeePreferenceId === id) {
-  //       val.donationAmount = value;
-  //       // console.log(value.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  //     }
-  //     return val;
-  //   });
-  //   setUpdatedValue(newAmount);
-  // };
-  console.log(updatedValue);
-
+  const keyDownHandler = (event, preference) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (
+        updatedValue &&
+        updatedValue?.toString()?.replace(/,/g, "") !==
+          preference?.donationAmount?.toString()?.replace(/,/g, "")
+      ) {
+        showConsent(preference, donationPreferenceConstants.AMOUNT);
+      }
+    }
+  };
   return (
     <div className="customContainer  program-list">
       {preferences.loading && <Loader />}
@@ -263,8 +250,8 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                 <tbody className="ant-table-tbody">
                   {items?.length > 0 ? (
                     items
-                      ?.filter((preference) => preference?.isDeleted === false)
-                      .map((preference, index) => (
+                      ?.filter?.((preference) => !preference?.isDeleted)
+                      .map?.((preference, index) => (
                         <tr
                           key={index + 1}
                           className="ant-table-row ant-table-row-level-0"
@@ -282,20 +269,22 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                             </td>
                           )}
                           <td className="ant-table-cell">
-                            <Tooltip title={preference.charityProgram}>
+                            <Tooltip title={preference?.charityProgram}>
                               <span className="ant-typography font-weight-bold">
-                                {preference.charityProgram?.length > 30
-                                  ? preference.charityProgram.substring(0, 27) +
-                                    "..."
-                                  : preference.charityProgram}
+                                {preference?.charityProgram?.length > 30
+                                  ? preference?.charityProgram?.substring(
+                                      0,
+                                      27
+                                    ) + "..."
+                                  : preference?.charityProgram}
                               </span>
                             </Tooltip>
                           </td>
                           <td className="ant-table-cell">
-                            {preference.socialOrganization}
+                            {preference?.socialOrganization}
                           </td>
                           <td className="ant-table-cell">
-                            {preference.category}
+                            {preference?.category}
                           </td>
                           <td className="ant-table-cell">
                             <form
@@ -307,52 +296,22 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
                                 size="10"
                                 maxLength={10}
                                 defaultValue={preference?.donationAmount?.toLocaleString()}
-                                // value={
-                                //   updatedValue?.length > 0 && updatedValue
-                                //     ? updatedValue.toLocaleString()
-                                //     : preference?.donationAmount?.toLocaleString()
-                                // }
-                                // value={updatedValue
-                                //   ?.filter(
-                                //     (val) =>
-                                //       val?.employeePreferenceId ===
-                                //       preference?.employeePreferenceId
-                                //   )?.[0]
-                                //   ?.donationAmount?.toLocaleString()}
                                 className="form-control"
+                                onKeyDown={(e) => keyDownHandler(e, preference)}
                                 onBlur={() =>
-                                  updatedValue !== preference?.donationAmount
+                                  updatedValue &&
+                                  updatedValue.toString()?.replace(/,/g, "") !==
+                                    preference?.donationAmount
+                                      ?.toString()
+                                      ?.replace(/,/g, "")
                                     ? showConsent(
                                         preference,
                                         donationPreferenceConstants.AMOUNT
                                       )
                                     : null
                                 }
-                                // onBlur={() =>
-                                //   updatedValue?.filter(
-                                //     (val) =>
-                                //       val?.employeePreferenceId ===
-                                //       preference?.employeePreferenceId
-                                //   )?.[0]?.donationAmount !==
-                                //   preference?.donationAmount
-                                //     ? showConsent(
-                                //         preference,
-                                //         donationPreferenceConstants.AMOUNT
-                                //       )
-                                //     : null
-                                // }
-                                onChange={
-                                  (e) =>
-                                    setUpdatedValue(
-                                      e.target.value.replace(
-                                        /\B(?=(\d{3})+(?!\d))/g,
-                                        ","
-                                      )
-                                    )
-                                  // changeAmount(
-                                  //   e,
-                                  //   preference?.employeePreferenceId
-                                  // )
+                                onChange={(e) =>
+                                  setUpdatedValue(e.target.value)
                                 }
                                 id={`amount${preference?.employeePreferenceId}`}
                                 disabled={isCorporatePortal}

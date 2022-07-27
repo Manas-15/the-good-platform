@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -19,23 +19,24 @@ import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
 import PayrollBatchAccordion from "./PayrollBatchAccordion";
-
+import { TotalHelper } from "../../helpers";
+let allData;
 const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -44,6 +45,10 @@ const PayrollBatch = (props) => {
   const organizationId = props?.match?.params?.organizationId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const currentPortal = useSelector((state) => state.currentView);
+  const otherUser = useSelector((state) => state.user);
+  const selectedCorporate = useSelector(
+    (state) => state?.selectedCorporate?.corporate
+  );
   const isOrganizationPortal =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
@@ -66,8 +71,8 @@ const PayrollBatch = (props) => {
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
-  // const [searchValue, setSearchValue] = useState("");
-  // const [selectedKeySearch, setSelectedKeySearch] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [selectedKeySearch, setSelectedKeySearch] = useState("");
   const [records, setRecords] = useState([]);
   const [allRecords, setAllRecords] = useState([]);
   const [selected, setSelected] = useState();
@@ -98,7 +103,6 @@ const PayrollBatch = (props) => {
       }"</strong>?`
     );
   };
-
   useEffect(() => {
     dispatch(
       payrollBatchActions.getPayrollBatch({
@@ -111,12 +115,11 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     // filter("All");
   }, [currentPage]);
-
   const groupByBatch = () => {
     return allRecords?.reduce?.(function (acc, item) {
       (acc[item["batchId"]] = acc[item["batchId"]] || []).push(item);
@@ -124,26 +127,26 @@ const PayrollBatch = (props) => {
     }, {});
   };
   let allGroupData;
-  const allData =
-    payrollBatches?.item?.length > 0 &&
-    payrollBatches?.items?.filter((item) => !item?.isDeleted);
   useEffect(() => {
-    setAllRecords(
-      payrollBatches?.item?.length > 0 &&
+    if (payrollBatches?.item?.length > 0) {
+      allData = payrollBatches?.items?.filter((item) => !item?.isDeleted);
+      setAllRecords(
         payrollBatches?.items?.filter(
           (item) =>
             item?.receivedOrganizationIds?.split(",")?.length !==
             item?.totalOrganizationCount
         )
-    );
+      );
+    } else {
+      allData = payrollBatches?.items;
+      setAllRecords(payrollBatches?.items);
+    }
   }, [payrollBatches?.items]);
-
   useEffect(() => {
     setRecords(allRecords);
     allGroupData = groupByBatch();
     setGroupByBatchData(allGroupData);
   }, [allRecords]);
-
   if (payrollBatches.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
@@ -156,10 +159,10 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
+    { label: "Processed", value: payrollConstants.COMPLETED_STATUS }
   ];
   const openPaidConfirmation = (item) => {
-    paidInitialValues.referenceNote = `Processed Payroll batch for the month of ${moment().format(
+    paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
       "MMMM"
     )} - ${item?.corporateName}`;
     setOpenPaidSimulator(true);
@@ -174,7 +177,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -206,7 +209,7 @@ const PayrollBatch = (props) => {
         } for this batch?`
       );
     }
-    if (action === "Complete Batch") {
+    if (action === payrollConstants.COMPLETE_BATCH) {
       completeInitialValues.referenceNote = `Process batch for the month of ${moment().format(
         "MMMM"
       )} - ${item?.corporateName}`;
@@ -232,14 +235,8 @@ const PayrollBatch = (props) => {
   };
   const confirm = (values) => {
     handleClose();
-
     dispatch(payrollBatchActions.updateBatchStatus(values));
-    console.log(
-      "<<<<<<<<<<<<<<<<<<<<< allRecords >>>>>>>>>>>>>>>>>>>>>>>>>",
-      values
-    );
     const data = allRecords?.filter((item) => item?.batchId !== values.batchId);
-    console.log("<<<<<<<<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>>>>>>>>>>", data);
     setAllRecords(data);
   };
   const handleClose = () => {
@@ -255,23 +252,20 @@ const PayrollBatch = (props) => {
     setIsBatchDetail(status);
     setSelectedBatchId(null);
   };
-
   const onFilter = (value) => {
-    if (value === "2") {
+    if (value?.toString() === "2") {
       setAllRecords(
-        allData?.filter(
+        allData?.filter?.(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length ===
             val?.totalOrganizationCount
-          // console.log(val?.totalOrganizationCount)
-          // console.log(val?.totalOrganizationCount)
         )
       );
     } else if (value === "0") {
       setAllRecords(payrollBatches?.items);
     } else {
       setAllRecords(
-        allData?.filter(
+        allData?.filter?.(
           (val) =>
             val?.receivedOrganizationIds?.split(",")?.length !==
             val?.totalOrganizationCount
@@ -279,49 +273,45 @@ const PayrollBatch = (props) => {
       );
     }
   };
-
   const onSearchChange = (e, selected) => {
     const keyword = e;
     allGroupData = groupByBatch();
-    // if (keyword !== "") {
-    //   const results = Object.keys(groupByBatchData)?.map((type, index) => {
-    //     console.log(type, index);
-    // if (selected === "batchId") {
-    //   if (
-    //     groupByBatchData[type]?.[0]?.batchId
-    //       ?.toLowerCase()
-    //       .startsWith(keyword.toLowerCase())
-    //   ) {
-    //     return groupByBatchData[type];
-    //   }
-    // } else if (selected === "referenceId") {
-    //   if (
-    //     groupByBatchData[type]?.[0]?.referenceId
-    //       ?.toLowerCase()
-    //       .startsWith(keyword.toLowerCase())
-    //   ) {
-    //     return groupByBatchData[type];
-    //   }
-    // } else {
-    //   if (
-    //     selected === "amount" &&
-    //     groupByBatchData[type]?.[0]?.amount
-    //       ?.toString()
-    //       .startsWith(keyword.toString())
-    //   ) {
-    //     return groupByBatchData[type];
-    //   }
-    // }
-    // });
-    //   console.log("resultsresults", results);
-    //   setGroupByBatchData(results);
-    // } else {
-    //   keyword === "" && setGroupByBatchData(allGroupData);
-    // }
-    // setSearchValue(keyword);
-    // setSelectedKeySearch(selected);
+    if (keyword !== "") {
+      const results = Object.keys(groupByBatchData)?.map((type, index) => {
+        if (selected === "batchId") {
+          if (
+            groupByBatchData[type]?.[0]?.batchId
+              ?.toLowerCase()
+              .startsWith(keyword.toLowerCase())
+          ) {
+            return groupByBatchData[type];
+          }
+        } else if (selected === "referenceId") {
+          if (
+            groupByBatchData[type]?.[0]?.referenceId
+              ?.toLowerCase()
+              .startsWith(keyword.toLowerCase())
+          ) {
+            return groupByBatchData[type];
+          }
+        } else {
+          if (
+            selected === "amount" &&
+            groupByBatchData[type]?.[0]?.amount
+              ?.toString()
+              .startsWith(keyword.toString())
+          ) {
+            return groupByBatchData[type];
+          }
+        }
+      });
+      setGroupByBatchData(results);
+    } else {
+      keyword === "" && setGroupByBatchData(allGroupData);
+    }
+    setSearchValue(keyword);
+    setSelectedKeySearch(selected);
   };
-  // console.log(groupByBatchData);
   const onHandleChange = (e) => {
     setSelected(e.target.value);
   };
@@ -336,14 +326,9 @@ const PayrollBatch = (props) => {
   //     setGroupByBatchData(allGroupData);
   //   }
   // }, [selected]);
-
   // if (isBluePencilPortal || isOrganizationPortal) {
   //   allGroupData = groupByBatch();
-
-  //   console.log("dddddddddddddddddddd groupByBatch", allGroupData);
   // }
-
-  // console.log(isCorporatePortal);
   return (
     <div className="customContainer">
       {!isBatchDetail && (
@@ -404,7 +389,6 @@ const PayrollBatch = (props) => {
                       </select>
                     </div>
                   </div>
-
                   {selected === "batchId" && (
                     <div className="col-md-6">
                       <div>
@@ -532,36 +516,8 @@ const PayrollBatch = (props) => {
               )}
             </div>
           </div>
-
           {payrollBatches.loading && <Loader />}
-          {allRecords?.length === 0 && (
-            <div className="card p-4 text-center">
-              {isOrganizationPortal && (
-                <strong>
-                  No Payroll donation batch created by the Blue Pencil Admin
-                  till now.
-                  <br />
-                  You should wait a while till any donation reaches to you.
-                </strong>
-              )}
-              {isCorporatePortal && (
-                <strong>
-                  There is no Payroll Batch processed by you.
-                  <br />
-                  Please go to Donation preferences to process a batch now.
-                </strong>
-              )}
-              {isBluePencilPortal && (
-                <strong>
-                  No Payroll donation batch created by any corporate.
-                  <br />
-                  You should wait a while till any donation reaches to you.
-                </strong>
-              )}
-            </div>
-          )}
-
-          {allRecords?.length > 0 &&
+          {allRecords?.length > 0 ? (
             (corporateId ||
               organizationId ||
               currentView === payrollConstants.LIST_VIEW) && (
@@ -573,7 +529,6 @@ const PayrollBatch = (props) => {
                         <thead className="ant-table-thead">
                           <tr>
                             <th className="ant-table-cell">Batch id</th>
-
                             {currentView ===
                               payrollConstants.ORGANIZATION_VIEW && (
                               <th className="ant-table-cell">
@@ -633,6 +588,7 @@ const PayrollBatch = (props) => {
                                 {batch?.socialOrganizationId}
                               </td>
                             )} */}
+
                                   {currentView ===
                                     payrollConstants.ORGANIZATION_VIEW && (
                                     <td className="ant-table-cell">
@@ -807,8 +763,18 @@ const PayrollBatch = (props) => {
                                         <>
                                           <span>
                                             {/* {payrollConstants.CONFIRMED} */}
-                                            100% (Received by Social
-                                            Organization)
+                                            {TotalHelper(
+                                              groupByBatchData[type]?.[0]
+                                                ?.totalOrganizationCount
+                                            )}
+                                            % (
+                                            {TotalHelper(
+                                              groupByBatchData[type]?.[0]
+                                                ?.totalOrganizationCount
+                                            ) < 100
+                                              ? "Partially received by organizations"
+                                              : "Received by Social Organization"}
+                                            )
                                           </span>
                                           <Progress
                                             percent={100}
@@ -821,12 +787,14 @@ const PayrollBatch = (props) => {
                                     {corporateId &&
                                       groupByBatchData[type]?.[0]?.status ===
                                         payrollConstants.PENDING_STATUS && (
-                                        <Tooltip title="Complete">
+                                        <Tooltip
+                                          title={payrollConstants.COMPLETE}
+                                        >
                                           <Link
                                             to="#"
                                             onClick={() =>
                                               handleOpen(
-                                                "Complete Batch",
+                                                payrollConstants.COMPLETE_BATCH,
                                                 groupByBatchData[type]?.[0]
                                               )
                                             }
@@ -934,7 +902,6 @@ const PayrollBatch = (props) => {
                                 </tr>
                               )
                             )}
-
                           {!isBluePencilPortal &&
                             !isOrganizationPortal &&
                             allRecords?.map((batch, index) => (
@@ -977,11 +944,11 @@ const PayrollBatch = (props) => {
                               {batch?.corporateId}
                             </td>
                           )} */}
-                                {!corporateId && (
+                                {/* {!corporateId && (
                                   <td className="ant-table-cell">
                                     {batch?.corporateName}
                                   </td>
-                                )}
+                                )} */}
                                 <td className="ant-table-cell">
                                   {batch?.createdDate &&
                                     moment(batch?.createdDate).format(
@@ -1047,12 +1014,16 @@ const PayrollBatch = (props) => {
                                       <>
                                         <span>
                                           {/* {payrollConstants.CONFIRMED} */}
-                                          {75 +
-                                            Math.round(
-                                              25 / batch?.totalOrganizationCount
-                                            )}
-                                          % (Partially received by
-                                          organizations)
+                                          {TotalHelper(
+                                            batch?.totalOrganizationCount
+                                          )}
+                                          % (
+                                          {TotalHelper(
+                                            batch?.totalOrganizationCount
+                                          ) < 100
+                                            ? "Partially received by organizations"
+                                            : "Received by Social Organization"}
+                                          )
                                         </span>
                                         <Progress
                                           percent={
@@ -1090,7 +1061,10 @@ const PayrollBatch = (props) => {
                                         <Link
                                           to="#"
                                           onClick={() =>
-                                            handleOpen("Complete Batch", batch)
+                                            handleOpen(
+                                              payrollConstants.COMPLETE_BATCH,
+                                              batch
+                                            )
                                           }
                                         >
                                           <span className="bi-check-circle fs-5"></span>
@@ -1188,8 +1162,33 @@ const PayrollBatch = (props) => {
                   </div>
                 </div>
               </div>
-            )}
-
+            )
+          ) : (
+            <div className="card p-4 text-center">
+              {isOrganizationPortal && (
+                <strong>
+                  No Payroll donation batch created by the Blue Pencil Admin
+                  till now.
+                  <br />
+                  You should wait a while till any donation reaches to you.
+                </strong>
+              )}
+              {isCorporatePortal && (
+                <strong>
+                  There is no Payroll Batch processed by you.
+                  <br />
+                  Please go to Donation preferences to process a batch now.
+                </strong>
+              )}
+              {isBluePencilPortal && (
+                <strong>
+                  No Payroll donation batch created by any corporate.
+                  <br />
+                  You should wait a while till any donation reaches to you.
+                </strong>
+              )}
+            </div>
+          )}
           <Pagination
             className="pagination-bar mt-4"
             currentPage={currentPage}
@@ -1218,7 +1217,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1392,7 +1391,9 @@ const PayrollBatch = (props) => {
             </Modal.Header>
             <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
           </Modal>
-          {!corporateId &&
+          {otherUser?.detail?.userRole !== viewPortalConstants.PAYMENT_ADMIN &&
+            otherUser?.detail?.userRole !== viewPortalConstants.FO_ADMIN &&
+            !corporateId &&
             !isOrganizationPortal &&
             (currentView === payrollConstants.ORGANIZATION_VIEW ||
               currentView === payrollConstants.CORPORATE_VIEW) && (
@@ -1428,7 +1429,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

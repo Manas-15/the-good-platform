@@ -1,5 +1,4 @@
 const SearchHelper = (data, searchText) => {
-  console.log(data, searchText);
   return data?.filter((item) =>
     searchText
       ? item?.name?.toLowerCase()?.includes?.(searchText.toLowerCase())
@@ -8,7 +7,6 @@ const SearchHelper = (data, searchText) => {
 };
 
 const SearchDonationPreferenceHelper = (data, searchText, selected) => {
-  console.log(data, searchText, selected);
   const lowerSearchText = searchText.toLowerCase();
   return data?.filter((item) =>
     searchText

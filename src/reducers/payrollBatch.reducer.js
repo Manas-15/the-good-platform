@@ -17,7 +17,6 @@ export function payrollBatch(state = {}, action) {
         error: action.error
       };
     case payrollConstants.UPDATE_BATCH_STATUS_REQUEST:
-      console.log("action?.data.................", action?.data)
       return {
         ...state,
         loading: true,
@@ -26,27 +25,26 @@ export function payrollBatch(state = {}, action) {
         socialId: action?.data?.socialId
       };
     case payrollConstants.UPDATE_BATCH_STATUS_SUCCESS:
-      console.log("dddddddddddddddddddd reducer", state?.items);
       return {
         ...state,
         items:
           state?.items?.length > 0 &&
           state?.items?.map((item) => {
             if (item?.batchId === state?.batchId) {
-              if (state?.requestType === payrollConstants?.COMPLETE) {                
+              if (state?.requestType === payrollConstants?.COMPLETE) {
                 return {
                   ...item,
                   isDeleted: true,
                   status: payrollConstants?.COMPLETED_STATUS
                 };
               }
-              if (state?.requestType === payrollConstants?.CONFIRM) {                
+              if (state?.requestType === payrollConstants?.CONFIRM) {
                 return {
                   ...item,
                   status: payrollConstants?.CONFIRMED_STATUS
                 };
               }
-              if (state?.requestType === payrollConstants?.PAID) {                
+              if (state?.requestType === payrollConstants?.PAID) {
                 return {
                   ...item,
                   status: payrollConstants?.PAID_STATUS
@@ -68,11 +66,20 @@ export function payrollBatch(state = {}, action) {
                 // }
               }
               if (state?.requestType === payrollConstants?.RECEIVE) {
-                const splitReciveOrgs = item?.receivedOrganizationIds?.split(",")
+                // let splitReciveOrgs = item?.receivedOrganizationIds?.split(",");
+                let splitReciveOrgs;
+                if (item?.receivedOrganizationIds === null) {
+                  splitReciveOrgs = [];
+                } else {
+                  splitReciveOrgs = item?.receivedOrganizationIds?.split(",");
+                }
                 return {
                   ...item,
                   status: payrollConstants?.RECEIVED_STATUS,
-                  receivedOrganizationIds: splitReciveOrgs?.length > 0 ? splitReciveOrgs.push(state?.socialId).toString() : state?.socialId?.toString()
+                  receivedOrganizationIds:
+                    splitReciveOrgs?.length > 0
+                      ? splitReciveOrgs?.push(state?.socialId)?.toString()
+                      : state?.socialId?.toString()
                 };
               }
             }

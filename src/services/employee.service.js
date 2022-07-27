@@ -24,6 +24,7 @@ export const employeeService = {
 async function login(data) {
   return await axios.post(`${process.env.REACT_APP_API_URL}api/login/`, data);
 }
+
 async function validateOtp(data) {
   return await axios.post(
     process.env.REACT_APP_API_URL + "api/validate_otp/",
@@ -48,7 +49,6 @@ async function getEmployees(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list", { headers: authHeader() });
 }
 async function register(data, userType) {
-  console.log(data);
   if (userType === userConstants.EMPLOYEE) {
     return await axios.post(
       process.env.REACT_APP_API_URL + "api/employee_register/",
@@ -113,7 +113,6 @@ function handleResponse(response) {
 }
 
 function addEmployee(data) {
-  console.log(data, "add employee dataaaaa");
   return axios.post(
     process.env.REACT_APP_API_URL + "api/employee_register/",
     data

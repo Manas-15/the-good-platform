@@ -7,10 +7,9 @@ export const payrollService = {
   processBatch,
   actionBatch,
   getBatchDetail,
-  updateBatchStatus,
+  updateBatchStatus
 };
 function processBatch(data) {
-  console.log(data);
   return axios.post(
     process.env.REACT_APP_API_URL + "api/save_batch_process_data/",
     data
@@ -31,13 +30,13 @@ function getPayrollBatch(data) {
           : "fetch_batch_process_data"
       }/`,
     {
-      params: data,
+      params: data
     }
   );
 }
 function getBatchDetail(data) {
   return axios.get(process.env.REACT_APP_API_URL + "api/fetch_batch_detail/", {
-    params: data,
+    params: data
   });
 }
 function updateBatchStatus(data) {

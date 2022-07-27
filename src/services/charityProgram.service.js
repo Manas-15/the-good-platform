@@ -17,11 +17,18 @@ function getCharityPrograms(data) {
   // return axios.get(process.env.REACT_APP_API_URL + "api/social_charity_list/", {
   //   params: data,
   // });
-  console.log("data?.userType", data?.userType);
-  if (data?.userType === userConstants.INDIVIDUAL_VIEW) {
+  if (data?.userType === userConstants.INDIVIDUAL_VIEW || data.userId) {
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
       params: data,
     });
+  } else if (data?.userType === userConstants.CORPORATE_VIEW) {
+    return axios.get(
+      process.env.REACT_APP_TGP_API_URL +
+        "project-management/v1/validator/projects",
+      {
+        headers: authHeader(),
+      }
+    );
   } else {
     return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
       params: data,
@@ -61,7 +68,6 @@ function checkBeforeUnpromote(data) {
   );
 }
 function checkBeforeBulkUnpromote(data) {
-  console.log(data);
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
@@ -70,13 +76,25 @@ function checkBeforeBulkUnpromote(data) {
   );
 }
 function getProgramDetail(data) {
-  return axios.get(
-    process.env.REACT_APP_API_URL +
-      (data?.userType === userConstants.INDIVIDUAL_VIEW
-        ? "remote_api/charity_details/"
-        : "api/programDetails/"),
-    {
+  const id = data?.programId;
+  const corporateLoggedUser =
+    data?.loggedInUserType?.toString() === userConstants.CORPORATE?.toString();
+  const individualLoggedUser =
+    data?.loggedInUserType?.toString() === userConstants.INDIVIDUAL?.toString();
+
+  if (individualLoggedUser || data?.userId) {
+    return axios.get(
+      process.env.REACT_APP_API_URL + "remote_api/charity_details/",
+      { params: data }
+    );
+  } else if (corporateLoggedUser) {
+    return axios.get(
+      process.env.REACT_APP_TGP_API_URL + `project-management/v1/project/${id}`,
+      { headers: authHeader() }
+    );
+  } else {
+    return axios.get(process.env.REACT_APP_API_URL + "api/programDetails/", {
       params: data,
-    }
-  );
+    });
+  }
 }

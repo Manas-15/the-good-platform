@@ -4,35 +4,35 @@ export function transactionsHistory(state = {}, action) {
   switch (action.type) {
     case transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_REQUEST:
       return {
-        loading: true
+        loading: true,
       };
     case transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_SUCCESS:
       return {
         items: action?.data?.data?.transaction_history,
-        totalCount: action?.data?.data?.count
+        totalCount: action?.data?.data?.count,
       };
     case transactionsHistoryConstants.GET_TRANSACTIONS_HISTORY_FAILURE:
       return {
-        error: action.error
+        error: action.error,
       };
     case transactionsHistoryConstants.GET_80G_REQUEST:
       return {
         ...state,
         transaction: action?.data?.transaction,
-        downloading: true
+        downloading: true,
       };
     case transactionsHistoryConstants.GET_80G_SUCCESS:
       return {
-        items: state.items
+        items: state.items,
       };
     case transactionsHistoryConstants.GET_80G_FAILURE:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       };
     case transactionsHistoryConstants.GET_DIRECT_PAYMENT_REQUEST:
       return {
-        loading: true
+        loading: true,
       };
     case transactionsHistoryConstants.GET_DIRECT_PAYMENT_SUCCESS:
       return {
@@ -41,7 +41,7 @@ export function transactionsHistory(state = {}, action) {
       };
     case transactionsHistoryConstants.GET_DIRECT_PAYMENT_FAILURE:
       return {
-        error: action.error
+        error: action.error,
       };
     default:
       return state;

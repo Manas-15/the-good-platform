@@ -12,7 +12,8 @@ const actionInitialValues = {
 };
 const CorporatesPortal = () => {
   let history = useHistory();
-  const corporates = useSelector((state) => state.corporates);
+  const corporates = useSelector((state) => state?.corporates);
+
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const CorporatesPortal = () => {
     dispatch(corporateActions.corporateAccountRequest(actionInitialValues));
   };
   const handleClose = () => setOpen(false);
-  if (corporates.loading) {
+  if (corporates?.loading) {
     document.getElementById("root").classList.add("loading");
   } else {
     document.getElementById("root").classList.remove("loading");
@@ -74,26 +75,38 @@ const CorporatesPortal = () => {
       </div>
       <div className="row mb-4">
         <div className="col-md-4 offset-md-3">
-          {corporates.loading && <Loader />}
-          {corporates?.items && corporates?.items.length > 0 ? (
+          {corporates?.loading && <Loader />}
+          {corporates?.items && corporates?.items?.length > 0 ? (
             <div className="card corporates-lunchpad">
               <ul className="pl-0">
-                {corporates?.items
-                  ?.filter((val) => {
-                    return val?.isActive === true;
+                {/* .filter((val) => {
+                    return val?.approvalStatus === "APPROVED";
                   })
-                  ?.map((corporate, index) => {
-                    return (
-                      <li key={index + 1}>
-                        <Link
-                          to={`/corporates/${corporate.corporateId}/employees`}
-                          onClick={() => setCorporate(corporate)}
-                        >
-                          {corporate?.organizationName}
-                        </Link>
-                      </li>
-                    );
-                  })}
+                  ? */}
+                {corporates?.items?.map((corporate, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <Link
+                        to={`/corporates/${corporate.id}/employees`}
+                        onClick={() => setCorporate(corporate)}
+                      >
+                        {corporate?.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+                {/* {corporates?.items?.data?.map((corporate, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <Link
+                        to={`/corporates/${corporate?.id}/employees`}
+                        onClick={() => setCorporate(corporate)}
+                      >
+                        {corporate?.name}
+                      </Link>
+                    </li>
+                  );
+                })} */}
                 <li key={"logout"} className="logout">
                   <Link onClick={logout}>Logout</Link>
                 </li>

@@ -18,7 +18,6 @@ export const employeeActions = {
   bulkImport,
   getCorporates
 };
-
 function login(data, from) {
   if (data?.loginType === "Employee") {
     return (dispatch) => {
@@ -26,43 +25,17 @@ function login(data, from) {
       employeeService.login(data).then(
         (res) => {
           dispatch(success(res));
-          console.log("res?.data?.approve 111", res?.data);
-          if (data?.loginType === "Others") {
-            const result = JSON.stringify(res?.data);
-            localStorage.setItem("accessToken", result);
-            dispatch(userActions.getDetail());
+          if (
+            !res?.data?.status &&
+            res?.data?.user_type === userConstants.INDIVIDUAL
+          ) {
+            dispatch(alertActions.error("Your account is currently blocked."));
           } else {
-            if (
-              !res?.data?.status &&
-              res?.data?.user_type === userConstants.INDIVIDUAL
-            ) {
-              dispatch(
-                alertActions.error("Your account is currently blocked.")
-              );
+            if (res?.data?.approve) {
+              localStorage.setItem("user", JSON.stringify(res?.data));
+              history.push("/otp");
             } else {
-              if (res?.data?.approve) {
-                const result = JSON.stringify(res?.data);
-                localStorage.setItem("user", JSON.stringify(res?.data));
-                // history.push("/dashboard");
-                // dispatch(alertActions.success("Loggedin successful"));
-                // dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
-                history.push("/otp");
-                // history.push({
-                //   pathname: "/otp",
-                //   state: { otp: res?.data?.otp }
-                // });
-              } else {
-                // if(!res?.data?.approve) {
-                //   dispatch(
-                //     alertActions.error("Your account is currently blocked")
-                //   );
-                // } else {
-                dispatch(alertActions.error(res?.data?.msg));
-                // }
-              }
-              // dispatch(
-              //   alertActions.error("Your account is currently inactive.")
-              // );
+              dispatch(alertActions.error(res?.data?.msg));
             }
           }
         },
@@ -98,12 +71,7 @@ function login(data, from) {
           } else {
             const res = JSON.stringify(data?.data);
             localStorage.setItem("user", JSON.stringify(data?.data));
-            // dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
             history.push("/otp");
-            // history.push({
-            //   pathname: "/otp",
-            //   state: { otp: data?.data?.otp }
-            // });
           }
         },
         (error) => {
@@ -126,6 +94,42 @@ function login(data, from) {
     }
     function failure(error) {
       return { type: employeeConstants.INDIVIDUAL_LOGIN_FAILURE, error };
+    }
+  } else if (data?.loginType === "Others") {
+    return (dispatch) => {
+      dispatch(request({ data }));
+      employeeService.login(data).then(
+        (data) => {
+          dispatch(success(data));
+
+          if (data?.data?.msg && data?.data?.msg !== "Login Success") {
+            dispatch(alertActions.error(data?.data?.msg));
+          } else {
+            const res = JSON.stringify(data?.data);
+            localStorage.setItem("user", JSON.stringify(data?.data));
+            history.push("/");
+          }
+        },
+        (error) => {
+          dispatch(failure(error.toString()));
+          dispatch(
+            alertActions.error(
+              error?.response?.data?.errors?.non_field_errors
+                ? error?.response?.data?.errors?.non_field_errors[0]
+                : error.toString()
+            )
+          );
+        }
+      );
+    };
+    function request(data) {
+      return { type: employeeConstants.OTHER_LOGIN_REQUEST, data };
+    }
+    function success(data) {
+      return { type: employeeConstants.OTHER_LOGIN_SUCCESS, data };
+    }
+    function failure(error) {
+      return { type: employeeConstants.OTHER_LOGIN_FAILURE, error };
     }
   }
 }
@@ -244,7 +248,6 @@ function register(employee, userType) {
     employeeService.register(employee, userType).then(
       (data) => {
         dispatch(success());
-        // console.log("ddddddddddddddddd data", data?.data?.email);
         if (data?.data?.email) {
           dispatch(alertActions.error(data?.data?.email[0]));
         } else {
@@ -366,18 +369,12 @@ function employeeAccountRequest(actionValues) {
     return { type: employeeConstants.EMPLOYEE_ACTION_FAILURE, error };
   }
 }
-
 function addEmployee(employee) {
-  console.log(employee, "employee actionnnnnnnnnn");
   return (dispatch) => {
     dispatch(request(employee));
     employeeService.addEmployee(employee).then(
       (res) => {
         dispatch(success(res));
-        console.log(
-          employee?.corporateProfileId,
-          "employee elssssssssssssssss"
-        );
         if (res?.data?.email) {
           dispatch(alertActions.error(res?.data?.email?.[0]));
         } else {
@@ -396,7 +393,6 @@ function addEmployee(employee) {
     return { type: employeeConstants.ADD_EMPLOYEE_REQUEST, employee };
   }
   function success(employee) {
-    console.log(employee, "after sucesssssssssss");
     return { type: employeeConstants.ADD_EMPLOYEE_SUCCESS, employee };
   }
   function failure(error) {
@@ -405,17 +401,11 @@ function addEmployee(employee) {
 }
 
 function bulkImport(formData) {
-  console.log(">>>>>>>>>>>>>>>>> comingggggggggggggg", formData);
   return (dispatch) => {
     dispatch(request(formData));
     employeeService.bulkImport(formData).then(
       (data) => {
         dispatch(success(data));
-        console.log(
-          ">>>>>>>>>>>>>>>>>",
-          formData,
-          `"/corporates/${formData?.corporateId}/employees"`
-        );
         history.push({ pathname: `"/corporates/1/employees"` });
         dispatch(alertActions.success(`Employee imported successfully`));
       },

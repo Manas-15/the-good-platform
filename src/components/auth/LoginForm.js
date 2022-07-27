@@ -21,7 +21,11 @@ const LoginForm = ({ submit, disable }) => {
             <p className="textParagraph">
               Enter your registered details here to get started
             </p>
-            <img height="350" src="/assets/img/smartphone2.png" />
+            <img
+              height="350"
+              src="/assets/img/smartphone2.png"
+              alt="SmartPhone"
+            />
           </div>
         </div>
         <div className="col-md-5 formStyles">
@@ -41,7 +45,7 @@ const LoginForm = ({ submit, disable }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
+                isSubmitting
                 /* and other goodies */
               }) => (
                 <Form autoComplete="false">
@@ -181,36 +185,36 @@ const LoginForm = ({ submit, disable }) => {
                   <p className="mt-3 text-center">
                     A new user?&nbsp;
                     {(() => {
-                      if (category == "Employee") {
+                      if (category === "Employee") {
                         return (
                           <Link
                             to={{
                               pathname: "/employees/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >
                             Create an account
                           </Link>
                         );
-                      } else if (category == "Others") {
+                      } else if (category === "Others") {
                         return (
                           <Link
                             to={{
                               pathname: "/others/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >
                             Create an account
                           </Link>
                         );
-                      } else if (category == "Individual") {
+                      } else if (category === "Individual") {
                         return (
                           <Link
                             to={{
                               pathname: "/individual/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >

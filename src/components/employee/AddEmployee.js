@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
-import { EmployeeSchema } from "../Validations";
+import { EmployeeByCorporateSchema } from "../Validations";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { employeeActions } from "../../actions";
@@ -12,36 +12,19 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData,
+  CountryRegionData
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  employeeId: "",
-  pan: "",
-  corporateProfileId: " ",
-  organizationJoiningDate: "",
-  gender: "",
-  contactNumber: "",
-  address: "",
-  city: "",
-  state: "",
-  country: "",
-  userType: 3,
-  password: "test@%^@#1023",
-};
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
   { value: "2", label: "Help Donar" },
-  { value: "3", label: "Universe Donar" },
+  { value: "3", label: "Universe Donar" }
 ];
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" },
+  { value: "Transgender", label: "Transgender" }
 ];
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -88,46 +71,69 @@ const AddEmployee = () => {
   const corporateId = useSelector(
     (state) => state?.selectedCorporate?.corporate?.corporateId
   );
+  const selectedCorporate = useSelector(
+    (state) => state.selectedCorporate.corporate
+  );
   const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const addinguser = useSelector((state) => state.employee.addinguser);
   const dispatch = useDispatch();
   const [isTermsChecked, setIsTermsChecked] = useState(false);
-
+  const addingEmployee = useSelector(
+    (state) => state?.employee?.addingEmployee
+  );
+  const [showPassword, setShowPassword] = useState("false");
+  const toggleShowPassword = (e) => {
+    setShowPassword(!showPassword);
+  };
   const addEmployeeRegister = (values) => {
     values.state = state;
     values.country = country;
-    values.corporateProfileId = corporateId;
-    console.log(values);
-    setSubmitted(true);
+    values.corporateProfileId = selectedCorporate?.id;
+    values.corporateProfileName = selectedCorporate?.name;
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
-      console.log(values.email);
       dispatch(employeeActions.addEmployee(values));
     }
   };
-
-  console.log(country, state);
-
   const selectCountry = (country) => {
     setCountry(country);
   };
   const selectState = (state) => {
     setState(state);
   };
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    employeeId: "",
+    pan: "",
+    corporateProfileId: selectedCorporate?.id,
+    corporateProfileName: selectedCorporate?.name,
+    gender: "",
+    contactNumber: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    userType: 3,
+    password: ""
+  };
+  // useEffect(() => {
+  //   initialValues.corporateProfileId = selectedCorporate?.id;
+  // }, [selectedCorporate?.id]);
   return (
     <>
       <div style={{ width: "650px" }}>
         <Formik
           initialValues={initialValues}
-          validationSchema={EmployeeSchema}
+          validationSchema={EmployeeByCorporateSchema}
           onSubmit={(values, { setSubmitting }) => {
             values.organizationJoiningDate = moment(
               values.organizationJoiningDate
             ).format("YYYY-MM-DD");
             addEmployeeRegister(values);
-            // console.log(values);
           }}
         >
           {({
@@ -137,7 +143,7 @@ const AddEmployee = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
+            isSubmitting
             /* and other goodies */
           }) => (
             <Form>
@@ -216,6 +222,38 @@ const AddEmployee = () => {
               <div className="row mb-4">
                 <div className="col-md-4">
                   <label className="mt-1">
+                    Password<span className="text-danger">*</span>
+                  </label>
+                </div>
+                <div className="col-md-8">
+                  <Field
+                    name="password"
+                    // disabled={id}
+                    type={showPassword ? "password" : "text"}
+                    className={
+                      "form-control" +
+                      (errors.password && touched.password ? " is-invalid" : "")
+                    }
+                  />
+                  {showPassword ? (
+                    <div onClick={(e) => toggleShowPassword(e)}>
+                      <i class="bi bi-eye-slash"></i>
+                    </div>
+                  ) : (
+                    <div onClick={(e) => toggleShowPassword(e)}>
+                      <i class="bi bi-eye"></i>
+                    </div>
+                  )}
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+              </div>
+              <div className="row mb-4">
+                <div className="col-md-4">
+                  <label className="mt-1">
                     Employee ID<span className="text-danger">*</span>
                   </label>
                 </div>
@@ -263,14 +301,14 @@ const AddEmployee = () => {
                 </div>
               </div>
 
-              <div className="row mb-4">
+              {/* <div className="row mb-4">
                 <div className="col-md-4">
                   <label className="mt-1">Organization Joining Date</label>
                 </div>
                 <div className="col-md-8">
                   <FormDatePicker errors={errors} touched={touched} />
                 </div>
-              </div>
+              </div> */}
 
               <div className="row mb-4">
                 <div className="col-md-4">
@@ -299,7 +337,6 @@ const AddEmployee = () => {
                   />
                 </div>
               </div>
-
               <hr />
               <h6>Communication Details</h6>
               <div className="row mb-4">
@@ -397,13 +434,11 @@ const AddEmployee = () => {
                     <button
                       type="submit"
                       className="btn btn-custom btn-block"
-                      //   disabled={addingCorporate}
+                      disabled={addingEmployee}
                     >
-                      {/* {addingCorporate && (
+                      {addingEmployee && (
                         <span className="spinner-border spinner-border-sm mr-1"></span>
-                      )} */}
-
-                      {/* <span className="spinner-border spinner-border-sm mr-1"></span> */}
+                      )}
                       {"Add"}
                     </button>
                   </div>

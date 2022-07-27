@@ -16,8 +16,9 @@ import { socialOrganizations } from "./socialOrganizations.reducer";
 import { selectedCharity } from "./selectedCharity.reducer";
 import { selectedCharityTab } from "./selectedCharityTab.reducer";
 import { user } from "./user.reducer";
+import { userConstants } from "../constants";
 
-const rootReducer = combineReducers({
+const MainReducer = combineReducers({
   alert,
   corporates,
   individuals,
@@ -34,7 +35,14 @@ const rootReducer = combineReducers({
   selectedOrganization,
   selectedCharity,
   selectedCharityTab,
-  user,
+  user
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === userConstants.LOGOUT) {
+    state = undefined;
+  }
+  return MainReducer(state, action);
+};
 
 export default rootReducer;

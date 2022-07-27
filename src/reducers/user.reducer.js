@@ -8,8 +8,9 @@ export function user(state = {}, action) {
       };
     case userConstants.USER_LOGIN_SUCCESS:
       return {
-        loggingIn: true,
-        accessToken: action?.data?.data,
+        loggedIn: true,
+        user: action?.data?.data,
+        otpVerified: false,
       };
     case userConstants.USER_LOGIN_FAILURE:
       return { loggingIn: false };
@@ -28,18 +29,6 @@ export function user(state = {}, action) {
       return { ...state, loggingIn: false };
     case userConstants.LOGGED_IN_USER_TYPE:
       return { ...state, loggedinUserType: action?.view };
-    case userConstants.USER_LOGIN_REQUEST:
-      return {
-        loggingIn: true,
-      };
-    case userConstants.USER_LOGIN_SUCCESS:
-      return {
-        loggedIn: true,
-        user: action?.data?.data,
-        otpVerified: false,
-      };
-    case userConstants.USER_LOGIN_FAILURE:
-      return { loggingIn: false };
     case userConstants.LOGOUT:
       return {};
     case userConstants.GETALL_REQUEST:

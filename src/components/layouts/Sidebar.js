@@ -6,25 +6,29 @@ import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  const selectedCorporate = useSelector(
+    (state) => state?.selectedCorporate?.corporate
+  );
+
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
+
   const loggedInUser = useSelector((state) => state.user);
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
-  // console.log(
-  //   "selectedCorporateselectedCorporate",
-  //   selectedCorporate,
-  //   selectedOrganization
-  // );
   const currentView = useSelector((state) => state.currentView);
   const isEmployeeView =
+    currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isCorporateView =
     currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isSuperadminView =
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
-  console.log(isSuperadminView);
   const isOrganizationView =
     currentView?.currentView === viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
+
+  const isIndividualView =
+    currentView?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
+  const isTgpLoggedInView = user?.userRole;
 
   return (
     <aside id="sidebar" className="sidebar">
@@ -32,13 +36,13 @@ const Sidebar = () => {
         className="ant-menu ant-menu-root ant-menu-inline ant-menu-light"
         id="sidebar-nav"
       >
-        {isEmployeeView ? (
+        {isCorporateView ? (
           <>
             <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to={`/corporates/${selectedCorporate?.corporate?.corporateId}/employees`}
+                  to={`/corporates/${selectedCorporate?.id}/employees`}
                   activeClassName="active"
                 >
                   <i className="bi bi-people-fill"></i>
@@ -53,7 +57,7 @@ const Sidebar = () => {
                   to="/social-organizations"
                   activeClassName="active"
                 >
-                  <img height="16" src="/assets/img/case.png" />
+                  <img height="16" src="/assets/img/case.png" alt="Case" />
                   <span className="menu-text">Programs</span>
                 </NavLink>
               </span>
@@ -86,7 +90,7 @@ const Sidebar = () => {
               <span className="ant-menu-title-content">
                 <NavLink
                   className=" "
-                  to={`/corporates/${selectedCorporate?.corporate?.corporateId}/payroll-batch`}
+                  to={`/corporates/${selectedCorporate?.id}/payroll-batch`}
                   activeClassName="active"
                 >
                   <i className="bi bi-hdd-stack"></i>
@@ -129,7 +133,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -144,7 +148,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -232,7 +236,7 @@ const Sidebar = () => {
                     </li>
                   </>
                 )}
-                {!isOrganizationView && (
+                {isEmployeeView && (
                   <>
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
@@ -241,7 +245,11 @@ const Sidebar = () => {
                           to="/dashboard"
                           activeClassName="active"
                         >
-                          <img height="20" src="/assets/img/dashboard.png" />
+                          <img
+                            height="20"
+                            src="/assets/img/dashboard.png"
+                            alt="Dashboard"
+                          />
                           <span className="menu-text">Dashboard</span>
                         </NavLink>
                       </span>
@@ -253,43 +261,203 @@ const Sidebar = () => {
                           to="/social-organizations"
                           activeClassName="active"
                         >
-                          <img height="16" src="/assets/img/case.png" />
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
                           <span className="menu-text">Programs</span>
                         </NavLink>
                       </span>
                     </li>
-                    {!corporateLoggedinUser &&
-                      loggedInUser?.loggedinUserType !==
-                        userConstants.INDIVIDUAL && (
-                        <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                          <span className="ant-menu-title-content">
-                            <NavLink
-                              className=" "
-                              to="/donation-preferences"
-                              activeClassName="active"
-                            >
-                              <i className="bi bi-handbag"></i>
-                              <span className="menu-text">
-                                Donation Preferences
-                              </span>
-                            </NavLink>
-                          </span>
-                        </li>
-                      )}
-                    {!corporateLoggedinUser && (
-                      <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                        <span className="ant-menu-title-content">
-                          <NavLink
-                            className=" "
-                            to={`/employee/${user?.uuid}/account-summary`}
-                            activeClassName="active"
-                          >
-                            <i className="bi bi-clock-history"></i>
-                            <span className="menu-text">Account Summary</span>
-                          </NavLink>
-                        </span>
-                      </li>
-                    )}
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/donation-preferences"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-sliders"></i>
+                          <span className="menu-text">Donation Preference</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                  </>
+                )}
+                {isIndividualView && (
+                  <>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/dashboard"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="20"
+                            src="/assets/img/dashboard.png"
+                            alt="Dashboard"
+                          />
+                          <span className="menu-text">Dashboard</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/social-organizations"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
+                          <span className="menu-text">Programs</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                  </>
+                )}
+                {isTgpLoggedInView === viewPortalConstants.PAYMENT_ADMIN && (
+                  <>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/dashboard"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="20"
+                            src="/assets/img/dashboard.png"
+                            alt="Dashboard"
+                          />
+                          <span className="menu-text">Dashboard</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/social-organizations"
+                          activeClassName="active"
+                        >
+                          <img
+                            height="16"
+                            src="/assets/img/case.png"
+                            alt="Case"
+                          />
+                          <span className="menu-text">Programs</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/employee-donation-preference"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-sliders"></i>
+                          <span className="menu-text">Donation Preference</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/payroll-setting"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-gear"></i>
+                          <span className="menu-text">Payroll Setting</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/corporates/${
+                            selectedCorporate
+                              ? selectedCorporate?.id
+                              : corporateLoggedinUser?.userId
+                          }/payroll-batch`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-hdd-stack"></i>
+                          <span className="menu-text">Payroll Batch</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                  </>
+                )}
+                {isTgpLoggedInView === viewPortalConstants.FO_ADMIN && (
+                  <>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/organizations/${selectedOrganization?.organization?.id}/payroll-batch`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-people-fill"></i>
+                          <span className="menu-text">Payroll Batch</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to={`/employee/${user?.uuid}/account-summary`}
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-clock-history"></i>
+                          <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
                   </>
                 )}
               </>

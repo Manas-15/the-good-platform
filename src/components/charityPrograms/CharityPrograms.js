@@ -8,9 +8,9 @@ import {
   viewPortalConstants,
   charityProgramConstants,
   payrollConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
-import { charityProgramActions } from "../../actions";
+import { charityProgramActions, selectedCharityActions } from "../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
 import CardCharityPrograms from "./CardCharityPrograms";
 import { Tabs, Icon } from "antd";
@@ -18,23 +18,23 @@ import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
 import DonateHeader from "./DonateHeader";
 import { SearchCharityHelper, SearchHelper } from "../../helpers";
 const TabPane = Tabs.TabPane;
-
 const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
+  console.log("listing charityPrograms", charityPrograms);
   const selectedOrganizationId = useSelector(
     (state) => state?.selectedOrganization?.organization?.id
   );
   const [selectedCharity, setSelectedCharity] = useState();
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const user = useSelector((state) => state.employee.user);
+  const otherUser = useSelector((state) => state.user);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const [searchText, setSearchText] = useState("");
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization?.organization
   );
-
   const [currentView, setCurrentView] = useState(
     charityProgramConstants.LIST_VIEW
   );
@@ -42,6 +42,8 @@ const CharityPrograms = (props) => {
     charityProgramConstants.ALL_CATEGORY
   );
   const dispatch = useDispatch();
+  const isOthersPortal =
+    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isIndividualPortal =
@@ -51,42 +53,49 @@ const CharityPrograms = (props) => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
-    setSelectedCharity(null);
   };
-  // useEffect(() => {
-  //   setTabType(props?.location?.tabType);
-  //   console.log("props?.location?.tabType", props?.location?.tabType);
-  // }, [props?.location?.tabType]);
   useEffect(() => {
     dispatch(
       charityProgramActions.getCharityPrograms(
-        isCorporatePortal
+        isOthersPortal
           ? {
-              corporateId: selectedCorporate?.corporate?.corporateId,
-              socialId: selectedOrganization?.id,
+              corporateId: selectedCorporate?.corporate?.id,
+              orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
+              userId: user?.user_id,
+              userRole: otherUser?.detail?.userRole
+              // corporateId: selectedCorporate?.corporate?.corporateId,
+              // socialId: selectedOrganization?.id,
+              // userType: userConstants.CORPORATE_VIEW,
             }
           : isIndividualPortal
           ? {
+              userType: userConstants.INDIVIDUAL_VIEW
               // uuid: user?.uuid,
               // socialId: selectedOrganization?.id,
-              userType: userConstants.INDIVIDUAL_VIEW,
               // orgId: selectedOrganization?.id?.toString(),
             }
           : {
-              uuid: user?.uuid,
-              socialId: selectedOrganization?.id,
-              userType: userConstants.EMPLOYEE_VIEW,
+              // uuid: user?.uuid,
+              userId: user?.user_id,
+              orgId: selectedOrganization?.id,
+              userType: isCorporatePortal
+                ? userConstants.CORPORATE_VIEW
+                : userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
-                ? selectedCorporate?.corporate?.corporateId
-                : user?.corporateId,
+                ? selectedCorporate?.corporate?.id
+                : user?.corporateId
+              // ? selectedCorporate?.corporate?.corporateId
+              // : user?.corporateId,
             }
       )
     );
   }, []);
   const setCharity = (charity) => {
-    console.log("dddddddddddddddddddddd inside", charity);
     setSelectedCharity(charity);
+    if (charity) {
+      dispatch(selectedCharityActions.selectedCharity(charity));
+    }
     openNav();
   };
   const setType = (type) => {
@@ -103,11 +112,10 @@ const CharityPrograms = (props) => {
     document.getElementById("root").classList.remove("loading");
   }
   const search = (value) => {
-    console.log("fffffffffffffffffffffff", tabType, value);
     setSearchText(value);
     // if(tabType === socialOrganizationConstants.SPONSORED){
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
-    //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>", socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value)))
+    //
     // }
   };
   return (
@@ -162,13 +170,13 @@ const CharityPrograms = (props) => {
           </div>
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 mb-2">
         <h5>Categories</h5>
       </div>
       <div className="row mb-4">
         <div className="col">
           <div
-            className={`categotyButton`}
+            className={`categotyButton pl-0`}
             onClick={() =>
               setSelectedCategory(charityProgramConstants.ALL_CATEGORY)
             }
@@ -202,7 +210,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/women.png" />{" "}
+                <img src="/assets/img/women.png" alt="Women" />{" "}
                 {charityProgramConstants.WOMEN_CATEGORY}
               </span>
             </label>
@@ -223,7 +231,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/youth.png" />{" "}
+                <img src="/assets/img/youth.png" alt="Youth" />{" "}
                 {charityProgramConstants.YOUTH_CATEGORY}
               </span>
             </label>
@@ -244,7 +252,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/elderly.png" />{" "}
+                <img src="/assets/img/elderly.png" alt="Elderly" />{" "}
                 {charityProgramConstants.ELDERLY_CATEGORY}
               </span>
             </label>
@@ -265,7 +273,7 @@ const CharityPrograms = (props) => {
               } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
             >
               <span>
-                <img src="/assets/img/children.png" />{" "}
+                <img src="/assets/img/children.png" alt="Children" />{" "}
                 {charityProgramConstants.CHILDREN_CATEGORY}
               </span>
             </label>
@@ -273,13 +281,15 @@ const CharityPrograms = (props) => {
         </div>
       </div>
       <div className="ant-tabs-nav-wrap">
-        {currentPortal?.currentView === "Individual Portal" ? (
+        {currentPortal?.currentView === "Individual Portal" ||
+        currentPortal?.currentView === "Others Portal" ? (
           <>
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms
                 items={charityPrograms?.items}
                 setCharity={setCharity}
                 tabType={tabType}
+                pathname={selectedOrganization?.name}
               />
             )}
             {currentView === charityProgramConstants.PROGRESS_VIEW && (
@@ -287,6 +297,7 @@ const CharityPrograms = (props) => {
                 items={charityPrograms?.items}
                 setCharity={setCharity}
                 tabType={tabType}
+                pathname={selectedOrganization?.name}
               />
             )}
           </>
@@ -346,9 +357,9 @@ const CharityPrograms = (props) => {
                   <span>
                     <RedoOutlined className="fs-5" />
                     {charityProgramConstants.OTHERS} (
-                    {charityPrograms?.items?.other
+                    {charityPrograms?.items?.others
                       ? SearchCharityHelper(
-                          charityPrograms?.items?.other,
+                          charityPrograms?.items?.others,
                           searchText
                         ).length
                       : 0}
@@ -362,10 +373,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items?.others,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items?.others
                     }
                     setCharity={setCharity}
                     tabType={tabType}
@@ -376,10 +387,10 @@ const CharityPrograms = (props) => {
                     items={
                       searchText && tabType === charityProgramConstants.OTHERS
                         ? SearchCharityHelper(
-                            charityPrograms?.items?.other,
+                            charityPrograms?.items?.others,
                             searchText
                           )
-                        : charityPrograms?.items?.other
+                        : charityPrograms?.items?.others
                     }
                     setCharity={setCharity}
                     tabType={tabType}
