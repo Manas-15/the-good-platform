@@ -73,10 +73,18 @@ const DonateSecondStep = ({
   );
   const otherUser = useSelector((state) => state.user);
   if (selectedCharity) {
-    charityFirstTwoChar = selectedCharity?.charityName
-      ?.slice(0, 2)
-      ?.toLowerCase();
-    employeeFirstTwoChar = employee?.name?.slice(0, 2)?.toLowerCase();
+    console.log("<<<<<<<<<<<< selectedCharity >>>>>>>>>>>>", selectedCharity);
+    if (otherUser) {
+      charityFirstTwoChar = selectedCharity?.name?.slice(0, 2)?.toLowerCase();
+      employeeFirstTwoChar = otherUser?.detail?.firstName
+        ?.slice(0, 2)
+        ?.toLowerCase();
+    } else {
+      charityFirstTwoChar = selectedCharity?.charityName
+        ?.slice(0, 2)
+        ?.toLowerCase();
+      employeeFirstTwoChar = employee?.name?.slice(0, 2)?.toLowerCase();
+    }
   }
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
@@ -134,6 +142,15 @@ const DonateSecondStep = ({
             status: selectedCharity?.status,
             unitPrice: 500
           }
+        : otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
+        ? {
+            charityName: selectedCharity?.name,
+            id: selectedCharity?.id,
+            organisationId: selectedCharity?.organisationId,
+            soicalName: selectedCharity?.organisationName,
+            status: selectedCharity?.status,
+            unitPrice: selectedCharity?.unitPrice
+          }
         : selectedCharity,
     //employee: isCorporatePortal ? null : employee,
     // corporate: isCorporatePortal ? selectedCorporate : null,
@@ -156,9 +173,9 @@ const DonateSecondStep = ({
           : selectedCorporate?.corporate?.corporateName
         : selectedCorporate?.corporate?.name,
     userId:
-      (otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
+      otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
         ? otherUser?.detail?.userId
-        : loggedInUserType) === userConstants.INDIVIDUAL
+        : loggedInUserType === userConstants.INDIVIDUAL
         ? employee?.individual_id
         : isCorporatePortal
         ? selectedCorporate?.corporate?.corporateId
@@ -166,15 +183,19 @@ const DonateSecondStep = ({
           : selectedCorporate?.corporate?.id?.toString()
         : employee?.emp_id?.toString(),
     userType:
-      (otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
+      otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
         ? "Other"
-        : loggedInUserType) === userConstants.INDIVIDUAL
+        : loggedInUserType === userConstants.INDIVIDUAL
         ? "Individual"
         : isCorporatePortal
         ? payrollConstants.CORPORATE_VIEW
         : payrollConstants.EMPLOYEE_VIEW,
     orderPaymentStatus: 1,
-    orderNote: `Donated to ${selectedCharity?.charityName}`
+    orderNote: `Donated to ${
+      otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
+        ? selectedCharity?.name
+        : selectedCharity?.charityName
+    }`
   };
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
