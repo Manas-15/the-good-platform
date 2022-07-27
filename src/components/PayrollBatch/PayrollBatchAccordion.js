@@ -20,7 +20,7 @@ import { Progress, Tooltip } from "antd";
 import { ProcessHelper } from "./../../helpers";
 import { Accordion } from "react-bootstrap";
 import PayrollBatchDetail from "./PayrollBatchDetail";
-
+import { TotalHelper } from "../../helpers";
 const confirmInitialValues = {
   batchId: "",
   requestType: ""
@@ -377,13 +377,16 @@ const PayrollBatchAccordion = (props) => {
                                             <>
                                               <span>
                                                 {/* {payrollConstants.CONFIRMED} */}
-                                                {75 +
-                                                  Math.round(
-                                                    25 /
-                                                      batch?.totalOrganizationCount
-                                                  )}
-                                                % (Partially received by
-                                                organizations)
+                                                {TotalHelper(
+                                                  batch?.totalOrganizationCount
+                                                )}
+                                                % (
+                                                {TotalHelper(
+                                                  batch?.totalOrganizationCount
+                                                ) < 100
+                                                  ? "Received by all organizations"
+                                                  : "Partially received by organizations"}
+                                                )
                                               </span>
                                               <Progress
                                                 percent={

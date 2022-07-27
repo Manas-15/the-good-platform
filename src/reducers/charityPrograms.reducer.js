@@ -14,7 +14,10 @@ export function charityPrograms(state = {}, action) {
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
       console.log(">>>>>>>>>>>>>>> state?.userRole", state?.userRole);
-      if (state?.userRole === viewPortalConstants.PAYMENT_ADMIN) {
+      if (
+        state?.userRole === viewPortalConstants.PAYMENT_ADMIN ||
+        state?.userRole === viewPortalConstants.FO_ADMIN
+      ) {
         return {
           items: action?.charityPrograms?.data?.data?.data?.map?.((item) => {
             if (item?.unitPrice === undefined) {
