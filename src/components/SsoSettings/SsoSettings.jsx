@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Link } from "react-router-dom";
-import { CorporateSchema, SsoSchema } from "./../Validations";
+import { SsoSchema } from "./../Validations";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { corporateActions } from "./../../actions";
 import { FileOutlined } from "@ant-design/icons";
-
 const initialValues = {
   issueUrl: "",
   loginUrl: "",
@@ -18,29 +16,21 @@ const initialValues = {
   corporateId: "",
   corporateName: "",
 };
-
 const SsoSettings = () => {
   let history = useHistory();
   const corporates = useSelector((state) => state.corporates);
   const selectedCorporate = useSelector(
     (state) => state?.selectedCorporate?.corporate
   );
-  console.log(selectedCorporate);
-
   const addingCorporate = useSelector(
     (state) => state?.corporates?.addingCorporate
   );
-
-  // initialValues.userType = 2;
-  initialValues.corporateId = selectedCorporate.corporateId;
-  initialValues.corporateName = selectedCorporate.organizationName;
-
+  initialValues.corporateId = selectedCorporate.id;
+  initialValues.corporateName = selectedCorporate.name;
   const dispatch = useDispatch();
-
   const samlRegister = (values) => {
     dispatch(corporateActions.samlConfigure(values));
   };
-
   return (
     <div className="customContainer">
       <div className="ant-row">
@@ -175,7 +165,6 @@ const SsoSettings = () => {
                       </span>
                     </div>
                   </div>
-
                   <div className="row mb-4">
                     <label className="mt-1">Metadata URL</label>
                     <div className="col-md-10">
@@ -225,7 +214,6 @@ const SsoSettings = () => {
                         className="invalid-feedback"
                       />
                     </div>
-
                     <div className="col-md-2">
                       <button className="btn btn-primary">
                         <FileOutlined className="fs-5 me-1" />
