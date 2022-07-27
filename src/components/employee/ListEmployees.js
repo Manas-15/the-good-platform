@@ -28,7 +28,6 @@ let goodplatformFields = [
   { label: "Status", value: "status" }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
-
 const ListEmployees = (props) => {
   let history = useHistory();
   let location = useLocation();
@@ -53,7 +52,6 @@ const ListEmployees = (props) => {
   const [finalData, setFinalData] = useState([]);
   const [records, setRecords] = useState([]);
   const [selected, setSelected] = useState();
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -113,7 +111,6 @@ const ListEmployees = (props) => {
         const allTextLines = reader?.result?.split(/\n/);
         setImportHeader(allTextLines[0].split(","));
         setImportFirstRecord(allTextLines[1].split(","));
-
         let fieldType = [];
         for (let i = 0; i < allTextLines[0].split(",")?.length; i++) {
           if (goodplatformFields[i]) {
@@ -152,12 +149,10 @@ const ListEmployees = (props) => {
     });
     setSelectedFieldTypes(data);
   };
-
   const goBack = () => {
     setIsImportNextStep(false);
     setIsBulkUpload(false);
   };
-
   const changesField = selectedFieldTypes?.reduce(function (
     acc,
     currVal,

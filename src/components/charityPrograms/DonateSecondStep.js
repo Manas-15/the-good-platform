@@ -73,7 +73,6 @@ const DonateSecondStep = ({
   );
   const otherUser = useSelector((state) => state.user);
   if (selectedCharity) {
-    console.log("<<<<<<<<<<<< selectedCharity >>>>>>>>>>>>", selectedCharity);
     if (otherUser) {
       charityFirstTwoChar = selectedCharity?.name?.slice(0, 2)?.toLowerCase();
       employeeFirstTwoChar = otherUser?.detail?.firstName
