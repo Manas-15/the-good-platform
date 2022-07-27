@@ -1,4 +1,8 @@
-import { charityProgramConstants, userConstants } from "../constants";
+import {
+  charityProgramConstants,
+  userConstants,
+  viewPortalConstants
+} from "../constants";
 
 export function charityPrograms(state = {}, action) {
   switch (action.type) {
@@ -9,23 +13,22 @@ export function charityPrograms(state = {}, action) {
         userRole: action?.data?.userRole
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
-      if (state?.userRole === "PAYROLL-ADMIN") {
+      console.log(">>>>>>>>>>>>>>> state?.userRole", state?.userRole);
+      if (state?.userRole === viewPortalConstants.PAYMENT_ADMIN) {
         return {
-          items:
-            action?.charityPrograms?.data?.data?.data.length &&
-            action?.charityPrograms?.data?.data?.data?.map?.((item) => {
-              if (item?.unitPrice === undefined) {
-                return { ...item, unitPrice: 500 };
-              }
-              return item;
-            })
+          items: action?.charityPrograms?.data?.data?.data?.map?.((item) => {
+            if (item?.unitPrice === undefined) {
+              return { ...item, unitPrice: 500 };
+            }
+            return item;
+          })
         };
       } else if (
         state?.userType === "Employee" ||
         state?.userType === "Corporate"
       ) {
+        console.log(">>>>>>>>>>>>>>> 33333333333333333", state?.userRole);
         // userType: action?.data?.userType
-        console.log("11111111 inside reducers");
         return {
           ...state,
           loading: false,
