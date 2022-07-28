@@ -61,7 +61,9 @@ const EmployeeDonationPreferences = () => {
   useEffect(() => {
     dispatch(
       donationPreferenceActions.getDonationPreferences({
-        corporateId: selectedCorporate?.corporate?.corporateId,
+        corporateId: selectedCorporate?.corporate?.corporateId
+          ? selectedCorporate?.corporate?.corporateId
+          : selectedCorporate?.corporate?.id,
         userType: isCorporatePortal ? "Corporate" : null,
         requestType: "Preference",
         pageSize: pageSize,

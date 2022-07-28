@@ -13,7 +13,6 @@ export function charityPrograms(state = {}, action) {
         userRole: action?.data?.userRole
       };
     case charityProgramConstants.GET_CHARITY_PROGRAMS_SUCCESS:
-      console.log(">>>>>>>>>>>>>>> state?.userRole", state?.userRole);
       if (
         state?.userRole === viewPortalConstants.PAYMENT_ADMIN ||
         state?.userRole === viewPortalConstants.FO_ADMIN
@@ -30,7 +29,6 @@ export function charityPrograms(state = {}, action) {
         state?.userType === "Employee" ||
         state?.userType === "Corporate"
       ) {
-        console.log(">>>>>>>>>>>>>>> 33333333333333333", state?.userRole);
         // userType: action?.data?.userType
         return {
           ...state,

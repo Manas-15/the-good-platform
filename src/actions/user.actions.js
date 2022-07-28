@@ -1,4 +1,4 @@
-import { userConstants } from "../constants";
+import { userConstants, viewPortalConstants } from "../constants";
 import { userService } from "../services";
 import { history } from "../helpers";
 import { alertActions } from "./";
@@ -7,7 +7,7 @@ export const userActions = {
   getDetail,
   loggedInUser,
   logout,
-  registerIndividual,
+  registerIndividual
 };
 function login(data, from) {
   return (dispatch) => {
@@ -47,10 +47,14 @@ function getDetail() {
     userService.getDetail().then(
       (res) => {
         dispatch(success(res));
-
-        localStorage.setItem("user", JSON.stringify(res?.data?.data));
+        const data = res?.data?.data;
+        localStorage.setItem("user", JSON.stringify(data));
         dispatch(loggedInUser(userConstants.CORPORATE));
-        history.push("/dashboard");
+        if (data?.userRole === viewPortalConstants.FO_ADMIN) {
+          history.push(`/organizations/${data?.userId}/payroll-batch`);
+        } else {
+          history.push("/dashboard");
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
