@@ -32,10 +32,10 @@ function login(data, from) {
             dispatch(alertActions.error("Your account is currently blocked."));
           } else {
             if (res?.data?.approve) {
-              // localStorage.setItem("user", JSON.stringify(res?.data));
+              localStorage.setItem("user", JSON.stringify(res?.data));
               history.push("/otp");
             } else {
-              dispatch(alertActions.error(res?.data?.msg));
+              // dispatch(alertActions.error(res?.data?.msg));
             }
           }
         },

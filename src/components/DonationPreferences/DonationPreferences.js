@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
 import Loader from "./../Shared/Loader";
@@ -26,14 +26,14 @@ const preferenceForm = {
   donationAmount: "",
   frequency: "",
   isConsentCheck: "",
-  donationConsent: "",
+  donationConsent: ""
 };
 const actionInitialValues = {
   isDeleted: false,
   isSuspended: false,
   suspendDuration: "",
   requestType: "",
-  preferenceId: "",
+  preferenceId: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -58,7 +58,7 @@ const DonationPreferences = () => {
   const [searchByCorporateName, setSearchByCorporateName] = useState("");
   const [searchByProgramName, setSearchByProgramName] = useState("");
   const [searchByAmount, setSearchByAmount] = useState("");
-
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
@@ -75,10 +75,15 @@ const DonationPreferences = () => {
   const getData = () => {
     dispatch(
       donationPreferenceActions.getDonationPreferences({
-        employeeId: employee?.emp_id,
-        userType: "Employee",
+        corporateId: isCorporatePortal
+          ? selectedCorporate?.corporate?.corporateId
+            ? selectedCorporate?.corporate?.corporateId
+            : selectedCorporate?.corporate?.id
+          : employee?.emp_id,
+        userType: isCorporatePortal ? "Corporate" : "Employee",
+        employeeId: isCorporatePortal ? null : employee?.emp_id,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   };

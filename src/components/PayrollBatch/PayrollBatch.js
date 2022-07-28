@@ -6,7 +6,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -19,23 +19,24 @@ import "./../../assets/css/payroll.scss";
 import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
 import PayrollBatchAccordion from "./PayrollBatchAccordion";
+import { TotalHelper } from "../../helpers";
 let allData;
 const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: "",
+  socialId: ""
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: "",
+  referenceNote: ""
 };
 let pageSize = paginationConstants?.PAGE_SIZE;
 
@@ -44,6 +45,7 @@ const PayrollBatch = (props) => {
   const organizationId = props?.match?.params?.organizationId;
   const payrollBatches = useSelector((state) => state.payrollBatch);
   const currentPortal = useSelector((state) => state.currentView);
+  const otherUser = useSelector((state) => state.user);
   const selectedCorporate = useSelector(
     (state) => state?.selectedCorporate?.corporate
   );
@@ -113,7 +115,7 @@ const PayrollBatch = (props) => {
           : "BluePencilAdmin",
         requestType: "Batch",
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
     // filter("All");
@@ -157,7 +159,7 @@ const PayrollBatch = (props) => {
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: payrollConstants.COMPLETED_STATUS },
+    { label: "Processed", value: payrollConstants.COMPLETED_STATUS }
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
@@ -175,7 +177,7 @@ const PayrollBatch = (props) => {
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote,
+        referenceNote: values?.referenceNote
       })
     );
     hidePaidSimulator();
@@ -527,7 +529,6 @@ const PayrollBatch = (props) => {
                         <thead className="ant-table-thead">
                           <tr>
                             <th className="ant-table-cell">Batch id</th>
-
                             {currentView ===
                               payrollConstants.ORGANIZATION_VIEW && (
                               <th className="ant-table-cell">
@@ -587,6 +588,7 @@ const PayrollBatch = (props) => {
                                 {batch?.socialOrganizationId}
                               </td>
                             )} */}
+
                                   {currentView ===
                                     payrollConstants.ORGANIZATION_VIEW && (
                                     <td className="ant-table-cell">
@@ -761,8 +763,18 @@ const PayrollBatch = (props) => {
                                         <>
                                           <span>
                                             {/* {payrollConstants.CONFIRMED} */}
-                                            100% (Received by Social
-                                            Organization)
+                                            {TotalHelper(
+                                              groupByBatchData[type]?.[0]
+                                                ?.totalOrganizationCount
+                                            )}
+                                            % (
+                                            {TotalHelper(
+                                              groupByBatchData[type]?.[0]
+                                                ?.totalOrganizationCount
+                                            ) < 100
+                                              ? "Partially received by organizations"
+                                              : "Received by Social Organization"}
+                                            )
                                           </span>
                                           <Progress
                                             percent={100}
@@ -932,11 +944,11 @@ const PayrollBatch = (props) => {
                               {batch?.corporateId}
                             </td>
                           )} */}
-                                {!corporateId && (
+                                {/* {!corporateId && (
                                   <td className="ant-table-cell">
                                     {batch?.corporateName}
                                   </td>
-                                )}
+                                )} */}
                                 <td className="ant-table-cell">
                                   {batch?.createdDate &&
                                     moment(batch?.createdDate).format(
@@ -1002,12 +1014,16 @@ const PayrollBatch = (props) => {
                                       <>
                                         <span>
                                           {/* {payrollConstants.CONFIRMED} */}
-                                          {75 +
-                                            Math.round(
-                                              25 / batch?.totalOrganizationCount
-                                            )}
-                                          % (Partially received by
-                                          organizations)
+                                          {TotalHelper(
+                                            batch?.totalOrganizationCount
+                                          )}
+                                          % (
+                                          {TotalHelper(
+                                            batch?.totalOrganizationCount
+                                          ) < 100
+                                            ? "Partially received by organizations"
+                                            : "Received by Social Organization"}
+                                          )
                                         </span>
                                         <Progress
                                           percent={
@@ -1201,7 +1217,7 @@ const PayrollBatch = (props) => {
                   handleChange,
                   handleBlur,
                   handleSubmit,
-                  isSubmitting,
+                  isSubmitting
                 }) => (
                   <Form>
                     <Modal.Body style={{ fontSize: "18" }}>
@@ -1375,7 +1391,9 @@ const PayrollBatch = (props) => {
             </Modal.Header>
             <Modal.Body style={{ fontSize: "18" }}>{referenceNote}</Modal.Body>
           </Modal>
-          {!corporateId &&
+          {otherUser?.detail?.userRole !== viewPortalConstants.PAYMENT_ADMIN &&
+            otherUser?.detail?.userRole !== viewPortalConstants.FO_ADMIN &&
+            !corporateId &&
             !isOrganizationPortal &&
             (currentView === payrollConstants.ORGANIZATION_VIEW ||
               currentView === payrollConstants.CORPORATE_VIEW) && (
@@ -1411,7 +1429,7 @@ const PayrollBatch = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

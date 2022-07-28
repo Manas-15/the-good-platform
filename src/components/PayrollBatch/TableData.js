@@ -21,6 +21,7 @@ import Pagination from "./../Shared/Pagination";
 import PayrollBatchDetail from "./PayrollBatchDetail";
 import PayrollBatchAccordion from "./PayrollBatchAccordion";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
+import { TotalHelper } from "../../helpers";
 const TabPane = Tabs.TabPane;
 
 const completeInitialValues = {
@@ -375,11 +376,14 @@ const TableData = ({
                   <>
                     <span>
                       {/* {payrollConstants.CONFIRMED} */}
-                      {75 +
-                        Math.round(
-                          25 / groupByBatchData[0]?.totalOrganizationCount
-                        )}
-                      % (Partially received by organizations)
+                      {TotalHelper(groupByBatchData[0]?.totalOrganizationCount)}
+                      % (`$
+                      {TotalHelper(
+                        groupByBatchData[0]?.totalOrganizationCount
+                      ) < 100
+                        ? "Partially received by organizations"
+                        : "Received by Social Organization"}
+                      `)
                     </span>
                     <Progress
                       percent={

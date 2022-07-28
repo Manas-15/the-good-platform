@@ -12,19 +12,19 @@ import "./../../assets/css/loginForm.scss";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData
+  CountryRegionData,
 } from "react-country-region-selector";
 import { userConstants } from "../../constants";
 
 const organizationOptions = [
   { value: "1", label: "Workout Donar" },
   { value: "2", label: "Help Donar" },
-  { value: "3", label: "Universe Donar" }
+  { value: "3", label: "Universe Donar" },
 ];
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" }
+  { value: "Transgender", label: "Transgender" },
 ];
 const FormDatePicker = ({ errors, touched }) => {
   return (
@@ -90,8 +90,12 @@ const AddEmployee = () => {
   const addEmployeeRegister = (values) => {
     values.state = state;
     values.country = country;
-    values.corporateProfileId = selectedCorporate?.id;
-    values.corporateProfileName = selectedCorporate?.name;
+    values.corporateProfileId = selectedCorporate
+      ? selectedCorporate?.id
+      : "8a8b855f821b611c01821b68c2de0000";
+    values.corporateProfileName = selectedCorporate
+      ? selectedCorporate?.name
+      : "IOPLO";
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
       dispatch(employeeActions.addEmployee(values));
@@ -109,8 +113,10 @@ const AddEmployee = () => {
     email: "",
     employeeId: "",
     pan: "",
-    corporateProfileId: selectedCorporate?.id,
-    corporateProfileName: selectedCorporate?.name,
+    corporateProfileId: selectedCorporate
+      ? selectedCorporate?.id
+      : "8a8b855f821b611c01821b68c2de0000",
+    corporateProfileName: selectedCorporate ? selectedCorporate?.name : "IOPLO",
     gender: "",
     contactNumber: "",
     address: "",
@@ -118,7 +124,7 @@ const AddEmployee = () => {
     state: "",
     country: "",
     userType: 3,
-    password: ""
+    password: "",
   };
   // useEffect(() => {
   //   initialValues.corporateProfileId = selectedCorporate?.id;
@@ -143,7 +149,7 @@ const AddEmployee = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting
+            isSubmitting,
             /* and other goodies */
           }) => (
             <Form>

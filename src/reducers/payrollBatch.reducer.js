@@ -66,14 +66,19 @@ export function payrollBatch(state = {}, action) {
                 // }
               }
               if (state?.requestType === payrollConstants?.RECEIVE) {
-                const splitReciveOrgs =
-                  item?.receivedOrganizationIds?.split(",");
+                // let splitReciveOrgs = item?.receivedOrganizationIds?.split(",");
+                let splitReciveOrgs;
+                if (item?.receivedOrganizationIds === null) {
+                  splitReciveOrgs = [];
+                } else {
+                  splitReciveOrgs = item?.receivedOrganizationIds?.split(",");
+                }
                 return {
                   ...item,
                   status: payrollConstants?.RECEIVED_STATUS,
                   receivedOrganizationIds:
                     splitReciveOrgs?.length > 0
-                      ? splitReciveOrgs.push(state?.socialId).toString()
+                      ? splitReciveOrgs?.push(state?.socialId)?.toString()
                       : state?.socialId?.toString()
                 };
               }

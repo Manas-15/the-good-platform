@@ -35,10 +35,11 @@ const MainReducer = combineReducers({
   selectedOrganization,
   selectedCharity,
   selectedCharityTab,
-  user
+  user,
 });
 
 const rootReducer = (state, action) => {
+  // const user = JSON.parse(localStorage.getItem("user"));
   if (action.type === userConstants.LOGOUT) {
     state = undefined;
   }

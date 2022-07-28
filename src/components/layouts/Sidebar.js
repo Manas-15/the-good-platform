@@ -121,7 +121,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -136,7 +136,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                       activeClassName="active"
                     >
@@ -426,15 +426,11 @@ const Sidebar = () => {
                       <span className="ant-menu-title-content">
                         <NavLink
                           className=" "
-                          to="/social-organizations"
+                          to={`/organizations/${selectedOrganization?.organization?.id}/payroll-batch`}
                           activeClassName="active"
                         >
-                          <img
-                            height="16"
-                            src="/assets/img/case.png"
-                            alt="Case"
-                          />
-                          <span className="menu-text">Programs</span>
+                          <i className="bi bi-people-fill"></i>
+                          <span className="menu-text">Payroll Batch</span>
                         </NavLink>
                       </span>
                     </li>

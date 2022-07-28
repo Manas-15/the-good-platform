@@ -21,13 +21,14 @@ const TabPane = Tabs.TabPane;
 const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
-
+  console.log("listing charityPrograms", charityPrograms);
   const selectedOrganizationId = useSelector(
     (state) => state?.selectedOrganization?.organization?.id
   );
   const [selectedCharity, setSelectedCharity] = useState();
   const [tabType, setTabType] = useState(charityProgramConstants.SPONSOR);
   const user = useSelector((state) => state.employee.user);
+  const otherUser = useSelector((state) => state.user);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const [searchText, setSearchText] = useState("");
@@ -62,7 +63,7 @@ const CharityPrograms = (props) => {
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id,
-              userRole: user?.userRole
+              userRole: otherUser?.detail?.userRole
               // corporateId: selectedCorporate?.corporate?.corporateId,
               // socialId: selectedOrganization?.id,
               // userType: userConstants.CORPORATE_VIEW,
