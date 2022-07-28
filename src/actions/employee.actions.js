@@ -16,7 +16,8 @@ export const employeeActions = {
   employeeAccountRequest,
   addEmployee,
   bulkImport,
-  getCorporates
+  getCorporates,
+  ssoLogin
 };
 function login(data, from) {
   if (data?.loginType === "Employee") {
@@ -452,5 +453,14 @@ function getCorporates() {
   }
   function failure(error) {
     return { type: employeeConstants.GET_CORPORATES_FAILURE, error };
+  }
+}
+
+function ssoLogin(data) {
+  return (dispatch) => {
+    dispatch(success(res));
+  };
+  function success(data) {
+    return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };
   }
 }
