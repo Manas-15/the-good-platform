@@ -22,10 +22,29 @@ const LoginForm = ({ submit, disable }) => {
   //log decrypted Data
 
   useEffect(() => {
+    // const values = {
+    //   email: "soumya_gupta@gmail.com",
+    //   loginType: "Employee",
+    //   password: "Test1234#",
+    // };
+
     const values = {
+      sso: true,
+      active: true,
+      approve: true,
+      corporateId: "8a8b855f821b611c01821b68c2de0000",
+      corporateName: "IOPLO",
       email: "soumya_gupta@gmail.com",
-      loginType: "Employee",
-      password: "Test1234#",
+      emp_id: 48,
+      msg: "Login Success",
+      name: "Soumya",
+      otp: "593269",
+      pan: "SOUMY3434A",
+      phone: "9437365425",
+      token: "test",
+      user_id: 61,
+      user_type: 3,
+      uuid: "tz16w4uu",
     };
     console.log("11111111111111111111");
     const newStr = str.split("?token=");
@@ -38,7 +57,7 @@ const LoginForm = ({ submit, disable }) => {
 
       // localStorage.setItem("user", JSON.stringify(decryptedData));
       localStorage.setItem("otpVerified", true);
-      dispatch(employeeActions.login(values));
+      dispatch(employeeActions.ssoLogin(values));
     }
   }, [str]);
 

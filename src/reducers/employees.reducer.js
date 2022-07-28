@@ -8,10 +8,11 @@ export function employee(state = initialState, action) {
         loggingIn: true,
       };
     case employeeConstants.EMPLOYEE_LOGIN_SUCCESS:
+      console.log(action, state);
       return {
         loggedIn: true,
-        user: action?.data?.data,
-        otpVerified: false,
+        user: action?.data?.sso ? action?.data : action?.data?.data,
+        otpVerified: action?.data?.sso ? true : false,
       };
     case employeeConstants.EMPLOYEE_LOGIN_FAILURE:
       return { loggingIn: false };
@@ -29,13 +30,13 @@ export function employee(state = initialState, action) {
       return { loggingIn: false };
     case employeeConstants.OTHER_LOGIN_REQUEST:
       return {
-        loggingIn: true
+        loggingIn: true,
       };
     case employeeConstants.OTHER_LOGIN_SUCCESS:
       return {
         loggedIn: true,
         user: action?.data?.data,
-        otpVerified: false
+        otpVerified: false,
       };
     case employeeConstants.OTHER_LOGIN_FAILURE:
       return { loggingIn: false };
