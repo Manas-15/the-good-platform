@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { history } from "../../helpers";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,7 +10,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 const EmployeeDashboard = () => {
@@ -24,13 +27,13 @@ const EmployeeDashboard = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top"
-      }
+        position: "top",
+      },
       // title: {
       //   display: true,
       //   text: 'Chart.js Line Chart',
       // },
-    }
+    },
   };
   const labels = [
     "January",
@@ -39,7 +42,7 @@ const EmployeeDashboard = () => {
     "April",
     "May",
     "June",
-    "July"
+    "July",
   ];
   const data = {
     labels,
@@ -48,16 +51,30 @@ const EmployeeDashboard = () => {
         label: "Donations",
         data: [1000, 5000, 3000, 2500, 1500, 5000, 2500],
         borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)"
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "Charity Programs",
         data: [100, 600, 250, 500, 450, 230, 350],
         borderColor: "rgb(0, 0, 128)",
-        backgroundColor: "rgba(0, 0, 128, 0.5)"
-      }
-    ]
+        backgroundColor: "rgba(0, 0, 128, 0.5)",
+      },
+    ],
   };
+  const corporates = useSelector(
+    (state) => state?.selectedCorporate?.corporate
+  );
+  const getUser = useSelector((state) => state?.employee?.user);
+  console.log(getUser);
+  useEffect(() => {
+    if (getUser?.corporateId !== null) {
+      console.log(getUser?.corporateId, corporates?.id);
+      history.push(
+        `/corporates/${getUser?.corporateId || corporates?.id}/employees`
+      );
+    }
+  }, []);
+
   return (
     <div>
       <div className="pagetitle">

@@ -1,11 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { LoginSchema } from "../Validations";
 import { Button } from "react-bootstrap";
 import "./../../assets/css/loginForm.scss";
+import { useLocation } from "react-router-dom";
+import { history } from "../../helpers";
+import CryptoJS from "crypto-js";
+import { userActions } from "../../actions";
+import { userConstants } from "../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { employeeActions } from "../../actions/employee.actions";
 
 const LoginForm = ({ submit, disable }) => {
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+  const str = location?.search;
+
+  //log decrypted Data
+
+  useEffect(() => {
+    const values = {
+      email: "soumya_gupta@gmail.com",
+      loginType: "Employee",
+      password: "Test1234#",
+    };
+    console.log("11111111111111111111");
+    const newStr = str.split("?token=");
+    const newData = newStr[1];
+    console.log(newData);
+    if (newData) {
+      var bytes = CryptoJS.AES.decrypt(newData, "my-secret-key@123");
+      var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      console.log(decryptedData, "decrypted Data -");
+
+      // localStorage.setItem("user", JSON.stringify(decryptedData));
+      localStorage.setItem("otpVerified", true);
+      dispatch(employeeActions.login(values));
+    }
+  }, [str]);
+
   const [category, setCategory] = useState("Employee");
   const [showPassword, setShowPassword] = useState("false");
 
@@ -45,7 +81,7 @@ const LoginForm = ({ submit, disable }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting
+                isSubmitting,
                 /* and other goodies */
               }) => (
                 <Form autoComplete="false">
@@ -131,11 +167,11 @@ const LoginForm = ({ submit, disable }) => {
 
                       {showPassword ? (
                         <div onClick={(e) => toggleShowPassword(e)}>
-                          <i class="bi bi-eye-slash"></i>
+                          <i className="bi bi-eye-slash"></i>
                         </div>
                       ) : (
                         <div onClick={(e) => toggleShowPassword(e)}>
-                          <i class="bi bi-eye"></i>
+                          <i className="bi bi-eye"></i>
                         </div>
                       )}
 
@@ -190,7 +226,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/employees/sign-up",
-                              state: category
+                              state: category,
                             }}
                             className="loginhere-link"
                           >
@@ -202,7 +238,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/others/sign-up",
-                              state: category
+                              state: category,
                             }}
                             className="loginhere-link"
                           >
@@ -214,7 +250,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/individual/sign-up",
-                              state: category
+                              state: category,
                             }}
                             className="loginhere-link"
                           >
