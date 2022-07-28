@@ -17,6 +17,7 @@ export const userConstants = {
   CORPORATE: 2,
   EMPLOYEE: 3,
   INDIVIDUAL: 4,
+  OTHERS: 5,
 
   PROGRAM_VIEW: "Program",
   EMPLOYEE_VIEW: "Employee",
@@ -24,5 +25,5 @@ export const userConstants = {
   CORPORATE_VIEW: "Corporate",
   INDIVIDUAL_VIEW: "Individual",
 
-  LOGOUT: "LOGOUT",
+  LOGOUT: "LOGOUT"
 };

@@ -10,7 +10,7 @@ const Sidebar = () => {
     (state) => state?.selectedCorporate?.corporate
   );
 
-  const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
+  const loggedinUserDetail = useSelector((state) => state?.user?.detail);
 
   const loggedInUser = useSelector((state) => state.user);
   const selectedOrganization = useSelector(
@@ -397,7 +397,7 @@ const Sidebar = () => {
                           to={`/corporates/${
                             selectedCorporate
                               ? selectedCorporate?.id
-                              : corporateLoggedinUser?.userId
+                              : loggedinUserDetail?.userId
                           }/payroll-batch`}
                           activeClassName="active"
                         >
@@ -426,7 +426,11 @@ const Sidebar = () => {
                       <span className="ant-menu-title-content">
                         <NavLink
                           className=" "
-                          to={`/organizations/${selectedOrganization?.organization?.id}/payroll-batch`}
+                          to={`/organizations/${
+                            selectedOrganization
+                              ? selectedOrganization?.organization?.id
+                              : loggedinUserDetail?.userId
+                          }/payroll-batch`}
                           activeClassName="active"
                         >
                           <i className="bi bi-people-fill"></i>
