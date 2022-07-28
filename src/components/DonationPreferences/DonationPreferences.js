@@ -75,8 +75,13 @@ const DonationPreferences = () => {
   const getData = () => {
     dispatch(
       donationPreferenceActions.getDonationPreferences({
-        employeeId: employee?.emp_id,
-        userType: "Employee",
+        corporateId: isCorporatePortal
+          ? selectedCorporate?.corporate?.corporateId
+            ? selectedCorporate?.corporate?.corporateId
+            : selectedCorporate?.corporate?.id
+          : employee?.emp_id,
+        userType: isCorporatePortal ? "Corporate" : "Employee",
+        employeeId: isCorporatePortal ? null : employee?.emp_id,
         pageSize: pageSize,
         offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
