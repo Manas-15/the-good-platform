@@ -458,7 +458,7 @@ function getCorporates() {
 
 function ssoLogin(data) {
   return (dispatch) => {
-    dispatch(success(res));
+    dispatch(success(data));
   };
   function success(data) {
     return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };
