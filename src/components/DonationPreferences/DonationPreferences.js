@@ -58,7 +58,7 @@ const DonationPreferences = () => {
   const [searchByCorporateName, setSearchByCorporateName] = useState("");
   const [searchByProgramName, setSearchByProgramName] = useState("");
   const [searchByAmount, setSearchByAmount] = useState("");
-
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
