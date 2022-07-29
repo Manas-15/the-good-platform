@@ -17,7 +17,7 @@ export const employeeActions = {
   addEmployee,
   bulkImport,
   getCorporates,
-  ssoLogin,
+  ssoLogin
 };
 function login(data, from) {
   if (data?.loginType === "Employee") {
@@ -102,7 +102,6 @@ function login(data, from) {
       employeeService.login(data).then(
         (data) => {
           dispatch(success(data));
-
           if (data?.data?.msg && data?.data?.msg !== "Login Success") {
             dispatch(alertActions.error(data?.data?.msg));
           } else {
@@ -254,7 +253,7 @@ function register(employee, userType) {
         } else {
           history.push({
             pathname: "/thank-you",
-            state: { userType: userType },
+            state: { userType: userType }
           });
         }
       },
@@ -419,7 +418,7 @@ function bulkImport(formData) {
   function request(formData) {
     return {
       type: employeeConstants.BULK_IMPORT_REQUEST,
-      formData,
+      formData
     };
   }
   function success(formData) {
@@ -445,7 +444,7 @@ function getCorporates() {
 
   function request() {
     return {
-      type: employeeConstants.GET_CORPORATES_REQUEST,
+      type: employeeConstants.GET_CORPORATES_REQUEST
     };
   }
   function success(data) {
