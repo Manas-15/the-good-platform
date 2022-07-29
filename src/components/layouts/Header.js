@@ -57,15 +57,13 @@ const Header = () => {
       <nav className="header-nav ms-auto">
         <h4 className="current-view">
           {users?.userRole ? users?.userRole.replace("-", " ") : ""}
-
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
             ? currentView?.currentView +
               " - " +
               selectedCorporate?.corporate?.name
-            : oktaUser?.corporateName
-            ? "Corporate Portal" + " - " + oktaUser?.corporateName
             : currentView?.currentView}
-
+          {/* oktaUser?.corporateName ? "Corporate Portal" + " - " +
+          oktaUser?.corporateName */}
           {currentView?.currentView ===
           viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
             ? currentView?.currentView +
