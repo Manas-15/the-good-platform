@@ -36,6 +36,9 @@ const Header = () => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
+  const oktaUser = useSelector((state) => state?.employee?.user);
+  console.log(oktaUser);
+
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
       <div className="d-flex align-items-center justify-content-between">
@@ -53,15 +56,21 @@ const Header = () => {
       </div>
       <nav className="header-nav ms-auto">
         <h4 className="current-view">
-          {users?.userRole
-            ? users?.userRole.replace("-", " ")
-            : currentView?.currentView}
+          {users?.userRole ? users?.userRole.replace("-", " ") : ""}
+
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
-            ? " - " + selectedCorporate?.corporate?.name
+            ? currentView?.currentView +
+              " - " +
+              selectedCorporate?.corporate?.name
+            : oktaUser?.corporateName
+            ? "Corporate Portal" + " - " + oktaUser?.corporateName
             : ""}
+
           {currentView?.currentView ===
           viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
-            ? " - " + selectedOrganization?.organization?.name
+            ? currentView?.currentView +
+              " - " +
+              selectedOrganization?.organization?.name
             : ""}
         </h4>
         <ul className="d-flex align-items-center">

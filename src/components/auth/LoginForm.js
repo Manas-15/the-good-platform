@@ -6,20 +6,14 @@ import { LoginSchema } from "../Validations";
 import { Button } from "react-bootstrap";
 import "./../../assets/css/loginForm.scss";
 import { useLocation } from "react-router-dom";
-import { history } from "../../helpers";
 import CryptoJS from "crypto-js";
-import { userActions } from "../../actions";
-import { userConstants } from "../../constants";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { employeeActions } from "../../actions/employee.actions";
 
 const LoginForm = ({ submit, disable }) => {
   const dispatch = useDispatch();
-
   const location = useLocation();
   const str = location?.search;
-
-  //log decrypted Data
 
   useEffect(() => {
     // const values = {
@@ -28,24 +22,19 @@ const LoginForm = ({ submit, disable }) => {
     //   password: "Test1234#",
     // };
 
-    const values = {
-      sso: true,
-      active: true,
-      approve: true,
-      corporateId: "8a8b855f821b611c01821b68c2de0000",
-      corporateName: "IOPLO",
-      email: "soumya_gupta@gmail.com",
-      emp_id: 48,
-      msg: "Login Success",
-      name: "Soumya",
-      otp: "593269",
-      pan: "SOUMY3434A",
-      phone: "9437365425",
-      token: "test",
-      user_id: 61,
-      user_type: 3,
-      uuid: "tz16w4uu",
-    };
+    // const values = {
+    //   token: "test",
+    //   approve: false,
+    //   corporateId: "8a8b855f81fb9301018210a3c463016d",
+    //   corporateName: "Ansuman Tarai",
+    //   email: "ansuman_taria@yahoo.co.in",
+    //   msg: "Login Success",
+    //   name: "Ansuman Tarai",
+    //   sso: true,
+    //   user_id: 3136,
+    //   user_type: 2,
+    //   uuid: "4t5ub2gs",
+    // };
     console.log("11111111111111111111");
     const newStr = str.split("?token=");
     const newData = newStr[1];
@@ -56,8 +45,8 @@ const LoginForm = ({ submit, disable }) => {
       console.log(decryptedData, "decrypted Data -");
 
       // localStorage.setItem("user", JSON.stringify(decryptedData));
+      dispatch(employeeActions.ssoLogin(decryptedData));
       localStorage.setItem("otpVerified", true);
-      dispatch(employeeActions.ssoLogin(values));
     }
   }, [str]);
 

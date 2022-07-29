@@ -13,6 +13,8 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { userConstants } from "../../constants";
+
 const EmployeeDashboard = () => {
   ChartJS.register(
     CategoryScale,
@@ -66,8 +68,9 @@ const EmployeeDashboard = () => {
   );
   const getUser = useSelector((state) => state?.employee?.user);
   console.log(getUser);
+  //8a8b855f81fb9301018210a3c463016d
   useEffect(() => {
-    if (getUser?.corporateId !== null) {
+    if (getUser?.user_type === userConstants.CORPORATE) {
       console.log(getUser?.corporateId, corporates?.id);
       history.push(
         `/corporates/${getUser?.corporateId || corporates?.id}/employees`
