@@ -64,7 +64,7 @@ const Header = () => {
               selectedCorporate?.corporate?.name
             : oktaUser?.corporateName
             ? "Corporate Portal" + " - " + oktaUser?.corporateName
-            : ""}
+            : currentView?.currentView}
 
           {currentView?.currentView ===
           viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL

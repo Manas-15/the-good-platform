@@ -14,7 +14,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { userConstants } from "../../constants";
-
 const EmployeeDashboard = () => {
   ChartJS.register(
     CategoryScale,
