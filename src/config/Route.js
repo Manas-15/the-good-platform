@@ -36,6 +36,8 @@ import IndividualSignUp from "../components/Auth/IndividualSignUp";
 import { userConstants } from "./../constants";
 import DirectPayment from "../components/DirectPayment/DirectPayment";
 import ListIndividuals from "../components/Individual/ListIndividuals";
+import SsoSettings from "../components/SsoSettings/SsoSettings";
+
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
   // const user = useSelector((state) => state.employee.user);
@@ -67,7 +69,7 @@ const CreateRoutes = () => {
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
-      message: message,
+      message: message
     });
   };
   return (
@@ -163,6 +165,7 @@ const CreateRoutes = () => {
                 path="/account-summary"
                 component={ListTransactionsHistory}
               />
+              <Route exact path="/sso-configuration" component={SsoSettings} />
               <Route
                 exact
                 path="/employee/:employeeId/account-summary"

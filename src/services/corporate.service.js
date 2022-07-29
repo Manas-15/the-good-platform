@@ -9,7 +9,8 @@ export const corporateService = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  corporateAccountRequest
+  corporateAccountRequest,
+  samlConfigure
 };
 
 function getCorporates() {
@@ -63,4 +64,13 @@ function handleResponse(response) {
 
     return data;
   });
+}
+
+function samlConfigure(data) {
+  console.log(data, "saml api call");
+
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporateSetting/",
+    data
+  );
 }

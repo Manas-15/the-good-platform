@@ -9,6 +9,7 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   corporateAccountRequest,
+  samlConfigure
 };
 function getCorporates() {
   return (dispatch) => {
@@ -82,7 +83,7 @@ function updateCorporate(corporate) {
   function success(corporate) {
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate,
+      corporate
     };
   }
   function failure(error) {
@@ -178,5 +179,35 @@ function corporateAccountRequest(actionValues) {
   }
   function failure(error) {
     return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };
+  }
+}
+
+function samlConfigure(samlValues) {
+  return (dispatch) => {
+    console.log(samlValues, "saml requestttttttttt");
+    dispatch(request(samlValues));
+    corporateService.samlConfigure(samlValues).then(
+      (res) => {
+        console.log(samlValues, "saml before sucesssss");
+
+        dispatch(success(res));
+        dispatch(alertActions.success("SAML Configure saved successfully"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+  function request(samlValues) {
+    return { type: corporateConstants.SAML_CONFIGURE_REQUEST, samlValues };
+  }
+  function success(samlValues) {
+    console.log(samlValues, "saml after sucesssss");
+
+    return { type: corporateConstants.SAML_CONFIGURE_SUCCESS, samlValues };
+  }
+  function failure(error) {
+    return { type: corporateConstants.SAML_CONFIGURE_FAILURE, error };
   }
 }
