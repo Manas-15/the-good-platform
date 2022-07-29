@@ -17,7 +17,8 @@ export const employeeActions = {
   addEmployee,
   bulkImport,
   getCorporates,
-  ssoLogin
+  ssoLogin,
+  isRedirected
 };
 function login(data, from) {
   if (data?.loginType === "Employee") {
@@ -462,4 +463,8 @@ function ssoLogin(data) {
   function success(data) {
     return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };
   }
+}
+
+function isRedirected(data) {
+  return { type: "IS_REDIRECTED", data };
 }

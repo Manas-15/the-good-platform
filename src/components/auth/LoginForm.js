@@ -35,7 +35,6 @@ const LoginForm = ({ submit, disable }) => {
     //   user_type: 2,
     //   uuid: "4t5ub2gs",
     // };
-    console.log("11111111111111111111");
     const newStr = str.split("?token=");
     const newData = newStr[1];
     console.log(newData);
@@ -89,7 +88,7 @@ const LoginForm = ({ submit, disable }) => {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
+                isSubmitting
                 /* and other goodies */
               }) => (
                 <Form autoComplete="false">
@@ -234,7 +233,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/employees/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >
@@ -246,7 +245,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/others/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >
@@ -258,7 +257,7 @@ const LoginForm = ({ submit, disable }) => {
                           <Link
                             to={{
                               pathname: "/individual/sign-up",
-                              state: category,
+                              state: category
                             }}
                             className="loginhere-link"
                           >
