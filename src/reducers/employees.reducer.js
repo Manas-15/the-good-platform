@@ -8,7 +8,7 @@ export function employee(state = initialState, action) {
         loggingIn: true
       };
     case employeeConstants.EMPLOYEE_LOGIN_SUCCESS:
-      console.log(action);
+      console.log(action, state);
       return {
         loggedIn: true,
         user: action?.data?.sso ? action?.data : action?.data?.data,
