@@ -484,6 +484,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 </Link>
                               </Tooltip>
                             )}
+                          {/* {isEmployeePortal && ( */}
                           {isEmployeePortal && charityProgram?.donated && (
                             <Tooltip title="Edit">
                               <Link
