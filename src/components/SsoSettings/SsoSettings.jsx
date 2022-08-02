@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { corporateActions } from "./../../actions";
 import { FileOutlined } from "@ant-design/icons";
+import { viewPortalConstants } from "../../constants";
 const initialValues = {
   issueUrl: "",
   loginUrl: "",
@@ -20,21 +21,28 @@ const initialValues = {
 };
 const SsoSettings = () => {
   const dispatch = useDispatch();
+  const currentView = useSelector((state) => state?.currentView);
+  console.log(currentView);
+  const isEmployeePortal =
+    currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isCorporatePortal =
+    currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+
   const user = useSelector((state) => state?.employee?.user);
   const selectedCorporate = useSelector(
     (state) => state?.selectedCorporate?.corporate
   );
 
-  initialValues.employeeId = selectedCorporate ? null : user?.emp_id;
-  initialValues.corporateId = selectedCorporate ? selectedCorporate.id : null;
-  initialValues.corporateName = selectedCorporate
+  initialValues.employeeId = isEmployeePortal ? user?.emp_id : null;
+  initialValues.corporateId = isCorporatePortal ? selectedCorporate.id : null;
+  initialValues.corporateName = isCorporatePortal
     ? selectedCorporate.name
     : null;
-  initialValues.userType = user?.user_type;
+  initialValues.userType = isEmployeePortal ? 3 : 2;
 
   const oidcRegister = (values) => {
     console.log(values);
-    // dispatch(corporateActions.oidcConfigure(values));
+    dispatch(corporateActions.oidcConfigure(values));
   };
   return (
     <div className="customContainer">
@@ -257,11 +265,11 @@ const SsoSettings = () => {
                     <div className="col-md-12 d-flex  justify-content-center ">
                       <button
                         type="button"
-                        class="btn btn-light btn-outline-secondary me-3 "
+                        className="btn btn-light btn-outline-secondary me-3 "
                       >
                         Cancel
                       </button>
-                      <button type="submit" class="btn btn-primary">
+                      <button type="submit" className="btn btn-primary">
                         {/* <span className="spinner-border spinner-border-sm mr-1"></span> */}
                         Save and Verify
                       </button>

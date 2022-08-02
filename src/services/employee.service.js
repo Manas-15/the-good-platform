@@ -24,11 +24,6 @@ export const employeeService = {
 };
 
 async function login(data) {
-  console.log(data);
-  console.log(
-    data?.loginType ===
-      (userConstants.EMPLOYEE_VIEW || userConstants.INDIVIDUAL_VIEW)
-  );
   if (
     data?.loginType === userConstants.EMPLOYEE_VIEW ||
     data?.loginType === userConstants.INDIVIDUAL_VIEW
