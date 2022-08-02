@@ -87,7 +87,7 @@ const CharityProgramDetails = (props) => {
       : Math.random().toString(36).slice(2),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
     donationAmount: selectedCharity?.charity?.donationAmount,
-    customerId: user?.uuid.toString(),
+    customerId: user?.uuid?.toString(),
     customerName: user?.name,
     customerEmail: user?.email,
     customerPhone: user?.phone,

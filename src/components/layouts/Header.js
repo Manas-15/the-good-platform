@@ -56,19 +56,16 @@ const Header = () => {
       </div>
       <nav className="header-nav ms-auto">
         <h4 className="current-view">
-          {users?.userRole ? users?.userRole.replace("-", " ") : ""}
-          {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
-            ? currentView?.currentView +
-              " - " +
-              selectedCorporate?.corporate?.name
+          {users?.userRole
+            ? users?.userRole.replace("-", " ")
             : currentView?.currentView}
-          {/* oktaUser?.corporateName ? "Corporate Portal" + " - " +
-          oktaUser?.corporateName */}
+          {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
+            ? " - " + selectedCorporate?.corporate?.name
+            : ""}
+
           {currentView?.currentView ===
           viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
-            ? currentView?.currentView +
-              " - " +
-              selectedOrganization?.organization?.name
+            ? " - " + selectedOrganization?.organization?.name
             : ""}
         </h4>
         <ul className="d-flex align-items-center">

@@ -18,7 +18,7 @@ export const employeeActions = {
   bulkImport,
   getCorporates,
   ssoLogin,
-  isRedirected
+  isRedirected,
 };
 function login(data, from) {
   if (data?.loginType === "Employee") {
@@ -143,10 +143,7 @@ function validateOtp(data, from) {
         dispatch(success(res));
         if (res?.data?.msg === "Invalid OTP") {
           history.push("/otp");
-          // history.push({
-          //   pathname: "/otp",
-          //   state: { otp: data?.validOtp }
-          // });
+
           dispatch(alertActions.error(res?.data?.msg));
         } else {
           localStorage.setItem("otpVerified", true);
@@ -219,6 +216,7 @@ function logout() {
   return { type: userConstants.LOGOUT };
 }
 function getEmployees(data) {
+  console.log(data);
   return (dispatch) => {
     dispatch(request());
 
@@ -254,7 +252,7 @@ function register(employee, userType) {
         } else {
           history.push({
             pathname: "/thank-you",
-            state: { userType: userType }
+            state: { userType: userType },
           });
         }
       },
@@ -419,7 +417,7 @@ function bulkImport(formData) {
   function request(formData) {
     return {
       type: employeeConstants.BULK_IMPORT_REQUEST,
-      formData
+      formData,
     };
   }
   function success(formData) {
@@ -445,7 +443,7 @@ function getCorporates() {
 
   function request() {
     return {
-      type: employeeConstants.GET_CORPORATES_REQUEST
+      type: employeeConstants.GET_CORPORATES_REQUEST,
     };
   }
   function success(data) {
