@@ -58,7 +58,7 @@ const SsoSettings = () => {
                 <Form>
                   <div className="row">
                     <h1 className="ant-typography customHeading text-center">
-                      SAML configuration
+                      OIDC configuration
                     </h1>
                   </div>
                   <hr />
@@ -82,14 +82,14 @@ const SsoSettings = () => {
                       />
                       <span>
                         Goodfirm Will Use This Identity User. You Can Get This
-                        From Your SAML.Identity Provider.
+                        From Your OIDC.Identity Provider.
                       </span>
                     </div>
                   </div>
                   <div className="row mb-4">
                     <div className="col-md-12">
                       <label className="mt-1">
-                        SAML Login URL(SAML Endpoint)
+                        OIDC Login URL(OIDC Endpoint)
                       </label>
                       <Field
                         name="loginUrl"
@@ -108,7 +108,7 @@ const SsoSettings = () => {
                       />
                       <span>
                         Goodfirm Will Redirect User To This URL Login. You Can
-                        Get This From Your SAML Identity Provider.
+                        Get This From Your OIDC Identity Provider.
                       </span>
                     </div>
                   </div>
@@ -156,11 +156,11 @@ const SsoSettings = () => {
                         className="invalid-feedback"
                       />
                       <span>
-                        The SAML Certificate Provider By Your SAML Provider.This
+                        The OIDC Certificate Provider By Your OIDC Provider.This
                         Will Be Used For Encryption And
                         <br />
                         <strong>
-                          SAML Configuration For Your Identity Provider (IDP)
+                          OIDC Configuration For Your Identity Provider (IDP)
                         </strong>
                       </span>
                     </div>
@@ -221,7 +221,7 @@ const SsoSettings = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="row mb-4">
+                  {/* <div className="row mb-4">
                     <label className="mt-1">
                       Service Provider Assertion Consumer Services Url(ACS_URl)
                     </label>
@@ -247,7 +247,7 @@ const SsoSettings = () => {
                         Copy
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="row my-5">
                     <div className="col-md-12 d-flex  justify-content-center ">
                       <button
