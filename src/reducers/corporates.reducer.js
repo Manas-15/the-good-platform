@@ -7,6 +7,10 @@ export function corporates(state = {}, action) {
         loading: true
       };
     case corporateConstants.GET_CORPORATES_SUCCESS:
+      console.log(
+        ">>>>>>>>> action?.corporates?.data",
+        action?.corporates?.data?.corporates
+      );
       return {
         items: action?.corporates?.data?.data?.data
       };

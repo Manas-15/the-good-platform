@@ -5,7 +5,7 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { socialOrganizationActions } from "../../actions";
 import { Tabs } from "antd";
@@ -39,10 +39,8 @@ const SocialOrganizations = () => {
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSORED);
   const currentPortal = useSelector((state) => state.currentView);
-  const isEmployeePortal =
-    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
+  const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const isOthersPortal =
@@ -72,11 +70,11 @@ const SocialOrganizations = () => {
               individualId:
                 loggedInUserType === userConstants.INDIVIDUAL
                   ? user?.uuid
-                  : null,
+                  : null
             }
           : isOthersPortal
           ? {
-              loggedInUserType: loggedInUserType ? loggedInUserType : null,
+              loggedInUserType: loggedInUserType ? loggedInUserType : null
             }
           : {
               pageNumber: currentPage.toString(),
@@ -89,7 +87,7 @@ const SocialOrganizations = () => {
               individualId: user?.uuid,
               loggedInUserType: user?.user_type,
               pageSize: pageSize.toString(),
-              userId: user?.user_id,
+              userId: user?.user_id
             }
       )
     );

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Shared/Loader";
 import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
-import { viewPortalConstants } from "../../constants";
+import { userConstants, viewPortalConstants } from "../../constants";
 // import corporates from "./../../config/corporates.json";
 const SocialOrganizationsPortal = () => {
   let history = useHistory();
@@ -19,10 +19,8 @@ const SocialOrganizationsPortal = () => {
   );
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const currentPortal = useSelector((state) => state.currentView);
-  const isEmployeePortal =
-    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
+  const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
   // const isIndividualPortal =
   //   currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   // const isOthersPortal =

@@ -10,11 +10,11 @@ export const corporateService = {
   registerCorporate,
   getCorporates,
   corporateAccountRequest,
-  oidcConfigure,
+  samlConfigure
 };
 
 function getCorporates() {
-  return axios.get(process.env.REACT_APP_API_URL + "api/corporate_list/"); //process.env.REACT_APP_API_URL + "api/corporate_list"
+  return axios.get(process.env.REACT_APP_API_URL + "remote_api/corporateList/"); //process.env.REACT_APP_API_URL + "api/corporate_list"
 }
 
 function registerCorporate(data) {
@@ -66,7 +66,9 @@ function handleResponse(response) {
   });
 }
 
-function oidcConfigure(data) {
+function samlConfigure(data) {
+  console.log(data, "saml api call");
+
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporateSetting/",
     data
