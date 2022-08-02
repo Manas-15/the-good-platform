@@ -8,7 +8,7 @@ import {
   viewPortalConstants,
   charityProgramConstants,
   payrollConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { charityProgramActions, selectedCharityActions } from "../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
@@ -44,10 +44,8 @@ const CharityPrograms = (props) => {
   const dispatch = useDispatch();
   const isOthersPortal =
     currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  const isIndividualPortal =
-    currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
+  const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
+  const isIndividualPortal = user?.user_type === userConstants.INDIVIDUAL;
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
   };
@@ -63,7 +61,7 @@ const CharityPrograms = (props) => {
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id,
-              userRole: otherUser?.detail?.userRole,
+              userRole: otherUser?.detail?.userRole
               // corporateId: selectedCorporate?.corporate?.corporateId,
               // socialId: selectedOrganization?.id,
               // userType: userConstants.CORPORATE_VIEW,
@@ -73,7 +71,7 @@ const CharityPrograms = (props) => {
               userType: userConstants.INDIVIDUAL_VIEW,
               // uuid: user?.uuid,
               // socialId: selectedOrganization?.id,
-              // orgId: selectedOrganization?.id?.toString(),
+              orgId: selectedOrganization?.id
             }
           : {
               // uuid: user?.uuid,
@@ -84,7 +82,7 @@ const CharityPrograms = (props) => {
                 : userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.id
-                : user?.corporateId,
+                : user?.corporateId
               // ? selectedCorporate?.corporate?.corporateId
               // : user?.corporateId,
             }

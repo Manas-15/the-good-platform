@@ -13,7 +13,7 @@ import {
   paginationConstants,
   viewPortalConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -25,12 +25,12 @@ const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 
@@ -68,16 +68,15 @@ const ListTransactionsHistory = (props) => {
   const [selectedRange, setSelectedRange] = useState([]);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
 
   const isOrganizationView =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
-  const isEmployeePortal =
-    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+    employee?.user?.user_type === userConstants.CORPORATE;
+  const isEmployeePortal = employee?.user?.user_type === userConstants.EMPLOYEE;
   const isOthersPortal =
     currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const isIndividualPortal =
@@ -148,7 +147,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -199,7 +198,7 @@ const ListTransactionsHistory = (props) => {
                 : null,
               endDate: dateRange
                 ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-                : null,
+                : null
               //           transactionsHistoryActions.getTransactionsHistory({
               //   individualId:
               //     loggedInUserType === userConstants.INDIVIDUAL
@@ -244,7 +243,7 @@ const ListTransactionsHistory = (props) => {
                 : null,
               endDate: dateRange
                 ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-                : null,
+                : null
             }
       )
     );
@@ -258,7 +257,7 @@ const ListTransactionsHistory = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount,
+    searchByAmount
   ]);
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -666,7 +665,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

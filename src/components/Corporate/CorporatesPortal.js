@@ -8,7 +8,7 @@ import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 const CorporatesPortal = () => {
   let history = useHistory();

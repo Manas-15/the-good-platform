@@ -10,7 +10,7 @@ export const corporateService = {
   registerCorporate,
   getCorporates,
   corporateAccountRequest,
-  oidcConfigure,
+  samlConfigure
 };
 
 function getCorporates() {
@@ -66,7 +66,9 @@ function handleResponse(response) {
   });
 }
 
-function oidcConfigure(data) {
+function samlConfigure(data) {
+  console.log(data, "saml api call");
+
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporateSetting/",
     data

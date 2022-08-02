@@ -8,17 +8,18 @@ const Dashboard = () => {
   const loggedInUser = useSelector(
     (state) => state?.employee?.loggedinUserType
   );
+  const loggedUser = useSelector((state) => state?.employee?.user);
   console.log(loggedInUser);
 
   const dispatch = useDispatch();
 
   {
     (() => {
-      if (loggedInUser?.loggedinUserType === userConstants.INDIVIDUAL) {
+      if (loggedUser?.user_type === userConstants.INDIVIDUAL) {
         return dispatch(
           currentViewActions.currentView(viewPortalConstants.INDIVIDUAL_PORTAL)
         );
-      } else if (loggedInUser?.loggedinUserType === userConstants.CORPORATE) {
+      } else if (loggedUser?.user_type === userConstants.CORPORATE) {
         dispatch(
           currentViewActions.currentView(viewPortalConstants.OTHERS_PORTAL)
         );

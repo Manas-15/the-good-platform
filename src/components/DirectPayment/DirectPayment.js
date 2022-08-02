@@ -17,7 +17,8 @@ import {
   paginationConstants,
   viewPortalConstants,
   payrollConstants,
-  donationPreferenceConstants
+  donationPreferenceConstants,
+  userConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -49,7 +50,7 @@ const DirectPayment = (props) => {
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const currentPortal = useSelector((state) => state.currentView);
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
-
+  const user = useSelector((state) => state?.employee?.user);
   // const selectedOrganization = useSelector(
   //   (state) => state?.selectedOrganization?.organization
   // );
@@ -96,10 +97,8 @@ const DirectPayment = (props) => {
   const isOrganizationView =
     currentPortal?.currentView ===
     viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
-  const isEmployeePortal =
-    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
+  const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
   const isBluePencilPortal =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;

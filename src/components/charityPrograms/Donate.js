@@ -7,7 +7,7 @@ import { charityProgramActions } from "../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import DonationConsent from "../Shared/DonationConsent";
 import { charityProgramConstants } from "../../constants";
@@ -24,7 +24,7 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
   donationConsent: "",
-  repeat: "",
+  repeat: ""
 };
 const Donate = ({
   frequency,
@@ -32,7 +32,7 @@ const Donate = ({
   tabType,
   from,
   currentPortal,
-  repeatPreference,
+  repeatPreference
 }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
@@ -46,10 +46,8 @@ const Donate = ({
   const [checked, setChecked] = useState(false);
   const [showNextStep, setShowNextStep] = useState(false);
   const [addedFromProgramDetail, setAddedFromProgramDetail] = useState(false);
-  const isCorporatePortal =
-    currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  const isEmployeePortal =
-    currentView?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isCorporatePortal = employee?.user_type === userConstants.CORPORATE;
+  const isEmployeePortal = employee?.user_type === userConstants.EMPLOYEE;
   const isProgramDetail = history.location.pathname.includes("/programs/");
   useEffect(() => {
     if (selectedCharity) {

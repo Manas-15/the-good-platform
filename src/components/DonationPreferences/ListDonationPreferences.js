@@ -6,6 +6,7 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import {
   donationPreferenceConstants,
   paginationConstants,
+  userConstants,
   viewPortalConstants
 } from "../../constants";
 import DonationConsent from "./../Shared/DonationConsent";
@@ -52,10 +53,8 @@ const ListDonationPreferences = ({ tabType, items, repeatCharity }) => {
   // const [repeatCharity, setRepeatCharity] = useState();
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const currentPortal = useSelector((state) => state.currentView);
-  const isCorporatePortal =
-    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  const isEmployeePortal =
-    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isCorporatePortal = employee?.user_type === userConstants.CORPORATE;
+  const isEmployeePortal = employee?.user_type === userConstants.EMPLOYEE;
 
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
