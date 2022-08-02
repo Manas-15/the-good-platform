@@ -67,19 +67,16 @@ const FormDatePicker = ({ errors, touched }) => {
 };
 
 const AddEmployee = () => {
-  let history = useHistory();
   const corporateId = useSelector(
     (state) => state?.selectedCorporate?.corporate?.corporateId
   );
   const selectedCorporate = useSelector(
     (state) => state.selectedCorporate.corporate
   );
-  const [submitted, setSubmitted] = useState(false);
+  const otherPortalCorporate = useSelector((state) => state?.employee?.user);
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
-  const addinguser = useSelector((state) => state.employee.addinguser);
   const dispatch = useDispatch();
-  const [isTermsChecked, setIsTermsChecked] = useState(false);
   const addingEmployee = useSelector(
     (state) => state?.employee?.addingEmployee
   );
@@ -87,15 +84,16 @@ const AddEmployee = () => {
   const toggleShowPassword = (e) => {
     setShowPassword(!showPassword);
   };
+  // 8a8b855f821b611c01821b68c2de0000     IOPLO
   const addEmployeeRegister = (values) => {
     values.state = state;
     values.country = country;
     values.corporateProfileId = selectedCorporate
       ? selectedCorporate?.id
-      : "8a8b855f821b611c01821b68c2de0000";
+      : otherPortalCorporate?.userId;
     values.corporateProfileName = selectedCorporate
       ? selectedCorporate?.name
-      : "IOPLO";
+      : otherPortalCorporate?.userRole;
     if (values.firstName && values.email && values.corporateProfileId) {
       values.email = values.email.toLowerCase();
       dispatch(employeeActions.addEmployee(values));
@@ -115,8 +113,10 @@ const AddEmployee = () => {
     pan: "",
     corporateProfileId: selectedCorporate
       ? selectedCorporate?.id
-      : "8a8b855f821b611c01821b68c2de0000",
-    corporateProfileName: selectedCorporate ? selectedCorporate?.name : "IOPLO",
+      : otherPortalCorporate?.userId,
+    corporateProfileName: selectedCorporate
+      ? selectedCorporate?.name
+      : otherPortalCorporate?.userRole,
     gender: "",
     contactNumber: "",
     address: "",

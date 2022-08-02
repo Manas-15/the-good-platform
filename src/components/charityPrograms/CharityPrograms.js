@@ -8,7 +8,7 @@ import {
   viewPortalConstants,
   charityProgramConstants,
   payrollConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import { charityProgramActions, selectedCharityActions } from "../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
@@ -21,7 +21,7 @@ const TabPane = Tabs.TabPane;
 const CharityPrograms = (props) => {
   let history = useHistory();
   const charityPrograms = useSelector((state) => state.charityPrograms);
-  console.log("listing charityPrograms", charityPrograms);
+
   const selectedOrganizationId = useSelector(
     (state) => state?.selectedOrganization?.organization?.id
   );
@@ -63,14 +63,14 @@ const CharityPrograms = (props) => {
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id,
-              userRole: otherUser?.detail?.userRole
+              userRole: otherUser?.detail?.userRole,
               // corporateId: selectedCorporate?.corporate?.corporateId,
               // socialId: selectedOrganization?.id,
               // userType: userConstants.CORPORATE_VIEW,
             }
           : isIndividualPortal
           ? {
-              userType: userConstants.INDIVIDUAL_VIEW
+              userType: userConstants.INDIVIDUAL_VIEW,
               // uuid: user?.uuid,
               // socialId: selectedOrganization?.id,
               // orgId: selectedOrganization?.id?.toString(),
@@ -84,7 +84,7 @@ const CharityPrograms = (props) => {
                 : userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.id
-                : user?.corporateId
+                : user?.corporateId,
               // ? selectedCorporate?.corporate?.corporateId
               // : user?.corporateId,
             }

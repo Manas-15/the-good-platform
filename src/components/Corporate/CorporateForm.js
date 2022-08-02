@@ -23,14 +23,14 @@ const initialValues = {
   city: "",
   state: "",
   country: "",
-  userType: ""
+  userType: "",
 };
 const sizeOptions = [
   { value: "1-50", label: "1-50" },
   { value: "50-100", label: "50-100" },
   { value: "100-500", label: "100-500" },
   { value: "500-1000", label: "500-1000" },
-  { value: ">1000", label: ">1000" }
+  { value: ">1000", label: ">1000" },
 ];
 const CorporateForm = ({ type, id }) => {
   let history = useHistory();
@@ -78,7 +78,7 @@ const CorporateForm = ({ type, id }) => {
       filteredCorporateData(id);
     }
   }, []);
-  console.log("edit corproate", id, editCorpData);
+
   if (id) {
     initialValues.corporateId = id;
     initialValues.organizationName = editCorpData?.name;
@@ -149,7 +149,7 @@ const CorporateForm = ({ type, id }) => {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting
+          isSubmitting,
           /* and other goodies */
         }) => (
           <Form>

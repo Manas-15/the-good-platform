@@ -5,7 +5,7 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import { socialOrganizationActions } from "../../actions";
 import { Tabs } from "antd";
@@ -19,13 +19,17 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 // let theArray = [];
 const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
-  const socialOrganizations = useSelector((state) => state.socialOrganizations);
+  const socialOrganizations = useSelector(
+    (state) => state?.socialOrganizations
+  );
+  console.log(socialOrganizations);
 
   const loggedInUserType = useSelector(
-    (state) => state?.user?.loggedinUserType
+    (state) => state?.employee?.loggedinUserType
   );
 
   const user = useSelector((state) => state?.employee?.user);
+  console.log(user?.user_id);
   // const [open, setOpen] = useState(false);
   // const [allChecked, setAllChecked] = useState(false);
   // const [actionType, setActionType] = useState("");
@@ -64,15 +68,15 @@ const SocialOrganizations = () => {
                   : selectedCorporate?.corporate?.id
                 : user?.corporateId,
               pageSize: pageSize.toString(),
-              loggedInUserType: loggedInUserType,
+              loggedInUserType: loggedInUserType ? loggedInUserType : null,
               individualId:
                 loggedInUserType === userConstants.INDIVIDUAL
                   ? user?.uuid
-                  : null
+                  : null,
             }
           : isOthersPortal
           ? {
-              loggedInUserType: loggedInUserType
+              loggedInUserType: loggedInUserType ? loggedInUserType : null,
             }
           : {
               pageNumber: currentPage.toString(),
@@ -85,7 +89,7 @@ const SocialOrganizations = () => {
               individualId: user?.uuid,
               loggedInUserType: user?.user_type,
               pageSize: pageSize.toString(),
-              userId: user?.user_id
+              userId: user?.user_id,
             }
       )
     );
@@ -159,76 +163,79 @@ const SocialOrganizations = () => {
       </div>
       {socialOrganizations?.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
-        {user?.user_id && loggedInUserType === userConstants.EMPLOYEE && (
-          <Tabs
-            defaultActiveKey={socialOrganizationConstants.SPONSORED}
-            onChange={changeTab}
-          >
-            <TabPane
-              tab={
-                <span>
-                  <AuditOutlined className="fs-5" />
-                  {socialOrganizationConstants.SPONSORED} (
-                  {socialOrganizations?.items?.sponsored
-                    ? searchText &&
-                      tabType === socialOrganizationConstants.SPONSORED
+        {user?.user_id &&
+          (loggedInUserType === userConstants.EMPLOYEE ||
+            loggedInUserType === userConstants.CORPORATE) && (
+            <Tabs
+              defaultActiveKey={socialOrganizationConstants.SPONSORED}
+              onChange={changeTab}
+            >
+              <TabPane
+                tab={
+                  <span>
+                    <AuditOutlined className="fs-5" />
+                    {socialOrganizationConstants.SPONSORED} (
+                    {socialOrganizations?.items?.sponsored
+                      ? searchText &&
+                        tabType === socialOrganizationConstants.SPONSORED
+                        ? SearchHelper(
+                            socialOrganizations?.items?.sponsored,
+                            searchText
+                          ).length
+                        : socialOrganizations?.items?.sponsored?.length
+                      : 0}
+                    )
+                  </span>
+                }
+                key={socialOrganizationConstants.SPONSORED}
+              >
+                <ListSocialOrganizations
+                  tabType={tabType}
+                  items={
+                    searchText &&
+                    tabType === socialOrganizationConstants.SPONSORED
                       ? SearchHelper(
                           socialOrganizations?.items?.sponsored,
                           searchText
-                        ).length
-                      : socialOrganizations?.items?.sponsored?.length
-                    : 0}
-                  )
-                </span>
-              }
-              key={socialOrganizationConstants.SPONSORED}
-            >
-              <ListSocialOrganizations
-                tabType={tabType}
-                items={
-                  searchText &&
-                  tabType === socialOrganizationConstants.SPONSORED
-                    ? SearchHelper(
-                        socialOrganizations?.items?.sponsored,
-                        searchText
-                      )
-                    : socialOrganizations?.items?.sponsored
+                        )
+                      : socialOrganizations?.items?.sponsored
+                  }
+                />
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <RedoOutlined className="fs-5" />
+                    {socialOrganizationConstants.OTHERS} (
+                    {socialOrganizations?.items?.others
+                      ? searchText &&
+                        tabType === socialOrganizationConstants.OTHERS
+                        ? SearchHelper(
+                            socialOrganizations?.items?.others,
+                            searchText
+                          ).length
+                        : socialOrganizations?.items?.others?.length
+                      : 0}
+                    )
+                  </span>
                 }
-              />
-            </TabPane>
-            <TabPane
-              tab={
-                <span>
-                  <RedoOutlined className="fs-5" />
-                  {socialOrganizationConstants.OTHERS} (
-                  {socialOrganizations?.items?.others
-                    ? searchText &&
-                      tabType === socialOrganizationConstants.OTHERS
+                key={socialOrganizationConstants.OTHERS}
+              >
+                <ListSocialOrganizations
+                  tabType={tabType}
+                  items={
+                    searchText && tabType === socialOrganizationConstants.OTHERS
                       ? SearchHelper(
                           socialOrganizations?.items?.others,
                           searchText
-                        ).length
-                      : socialOrganizations?.items?.others?.length
-                    : 0}
-                  )
-                </span>
-              }
-              key={socialOrganizationConstants.OTHERS}
-            >
-              <ListSocialOrganizations
-                tabType={tabType}
-                items={
-                  searchText && tabType === socialOrganizationConstants.OTHERS
-                    ? SearchHelper(
-                        socialOrganizations?.items?.others,
-                        searchText
-                      )
-                    : socialOrganizations?.items?.others
-                }
-              />
-            </TabPane>
-          </Tabs>
-        )}
+                        )
+                      : socialOrganizations?.items?.others
+                  }
+                />
+              </TabPane>
+            </Tabs>
+          )}
+
         {loggedInUserType === userConstants.INDIVIDUAL && (
           <>
             <ListSocialOrganizations
@@ -252,7 +259,7 @@ const SocialOrganizations = () => {
             /> */}
           </>
         )}
-        {loggedInUserType === userConstants.CORPORATE && (
+        {loggedInUserType === userConstants.OTHERS && (
           <>
             <ListSocialOrganizations
               tabType={tabType}

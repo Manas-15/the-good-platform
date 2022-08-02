@@ -11,8 +11,9 @@ const Sidebar = () => {
   );
 
   const loggedinUserDetail = useSelector((state) => state?.user?.detail);
-
-  const loggedInUser = useSelector((state) => state.user);
+  const otherPortalCorporateUser = useSelector(
+    (state) => state?.employee?.user
+  );
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
@@ -133,7 +134,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView }
+                        state: { isSuperadminView },
                       }}
                       activeClassName="active"
                     >
@@ -148,7 +149,7 @@ const Sidebar = () => {
                       className=" "
                       to={{
                         pathname: "/list-individuals",
-                        state: { isSuperadminView }
+                        state: { isSuperadminView },
                       }}
                       activeClassName="active"
                     >
@@ -198,18 +199,6 @@ const Sidebar = () => {
               <>
                 {isOrganizationView && (
                   <>
-                    {/* <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to="/social-organizations/account-summary"
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-people-fill"></i>
-                          <span className="menu-text">Account Summary</span>
-                        </NavLink>
-                      </span>
-                    </li> */}
                     <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
                       <span className="ant-menu-title-content">
                         <NavLink
@@ -294,6 +283,18 @@ const Sidebar = () => {
                         </NavLink>
                       </span>
                     </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/sso-configuration"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-gear"></i>
+                          <span className="menu-text">SSO Settings</span>
+                        </NavLink>
+                      </span>
+                    </li>
                   </>
                 )}
                 {isIndividualView && (
@@ -350,15 +351,11 @@ const Sidebar = () => {
                       <span className="ant-menu-title-content">
                         <NavLink
                           className=" "
-                          to="/dashboard"
+                          to={`/corporates/${otherPortalCorporateUser?.userId}/employees`}
                           activeClassName="active"
                         >
-                          <img
-                            height="20"
-                            src="/assets/img/dashboard.png"
-                            alt="Dashboard"
-                          />
-                          <span className="menu-text">Dashboard</span>
+                          <i className="bi bi-people-fill"></i>
+                          <span className="menu-text">Employees</span>
                         </NavLink>
                       </span>
                     </li>
@@ -422,7 +419,7 @@ const Sidebar = () => {
                       <span className="ant-menu-title-content">
                         <NavLink
                           className=" "
-                          to={`/employee/${user?.uuid}/account-summary`}
+                          to={`/employee/${otherPortalCorporateUser?.userId}/account-summary`}
                           activeClassName="active"
                         >
                           <i className="bi bi-clock-history"></i>

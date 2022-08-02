@@ -7,7 +7,7 @@ import { charityProgramActions } from "../../actions";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import DonationConsent from "../Shared/DonationConsent";
 import { charityProgramConstants } from "../../constants";
@@ -24,7 +24,7 @@ const preferenceForm = {
   frequency: "",
   isConsentCheck: "",
   donationConsent: "",
-  repeat: ""
+  repeat: "",
 };
 const Donate = ({
   frequency,
@@ -32,7 +32,7 @@ const Donate = ({
   tabType,
   from,
   currentPortal,
-  repeatPreference
+  repeatPreference,
 }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
@@ -80,11 +80,6 @@ const Donate = ({
   };
   const dispatch = useDispatch();
   const saveDonationPreference = () => {
-    console.log(
-      ">>>>>>>>>>>>> selectedCharity",
-      selectedAmount,
-      selectedCharity
-    );
     preferenceForm.corporateId = repeatPreference
       ? selectedCharity?.corporateId
       : employee?.corporateId

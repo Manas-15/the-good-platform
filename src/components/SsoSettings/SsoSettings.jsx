@@ -13,23 +13,24 @@ const initialValues = {
   metaData: "",
   issuerID: "",
   acsUrl: "",
+  employeeId: "",
   corporateId: "",
   corporateName: "",
 };
 const SsoSettings = () => {
-  let history = useHistory();
-  const corporates = useSelector((state) => state.corporates);
+  const dispatch = useDispatch();
+  const employeeUser = useSelector((state) => state?.employee?.user);
   const selectedCorporate = useSelector(
     (state) => state?.selectedCorporate?.corporate
   );
-  const addingCorporate = useSelector(
-    (state) => state?.corporates?.addingCorporate
-  );
+
+  initialValues.employeeId = employeeUser?.emp_id;
   initialValues.corporateId = selectedCorporate.id;
   initialValues.corporateName = selectedCorporate.name;
-  const dispatch = useDispatch();
-  const samlRegister = (values) => {
-    dispatch(corporateActions.samlConfigure(values));
+
+  const oidcRegister = (values) => {
+    console.log(values);
+    // dispatch(corporateActions.oidcConfigure(values));
   };
   return (
     <div className="customContainer">
@@ -41,7 +42,7 @@ const SsoSettings = () => {
               initialValues={initialValues}
               validationSchema={SsoSchema}
               onSubmit={(values, { resetForm }) => {
-                samlRegister(values);
+                oidcRegister(values);
                 resetForm({ values: "" });
               }}
             >
@@ -221,7 +222,7 @@ const SsoSettings = () => {
                       </button>
                     </div>
                   </div>
-                  {/* <div className="row mb-4">
+                  <div className="row mb-4">
                     <label className="mt-1">
                       Service Provider Assertion Consumer Services Url(ACS_URl)
                     </label>
@@ -247,7 +248,7 @@ const SsoSettings = () => {
                         Copy
                       </button>
                     </div>
-                  </div> */}
+                  </div>
                   <div className="row my-5">
                     <div className="col-md-12 d-flex  justify-content-center ">
                       <button

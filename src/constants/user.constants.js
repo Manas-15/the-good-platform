@@ -25,5 +25,5 @@ export const userConstants = {
   CORPORATE_VIEW: "Corporate",
   INDIVIDUAL_VIEW: "Individual",
 
-  LOGOUT: "LOGOUT"
+  LOGOUT: "LOGOUT",
 };

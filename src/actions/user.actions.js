@@ -7,7 +7,7 @@ export const userActions = {
   getDetail,
   loggedInUser,
   logout,
-  registerIndividual
+  registerIndividual,
 };
 function login(data, from) {
   return (dispatch) => {

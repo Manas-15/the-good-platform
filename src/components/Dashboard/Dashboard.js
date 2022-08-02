@@ -5,7 +5,10 @@ import { userConstants, viewPortalConstants } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const loggedInUser = useSelector((state) => state?.user);
+  const loggedInUser = useSelector(
+    (state) => state?.employee?.loggedinUserType
+  );
+  console.log(loggedInUser);
 
   const dispatch = useDispatch();
 

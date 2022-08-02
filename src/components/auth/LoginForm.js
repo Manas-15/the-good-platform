@@ -17,12 +17,6 @@ const LoginForm = ({ submit, disable }) => {
 
   useEffect(() => {
     // const values = {
-    //   email: "soumya_gupta@gmail.com",
-    //   loginType: "Employee",
-    //   password: "Test1234#",
-    // };
-
-    // const values = {
     //   token: "test",
     //   approve: false,
     //   corporateId: "8a8b855f81fb9301018210a3c463016d",

@@ -9,7 +9,7 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   corporateAccountRequest,
-  samlConfigure
+  oidcConfigure,
 };
 function getCorporates() {
   return (dispatch) => {
@@ -83,7 +83,7 @@ function updateCorporate(corporate) {
   function success(corporate) {
     return {
       type: corporateConstants.UPDATE_CORPORATE_SUCCESS,
-      corporate
+      corporate,
     };
   }
   function failure(error) {
@@ -182,16 +182,15 @@ function corporateAccountRequest(actionValues) {
   }
 }
 
-function samlConfigure(samlValues) {
+function oidcConfigure(oidcValues) {
   return (dispatch) => {
-    console.log(samlValues, "saml requestttttttttt");
-    dispatch(request(samlValues));
-    corporateService.samlConfigure(samlValues).then(
+    dispatch(request(oidcValues));
+    corporateService.oidcConfigure(oidcValues).then(
       (res) => {
-        console.log(samlValues, "saml before sucesssss");
+        console.log(oidcValues, "oidc before sucesssss");
 
         dispatch(success(res));
-        dispatch(alertActions.success("SAML Configure saved successfully"));
+        dispatch(alertActions.success("OIDC Configure saved successfully"));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -199,15 +198,15 @@ function samlConfigure(samlValues) {
       }
     );
   };
-  function request(samlValues) {
-    return { type: corporateConstants.SAML_CONFIGURE_REQUEST, samlValues };
+  function request(oidcValues) {
+    return { type: corporateConstants.OIDC_CONFIGURE_REQUEST, oidcValues };
   }
-  function success(samlValues) {
-    console.log(samlValues, "saml after sucesssss");
+  function success(oidcValues) {
+    console.log(oidcValues, "oidc after sucesssss");
 
-    return { type: corporateConstants.SAML_CONFIGURE_SUCCESS, samlValues };
+    return { type: corporateConstants.OIDC_CONFIGURE_SUCCESS, oidcValues };
   }
   function failure(error) {
-    return { type: corporateConstants.SAML_CONFIGURE_FAILURE, error };
+    return { type: corporateConstants.OIDC_CONFIGURE_FAILURE, error };
   }
 }
