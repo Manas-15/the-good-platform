@@ -16,17 +16,21 @@ const initialValues = {
   employeeId: "",
   corporateId: "",
   corporateName: "",
+  userType: "",
 };
 const SsoSettings = () => {
   const dispatch = useDispatch();
-  const employeeUser = useSelector((state) => state?.employee?.user);
+  const user = useSelector((state) => state?.employee?.user);
   const selectedCorporate = useSelector(
     (state) => state?.selectedCorporate?.corporate
   );
 
-  initialValues.employeeId = employeeUser?.emp_id;
-  initialValues.corporateId = selectedCorporate.id;
-  initialValues.corporateName = selectedCorporate.name;
+  initialValues.employeeId = selectedCorporate ? null : user?.emp_id;
+  initialValues.corporateId = selectedCorporate ? selectedCorporate.id : null;
+  initialValues.corporateName = selectedCorporate
+    ? selectedCorporate.name
+    : null;
+  initialValues.userType = user?.user_type;
 
   const oidcRegister = (values) => {
     console.log(values);
