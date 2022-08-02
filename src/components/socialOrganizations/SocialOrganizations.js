@@ -50,6 +50,7 @@ const SocialOrganizations = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log(">>>>>>>>>>>>>>>>>> user?.user_type", user?.user_type);
     dispatch(
       socialOrganizationActions.getSocialOrganizations(
         isIndividualPortal
