@@ -8,9 +8,11 @@ const EmployeeLogin = (props) => {
   const loggingIn = useSelector((state) => state.employee.loggingIn);
   const login = (values) => {
     values.email = values.email.toLowerCase();
+
     if (values.email && values.password) {
       if (values?.loginType === "Others") {
-        dispatch(userActions.login(values));
+        dispatch(employeeActions.login(values));
+        // dispatch(userActions.login(values));
       } else if (values.loginType === "Individual") {
         dispatch(employeeActions.login(values));
       } else {

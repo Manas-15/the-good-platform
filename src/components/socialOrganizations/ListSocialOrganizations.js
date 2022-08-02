@@ -13,7 +13,6 @@ import * as moment from "moment";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
 const ListSocialOrganizations = ({ tabType, items }) => {
-  console.log(items);
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
   const currentPortal = useSelector((state) => state.currentView);
   const user = useSelector((state) => state.employee.user);

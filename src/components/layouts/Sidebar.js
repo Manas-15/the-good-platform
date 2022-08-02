@@ -111,6 +111,18 @@ const Sidebar = () => {
                 </NavLink>
               </span>
             </li>
+            <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+              <span className="ant-menu-title-content">
+                <NavLink
+                  className=" "
+                  to="/sso-configuration"
+                  activeClassName="active"
+                >
+                  <i className="bi bi-gear"></i>
+                  <span className="menu-text">SSO Settings</span>
+                </NavLink>
+              </span>
+            </li>
           </>
         ) : (
           <>
@@ -268,6 +280,18 @@ const Sidebar = () => {
                         >
                           <i className="bi bi-clock-history"></i>
                           <span className="menu-text">Account Summary</span>
+                        </NavLink>
+                      </span>
+                    </li>
+                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+                      <span className="ant-menu-title-content">
+                        <NavLink
+                          className=" "
+                          to="/sso-configuration"
+                          activeClassName="active"
+                        >
+                          <i className="bi bi-gear"></i>
+                          <span className="menu-text">SSO Settings</span>
                         </NavLink>
                       </span>
                     </li>

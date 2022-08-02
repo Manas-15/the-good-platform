@@ -19,14 +19,17 @@ let pageSize = paginationConstants?.PAGE_SIZE;
 // let theArray = [];
 const TabPane = Tabs.TabPane;
 const SocialOrganizations = () => {
-  const socialOrganizations = useSelector((state) => state.socialOrganizations);
+  const socialOrganizations = useSelector(
+    (state) => state?.socialOrganizations
+  );
+  console.log(socialOrganizations);
 
   const loggedInUserType = useSelector(
-    (state) => state?.user?.loggedinUserType
+    (state) => state?.employee?.loggedinUserType
   );
-  console.log(socialOrganizations, loggedInUserType);
 
   const user = useSelector((state) => state?.employee?.user);
+  console.log(user?.user_id);
   // const [open, setOpen] = useState(false);
   // const [allChecked, setAllChecked] = useState(false);
   // const [actionType, setActionType] = useState("");
@@ -49,7 +52,6 @@ const SocialOrganizations = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  console.log(isIndividualPortal, isOthersPortal);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -84,7 +86,7 @@ const SocialOrganizations = () => {
                 : user?.corporateId,
               employeeId: isEmployeePortal ? user?.emp_id : null,
               individualId: user?.uuid,
-              loggedInUserType: loggedInUserType ? loggedInUserType : null,
+              loggedInUserType: user?.user_type,
               pageSize: pageSize.toString(),
               userId: user?.user_id,
             }
@@ -161,8 +163,8 @@ const SocialOrganizations = () => {
       {socialOrganizations?.loading && <Loader />}
       <div className="ant-tabs-nav-wrap">
         {user?.user_id &&
-          loggedInUserType === userConstants.EMPLOYEE &&
-          loggedInUserType === undefined && (
+          (loggedInUserType === userConstants.EMPLOYEE ||
+            loggedInUserType === userConstants.CORPORATE) && (
             <Tabs
               defaultActiveKey={socialOrganizationConstants.SPONSORED}
               onChange={changeTab}
@@ -232,6 +234,7 @@ const SocialOrganizations = () => {
               </TabPane>
             </Tabs>
           )}
+
         {loggedInUserType === userConstants.INDIVIDUAL && (
           <>
             <ListSocialOrganizations
@@ -255,7 +258,7 @@ const SocialOrganizations = () => {
             /> */}
           </>
         )}
-        {loggedInUserType === userConstants.CORPORATE && (
+        {loggedInUserType === userConstants.OTHERS && (
           <>
             <ListSocialOrganizations
               tabType={tabType}

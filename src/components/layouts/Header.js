@@ -37,7 +37,6 @@ const Header = () => {
     (state) => state.selectedOrganization
   );
   const oktaUser = useSelector((state) => state?.employee?.user);
-  console.log(oktaUser);
 
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">

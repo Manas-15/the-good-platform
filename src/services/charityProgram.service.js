@@ -18,8 +18,6 @@ function getCharityPrograms(data) {
   //   params: data,
   // });
   if (data?.userType === userConstants.INDIVIDUAL_VIEW || data.userId) {
-    console.log(data);
-
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
       params: data,
     });

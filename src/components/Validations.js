@@ -92,6 +92,39 @@ export const IndividualSchema = Yup.object().shape({
     .min(10, "Please enter valid phone number")
     .max(14, "Please enter valid phone number"),
 });
+
+export const SsoSchema = Yup.object().shape({
+  issueUrl: Yup.string()
+    .required("IssueUrl name is required")
+    .matches(
+      /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/,
+      "Please enter valid url"
+    ),
+  loginUrl: Yup.string()
+    .required("LoginUrl name is required")
+    .matches(
+      /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/,
+      "Please enter valid url"
+    ),
+  logoutUrl: Yup.string()
+    .required("LogoutUrl name is required")
+    .matches(
+      /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/,
+      "Please enter valid url"
+    ),
+  securityCertificate: Yup.string().required(
+    "Security Certificate name is required"
+  ),
+  metaData: Yup.string().required("Metadata name is required"),
+  issuerID: Yup.string().required("IssuerID name is required"),
+  acsUrl: Yup.string()
+    .required("AcsUrl name is required")
+    .matches(
+      /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/,
+      "Please enter valid url"
+    ),
+});
+
 export const PaymentSchema = Yup.object().shape({
   customerName: Yup.string().required("Name is required"),
   customerEmail: Yup.string()

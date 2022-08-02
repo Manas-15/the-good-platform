@@ -9,6 +9,7 @@ export const corporateActions = {
   registerCorporate,
   getCorporates,
   corporateAccountRequest,
+  oidcConfigure,
 };
 function getCorporates() {
   return (dispatch) => {
@@ -178,5 +179,34 @@ function corporateAccountRequest(actionValues) {
   }
   function failure(error) {
     return { type: corporateConstants.CORPORATE_ACTION_FAILURE, error };
+  }
+}
+
+function oidcConfigure(oidcValues) {
+  return (dispatch) => {
+    dispatch(request(oidcValues));
+    corporateService.oidcConfigure(oidcValues).then(
+      (res) => {
+        console.log(oidcValues, "oidc before sucesssss");
+
+        dispatch(success(res));
+        dispatch(alertActions.success("OIDC Configure saved successfully"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+  function request(oidcValues) {
+    return { type: corporateConstants.OIDC_CONFIGURE_REQUEST, oidcValues };
+  }
+  function success(oidcValues) {
+    console.log(oidcValues, "oidc after sucesssss");
+
+    return { type: corporateConstants.OIDC_CONFIGURE_SUCCESS, oidcValues };
+  }
+  function failure(error) {
+    return { type: corporateConstants.OIDC_CONFIGURE_FAILURE, error };
   }
 }

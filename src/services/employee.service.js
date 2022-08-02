@@ -3,6 +3,7 @@ import { jwtInterceptor } from "../helpers";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { userConstants } from "../constants";
+import { authHeader } from "../helpers";
 
 export const employeeService = {
   login,
@@ -11,6 +12,7 @@ export const employeeService = {
   register,
   getEmployees,
   getEmployee,
+  getOtherUserDetail,
   updateEmployee,
   setPasswordValid,
   setEmployeePassword,
@@ -22,7 +24,28 @@ export const employeeService = {
 };
 
 async function login(data) {
-  return await axios.post(`${process.env.REACT_APP_API_URL}api/login/`, data);
+  console.log(data);
+  console.log(
+    data?.loginType ===
+      (userConstants.EMPLOYEE_VIEW || userConstants.INDIVIDUAL_VIEW)
+  );
+  if (
+    data?.loginType === userConstants.EMPLOYEE_VIEW ||
+    data?.loginType === userConstants.INDIVIDUAL_VIEW
+  ) {
+    return await axios.post(`${process.env.REACT_APP_API_URL}api/login/`, data);
+  } else {
+    return await axios.post(
+      `${process.env.REACT_APP_TGP_API_URL}auth/v1/auth/login`,
+      { username: data?.email, password: data?.password }
+    );
+  }
+}
+
+function getOtherUserDetail() {
+  return axios.get(process.env.REACT_APP_TGP_API_URL + "social-org/v1/user", {
+    headers: authHeader(),
+  });
 }
 
 async function validateOtp(data) {

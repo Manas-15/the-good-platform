@@ -74,13 +74,10 @@ const EmployeeDashboard = () => {
   );
   const getUser = useSelector((state) => state?.employee?.user);
   const isRedirected = useSelector((state) => state?.employee?.isRedirected);
-  console.log(getUser);
+
   //8a8b855f81fb9301018210a3c463016d
   useEffect(() => {
-    console.log("isRedirectedisRedirectedisRedirected", isRedirected);
     if (getUser?.user_type === userConstants.CORPORATE) {
-      console.log(getUser?.sso, !isRedirected);
-
       const selectedValues = {
         name: getUser?.corporateName,
         email: getUser?.email,

@@ -9,7 +9,8 @@ export const corporateService = {
   updateCorporate,
   registerCorporate,
   getCorporates,
-  corporateAccountRequest
+  corporateAccountRequest,
+  oidcConfigure,
 };
 
 function getCorporates() {
@@ -63,4 +64,11 @@ function handleResponse(response) {
 
     return data;
   });
+}
+
+function oidcConfigure(data) {
+  return axios.post(
+    process.env.REACT_APP_API_URL + "api/corporateSetting/",
+    data
+  );
 }

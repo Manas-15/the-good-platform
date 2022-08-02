@@ -1,4 +1,8 @@
-import { employeeConstants, userConstants } from "../constants";
+import {
+  employeeConstants,
+  userConstants,
+  viewPortalConstants,
+} from "../constants";
 import { employeeService, userService } from "../services";
 import { alertActions } from "./";
 import { history } from "../helpers";
@@ -11,6 +15,7 @@ export const employeeActions = {
   logout,
   register,
   getEmployees,
+  getOtherUserDetail,
   setEmployeePassword,
   setPasswordValid,
   employeeAccountRequest,
@@ -19,8 +24,10 @@ export const employeeActions = {
   getCorporates,
   ssoLogin,
   isRedirected,
+  loggedInUser,
 };
 function login(data, from) {
+  console.log(data);
   if (data?.loginType === "Employee") {
     return (dispatch) => {
       dispatch(request({ data }));
@@ -103,12 +110,13 @@ function login(data, from) {
       employeeService.login(data).then(
         (data) => {
           dispatch(success(data));
+          console.log(data, ">>>>>>>>>>>>>>>>>>.");
           if (data?.data?.msg && data?.data?.msg !== "Login Success") {
             dispatch(alertActions.error(data?.data?.msg));
           } else {
-            const res = JSON.stringify(data?.data);
-            localStorage.setItem("user", JSON.stringify(data?.data));
-            history.push("/");
+            const result = JSON.stringify(data?.data?.accessToken);
+            localStorage.setItem("accessToken", result);
+            dispatch(employeeActions.getOtherUserDetail());
           }
         },
         (error) => {
@@ -148,9 +156,9 @@ function validateOtp(data, from) {
         } else {
           localStorage.setItem("otpVerified", true);
           if (res?.data?.user_type === userConstants.EMPLOYEE) {
-            dispatch(userActions.loggedInUser(userConstants.EMPLOYEE));
+            dispatch(loggedInUser(userConstants.EMPLOYEE));
           } else if (res?.data?.user_type === userConstants.INDIVIDUAL) {
-            dispatch(userActions.loggedInUser(userConstants.INDIVIDUAL));
+            dispatch(loggedInUser(userConstants.INDIVIDUAL));
           }
           history.push("/");
         }
@@ -240,6 +248,40 @@ function getEmployees(data) {
     return { type: employeeConstants.GET_EMPLOYEES_FAILURE, error };
   }
 }
+function getOtherUserDetail() {
+  return (dispatch) => {
+    dispatch(request());
+    employeeService.getOtherUserDetail().then(
+      (res) => {
+        dispatch(success(res));
+
+        const data = res?.data?.data;
+        console.log(data);
+        localStorage.setItem("user", JSON.stringify(data));
+        dispatch(loggedInUser(userConstants.CORPORATE));
+        if (data?.userRole === viewPortalConstants.FO_ADMIN) {
+          history.push(`/organizations/${data?.userId}/payroll-batch`);
+        } else {
+          history.push("/dashboard");
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+  function request() {
+    return { type: employeeConstants.GET_OTHER_DETAIL_REQUEST };
+  }
+  function success(data) {
+    return { type: employeeConstants.GET_OTHER_DETAIL_SUCCESS, data };
+  }
+  function failure(error) {
+    return { type: employeeConstants.GET_OTHER_DETAIL_FAILURE, error };
+  }
+}
+
 function register(employee, userType) {
   return (dispatch) => {
     dispatch(request(employee));
@@ -457,6 +499,7 @@ function getCorporates() {
 function ssoLogin(data) {
   return (dispatch) => {
     dispatch(success(data));
+    dispatch(loggedInUser(userConstants.CORPORATE));
   };
   function success(data) {
     return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };
@@ -465,4 +508,8 @@ function ssoLogin(data) {
 
 function isRedirected(data) {
   return { type: "IS_REDIRECTED", data };
+}
+
+function loggedInUser(view) {
+  return { type: "LOGGED_IN_USER_TYPE", view };
 }
