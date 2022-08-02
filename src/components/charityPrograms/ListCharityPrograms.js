@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  charityProgramConstants
+  charityProgramConstants,
+  userConstants
 } from "../../constants";
 import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
@@ -30,6 +31,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const employeeCount = useSelector(
     (state) => state?.charityPrograms?.employeeCount
   );
+  const user = useSelector((state) => state?.employee?.user);
   const selectedCharity = useSelector(
     (state) => state?.selectedCharity?.charity
   );
@@ -44,14 +46,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
 
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  const isOthersPortal =
-    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
-  const isEmployeePortal =
-    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
+  const isOthersPortal = user?.user_type === userConstants.CORPORATE;
+  const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
-  const user = useSelector((state) => state.employee.user);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
   const [actionContent, setActionContent] = useState("");
