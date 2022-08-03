@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { employeeActions } from "../../actions";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { alertActions, employeeActions } from "../../actions";
+import { paginationConstants } from "../../constants";
 import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import Loader from "../Shared/Loader";
-import { alertActions } from "../../actions";
 import Pagination from "../Shared/Pagination";
-import { paginationConstants } from "../../constants";
 const actionInitialValues = {
   userId: "",
   requestType: "",
@@ -203,7 +202,7 @@ const ListEmployees = (props) => {
             <Link to="/corporates" className="text-decoration-underline">
               <span className="custom-color">Corporate</span>
             </Link>
-            / Employeee IOPOl
+            / Employeee
           </h1>
         </div>
         <div className="col-md-6" style={{ textAlign: "right" }}>
