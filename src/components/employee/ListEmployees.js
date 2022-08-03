@@ -201,9 +201,9 @@ const ListEmployees = (props) => {
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">
             <Link to="/corporates" className="text-decoration-underline">
-              <span className="custom-color">Corporates</span>
+              <span className="custom-color">Corporate</span>
             </Link>
-            / Employees
+            / Employeee
           </h1>
         </div>
         <div className="col-md-6" style={{ textAlign: "right" }}>
