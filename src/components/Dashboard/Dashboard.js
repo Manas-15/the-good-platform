@@ -15,11 +15,11 @@ const Dashboard = () => {
 
   {
     (() => {
-      if (loggedUser?.user_type === userConstants.INDIVIDUAL) {
+      if (loggedInUser === userConstants.INDIVIDUAL) {
         return dispatch(
           currentViewActions.currentView(viewPortalConstants.INDIVIDUAL_PORTAL)
         );
-      } else if (loggedUser?.user_type === userConstants.CORPORATE) {
+      } else if (loggedInUser === userConstants.CORPORATE) {
         dispatch(
           currentViewActions.currentView(viewPortalConstants.OTHERS_PORTAL)
         );
