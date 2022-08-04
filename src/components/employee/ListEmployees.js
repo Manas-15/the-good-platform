@@ -8,7 +8,7 @@ import Loader from "../Shared/Loader";
 import Pagination from "../Shared/Pagination";
 const actionInitialValues = {
   userId: "",
-  requestType: "",
+  requestType: ""
 };
 let goodplatformFields = [
   { label: "First Name", value: "firstName" },
@@ -24,7 +24,7 @@ let goodplatformFields = [
   { label: "Region", value: "Region" },
   { label: "Country", value: "country" },
   { label: "Zip", value: "Zip" },
-  { label: "Status", value: "status" },
+  { label: "Status", value: "status" }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const ListEmployees = (props) => {
@@ -57,7 +57,7 @@ const ListEmployees = (props) => {
       employeeActions.getEmployees({
         corporateId: corporateId,
         pageSize: pageSize,
-        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0,
+        offset: currentPage >= 2 ? currentPage * pageSize - pageSize : 0
       })
     );
   }, [currentPage]);
@@ -118,7 +118,7 @@ const ListEmployees = (props) => {
             fieldType.push("select_field");
             goodplatformFields = [
               ...goodplatformFields,
-              { label: "Select Field", value: "select_field" },
+              { label: "Select Field", value: "select_field" }
             ];
           }
         }
@@ -200,9 +200,9 @@ const ListEmployees = (props) => {
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">
             <Link to="/corporates" className="text-decoration-underline">
-              <span className="custom-color">Corporate</span>
+              <span className="custom-color">Corporates</span>
             </Link>
-            / Employeee
+            / Employees
           </h1>
         </div>
         <div className="col-md-6" style={{ textAlign: "right" }}>
