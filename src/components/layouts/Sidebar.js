@@ -31,6 +31,21 @@ const Sidebar = () => {
     currentView?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const isTgpLoggedInView = user?.userRole;
 
+  console.log(
+    isCorporateView,
+    "isCorporateView",
+    isSuperadminView,
+    "isSuperadminView",
+    isOrganizationView,
+    "isOrganizationView",
+    isEmployeeView,
+    "isEmployeeView",
+    isIndividualView,
+    "isIndividualView",
+    isTgpLoggedInView,
+    "isTgpLoggedInView"
+  );
+
   return (
     <aside id="sidebar" className="sidebar">
       <ul
@@ -328,122 +343,6 @@ const Sidebar = () => {
                             alt="Case"
                           />
                           <span className="menu-text">Programs</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to={`/employee/${user?.uuid}/account-summary`}
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-clock-history"></i>
-                          <span className="menu-text">Account Summary</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                  </>
-                )}
-                {isTgpLoggedInView === viewPortalConstants.PAYMENT_ADMIN && (
-                  <>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to={`/corporates/${otherPortalCorporateUser?.userId}/employees`}
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-people-fill"></i>
-                          <span className="menu-text">Employees</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to="/social-organizations"
-                          activeClassName="active"
-                        >
-                          <img
-                            height="16"
-                            src="/assets/img/case.png"
-                            alt="Case"
-                          />
-                          <span className="menu-text">Programs</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to="/employee-donation-preference"
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-sliders"></i>
-                          <span className="menu-text">Donation Preference</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to="/payroll-setting"
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-gear"></i>
-                          <span className="menu-text">Payroll Setting</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to={`/corporates/${
-                            selectedCorporate
-                              ? selectedCorporate?.id
-                              : loggedinUserDetail?.userId
-                          }/payroll-batch`}
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-hdd-stack"></i>
-                          <span className="menu-text">Payroll Batch</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to={`/employee/${otherPortalCorporateUser?.userId}/account-summary`}
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-clock-history"></i>
-                          <span className="menu-text">Account Summary</span>
-                        </NavLink>
-                      </span>
-                    </li>
-                  </>
-                )}
-                {isTgpLoggedInView === viewPortalConstants.FO_ADMIN && (
-                  <>
-                    <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
-                      <span className="ant-menu-title-content">
-                        <NavLink
-                          className=" "
-                          to={`/organizations/${
-                            selectedOrganization
-                              ? selectedOrganization?.organization?.id
-                              : loggedinUserDetail?.userId
-                          }/payroll-batch`}
-                          activeClassName="active"
-                        >
-                          <i className="bi bi-people-fill"></i>
-                          <span className="menu-text">Payroll Batch</span>
                         </NavLink>
                       </span>
                     </li>

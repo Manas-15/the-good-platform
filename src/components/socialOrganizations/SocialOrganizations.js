@@ -5,7 +5,7 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   viewPortalConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 import { socialOrganizationActions } from "../../actions";
 import { Tabs } from "antd";
@@ -22,7 +22,7 @@ const SocialOrganizations = () => {
   const socialOrganizations = useSelector(
     (state) => state?.socialOrganizations
   );
-  console.log(socialOrganizations);
+  console.log(socialOrganizations, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
   const loggedInUserType = useSelector(
     (state) => state?.employee?.loggedinUserType
@@ -43,8 +43,8 @@ const SocialOrganizations = () => {
   const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
-  const isOthersPortal =
-    currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
+  const isOtherCorporatePortal =
+    user?.userRole === viewPortalConstants.PAYMENT_ADMIN;
 
   // Pagination
   const [totalCount, setTotalCount] = useState(0);
@@ -70,11 +70,12 @@ const SocialOrganizations = () => {
               individualId:
                 loggedInUserType === userConstants.INDIVIDUAL
                   ? user?.uuid
-                  : null
+                  : null,
             }
-          : isOthersPortal
+          : isOtherCorporatePortal
           ? {
-              loggedInUserType: loggedInUserType ? loggedInUserType : null
+              loggedInUserType: loggedInUserType ? loggedInUserType : null,
+              userRole: user?.userRole ? user?.userRole : null,
             }
           : {
               pageNumber: currentPage.toString(),
@@ -87,7 +88,7 @@ const SocialOrganizations = () => {
               individualId: user?.uuid,
               loggedInUserType: user?.user_type,
               pageSize: pageSize.toString(),
-              userId: user?.user_id
+              userId: user?.user_id,
             }
       )
     );
@@ -257,14 +258,15 @@ const SocialOrganizations = () => {
             /> */}
           </>
         )}
-        {loggedInUserType === userConstants.OTHERS && (
+
+        {user?.userRole === viewPortalConstants.PAYMENT_ADMIN && (
           <>
             <ListSocialOrganizations
               tabType={tabType}
               items={
                 searchText
                   ? SearchHelper(socialOrganizations?.items, searchText)
-                  : socialOrganizations?.items
+                  : socialOrganizations?.items?.data
               }
             />
             {/* <Pagination

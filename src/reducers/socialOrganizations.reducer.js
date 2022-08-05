@@ -1,15 +1,21 @@
-import { socialOrganizationConstants } from "../constants";
+import { socialOrganizationConstants, viewPortalConstants } from "../constants";
 
 export function socialOrganizations(state = {}, action) {
   switch (action.type) {
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST:
+      console.log(action);
       return {
         loading: true,
         userType: action?.data?.loggedInUserType,
+        userRole: action?.data?.userRole,
         individualId: action?.data?.individualId,
       };
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS:
-      if (state?.userType === 2 && state?.individualId === "social") {
+      if (
+        (state?.userType === 2 || state?.userType === 3) &&
+        state?.userRole !== viewPortalConstants.PAYMENT_ADMIN &&
+        state?.individualId !== "social"
+      ) {
         return {
           items: action?.socialOrganizations?.data?.social_organization,
           totalCount: action?.socialOrganizations?.data?.data?.numberOfElements,
@@ -17,7 +23,7 @@ export function socialOrganizations(state = {}, action) {
         };
       } else {
         return {
-          items: action?.socialOrganizations?.data?.social_organization,
+          items: action?.socialOrganizations?.data?.data,
           totalCount: action?.socialOrganizations?.data?.totalCount,
           loading: false,
         };

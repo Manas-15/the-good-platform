@@ -499,7 +499,13 @@ function getCorporates() {
 function ssoLogin(data) {
   return (dispatch) => {
     dispatch(success(data));
-    dispatch(loggedInUser(userConstants.CORPORATE));
+    if (data?.user_type === userConstants.EMPLOYEE) {
+      dispatch(loggedInUser(userConstants.EMPLOYEE));
+    } else if (data?.user_type === userConstants.CORPORATE) {
+      dispatch(loggedInUser(userConstants.CORPORATE));
+    } else {
+      dispatch(loggedInUser(userConstants.OTHERS));
+    }
   };
   function success(data) {
     return { type: employeeConstants.EMPLOYEE_LOGIN_SUCCESS, data };

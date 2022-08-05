@@ -15,20 +15,12 @@ const Header = () => {
     history.push("/");
   };
   const user = useSelector((state) => state?.employee?.user);
-  console.log(user);
-  // const users = JSON.parse(localStorage.getItem("user"));
-  // console.log(users);
-
-  // const isTgpLoggedInView = user?.userRole;
+  const users = JSON.parse(localStorage.getItem("user"));
+  const isTgpLoggedInView = users?.userRole;
   const corporateLoggedinUser = useSelector((state) => state?.user?.detail);
-  console.log(corporateLoggedinUser);
-
   const loggedInUserType = useSelector(
     (state) => state?.user?.loggedinUserType
   );
-  const isCorporateUser = loggedInUserType !== userConstants.CORPORATE;
-  const isIndividualUser = loggedInUserType !== userConstants.INDIVIDUAL;
-  console.log(isCorporateUser, isIndividualUser);
   const showHideLeftSidebar = () => {
     document.body.classList.toggle("toggle-sidebar");
   };
@@ -41,6 +33,7 @@ const Header = () => {
     currentView?.currentView === viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
 
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
+
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization
   );
@@ -63,11 +56,16 @@ const Header = () => {
       </div>
       <nav className="header-nav ms-auto">
         <h4 className="current-view">
-          {user?.userRole
-            ? user?.userRole.replace("-", " ")
+          {users?.userRole
+            ? currentView?.currentView +
+              " - " +
+              users?.userRole.replace("-", " ")
             : currentView?.currentView}
+
           {currentView?.currentView === viewPortalConstants.CORPORATE_PORTAL
-            ? " - " + selectedCorporate?.corporate?.name
+            ? Object.values(selectedCorporate).length > 0
+              ? " - " + selectedCorporate?.corporate?.name
+              : ""
             : ""}
 
           {currentView?.currentView ===
@@ -96,13 +94,27 @@ const Header = () => {
                 className="rounded-circle"
               />
               <span className="d-none d-md-block dropdown-toggle ps-2 custom-color">
-                {user?.firstName || user?.name}
+                {corporateLoggedinUser
+                  ? corporateLoggedinUser?.firstName +
+                    " " +
+                    corporateLoggedinUser?.lastName
+                  : user?.name || user?.firstName}
               </span>
             </a>
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>{user?.firstName || user?.name} </h6>
-                <span>{user?.email}</span>
+                <h6>
+                  {corporateLoggedinUser
+                    ? corporateLoggedinUser?.firstName +
+                      " " +
+                      corporateLoggedinUser?.lastName
+                    : user?.name || user?.firstName}
+                </h6>
+                <span>
+                  {corporateLoggedinUser
+                    ? corporateLoggedinUser?.email
+                    : user?.email || user?.email}
+                </span>
               </li>
               <li>
                 <hr className="dropdown-divider" />
@@ -129,55 +141,61 @@ const Header = () => {
                   <span>Account Settings</span>
                 </a>
               </li>
-              {isCorporateUser && isIndividualUser && (
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    to="/corporates"
-                    onClick={() =>
-                      setCurrentView(viewPortalConstants.CORPORATE_PORTAL)
-                    }
-                  >
-                    <i className="bi bi-bookshelf"></i>
-                    <span>Corporate Portal</span>
-                  </Link>
-                </li>
-              )}
-              {isCorporateUser && isIndividualUser && (
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    onClick={() =>
-                      setCurrentView(
-                        viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL
-                      )
-                    }
-                    to={{
-                      pathname: "/list-corporates",
-                      state: { isSuperadminView },
-                    }}
-                  >
-                    <i className="bi bi-person-circle"></i>
-                    <span>Blue Pencil Admin Portal</span>
-                  </Link>
-                </li>
-              )}
-              {isCorporateUser && isIndividualUser && (
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    to="/organizations"
-                    onClick={() =>
-                      setCurrentView(
-                        viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
-                      )
-                    }
-                  >
-                    <i className="bi bi-people"></i>
-                    <span>Social Organization Portal</span>
-                  </Link>
-                </li>
-              )}
+              {!corporateLoggedinUser &&
+                loggedInUserType !== userConstants.INDIVIDUAL &&
+                user?.userRole !== viewPortalConstants.PAYMENT_ADMIN && (
+                  <li>
+                    <Link
+                      className="dropdown-item d-flex align-items-center"
+                      to="/corporates"
+                      onClick={() =>
+                        setCurrentView(viewPortalConstants.CORPORATE_PORTAL)
+                      }
+                    >
+                      <i className="bi bi-bookshelf"></i>
+                      <span>Corporate Portal</span>
+                    </Link>
+                  </li>
+                )}
+              {!corporateLoggedinUser &&
+                loggedInUserType !== userConstants.INDIVIDUAL &&
+                user?.userRole !== viewPortalConstants.PAYMENT_ADMIN && (
+                  <li>
+                    <Link
+                      className="dropdown-item d-flex align-items-center"
+                      onClick={() =>
+                        setCurrentView(
+                          viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL
+                        )
+                      }
+                      to={{
+                        pathname: "/list-corporates",
+                        state: { isSuperadminView },
+                      }}
+                    >
+                      <i className="bi bi-person-circle"></i>
+                      <span>Blue Pencil Admin Portal</span>
+                    </Link>
+                  </li>
+                )}
+              {!corporateLoggedinUser &&
+                loggedInUserType !== userConstants.INDIVIDUAL &&
+                user?.userRole !== viewPortalConstants.PAYMENT_ADMIN && (
+                  <li>
+                    <Link
+                      className="dropdown-item d-flex align-items-center"
+                      to="/organizations"
+                      onClick={() =>
+                        setCurrentView(
+                          viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
+                        )
+                      }
+                    >
+                      <i className="bi bi-people"></i>
+                      <span>Social Organization Portal</span>
+                    </Link>
+                  </li>
+                )}
               <li>
                 <hr className="dropdown-divider" />
               </li>

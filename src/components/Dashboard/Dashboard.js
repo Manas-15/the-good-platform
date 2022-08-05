@@ -15,13 +15,22 @@ const Dashboard = () => {
 
   {
     (() => {
-      if (loggedInUser === userConstants.INDIVIDUAL) {
+      if (loggedUser?.user_type === userConstants.INDIVIDUAL) {
         return dispatch(
           currentViewActions.currentView(viewPortalConstants.INDIVIDUAL_PORTAL)
         );
-      } else if (loggedInUser === userConstants.CORPORATE) {
+      } else if (
+        loggedUser?.user_type === userConstants.CORPORATE ||
+        loggedUser?.userRole === viewPortalConstants.PAYMENT_ADMIN
+      ) {
         dispatch(
-          currentViewActions.currentView(viewPortalConstants.OTHERS_PORTAL)
+          currentViewActions.currentView(viewPortalConstants.CORPORATE_PORTAL)
+        );
+      } else if (loggedUser?.userRole === viewPortalConstants.FO_ADMIN) {
+        dispatch(
+          currentViewActions.currentView(
+            viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL
+          )
         );
       } else {
         dispatch(
