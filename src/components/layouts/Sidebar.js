@@ -31,21 +31,6 @@ const Sidebar = () => {
     currentView?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const isTgpLoggedInView = user?.userRole;
 
-  console.log(
-    isCorporateView,
-    "isCorporateView",
-    isSuperadminView,
-    "isSuperadminView",
-    isOrganizationView,
-    "isOrganizationView",
-    isEmployeeView,
-    "isEmployeeView",
-    isIndividualView,
-    "isIndividualView",
-    isTgpLoggedInView,
-    "isTgpLoggedInView"
-  );
-
   return (
     <aside id="sidebar" className="sidebar">
       <ul
@@ -135,6 +120,18 @@ const Sidebar = () => {
                 >
                   <i className="bi bi-gear"></i>
                   <span className="menu-text">SSO Settings</span>
+                </NavLink>
+              </span>
+            </li>
+            <li className="ant-menu-item ant-menu-item-only-child ant-menu-item-inactive">
+              <span className="ant-menu-title-content">
+                <NavLink
+                  className=" "
+                  to="/employees-program"
+                  activeClassName="active"
+                >
+                  <i className="bi bi-gear"></i>
+                  <span className="menu-text">Employees Program</span>
                 </NavLink>
               </span>
             </li>

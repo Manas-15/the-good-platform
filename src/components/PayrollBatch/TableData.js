@@ -7,7 +7,7 @@ import {
   donationPreferenceConstants,
   payrollConstants,
   paginationConstants,
-  viewPortalConstants
+  viewPortalConstants,
 } from "../../constants";
 import { payrollBatchActions } from "../../actions/payrollBatch.actions";
 import Loader from "./../Shared/Loader";
@@ -28,25 +28,25 @@ const completeInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 const confirmInitialValues = {
   batchId: "",
   requestType: "",
-  socialId: ""
+  socialId: "",
 };
 const paidInitialValues = {
   batchId: "",
   requestType: "",
   referenceId: "",
-  referenceNote: ""
+  referenceNote: "",
 };
 const TableData = ({
   corporateId,
   organizationId,
   groupByBatchData,
   isBatchDetail,
-  index
+  index,
 }) => {
   // let history = useHistory();
   const payrollBatches = useSelector((state) => state.payrollBatch);
@@ -120,7 +120,7 @@ const TableData = ({
   const statusOption = [
     { label: "All", value: 0 },
     { label: "Pending", value: payrollConstants.PENDING_STATUS },
-    { label: "Processed", value: "10" }
+    { label: "Processed", value: "10" },
   ];
   const openPaidConfirmation = (item) => {
     paidInitialValues.referenceNote = `Processed payroll batch for the month of ${moment().format(
@@ -138,7 +138,7 @@ const TableData = ({
         batchId: selectedBatch?.batchId,
         requestType: payrollConstants.PAID,
         referenceId: values?.referenceId,
-        referenceNote: values?.referenceNote
+        referenceNote: values?.referenceNote,
       })
     );
     hidePaidSimulator();
@@ -514,7 +514,7 @@ const TableData = ({
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
@@ -689,7 +689,7 @@ const TableData = ({
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>

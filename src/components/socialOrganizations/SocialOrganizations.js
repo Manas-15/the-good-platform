@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   socialOrganizationConstants,
@@ -10,35 +9,51 @@ import {
 import { socialOrganizationActions } from "../../actions";
 import { Tabs } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
-// import Pagination from "../Shared/Pagination";
 import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
 import { SearchHelper } from "../../helpers";
+import { history } from "../../helpers";
+import { Modal, Button } from "react-bootstrap";
+import { ErrorMessage, Field, Form, Formik, validateYupSchema } from "formik";
+import { addProgrammeSchema } from "../Validations";
 
 let pageSize = paginationConstants?.PAGE_SIZE;
-// let theArray = [];
 const TabPane = Tabs.TabPane;
+
 const SocialOrganizations = () => {
+  const dispatch = useDispatch();
   const socialOrganizations = useSelector(
     (state) => state?.socialOrganizations
   );
-  console.log(socialOrganizations, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
+  const employeeProgram = useSelector(
+    (state) => state?.socialOrganizations?.employeeprogram
+  );
   const loggedInUserType = useSelector(
     (state) => state?.employee?.loggedinUserType
   );
-
   const user = useSelector((state) => state?.employee?.user);
-  console.log(user?.user_id);
-  // const [open, setOpen] = useState(false);
+  const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+
+  const programmeInitialValues = {
+    socialName: "",
+    charityName: "",
+    category: "",
+    unit_price: "",
+    employeeId: user?.emp_id,
+  };
+
+  const [open, setOpen] = useState(false);
   // const [allChecked, setAllChecked] = useState(false);
   // const [actionType, setActionType] = useState("");
   // const [actionTitle, setActionTitle] = useState("");
   // const [actionContent, setActionContent] = useState("");
   const [searchText, setSearchText] = useState("");
-  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  // Pagination
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSORED);
-  const currentPortal = useSelector((state) => state.currentView);
+
   const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
   const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
   const isIndividualPortal =
@@ -46,13 +61,7 @@ const SocialOrganizations = () => {
   const isOtherCorporatePortal =
     user?.userRole === viewPortalConstants.PAYMENT_ADMIN;
 
-  // Pagination
-  const [totalCount, setTotalCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const dispatch = useDispatch();
   useEffect(() => {
-    console.log(">>>>>>>>>>>>>>>>>> user?.user_type", user?.user_type);
     dispatch(
       socialOrganizationActions.getSocialOrganizations(
         isIndividualPortal
@@ -136,11 +145,39 @@ const SocialOrganizations = () => {
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
     // }
   };
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    dispatch(
+      socialOrganizationActions.getApprovedProgram({
+        employeeId: user?.emp_id,
+      })
+    );
+  }, []);
+  const createProgramme = (values) => {
+    // programmeInitialValues.employeeId = user?.emp_id;
+    dispatch(socialOrganizationActions.addNewProgramme(values));
+    setOpen(false);
+  };
   return (
     <div className="customContainer program-list">
       <div className="row mb-4">
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">Social Organizations</h1>
+        </div>
+        <div className="col-md-6 text-end">
+          <button
+            className="btn btn-secondary"
+            // onClick={() => history.push("/add-programme")}
+            onClick={() => showModal()}
+          >
+            Add Programme
+          </button>
         </div>
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-2 align-center">
@@ -160,7 +197,7 @@ const SocialOrganizations = () => {
           </div>
         </div>
       </div>
-      {socialOrganizations?.loading && <Loader />}
+      {/* {socialOrganizations?.loading && <Loader />} */}
       <div className="ant-tabs-nav-wrap">
         {user?.user_id &&
           (loggedInUserType === userConstants.EMPLOYEE ||
@@ -232,6 +269,36 @@ const SocialOrganizations = () => {
                   }
                 />
               </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <RedoOutlined className="fs-5" />
+                    {socialOrganizationConstants.YOURS} (
+                    {employeeProgram
+                      ? searchText &&
+                        tabType === socialOrganizationConstants.YOURS
+                        ? SearchHelper(employeeProgram, searchText).length
+                        : employeeProgram?.filter(
+                            (employeeProgram) =>
+                              employeeProgram.approve === true
+                          ).length
+                      : 0}
+                    )
+                  </span>
+                }
+                key={socialOrganizationConstants.YOURS}
+              >
+                <ListSocialOrganizations
+                  tabType={tabType}
+                  items={
+                    searchText && tabType === socialOrganizationConstants.YOURS
+                      ? SearchHelper(employeeProgram, searchText)
+                      : employeeProgram?.filter(
+                          (employeeProgram) => employeeProgram.approve === true
+                        )
+                  }
+                />
+              </TabPane>
             </Tabs>
           )}
 
@@ -282,6 +349,166 @@ const SocialOrganizations = () => {
             /> */}
           </>
         )}
+
+        <Modal show={open} onHide={handleClose} backdrop="static">
+          <Modal.Header closeButton>
+            <Modal.Title>Add New Programme</Modal.Title>
+          </Modal.Header>
+          <Formik
+            initialValues={programmeInitialValues}
+            validationSchema={addProgrammeSchema}
+            onSubmit={(values) => {
+              console.log(values);
+              createProgramme(values);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <Form>
+                <Modal.Body style={{ fontSize: "18" }}>
+                  <>
+                    <h6>Organisation</h6>
+                    <div className="form-group mt-2">
+                      <label htmlFor="email" className="has-float-label">
+                        <Field
+                          name="socialName"
+                          id="socialName"
+                          type="text"
+                          placeholder=" "
+                          className={
+                            "form-control" +
+                            (errors.email && touched.email ? " is-invalid" : "")
+                          }
+                        />
+                        <span>Social Name</span>
+                      </label>
+                      <ErrorMessage
+                        name="socialName"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <h6>Charity</h6>
+                    <div className="form-group mt-2">
+                      <label htmlFor="charityName" className="has-float-label">
+                        <Field
+                          name="charityName"
+                          id="charityName"
+                          type="text"
+                          placeholder=" "
+                          className={
+                            "form-control" +
+                            (errors.charityName && touched.charityName
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <span>Charity Name</span>
+                      </label>
+                      <ErrorMessage
+                        name="charityName"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <Field
+                        name="category"
+                        as="select"
+                        className={
+                          "form-select" +
+                          (errors.category && touched.category
+                            ? " is-invalid"
+                            : "")
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {/* {corporates?.items?.map?.((corporate, index) => ( */}
+                        <option value="Health" key="">
+                          Health
+                        </option>
+                        <option value="Domestic Needs" key="">
+                          Domestic Needs
+                        </option>
+
+                        {/* ))} */}
+                      </Field>
+                      <ErrorMessage
+                        name="corporateProfileId"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <div className="form-group mt-2">
+                      <label htmlFor="unit_price" className="has-float-label">
+                        <Field
+                          name="unit_price"
+                          id="unit_price"
+                          type="text"
+                          placeholder=" "
+                          className={
+                            "form-control" +
+                            (errors.unit_price && touched.unit_price
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <span>Unit Price</span>
+                      </label>
+                      <ErrorMessage
+                        name="unit_price"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <div className="form-group mt-2">
+                      <label htmlFor="employeeId" className="has-float-label">
+                        <Field
+                          name="employeeId"
+                          id="employeeId"
+                          type="text"
+                          value={user?.emp_id}
+                          placeholder=" "
+                          className={
+                            "form-control" +
+                            (errors.employeeId && touched.employeeId
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <span>Employee Id</span>
+                      </label>
+                      <ErrorMessage
+                        name="employeeId"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                  </>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    className="btn btn-custom"
+                    type="submit"
+                    disabled={false}
+                  >
+                    Save
+                  </Button>
+                  <Button variant="danger" onClick={handleClose}>
+                    No
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
+        </Modal>
       </div>
     </div>
   );

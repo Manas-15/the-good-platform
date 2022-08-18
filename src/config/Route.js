@@ -37,6 +37,8 @@ import { userConstants } from "./../constants";
 import DirectPayment from "../components/DirectPayment/DirectPayment";
 import ListIndividuals from "../components/Individual/ListIndividuals";
 import SsoSettings from "../components/SsoSettings/SsoSettings";
+import AddProgramme from "../components/Employee/AddProgramme";
+import EmployeesProgram from "../components/Corporate/EmployeesProgram";
 
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
@@ -69,7 +71,7 @@ const CreateRoutes = () => {
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
-      message: message
+      message: message,
     });
   };
   return (
@@ -150,6 +152,8 @@ const CreateRoutes = () => {
                 path="/corporates/edit/:corporateId"
                 component={AddCorporate}
               />
+              <Route exact path="/add-programme" component={AddProgramme} />
+
               <Route
                 exact
                 path="/corporates/:corporateId/payroll-batch"
@@ -166,6 +170,11 @@ const CreateRoutes = () => {
                 component={ListTransactionsHistory}
               />
               <Route exact path="/sso-configuration" component={SsoSettings} />
+              <Route
+                exact
+                path="/employees-program"
+                component={EmployeesProgram}
+              />
               <Route
                 exact
                 path="/employee/:employeeId/account-summary"
