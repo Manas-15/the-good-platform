@@ -14,7 +14,7 @@ import donationsConsent from "../../config/donationsConsent.json";
 import {
   viewPortalConstants,
   payrollConstants,
-  userConstants
+  userConstants,
 } from "../../constants";
 
 const FormDatePicker = ({ errors, touched }) => {
@@ -56,8 +56,9 @@ const DonateSecondStep = ({
   frequency,
   selectedCharity,
   selectedAmount,
-  employee
+  employee,
 }) => {
+  console.log(selectedCharity, ">>>>>>>>>>>>>>>..");
   // Math.random().toString(36).slice(2)
   let charityFirstTwoChar, employeeFirstTwoChar;
   const currentPortal = useSelector((state) => state.currentView);
@@ -72,6 +73,7 @@ const DonateSecondStep = ({
     (state) => state?.user?.loggedinUserType
   );
   const otherUser = useSelector((state) => state.user);
+  const user = useSelector((state) => state?.employee?.user);
   if (selectedCharity) {
     if (otherUser) {
       charityFirstTwoChar = selectedCharity?.name?.slice(0, 2)?.toLowerCase();
@@ -139,7 +141,7 @@ const DonateSecondStep = ({
             organisationId: selectedCharity?.organisationId,
             soicalName: selectedCharity?.soicalName,
             status: selectedCharity?.status,
-            unitPrice: 500
+            unitPrice: 500,
           }
         : otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
         ? {
@@ -148,9 +150,18 @@ const DonateSecondStep = ({
             organisationId: selectedCharity?.organisationId,
             soicalName: selectedCharity?.organisationName,
             status: selectedCharity?.status,
-            unitPrice: selectedCharity?.unitPrice
+            unitPrice: selectedCharity?.unitPrice,
           }
-        : selectedCharity,
+        : isCorporatePortal
+        ? selectedCharity
+        : {
+            charityName: selectedCharity?.name,
+            id: selectedCharity?.id,
+            organisationId: selectedCharity?.organisationId,
+            soicalName: selectedCharity?.organisationName,
+            status: selectedCharity?.status,
+            unitPrice: selectedCharity?.unitPrice,
+          },
     //employee: isCorporatePortal ? null : employee,
     // corporate: isCorporatePortal ? selectedCorporate : null,
     corporateId:
@@ -170,7 +181,9 @@ const DonateSecondStep = ({
         ? selectedCorporate?.corporate?.name
           ? selectedCorporate?.corporate?.name
           : selectedCorporate?.corporate?.corporateName
-        : selectedCorporate?.corporate?.name,
+        : selectedCorporate?.corporate?.name
+        ? selectedCorporate?.corporate?.name
+        : user?.corporateName,
     userId:
       otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
         ? otherUser?.detail?.userId
@@ -194,7 +207,7 @@ const DonateSecondStep = ({
       otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
         ? selectedCharity?.name
         : selectedCharity?.charityName
-    }`
+    }`,
   };
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -248,7 +261,7 @@ const DonateSecondStep = ({
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
               /* and other goodies */
             }) => (
               <Form>
