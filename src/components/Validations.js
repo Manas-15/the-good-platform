@@ -50,8 +50,7 @@ export const EmployeeSchema = Yup.object().shape({
   employeeId: Yup.string().required("Employee ID is required"),
   pan: Yup.string().required("PAN is required"),
   corporateProfileId: Yup.string().required("Please select corporate"),
-  password: Yup.string()
-  .required("Password is required"),
+  password: Yup.string().required("Password is required"),
   // organizationJoiningDate: Yup.date()
   //   .nullable()
   //   .required("Organization joining date is required"),
@@ -61,6 +60,15 @@ export const EmployeeSchema = Yup.object().shape({
     .min(10, "Please enter valid phone number")
     .max(14, "Please enter valid phone number"),
 });
+
+export const addProgrammeSchema = Yup.object().shape({
+  socialName: Yup.string().required("Programme name is required"),
+  charityName: Yup.string().required("Charity name is required"),
+  category: Yup.string().required("Category is required"),
+  unit_price: Yup.string().required("Price is required"),
+  employeeId: Yup.string().required("Employee ID is required"),
+});
+
 export const EmployeeByCorporateSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
@@ -70,8 +78,7 @@ export const EmployeeByCorporateSchema = Yup.object().shape({
   employeeId: Yup.string().required("Employee ID is required"),
   pan: Yup.string().required("PAN is required"),
   corporateProfileId: Yup.string().required("Please select corporate"),
-  password: Yup.string()
-  .required("Password is required"),
+  password: Yup.string().required("Password is required"),
   gender: Yup.string().required("Please select gender"),
   contactNumber: Yup.string()
     .required("Contact number is required")
