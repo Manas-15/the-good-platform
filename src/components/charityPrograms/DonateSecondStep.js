@@ -196,6 +196,7 @@ const DonateSecondStep = ({
         : selectedCharity?.charityName
     }`
   };
+
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const [paymentStep, setPaymentStep] = useState(false);
