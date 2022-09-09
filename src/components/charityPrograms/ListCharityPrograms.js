@@ -5,7 +5,7 @@ import {
   donationPreferenceConstants,
   viewPortalConstants,
   charityProgramConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
@@ -14,14 +14,14 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import {
   charityProgramActions,
   selectedCharityActions,
-  selectedCharityTabActions,
+  selectedCharityTabActions
 } from "../../actions";
 import urlSlug from "url-slug";
 // import DonateHeader from "./../CharityPrograms/DonateHeader";
 // import Donate from "./../CharityPrograms/Donate";
 // import { handleInputChange } from "react-select/dist/declarations/src/utils";
 
-const ListCharityPrograms = ({ items, setCharity, tabType }) => {
+const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
   const dispatch = useDispatch();
   const openNav = (charity) => {
     // document.getElementById("sidepanel").classList.add("is-open");
@@ -60,7 +60,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
   const [checkedProgram, setCheckedProgram] = useState({
     programId: [],
     corporateId: "",
-    socialId: "",
+    socialId: ""
   });
 
   // const [isSelectedAll, setIsSelectedAll] = useState(false);
@@ -100,13 +100,13 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         ? charityProgramActions.operateDenyRequest({
             corporateId: checkedProgram?.id,
             socialId: checkedProgram?.socialId,
-            programId: checkedProgram?.programId,
+            programId: checkedProgram?.programId
           })
         : actionType === charityProgramConstants.UNPROMOTE
         ? charityProgramActions.operateDenyRequest({
             corporateId: selectedCorporate?.corporate?.id,
             socialId: selectedCharity?.organisationId,
-            programId: selectedCharity?.id,
+            programId: selectedCharity?.id
 
             // corporateId: selectedCorporate?.corporate?.corporateId,
             // socialId: selectedProgram?.soicalId,
@@ -116,7 +116,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         ? charityProgramActions.operateBulkSponsorRequest({
             corporateId: checkedProgram?.id,
             socialId: checkedProgram?.socialId,
-            charityId: checkedProgram?.programId,
+            charityId: checkedProgram?.programId
           })
         : actionType === charityProgramConstants.PROMOTE &&
           charityProgramActions.operateSponsorRequest({
@@ -125,7 +125,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
             organisationName: selectedOrganization?.name,
             charityId: selectedCharity?.id,
             charityName: selectedCharity?.charityName,
-            soicalName: selectedCharity?.soicalName,
+            soicalName: selectedCharity?.soicalName
 
             // corporateId: selectedCorporate?.corporate?.corporateId,
             // socialId: selectedProgram?.soicalId,
@@ -187,7 +187,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
         ? charityProgramActions.checkBeforeBulkUnpromote({
             socialId: item?.socialId,
             programId: item?.programId,
-            corporateId: isCorporatePortal ? item?.id : user?.corporateId,
+            corporateId: isCorporatePortal ? item?.id : user?.corporateId
             // corporateId: isCorporatePortal
             //   ? item?.corporateId
             //   : user?.corporateId,
@@ -198,7 +198,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
               programId: item?.charityId,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.id
-                : user?.corporateId,
+                : user?.corporateId
 
               //  ? selectedCorporate?.corporate?.corporateId
               // : user?.corporateId,
@@ -265,7 +265,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setCheckedProgram({
         programId: allItems?.map((val) => val.charityId),
         corporateId: selectedCorporate?.corporate?.id,
-        socialId: socialID[0],
+        socialId: socialID[0]
         //  corporateId: selectedCorporate?.corporate?.corporateId,
         // socialId: socialID[0],
       });
@@ -273,7 +273,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setCheckedProgram({
         programId: [],
         corporateId: selectedCorporate?.corporate?.id,
-        socialId: socialIdd,
+        socialId: socialIdd
         //   corporateId: selectedCorporate?.corporate?.corporateId,
         // socialId: socialIdd,
       });
@@ -281,7 +281,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setCheckedProgram({
         programId: [...programId, items?.charityId],
         corporateId: selectedCorporate?.corporate?.id,
-        socialId: items?.soicalId,
+        socialId: items?.soicalId
         // corporateId: selectedCorporate?.corporate?.corporateId,
         // socialId: items?.soicalId,
       });
@@ -289,7 +289,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
       setCheckedProgram({
         programId: programId?.filter((val) => val !== items?.charityId),
         corporateId: selectedCorporate?.corporate?.id,
-        socialId: items?.soicalId,
+        socialId: items?.soicalId
         // corporateId: selectedCorporate?.corporate?.corporateId,
         // socialId: items?.soicalId,
       });
@@ -371,12 +371,17 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                       )}
                     </th> */}
                     <th className="ant-table-cell">Program</th>
-                    <th className="ant-table-cell">Organization</th>
+                    {/* {!customProgram && (
+                      <th className="ant-table-cell">Organization</th>
+                    )} */}
                     <th className="ant-table-cell">Category</th>
                     <th className="ant-table-cell text-center">
                       Unit Price (
                       {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
                     </th>
+                    {customProgram && (
+                      <th className="ant-table-cell">Status</th>
+                    )}
                     <th className="ant-table-cell text-center">Actions</th>
                   </tr>
                 </thead>
@@ -411,7 +416,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                                 )}`,
                                 programName:
                                   charityProgram?.charityName ||
-                                  charityProgram?.name,
+                                  charityProgram?.name
                               }}
                               onClick={() => setCharity(charityProgram)}
                             >
@@ -430,16 +435,34 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             </Link>
                           </Tooltip>
                         </td>
-                        <td className="ant-table-cell">
-                          {charityProgram?.soicalName}
-                          {charityProgram?.organisationName}
-                        </td>
+                        {/* {!customProgram && (
+                          <td className="ant-table-cell">
+                            {charityProgram?.soicalName}
+                            {charityProgram?.organisationName}
+                          </td>
+                        )} */}
                         <td className="ant-table-cell">
                           {charityProgram?.category}
                         </td>
                         <td className="ant-table-cell text-center">
                           {charityProgram?.unitPrice?.toLocaleString()}
                         </td>
+                        {customProgram && (
+                          <td className="ant-table-cell">
+                            {charityProgram?.approve && (
+                              <span className="text-success">Approved</span>
+                            )}
+
+                            {charityProgram?.approve === null && (
+                              <span className="text-warning">Pending</span>
+                            )}
+
+                            {!charityProgram?.approve &&
+                              charityProgram?.approve !== null && (
+                                <span className="text-danger">Disapproved</span>
+                              )}
+                          </td>
+                        )}
                         <td className="ant-table-cell text-center">
                           {isCorporatePortal &&
                             tabType === charityProgramConstants.SPONSOR && (

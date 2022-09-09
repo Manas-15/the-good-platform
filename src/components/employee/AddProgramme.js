@@ -1,12 +1,12 @@
 import { ErrorMessage, Field, Formik, Form } from "formik";
 import React, { useState } from "react";
-import { addProgrammeSchema } from "../Validations";
+import { addProgramSchema } from "../Validations";
 import { DateRangePicker } from "rsuite";
 import * as moment from "moment";
 
 const initialValues = {
   programName: "",
-  description: "",
+  description: ""
 };
 
 const AddProgramme = () => {
@@ -16,13 +16,13 @@ const AddProgramme = () => {
     "Impact Category",
     "Impact Priroties",
     "Strategic Goals",
-    "Project Name",
+    "Project Name"
   ];
   const programPageName = [
     "Basics",
     "Team",
     "Donor",
-    "Organizational Approval",
+    "Organizational Approval"
   ];
   const [selectPrimary, setSelectPrimary] = useState("");
   const [projectName, setProjectName] = useState("");
@@ -31,13 +31,13 @@ const AddProgramme = () => {
 
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
   const { afterToday } = DateRangePicker;
   const categories = [
     { name: "Agriculture", value: "Agriculture" },
     { name: "Education", value: "Education" },
-    { name: "Health", value: "Health" },
+    { name: "Health", value: "Health" }
     // { name: "Air", value: "Air" },
     // {
     //   name: "Biodiversity and Ecosystems",
@@ -440,7 +440,7 @@ const AddProgramme = () => {
           <Formik
             enableReinitialize
             initialValues={initialValues}
-            validationSchema={addProgrammeSchema}
+            validationSchema={addProgramSchema}
             onSubmit={(values, event) => {
               console.log(values);
             }}
@@ -452,7 +452,7 @@ const AddProgramme = () => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
               /* and other goodies */
             }) => (
               <Form>
