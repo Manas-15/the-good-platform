@@ -6,7 +6,7 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   charityProgramConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { selectedOrganizationActions } from "../../actions";
 import * as moment from "moment";
@@ -112,9 +112,9 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                     </th> */}
                     <th className="ant-table-cell">SR NO.</th>
                     <th className="ant-table-cell">Name</th>
-                    <th className="ant-table-cell text-center">
+                    {/* <th className="ant-table-cell text-center">
                       Total Programs
-                    </th>
+                    </th> */}
                     <th className="ant-table-cell">Created On</th>
                     {/* <th className="ant-table-cell">Status</th> */}
                     {/* <th className="ant-table-cell text-center">&nbsp;</th> */}
@@ -148,7 +148,7 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                                 pathname: `/social-organizations/${urlSlug(
                                   socialOrganization?.name
                                 )}`,
-                                tabType: tabType,
+                                tabType: tabType
                               }}
                               onClick={() =>
                                 setOrganization(socialOrganization)
@@ -160,9 +160,9 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                             </Link>
                           </span>
                         </td>
-                        <td className="ant-table-cell text-center">
+                        {/* <td className="ant-table-cell text-center">
                           {socialOrganization?.total_program}
-                        </td>
+                        </td> */}
                         <td className="ant-table-cell">
                           {moment(socialOrganization?.created_date).format(
                             "LL"
