@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { charityPrograms } from "./charityPrograms.reducer";
+import { employeePrograms } from "./employeePrograms.reducer";
 import { donationPreferences } from "./donationPreferences.reducer";
 import { corporates } from "./corporates.reducer";
 import { individuals } from "./individuals.reducer";
@@ -24,6 +25,7 @@ const MainReducer = combineReducers({
   individuals,
   employee,
   charityPrograms,
+  employeePrograms,
   donationPreferences,
   payment,
   transactionsHistory,
@@ -35,7 +37,7 @@ const MainReducer = combineReducers({
   selectedOrganization,
   selectedCharity,
   selectedCharityTab,
-  user,
+  user
 });
 
 const rootReducer = (state, action) => {

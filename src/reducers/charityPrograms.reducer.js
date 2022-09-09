@@ -244,6 +244,21 @@ export function charityPrograms(state = {}, action) {
         loading: false,
         error: action.error
       };
+    case charityProgramConstants.GET_APPROVED_PROGRAM_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case charityProgramConstants.GET_APPROVED_PROGRAM_SUCCESS:
+      return {
+        ...state,
+        loading: true,
+        employeeprograms: action?.data?.data?.charity_program?.employee_program
+      };
+    case charityProgramConstants.GET_APPROVED_PROGRAM_FAILURE:
+      return {
+        loading: false
+      };
     default:
       return state;
   }

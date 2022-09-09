@@ -12,7 +12,8 @@ export function corporates(state = {}, action) {
         action?.corporates?.data?.corporates
       );
       return {
-        items: action?.corporates?.data?.data?.data
+        items: action?.corporates?.data?.data?.data,
+        totalItems: action?.corporates?.data?.data?.totalElements
       };
     case corporateConstants.GET_CORPORATES_FAILURE:
       return {
@@ -94,13 +95,67 @@ export function corporates(state = {}, action) {
       };
     case corporateConstants.CORPORATE_ACTION_FAILURE:
       return { items: state.items, error: action.error };
-
     case corporateConstants.SAML_CONFIGURE_REQUEST:
       return { samlConfigure: true };
     case corporateConstants.SAML_CONFIGURE_SUCCESS:
       return { samlConfigure: false };
     case corporateConstants.SAML_CONFIGURE_FAILURE:
       return { samlConfigure: false };
+    case corporateConstants.ADD_EMPLOYEE_PROGRAMME_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case corporateConstants.ADD_EMPLOYEE_PROGRAMME_SUCCESS:
+      console.log(action);
+      return {
+        ...state,
+        loading: false
+      };
+    case corporateConstants.ADD_EMPLOYEE_PROGRAMME_FAILURE:
+      return {
+        loading: false
+      };
+    case corporateConstants.GET_EMPLOYEE_CUSTOM_PROGRAMS_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case corporateConstants.GET_EMPLOYEE_CUSTOM_PROGRAMS_SUCCESS:
+      console.log(action);
+      return {
+        ...state,
+        employeePrograms: action?.data?.data?.employee_program,
+        loading: true
+      };
+    case corporateConstants.GET_EMPLOYEE_CUSTOM_PROGRAMS_FAILURE:
+      return {
+        loading: false
+      };
+    case corporateConstants.EMPLOYEE_PROGRAM_ACTION_REQUEST:
+      return {
+        ...state,
+        actionRequest: true,
+        programId: action?.data?.Id,
+        requestType: action?.data?.status
+      };
+    case corporateConstants.EMPLOYEE_PROGRAM_ACTION_SUCCESS:
+      return {
+        ...state,
+        actionRequest: false,
+        employeePrograms: state?.employeePrograms?.map((item) => {
+          if (item.id === state.programId) {
+            return { ...item, approve: state.requestType === "Approve" };
+          }
+          return item;
+        })
+      };
+    case corporateConstants.EMPLOYEE_PROGRAM_ACTION_FAILURE:
+      return {
+        ...state,
+        actionRequest: false,
+        error: action.error
+      };
     default:
       return state;
   }
