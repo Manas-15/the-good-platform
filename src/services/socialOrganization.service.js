@@ -4,11 +4,7 @@ import axios from "axios";
 import { userConstants } from "../constants";
 
 export const socialOrganizationService = {
-  getSocialOrganizations,
-  addNewProgramme,
-  getAllProgram,
-  programActionRequest,
-  getApprovedProgram,
+  getSocialOrganizations
 };
 
 async function getSocialOrganizations(data) {
@@ -23,7 +19,7 @@ async function getSocialOrganizations(data) {
         process.env.REACT_APP_TGP_API_URL +
           "social-org/v1/validator/organisations",
         {
-          headers: authHeader(),
+          headers: authHeader()
         }
       );
     } else {
@@ -34,38 +30,9 @@ async function getSocialOrganizations(data) {
       return await axios.get(
         process.env.REACT_APP_API_URL + "api/social_program_list/",
         {
-          params: data,
+          params: data
         }
       );
     }
   }
-}
-
-async function addNewProgramme(data) {
-  return await axios.post(
-    process.env.REACT_APP_API_URL + "api/employeeProgramInfo/",
-    data
-  );
-}
-async function getAllProgram(data) {
-  return await axios.get(
-    process.env.REACT_APP_API_URL + "api/corporateallPorgram/",
-    {
-      params: data,
-    }
-  );
-}
-async function programActionRequest(data) {
-  return await axios.post(
-    process.env.REACT_APP_API_URL + "api/corporateapproveProgram/",
-    data
-  );
-}
-async function getApprovedProgram(data) {
-  return await axios.get(
-    process.env.REACT_APP_API_URL + "api/employeeProgramInfo/",
-    {
-      params: data,
-    }
-  );
 }
