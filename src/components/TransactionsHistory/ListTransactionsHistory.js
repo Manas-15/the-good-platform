@@ -13,7 +13,7 @@ import {
   paginationConstants,
   viewPortalConstants,
   userConstants,
-  donationPreferenceConstants,
+  donationPreferenceConstants
 } from "../../constants";
 import Pagination from "./../Shared/Pagination";
 import { Tooltip } from "antd";
@@ -25,12 +25,12 @@ const paymentStatusOption = [
   { label: "All", value: 0 },
   { label: "Pending", value: paymentConstants.PAYMENT_PENDING },
   { label: "Success", value: paymentConstants.PAYMENT_SUCCESS },
-  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE },
+  { label: "Failed", value: paymentConstants.PAYMENT_FAILURE }
 ];
 let pageSize = paginationConstants?.PAGE_SIZE;
 const initialValues = {
   email: "",
-  transactionId: "",
+  transactionId: ""
 };
 const { afterToday } = DateRangePicker;
 
@@ -68,7 +68,7 @@ const ListTransactionsHistory = (props) => {
   const [selectedRange, setSelectedRange] = useState([]);
   const [value, setValue] = useState([
     new Date(moment().add(-30, "days").format("YYYY-MM-DD")),
-    new Date(moment().format("YYYY-MM-DD")),
+    new Date(moment().format("YYYY-MM-DD"))
   ]);
 
   const isOrganizationView =
@@ -84,6 +84,8 @@ const ListTransactionsHistory = (props) => {
   const isBluePencilView =
     currentPortal?.currentView ===
     viewPortalConstants.BLUE_PENCEIL_ADMIN_PORTAL;
+  const isCorporatePortalView =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -147,7 +149,7 @@ const ListTransactionsHistory = (props) => {
   const downlad = (transactionId) => {
     dispatch(
       transactionsHistoryActions.download80G({
-        transactionId: transactionId,
+        transactionId: transactionId
       })
     );
   };
@@ -198,7 +200,7 @@ const ListTransactionsHistory = (props) => {
                 : null,
               endDate: dateRange
                 ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-                : null,
+                : null
               //           transactionsHistoryActions.getTransactionsHistory({
               //   individualId:
               //     loggedInUserType === userConstants.INDIVIDUAL
@@ -243,7 +245,7 @@ const ListTransactionsHistory = (props) => {
                 : null,
               endDate: dateRange
                 ? moment(dateRange[1]).add(1, "days").format("YYYY-MM-DD")
-                : null,
+                : null
             }
       )
     );
@@ -257,7 +259,7 @@ const ListTransactionsHistory = (props) => {
     searchByProgramName,
     searchByEmployeeName,
     searchByCorporateName,
-    searchByAmount,
+    searchByAmount
   ]);
   const fetchData = (ranges) => {
     setSelectedRange(ranges);
@@ -339,7 +341,6 @@ const ListTransactionsHistory = (props) => {
                 {!isEmployeePortal && !isCorporatePortal && (
                   <option value="corporateName">Corporate</option>
                 )}
-
                 {!isEmployeePortal && (
                   <option value="employeeName">Donor</option>
                 )}
@@ -434,7 +435,7 @@ const ListTransactionsHistory = (props) => {
                 <thead className="ant-table-thead">
                   <tr>
                     {/* <th className="ant-table-cell">SR No.</th> */}
-                    {!isEmployeePortal && (
+                    {(!isEmployeePortal || isCorporatePortalView) && (
                       <th className="ant-table-cell">Donor</th>
                     )}
                     <th className="ant-table-cell">Program</th>
@@ -442,7 +443,7 @@ const ListTransactionsHistory = (props) => {
                       <th className="ant-table-cell">Organization</th>
                     )}
 
-                    {!employeeId && !isCorporatePortal && (
+                    {!employeeId && !isCorporatePortalView && (
                       <th className="ant-table-cell">Corporate</th>
                     )}
                     <th className="ant-table-cell">Transaction ID</th>
@@ -471,7 +472,7 @@ const ListTransactionsHistory = (props) => {
                             ? currentPage * pageSize - pageSize + index + 1
                             : index + 1}
                         </td> */}
-                        {!isEmployeePortal && (
+                        {(!isEmployeePortal || isCorporatePortalView) && (
                           <td className="ant-table-cell">
                             <span className="ant-typography font-weight-bold">
                               <Tooltip title="Show detail">
@@ -507,20 +508,26 @@ const ListTransactionsHistory = (props) => {
                         </td>
                         {!isOrganizationView && (
                           <td className="ant-table-cell">
-                            <span className="ant-typography font-weight-bold">
-                              <Tooltip title="Show detail">
-                                <Link
-                                  onClick={() => showAccountDetail(transaction)}
-                                >
-                                  <span className="custom-color">
-                                    {transaction?.socialOrg}
-                                  </span>
-                                </Link>
-                              </Tooltip>
-                            </span>
+                            {transaction?.socialOrg ? (
+                              <span className="ant-typography font-weight-bold">
+                                <Tooltip title="Show detail">
+                                  <Link
+                                    onClick={() =>
+                                      showAccountDetail(transaction)
+                                    }
+                                  >
+                                    <span className="custom-color">
+                                      {transaction?.socialOrg}
+                                    </span>
+                                  </Link>
+                                </Tooltip>
+                              </span>
+                            ) : (
+                              "NA"
+                            )}
                           </td>
                         )}
-                        {!employeeId && !isCorporatePortal && (
+                        {!employeeId && !isCorporatePortalView && (
                           <td className="ant-table-cell">
                             <Tooltip title="Show detail">
                               <Link
@@ -587,11 +594,12 @@ const ListTransactionsHistory = (props) => {
                         </td>
                         {(employeeId || isCorporatePortal) && (
                           <td className="ant-table-cell">
-                            {transaction?.batchStatus
-                              ?.split(",")
-                              ?.includes?.(
-                                transaction?.socialOrgId?.toString()
-                              ) ? (
+                            {transaction?.programType ===
+                            "custom" ? null : transaction?.batchStatus
+                                ?.split(",")
+                                ?.includes?.(
+                                  transaction?.socialOrgId?.toString()
+                                ) ? (
                               transaction?.paymentStatus ===
                                 paymentConstants.PAYMENT_SUCCESS && (
                                 <div className="d-flex">
@@ -665,7 +673,7 @@ const ListTransactionsHistory = (props) => {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <Form>
                 <Modal.Body style={{ fontSize: "18" }}>
