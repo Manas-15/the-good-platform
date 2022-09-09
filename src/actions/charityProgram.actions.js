@@ -11,7 +11,8 @@ export const charityProgramActions = {
   operateDenyRequest,
   checkBeforeUnpromote,
   checkBeforeBulkUnpromote,
-  getProgramDetail
+  getProgramDetail,
+  getApprovedProgram
 };
 
 function getCharityPrograms(data) {
@@ -275,6 +276,40 @@ function getProgramDetail(data) {
   function failure(error) {
     return {
       type: charityProgramConstants.GET_PROGRAM_DETAIL_FAILURE,
+      error
+    };
+  }
+}
+function getApprovedProgram(data) {
+  return (dispatch) => {
+    dispatch(request(data));
+
+    charityProgramService
+      .getApprovedProgram(data)
+      .then((res) => {
+        dispatch(success(res));
+        // dispatch(alertActions.success(""))
+      })
+      .catch((error) => {
+        dispatch(failure(error.toString()));
+      });
+  };
+
+  function request(data) {
+    return {
+      type: charityProgramConstants.GET_APPROVED_PROGRAM_REQUEST,
+      data
+    };
+  }
+  function success(data) {
+    return {
+      type: charityProgramConstants.GET_APPROVED_PROGRAM_SUCCESS,
+      data
+    };
+  }
+  function failure(error) {
+    return {
+      type: charityProgramConstants.GET_APPROVED_PROGRAM_FAILURE,
       error
     };
   }
