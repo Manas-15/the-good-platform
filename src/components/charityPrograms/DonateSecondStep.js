@@ -58,6 +58,7 @@ const DonateSecondStep = ({
   selectedAmount,
   employee
 }) => {
+  console.log(selectedCharity, ">>>>>>>>>>>>>>>..");
   // Math.random().toString(36).slice(2)
   let charityFirstTwoChar, employeeFirstTwoChar;
   const currentPortal = useSelector((state) => state.currentView);
@@ -72,6 +73,7 @@ const DonateSecondStep = ({
     (state) => state?.user?.loggedinUserType
   );
   const otherUser = useSelector((state) => state.user);
+  const user = useSelector((state) => state?.employee?.user);
   if (selectedCharity) {
     if (otherUser) {
       charityFirstTwoChar = selectedCharity?.name?.slice(0, 2)?.toLowerCase();
@@ -181,7 +183,9 @@ const DonateSecondStep = ({
         ? selectedCorporate?.corporate?.name
           ? selectedCorporate?.corporate?.name
           : selectedCorporate?.corporate?.corporateName
-        : selectedCorporate?.corporate?.name,
+        : selectedCorporate?.corporate?.name
+        ? selectedCorporate?.corporate?.name
+        : user?.corporateName,
     userId:
       otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
         ? otherUser?.detail?.userId
