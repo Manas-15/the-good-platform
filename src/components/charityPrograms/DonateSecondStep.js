@@ -155,10 +155,14 @@ const DonateSecondStep = ({
             unitPrice: selectedCharity?.unitPrice
           }
         : {
-            charityName: selectedCharity?.name,
+            charityName: selectedCharity?.charityName
+              ? selectedCharity?.charityName
+              : selectedCharity?.name,
             id: selectedCharity?.id,
             organisationId: selectedCharity?.organisationId,
-            soicalName: selectedCharity?.organisationName,
+            soicalName: selectedCharity?.organisationName
+              ? selectedCharity?.organisationName
+              : selectedCharity?.soicalName,
             status: selectedCharity?.status,
             unitPrice: selectedCharity?.unitPrice
               ? selectedCharity?.unitPrice
