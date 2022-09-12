@@ -433,7 +433,7 @@ const SocialOrganizations = () => {
                               : "")
                           }
                         />
-                        <span>Charity Name</span>
+                        <span>Program Name</span>
                       </label>
                       <ErrorMessage
                         name="charityName"
