@@ -139,7 +139,9 @@ const DonateSecondStep = ({
             organisationId: selectedCharity?.organisationId,
             soicalName: selectedCharity?.soicalName,
             status: selectedCharity?.status,
-            unitPrice: 500
+            unitPrice: selectedCharity?.unitPrice
+              ? selectedCharity?.unitPrice
+              : 500
           }
         : otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
         ? {
@@ -150,7 +152,16 @@ const DonateSecondStep = ({
             status: selectedCharity?.status,
             unitPrice: selectedCharity?.unitPrice
           }
-        : selectedCharity,
+        : {
+            charityName: selectedCharity?.name,
+            id: selectedCharity?.id,
+            organisationId: selectedCharity?.organisationId,
+            soicalName: selectedCharity?.organisationName,
+            status: selectedCharity?.status,
+            unitPrice: selectedCharity?.unitPrice
+              ? selectedCharity?.unitPrice
+              : 500
+          },
     //employee: isCorporatePortal ? null : employee,
     // corporate: isCorporatePortal ? selectedCorporate : null,
     corporateId:
