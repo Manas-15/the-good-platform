@@ -8,8 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Shared/Loader";
 import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
-import { userConstants, viewPortalConstants } from "../../constants";
+import {
+  userConstants,
+  viewPortalConstants,
+  paginationConstants
+} from "../../constants";
+import Pagination from "../Shared/Pagination";
 // import corporates from "./../../config/corporates.json";
+let pageSize = paginationConstants?.PAGE_SIZE;
 const SocialOrganizationsPortal = () => {
   let history = useHistory();
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
@@ -21,6 +27,8 @@ const SocialOrganizationsPortal = () => {
   const currentPortal = useSelector((state) => state.currentView);
   const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
   const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   // const isIndividualPortal =
   //   currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   // const isOthersPortal =
@@ -48,15 +56,19 @@ const SocialOrganizationsPortal = () => {
             ? selectedCorporate?.corporate?.corporateId
             : selectedCorporate?.corporate?.id
           : user?.corporateId,
-        // pageSize: pageSize.toString(),
         loggedInUserType: loggedInUserType,
-        individualId: "social"
+        individualId: "social",
+        pageNumber: currentPage.toString(),
+        pageSize: pageSize.toString()
         // userId: user?.user_id
       })
     );
   }, []);
   const setSocialOrganization = (organization) => {
     dispatch(selectedOrganizationActions.selectedOrganization(organization));
+  };
+  const setPage = (page) => {
+    setCurrentPage(page);
   };
   return (
     <div>
@@ -99,6 +111,17 @@ const SocialOrganizationsPortal = () => {
                   <Link onClick={logout}>Logout</Link>
                 </li>
               </ul>
+              {/* <Pagination
+                className="pagination-bar mt-4"
+                currentPage={currentPage}
+                totalCount={
+                  socialOrganizations?.totalCount
+                    ? socialOrganizations?.totalCount
+                    : 0
+                }
+                pageSize={pageSize}
+                onPageChange={(page) => setPage(page)}
+              /> */}
             </div>
           ) : (
             <div className="text-center">
