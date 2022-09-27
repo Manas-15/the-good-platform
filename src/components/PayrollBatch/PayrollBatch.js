@@ -1167,7 +1167,7 @@ const PayrollBatch = (props) => {
             <div className="card p-4 text-center">
               {isOrganizationPortal && (
                 <strong>
-                  No Payroll donation batch created by the Blue Pencil Admin
+                  No Payroll donation batch created by the Good Platform Admin
                   till now.
                   <br />
                   You should wait a while till any donation reaches to you.

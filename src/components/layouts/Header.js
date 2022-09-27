@@ -170,7 +170,7 @@ const Header = () => {
                       }
                       to={{
                         pathname: "/list-corporates",
-                        state: { isSuperadminView },
+                        state: { isSuperadminView }
                       }}
                     >
                       <i className="bi bi-person-circle"></i>
