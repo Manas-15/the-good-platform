@@ -56,4 +56,5 @@ export const charityProgramConstants = {
   YOUTH_CATEGORY: "Youth",
   ELDERLY_CATEGORY: "Elderly",
   CHILDREN_CATEGORY: "Children",
+  CUSTOM_PROGRAM: "Custom Program"
 };

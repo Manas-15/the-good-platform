@@ -4,7 +4,7 @@ import axios from "axios";
 import { userConstants } from "../constants";
 
 export const socialOrganizationService = {
-  getSocialOrganizations,
+  getSocialOrganizations
 };
 
 async function getSocialOrganizations(data) {
@@ -19,7 +19,7 @@ async function getSocialOrganizations(data) {
         process.env.REACT_APP_TGP_API_URL +
           "social-org/v1/validator/organisations",
         {
-          headers: authHeader(),
+          headers: authHeader()
         }
       );
     } else {
@@ -30,7 +30,7 @@ async function getSocialOrganizations(data) {
       return await axios.get(
         process.env.REACT_APP_API_URL + "api/social_program_list/",
         {
-          params: data,
+          params: data
         }
       );
     }

@@ -5,6 +5,7 @@ export function socialOrganizations(state = {}, action) {
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST:
       console.log(action);
       return {
+        ...state,
         loading: true,
         userType: action?.data?.loggedInUserType,
         userRole: action?.data?.userRole,
@@ -21,6 +22,7 @@ export function socialOrganizations(state = {}, action) {
         state?.individualId !== "social"
       ) {
         return {
+          ...state,
           items: action?.socialOrganizations?.data?.social_organization,
           totalCount: action?.socialOrganizations?.data?.data?.numberOfElements,
           loading: false

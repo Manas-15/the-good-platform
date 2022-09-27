@@ -14,7 +14,8 @@ import donationsConsent from "../../config/donationsConsent.json";
 import {
   viewPortalConstants,
   payrollConstants,
-  userConstants
+  userConstants,
+  charityProgramConstants
 } from "../../constants";
 
 const FormDatePicker = ({ errors, touched }) => {
@@ -56,9 +57,9 @@ const DonateSecondStep = ({
   frequency,
   selectedCharity,
   selectedAmount,
-  employee
+  employee,
+  donateFor
 }) => {
-  console.log(selectedCharity, ">>>>>>>>>>>>>>>..");
   // Math.random().toString(36).slice(2)
   let charityFirstTwoChar, employeeFirstTwoChar;
   const currentPortal = useSelector((state) => state.currentView);
@@ -134,7 +135,9 @@ const DonateSecondStep = ({
         ? ""
         : employee?.pan,
     charity:
-      loggedInUserType === userConstants.INDIVIDUAL
+      donateFor === charityProgramConstants.CUSTOM_PROGRAM
+        ? null
+        : loggedInUserType === userConstants.INDIVIDUAL
         ? {
             charityName: selectedCharity?.charityName,
             id: selectedCharity?.id,
@@ -210,10 +213,17 @@ const DonateSecondStep = ({
         : payrollConstants.EMPLOYEE_VIEW,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${
-      otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN
+      otherUser?.detail?.userRole === viewPortalConstants.PAYMENT_ADMIN ||
+      donateFor === charityProgramConstants.CUSTOM_PROGRAM
         ? selectedCharity?.name
         : selectedCharity?.charityName
-    }`
+    }`,
+    programType:
+      donateFor === charityProgramConstants.CUSTOM_PROGRAM ? "custom" : null,
+    charityId:
+      donateFor === charityProgramConstants.CUSTOM_PROGRAM
+        ? selectedCharity?.id
+        : null
   };
 
   const [open, setOpen] = useState(false);

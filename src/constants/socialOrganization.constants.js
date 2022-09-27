@@ -9,4 +9,5 @@ export const socialOrganizationConstants = {
 
   SPONSORED: "Sponsored",
   OTHERS: "Others",
+  CUSTOM: "Custom"
 };

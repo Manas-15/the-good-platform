@@ -9,3 +9,4 @@ export * from "./transactionsHistory.service";
 export * from "./payroll.service";
 export * from "./socialOrganization.service";
 export * from "./user.service";
+export * from "./employeeProgram.service";

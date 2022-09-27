@@ -32,7 +32,8 @@ const Donate = ({
   tabType,
   from,
   currentPortal,
-  repeatPreference
+  repeatPreference,
+  customProgram
 }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
@@ -46,6 +47,7 @@ const Donate = ({
   const [checked, setChecked] = useState(false);
   const [showNextStep, setShowNextStep] = useState(false);
   const [addedFromProgramDetail, setAddedFromProgramDetail] = useState(false);
+  // const [customProgramDonate, setCustomProgramDonate] = useState();
   const isCorporatePortal = employee?.user_type === userConstants.CORPORATE;
   const isEmployeePortal = employee?.user_type === userConstants.EMPLOYEE;
   const isProgramDetail = history.location.pathname.includes("/programs/");
@@ -338,6 +340,7 @@ const Donate = ({
           selectedCharity={selectedCharity}
           selectedAmount={selectedAmount}
           employee={employee}
+          donateFor={"Custom Program"}
         />
       )}
     </>

@@ -21,7 +21,7 @@ import urlSlug from "url-slug";
 // import Donate from "./../CharityPrograms/Donate";
 // import { handleInputChange } from "react-select/dist/declarations/src/utils";
 
-const ListCharityPrograms = ({ items, setCharity, tabType }) => {
+const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
   const dispatch = useDispatch();
   const openNav = (charity) => {
     // document.getElementById("sidepanel").classList.add("is-open");
@@ -371,12 +371,17 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                       )}
                     </th> */}
                     <th className="ant-table-cell">Program</th>
-                    <th className="ant-table-cell">Organization</th>
+                    {/* {!customProgram && (
+                      <th className="ant-table-cell">Organization</th>
+                    )} */}
                     <th className="ant-table-cell">Category</th>
                     <th className="ant-table-cell text-center">
                       Unit Price (
                       {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
                     </th>
+                    {customProgram && (
+                      <th className="ant-table-cell">Status</th>
+                    )}
                     <th className="ant-table-cell text-center">Actions</th>
                   </tr>
                 </thead>
@@ -430,16 +435,34 @@ const ListCharityPrograms = ({ items, setCharity, tabType }) => {
                             </Link>
                           </Tooltip>
                         </td>
-                        <td className="ant-table-cell">
-                          {charityProgram?.soicalName}
-                          {charityProgram?.organisationName}
-                        </td>
+                        {/* {!customProgram && (
+                          <td className="ant-table-cell">
+                            {charityProgram?.soicalName}
+                            {charityProgram?.organisationName}
+                          </td>
+                        )} */}
                         <td className="ant-table-cell">
                           {charityProgram?.category}
                         </td>
                         <td className="ant-table-cell text-center">
                           {charityProgram?.unitPrice?.toLocaleString()}
                         </td>
+                        {customProgram && (
+                          <td className="ant-table-cell">
+                            {charityProgram?.approve && (
+                              <span className="text-success">Approved</span>
+                            )}
+
+                            {charityProgram?.approve === null && (
+                              <span className="text-warning">Pending</span>
+                            )}
+
+                            {!charityProgram?.approve &&
+                              charityProgram?.approve !== null && (
+                                <span className="text-danger">Disapproved</span>
+                              )}
+                          </td>
+                        )}
                         <td className="ant-table-cell text-center">
                           {isCorporatePortal &&
                             tabType === charityProgramConstants.SPONSOR && (

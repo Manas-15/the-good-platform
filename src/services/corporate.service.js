@@ -11,10 +11,18 @@ export const corporateService = {
   getCorporates,
   corporateAccountRequest,
   oidcConfigure,
+  getEmployeeCustomProgram,
+  employeeProgramAction,
+  addEmployeeProgram
 };
 
-function getCorporates() {
-  return axios.get(process.env.REACT_APP_API_URL + "remote_api/corporateList/"); //process.env.REACT_APP_API_URL + "api/corporate_list"
+function getCorporates(data) {
+  return axios.get(
+    process.env.REACT_APP_API_URL + "remote_api/corporateList/",
+    {
+      params: data
+    }
+  ); //process.env.REACT_APP_API_URL + "api/corporate_list"
 }
 
 function registerCorporate(data) {
@@ -71,6 +79,29 @@ function oidcConfigure(data) {
 
   return axios.post(
     process.env.REACT_APP_API_URL + "api/corporateSetting/",
+    data
+  );
+}
+
+async function getEmployeeCustomProgram(data) {
+  return await axios.get(
+    process.env.REACT_APP_API_URL + "api/corporateallPorgram/",
+    {
+      params: data
+    }
+  );
+}
+
+async function employeeProgramAction(data) {
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/corporateapproveProgram/",
+    data
+  );
+}
+
+async function addEmployeeProgram(data) {
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/employeeProgramInfo/",
     data
   );
 }

@@ -1,66 +1,99 @@
 import React, { useState, useEffect } from "react";
-// import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   socialOrganizationConstants,
   paginationConstants,
   viewPortalConstants,
   userConstants,
+  charityProgramConstants,
+  donationPreferenceConstants
 } from "../../constants";
-import { socialOrganizationActions } from "../../actions";
+import {
+  charityProgramActions,
+  corporateActions,
+  employeeProgramActions,
+  selectedCharityActions,
+  socialOrganizationActions
+} from "../../actions";
 import { Tabs } from "antd";
 import { AuditOutlined, RedoOutlined } from "@ant-design/icons";
-// import Pagination from "../Shared/Pagination";
 import Loader from "../Shared/Loader";
 import ListSocialOrganizations from "./ListSocialOrganizations";
-import { SearchHelper } from "../../helpers";
+import { SearchCharityHelper, SearchHelper } from "../../helpers";
+import { history } from "../../helpers";
+import { Modal, Button } from "react-bootstrap";
+import { ErrorMessage, Field, Form, Formik, validateYupSchema } from "formik";
+import { addProgramSchema } from "../Validations";
+import ListCharityPrograms from "../CharityPrograms/ListCharityPrograms";
+import DonateHeader from "../CharityPrograms/DonateHeader";
+import Donate from "../CharityPrograms/Donate";
 
 let pageSize = paginationConstants?.PAGE_SIZE;
-// let theArray = [];
 const TabPane = Tabs.TabPane;
+
 const SocialOrganizations = () => {
+  const dispatch = useDispatch();
   const socialOrganizations = useSelector(
     (state) => state?.socialOrganizations
   );
-  console.log(socialOrganizations, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
+  const employeePrograms = useSelector(
+    (state) => state?.employeePrograms?.items
+  );
   const loggedInUserType = useSelector(
     (state) => state?.employee?.loggedinUserType
   );
-
   const user = useSelector((state) => state?.employee?.user);
-  console.log(user?.user_id);
-  // const [open, setOpen] = useState(false);
+  const currentPortal = useSelector((state) => state.currentView);
+  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+
+  const programmeInitialValues = {
+    // socialName: "",
+    charityName: "",
+    category: "",
+    unit_price: "",
+    employeeId: user?.emp_id,
+    corporateId: user?.corporateId
+  };
+
+  const [open, setOpen] = useState(false);
   // const [allChecked, setAllChecked] = useState(false);
   // const [actionType, setActionType] = useState("");
   // const [actionTitle, setActionTitle] = useState("");
   // const [actionContent, setActionContent] = useState("");
   const [searchText, setSearchText] = useState("");
-  const selectedCorporate = useSelector((state) => state.selectedCorporate);
+  // Pagination
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCharity, setSelectedCharity] = useState();
   const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSORED);
-  const currentPortal = useSelector((state) => state.currentView);
-  const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
-  const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
+
+  const isCorporateUserId = user?.user_type === userConstants.CORPORATE;
+  const isCorporatePortal =
+    currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  const isEmployee = user?.user_type === userConstants.EMPLOYEE;
+  const isEmployeePortal =
+    currentPortal?.currentView === viewPortalConstants.EMPLOYEE_PORTAL;
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
   const isOtherCorporatePortal =
     user?.userRole === viewPortalConstants.PAYMENT_ADMIN;
-
-  // Pagination
-  const [totalCount, setTotalCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const dispatch = useDispatch();
+  const categoryOptions = [
+    { name: "Agriculture", value: "Agriculture" },
+    { name: "Disaster", value: "Disaster" },
+    { name: "Domestic Needs", value: "Domestic Needs" },
+    { name: "Education", value: "Education" },
+    { name: "Health", value: "Health" },
+    { name: "Social Change", value: "Social Change" }
+  ];
   useEffect(() => {
-    console.log(">>>>>>>>>>>>>>>>>> user?.user_type", user?.user_type);
     dispatch(
       socialOrganizationActions.getSocialOrganizations(
         isIndividualPortal
           ? {
               pageNumber: currentPage.toString(),
-              employeeId: isEmployeePortal ? user?.emp_id : null,
+              employeeId: isEmployee ? user?.emp_id : null,
               userId: user?.user_id,
-              corporateId: isCorporatePortal
+              corporateId: isCorporateUserId
                 ? selectedCorporate?.corporate?.corporateId
                   ? selectedCorporate?.corporate?.corporateId
                   : selectedCorporate?.corporate?.id
@@ -70,25 +103,25 @@ const SocialOrganizations = () => {
               individualId:
                 loggedInUserType === userConstants.INDIVIDUAL
                   ? user?.uuid
-                  : null,
+                  : null
             }
           : isOtherCorporatePortal
           ? {
               loggedInUserType: loggedInUserType ? loggedInUserType : null,
-              userRole: user?.userRole ? user?.userRole : null,
+              userRole: user?.userRole ? user?.userRole : null
             }
           : {
               pageNumber: currentPage.toString(),
-              corporateId: isCorporatePortal
+              corporateId: isCorporateUserId
                 ? selectedCorporate?.corporate?.corporateId
                   ? selectedCorporate?.corporate?.corporateId
                   : selectedCorporate?.corporate?.id
                 : user?.corporateId,
-              employeeId: isEmployeePortal ? user?.emp_id : null,
+              employeeId: isEmployee ? user?.emp_id : null,
               individualId: user?.uuid,
               loggedInUserType: user?.user_type,
               pageSize: pageSize.toString(),
-              userId: user?.user_id,
+              userId: user?.user_id
             }
       )
     );
@@ -136,12 +169,54 @@ const SocialOrganizations = () => {
     //   socialOrganizations?.items?.sponsored.filter((sponsor) => sponsor?.name.includes(value))
     // }
   };
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    dispatch(
+      employeeProgramActions.getApprovedProgram({
+        employeeId: user?.emp_id,
+        corporateId: user?.corporateId
+      })
+    );
+  }, []);
+  const createProgramme = (values) => {
+    // programmeInitialValues.employeeId = user?.emp_id;
+    dispatch(corporateActions.addEmployeeProgram(values));
+    setOpen(false);
+  };
+  const setCharity = (charity) => {
+    console.log("dddddddddddddddddd selected", charity);
+    setSelectedCharity(charity);
+    if (charity) {
+      dispatch(selectedCharityActions.selectedCharity(charity));
+    }
+    openNav();
+  };
+  const openNav = () => {
+    document.getElementById("sidepanel").classList.add("is-open");
+  };
+  const closeNav = () => {
+    document.getElementById("sidepanel").classList.remove("is-open");
+  };
   return (
     <div className="customContainer program-list">
       <div className="row mb-4">
         <div className="col-md-6">
           <h1 className="ant-typography customHeading">Social Organizations</h1>
         </div>
+        {isEmployee && !isCorporateUserId && !isCorporatePortal && (
+          <div className="col-md-6 text-end">
+            <button className="btn btn-custom me-3" onClick={() => showModal()}>
+              <i className="bi bi-plus-circle mr-2"></i>
+              Add Program
+            </button>
+          </div>
+        )}
       </div>
       <div className="ant-row searchContainer mt-3 py-4 px-2 align-center">
         <div className="ant-col ant-col-24  searchContainer">
@@ -160,7 +235,7 @@ const SocialOrganizations = () => {
           </div>
         </div>
       </div>
-      {socialOrganizations?.loading && <Loader />}
+      {/* {socialOrganizations?.loading && <Loader />} */}
       <div className="ant-tabs-nav-wrap">
         {user?.user_id &&
           (loggedInUserType === userConstants.EMPLOYEE ||
@@ -232,9 +307,46 @@ const SocialOrganizations = () => {
                   }
                 />
               </TabPane>
+              {isEmployee && !isCorporateUserId && !isCorporatePortal && (
+                <TabPane
+                  tab={
+                    <span>
+                      <RedoOutlined className="fs-5" />
+                      {socialOrganizationConstants.CUSTOM} Programs (
+                      {employeePrograms
+                        ? searchText &&
+                          tabType === socialOrganizationConstants.CUSTOM
+                          ? SearchHelper(employeePrograms, searchText).length
+                          : employeePrograms.length
+                        : 0}
+                      )
+                    </span>
+                  }
+                  key={socialOrganizationConstants.CUSTOM}
+                >
+                  <ListCharityPrograms
+                    items={
+                      searchText && tabType === charityProgramConstants.SPONSOR
+                        ? SearchCharityHelper(employeePrograms, searchText)
+                        : employeePrograms
+                    }
+                    setCharity={setCharity}
+                    tabType={tabType}
+                    customProgram={"true"}
+                  />
+                  {/* <ListSocialOrganizations
+                    tabType={tabType}
+                    items={
+                      searchText &&
+                      tabType === socialOrganizationConstants.CUSTOM
+                        ? SearchHelper(employeePrograms, searchText)
+                        : employeePrograms
+                    }
+                  /> */}
+                </TabPane>
+              )}
             </Tabs>
           )}
-
         {loggedInUserType === userConstants.INDIVIDUAL && (
           <>
             <ListSocialOrganizations
@@ -282,7 +394,163 @@ const SocialOrganizations = () => {
             /> */}
           </>
         )}
+
+        <Modal show={open} onHide={handleClose} backdrop="static">
+          <Modal.Header closeButton>
+            <Modal.Title>Add New Program</Modal.Title>
+          </Modal.Header>
+          <Formik
+            initialValues={programmeInitialValues}
+            validationSchema={addProgramSchema}
+            onSubmit={(values) => {
+              console.log(values);
+              createProgramme(values);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting
+            }) => (
+              <Form>
+                <Modal.Body style={{ fontSize: "18" }}>
+                  <>
+                    <div className="form-group mt-2">
+                      <label htmlFor="charityName" className="has-float-label">
+                        <Field
+                          name="charityName"
+                          id="charityName"
+                          type="text"
+                          placeholder=" "
+                          className={
+                            "form-control" +
+                            (errors.charityName && touched.charityName
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <span>Program Name</span>
+                      </label>
+                      <ErrorMessage
+                        name="charityName"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <Field
+                        name="category"
+                        as="select"
+                        className={
+                          "form-select" +
+                          (errors.category && touched.category
+                            ? " is-invalid"
+                            : "")
+                        }
+                      >
+                        <option value="">Select Category</option>
+                        {categoryOptions?.map?.((category, index) => (
+                          <option value={category.value} key={index}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorMessage
+                        name="corporateProfileId"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    <div className="form-group mt-2">
+                      <label htmlFor="unit_price" className="has-float-label">
+                        <Field
+                          name="unit_price"
+                          id="unit_price"
+                          type="text"
+                          placeholder=" "
+                          className={
+                            "form-control" +
+                            (errors.unit_price && touched.unit_price
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <span>Unit Price</span>
+                      </label>
+                      <ErrorMessage
+                        name="unit_price"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
+                    {/* <div className="form-group mt-2">
+                      <label htmlFor="employeeId" className="has-float-label">
+                        <Field
+                          name="employeeId"
+                          id="employeeId"
+                          type="text"
+                          value={user?.emp_id}
+                          placeholder=" "
+                          className={
+                            "form-control" +
+                            (errors.employeeId && touched.employeeId
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <span>Employee Id</span>
+                      </label>
+                      <ErrorMessage
+                        name="employeeId"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div> */}
+                  </>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    className="btn btn-custom"
+                    type="submit"
+                    disabled={false}
+                  >
+                    Save
+                  </Button>
+                  <Button variant="danger" onClick={handleClose}>
+                    No
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
+        </Modal>
       </div>
+      {
+        <div id="sidepanel" className="sidepanel">
+          <DonateHeader selectedCharity={selectedCharity} />
+          <div className="tab-content pt-2">
+            <div className="tab-pane fade show active give-once" id="give-once">
+              <Donate
+                frequency={donationPreferenceConstants.ONCE}
+                selectedCharity={selectedCharity}
+                tabType={tabType}
+              />
+            </div>
+            <div className="tab-pane fade show give-monthly" id="give-monthly">
+              <Donate
+                frequency={donationPreferenceConstants.MONTHLY}
+                selectedCharity={selectedCharity}
+                tabType={tabType}
+                customProgram={charityProgramConstants.CUSTOM_PROGRAM}
+              />
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };

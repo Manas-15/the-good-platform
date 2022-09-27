@@ -6,13 +6,14 @@ import {
   socialOrganizationConstants,
   paginationConstants,
   charityProgramConstants,
-  viewPortalConstants,
+  viewPortalConstants
 } from "../../constants";
 import { selectedOrganizationActions } from "../../actions";
 import * as moment from "moment";
 let pageSize = paginationConstants?.PAGE_SIZE;
 let theArray = [];
 const ListSocialOrganizations = ({ tabType, items }) => {
+  console.log(items);
   const socialOrganizations = useSelector((state) => state.socialOrganizations);
   const currentPortal = useSelector((state) => state.currentView);
   const user = useSelector((state) => state.employee.user);
@@ -111,9 +112,9 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                     </th> */}
                     <th className="ant-table-cell">SR NO.</th>
                     <th className="ant-table-cell">Name</th>
-                    <th className="ant-table-cell text-center">
+                    {/* <th className="ant-table-cell text-center">
                       Total Programs
-                    </th>
+                    </th> */}
                     <th className="ant-table-cell">Created On</th>
                     {/* <th className="ant-table-cell">Status</th> */}
                     {/* <th className="ant-table-cell text-center">&nbsp;</th> */}
@@ -147,7 +148,7 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                                 pathname: `/social-organizations/${urlSlug(
                                   socialOrganization?.name
                                 )}`,
-                                tabType: tabType,
+                                tabType: tabType
                               }}
                               onClick={() =>
                                 setOrganization(socialOrganization)
@@ -159,9 +160,9 @@ const ListSocialOrganizations = ({ tabType, items }) => {
                             </Link>
                           </span>
                         </td>
-                        <td className="ant-table-cell text-center">
+                        {/* <td className="ant-table-cell text-center">
                           {socialOrganization?.total_program}
-                        </td>
+                        </td> */}
                         <td className="ant-table-cell">
                           {moment(socialOrganization?.created_date).format(
                             "LL"

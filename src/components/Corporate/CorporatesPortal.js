@@ -6,14 +6,17 @@ import ConfirmationDialog from "../Shared/ConfirmationDialog";
 import Loader from "../Shared/Loader";
 import "./../../assets/css/corporates.scss";
 import { Link } from "react-router-dom";
+import { paginationConstants } from "../../constants";
+import Pagination from "./../Shared/Pagination";
 const actionInitialValues = {
   userId: "",
   requestType: ""
 };
+let pageSize = paginationConstants?.PAGE_SIZE;
 const CorporatesPortal = () => {
   let history = useHistory();
   const corporates = useSelector((state) => state?.corporates);
-
+  const totalElements = useSelector((state) => state?.corporates?.totalItems);
   const user = useSelector((state) => state.employee.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -21,6 +24,8 @@ const CorporatesPortal = () => {
   const [actionContent, setActionContent] = useState("");
   const [actionType, setActionType] = useState("");
   const [selectedCorporate, setSelectedCorporate] = useState(Object);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const handleOpen = (action, item) => {
     setOpen(true);
     setActionType(action);
@@ -50,10 +55,23 @@ const CorporatesPortal = () => {
     document.getElementById("root").classList.remove("loading");
   }
   useEffect(() => {
-    dispatch(corporateActions.getCorporates());
-  }, []);
+    dispatch(
+      corporateActions.getCorporates({
+        pageNumber: currentPage.toString(),
+        pageSize: pageSize.toString()
+      })
+    );
+  }, [currentPage]);
   const setCorporate = (corporate) => {
     dispatch(selectedCorporateActions.selectedCorporate(corporate));
+  };
+  useEffect(() => {
+    console.log("corporates?.items?.totalElements", totalElements);
+    setTotalCount(totalElements);
+  }, [totalElements]);
+  const setPage = (page) => {
+    console.log("dddddddddddddddd page", page);
+    setCurrentPage(page);
   };
   return (
     <div>
@@ -107,9 +125,6 @@ const CorporatesPortal = () => {
                     </li>
                   );
                 })} */}
-                <li key={"logout"} className="logout">
-                  <Link onClick={logout}>Logout</Link>
-                </li>
               </ul>
             </div>
           ) : (
@@ -117,6 +132,18 @@ const CorporatesPortal = () => {
               <strong>No corporates found</strong>
             </div>
           )}
+          {/* {totalElements > 0 && (
+            <Pagination
+              className="pagination-bar mt-4"
+              currentPage={currentPage}
+              totalCount={totalCount ? totalCount : 0}
+              pageSize={pageSize}
+              onPageChange={(page) => setPage(page)}
+            />
+          )} */}
+          <div className="logout mt-3 text-center">
+            <Link onClick={logout}>Logout</Link>
+          </div>
         </div>
       </div>
       {/* <div className="row mb-4">

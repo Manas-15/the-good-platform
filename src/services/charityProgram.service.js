@@ -11,6 +11,7 @@ export const charityProgramService = {
   checkBeforeUnpromote,
   checkBeforeBulkUnpromote,
   getProgramDetail,
+  getApprovedProgram
 };
 
 function getCharityPrograms(data) {
@@ -19,19 +20,19 @@ function getCharityPrograms(data) {
   // });
   if (data?.userType === userConstants.INDIVIDUAL_VIEW || data.userId) {
     return axios.get(process.env.REACT_APP_API_URL + "remote_api/charity/", {
-      params: data,
+      params: data
     });
   } else if (data?.userType === userConstants.CORPORATE_VIEW) {
     return axios.get(
       process.env.REACT_APP_TGP_API_URL +
         "project-management/v1/validator/projects",
       {
-        headers: authHeader(),
+        headers: authHeader()
       }
     );
   } else {
     return axios.get(process.env.REACT_APP_API_URL + "api/charity_list/", {
-      params: data,
+      params: data
     });
   }
 }
@@ -63,7 +64,7 @@ function checkBeforeUnpromote(data) {
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
-      params: data,
+      params: data
     }
   );
 }
@@ -71,7 +72,7 @@ function checkBeforeBulkUnpromote(data) {
   return axios.get(
     process.env.REACT_APP_API_URL + "api/check_donation_preference/",
     {
-      params: data,
+      params: data
     }
   );
 }
@@ -94,7 +95,15 @@ function getProgramDetail(data) {
     );
   } else {
     return axios.get(process.env.REACT_APP_API_URL + "api/programDetails/", {
-      params: data,
+      params: data
     });
   }
+}
+async function getApprovedProgram(data) {
+  return await axios.get(
+    process.env.REACT_APP_API_URL + "api/employeeProgramInfo/",
+    {
+      params: data
+    }
+  );
 }
