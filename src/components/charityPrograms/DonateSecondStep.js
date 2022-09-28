@@ -76,7 +76,7 @@ const DonateSecondStep = ({
   const otherUser = useSelector((state) => state.user);
   const user = useSelector((state) => state?.employee?.user);
   if (selectedCharity) {
-    if (otherUser) {
+    if (otherUser?.detail) {
       charityFirstTwoChar = selectedCharity?.name?.slice(0, 2)?.toLowerCase();
       employeeFirstTwoChar = otherUser?.detail?.firstName
         ?.slice(0, 2)
@@ -90,10 +90,13 @@ const DonateSecondStep = ({
   }
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
+  console.log(">>>>>>>>> charityFirstTwoChar", charityFirstTwoChar);
+  console.log(">>>>>>>>> employeeFirstTwoChar", employeeFirstTwoChar);
   const initialValues = {
     orderId: selectedCharity
       ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
       : Math.random().toString(36).slice(2),
+    // orderId: Math.random().toString(36).slice(2) + Date.now(),
     orderExpiryTime: new Date(new Date().setHours(new Date().getHours() + 1)),
     donationAmount: selectedAmount,
     customerId:
