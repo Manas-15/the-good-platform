@@ -340,7 +340,6 @@ const Donate = ({
           selectedCharity={selectedCharity}
           selectedAmount={selectedAmount}
           employee={employee}
-          donateFor={"Custom Program"}
         />
       )}
     </>
