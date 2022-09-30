@@ -453,3 +453,6 @@ a .red-color {
   top: 415px;
   right: 0px;
 }
+.rdw-editor-main {
+  min-height: 100px;
+}

@@ -90,7 +90,7 @@ const DonateSecondStep = ({
   }
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
-  console.log(">>>>>>>>> charityFirstTwoChar", donateFor);
+  console.log(">>>>>>>>> donateFor", donateFor);
   console.log(">>>>>>>>> employeeFirstTwoChar", employeeFirstTwoChar);
   const initialValues = {
     orderId: selectedCharity

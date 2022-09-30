@@ -8,7 +8,7 @@ import {
   viewPortalConstants,
   charityProgramConstants,
   payrollConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { charityProgramActions, selectedCharityActions } from "../../actions";
 import ListCharityPrograms from "./ListCharityPrograms";
@@ -61,7 +61,7 @@ const CharityPrograms = (props) => {
               orgId: selectedOrganization?.id,
               userType: userConstants.CORPORATE_VIEW,
               userId: user?.user_id,
-              userRole: otherUser?.detail?.userRole,
+              userRole: otherUser?.detail?.userRole
               // corporateId: selectedCorporate?.corporate?.corporateId,
               // socialId: selectedOrganization?.id,
               // userType: userConstants.CORPORATE_VIEW,
@@ -71,7 +71,7 @@ const CharityPrograms = (props) => {
               userType: userConstants.INDIVIDUAL_VIEW,
               // uuid: user?.uuid,
               // socialId: selectedOrganization?.id,
-              orgId: selectedOrganization?.id,
+              orgId: selectedOrganization?.id
             }
           : {
               // uuid: user?.uuid,
@@ -82,7 +82,7 @@ const CharityPrograms = (props) => {
                 : userConstants.EMPLOYEE_VIEW,
               corporateId: isCorporatePortal
                 ? selectedCorporate?.corporate?.id
-                : user?.corporateId,
+                : user?.corporateId
               // ? selectedCorporate?.corporate?.corporateId
               // : user?.corporateId,
             }
@@ -408,6 +408,7 @@ const CharityPrograms = (props) => {
                 frequency={donationPreferenceConstants.ONCE}
                 selectedCharity={selectedCharity}
                 tabType={tabType}
+                customProgram={selectedCharity?.approved}
               />
             </div>
             <div className="tab-pane fade show give-monthly" id="give-monthly">
@@ -415,6 +416,7 @@ const CharityPrograms = (props) => {
                 frequency={donationPreferenceConstants.MONTHLY}
                 selectedCharity={selectedCharity}
                 tabType={tabType}
+                customProgram={selectedCharity?.approved}
               />
             </div>
           </div>

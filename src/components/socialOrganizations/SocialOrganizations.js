@@ -27,6 +27,10 @@ import { addProgramSchema } from "../Validations";
 import ListCharityPrograms from "../CharityPrograms/ListCharityPrograms";
 import DonateHeader from "../CharityPrograms/DonateHeader";
 import Donate from "../CharityPrograms/Donate";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
 
 let pageSize = paginationConstants?.PAGE_SIZE;
 const TabPane = Tabs.TabPane;
@@ -52,7 +56,8 @@ const SocialOrganizations = () => {
     category: "",
     unit_price: "",
     employeeId: user?.emp_id,
-    corporateId: user?.corporateId
+    corporateId: user?.corporateId,
+    description: ""
   };
 
   const [open, setOpen] = useState(false);
@@ -65,6 +70,8 @@ const SocialOrganizations = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCharity, setSelectedCharity] = useState();
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [body, setBody] = useState("");
   const [tabType, setTabType] = useState(socialOrganizationConstants.SPONSORED);
 
   const isCorporateUserId = user?.user_type === userConstants.CORPORATE;
@@ -174,6 +181,8 @@ const SocialOrganizations = () => {
   };
   const handleClose = () => {
     setOpen(false);
+    programmeInitialValues.description = " ";
+    setEditorState(null);
   };
 
   useEffect(() => {
@@ -186,8 +195,10 @@ const SocialOrganizations = () => {
   }, []);
   const createProgramme = (values) => {
     // programmeInitialValues.employeeId = user?.emp_id;
+    values.description = body;
     dispatch(corporateActions.addEmployeeProgram(values));
     setOpen(false);
+    setEditorState(null);
   };
   const setCharity = (charity) => {
     console.log("dddddddddddddddddd selected", charity);
@@ -202,6 +213,12 @@ const SocialOrganizations = () => {
   };
   const closeNav = () => {
     document.getElementById("sidepanel").classList.remove("is-open");
+  };
+  const onEditorChange = (editorContent) => {
+    setBody(draftToHtml(editorContent));
+  };
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState);
   };
   return (
     <div className="customContainer program-list">
@@ -400,10 +417,10 @@ const SocialOrganizations = () => {
             <Modal.Title>Add New Program</Modal.Title>
           </Modal.Header>
           <Formik
+            enableReinitialize
             initialValues={programmeInitialValues}
             validationSchema={addProgramSchema}
             onSubmit={(values) => {
-              console.log(values);
               createProgramme(values);
             }}
           >
@@ -487,6 +504,19 @@ const SocialOrganizations = () => {
                         className="invalid-feedback"
                       />
                     </div>
+                    <label>Description</label>
+                    <Editor
+                      name="description"
+                      editorState={editorState}
+                      toolbar={{
+                        options: ["inline", "blockType", "list", "link"]
+                      }}
+                      onEditorStateChange={onEditorStateChange}
+                      onChange={onEditorChange}
+                      editorStyle={{
+                        border: "1px solid #ced4da"
+                      }}
+                    />
                     {/* <div className="form-group mt-2">
                       <label htmlFor="employeeId" className="has-float-label">
                         <Field
@@ -538,14 +568,22 @@ const SocialOrganizations = () => {
                 frequency={donationPreferenceConstants.ONCE}
                 selectedCharity={selectedCharity}
                 tabType={tabType}
+                customProgram={
+                  selectedCharity?.type === "custom"
+                    ? charityProgramConstants.CUSTOM_PROGRAM
+                    : null
+                }
               />
             </div>
             <div className="tab-pane fade show give-monthly" id="give-monthly">
               <Donate
                 frequency={donationPreferenceConstants.MONTHLY}
                 selectedCharity={selectedCharity}
-                tabType={tabType}
-                customProgram={charityProgramConstants.CUSTOM_PROGRAM}
+                customProgram={
+                  selectedCharity?.type === "custom"
+                    ? charityProgramConstants.CUSTOM_PROGRAM
+                    : null
+                }
               />
             </div>
           </div>
