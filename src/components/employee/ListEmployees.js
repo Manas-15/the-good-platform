@@ -216,7 +216,7 @@ const ListEmployees = (props) => {
                 <i className="bi bi-plus-circle mr-2"></i>
                 Add Employee
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="btn btn-custom me-3"
                 onClick={chooseFile}
@@ -230,7 +230,7 @@ const ListEmployees = (props) => {
                 ref={hiddenFileInput}
                 onChange={handleChange}
                 style={{ display: "none" }}
-              />
+              /> */}
             </>
           )}
         </div>
