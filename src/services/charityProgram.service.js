@@ -11,7 +11,9 @@ export const charityProgramService = {
   checkBeforeUnpromote,
   checkBeforeBulkUnpromote,
   getProgramDetail,
-  getApprovedProgram
+  getApprovedProgram,
+  saveProgramPrice,
+  fetchProgramPrice
 };
 
 function getCharityPrograms(data) {
@@ -102,6 +104,20 @@ function getProgramDetail(data) {
 async function getApprovedProgram(data) {
   return await axios.get(
     process.env.REACT_APP_API_URL + "api/employeeProgramInfo/",
+    {
+      params: data
+    }
+  );
+}
+async function saveProgramPrice(data) {
+  return await axios.post(
+    process.env.REACT_APP_API_URL + "api/setProgramPrice/",
+    data
+  );
+}
+async function fetchProgramPrice(data) {
+  return await axios.get(
+    process.env.REACT_APP_API_URL + "api/setProgramPrice/",
     {
       params: data
     }
