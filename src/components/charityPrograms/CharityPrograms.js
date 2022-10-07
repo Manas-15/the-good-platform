@@ -46,6 +46,9 @@ const CharityPrograms = (props) => {
     currentPortal?.currentView === viewPortalConstants.OTHERS_PORTAL;
   const isCorporatePortal = user?.user_type === userConstants.CORPORATE;
   const isIndividualPortal = user?.user_type === userConstants.INDIVIDUAL;
+  const isSocialOrganizationPortal =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
   const openNav = () => {
     document.getElementById("sidepanel").classList.add("is-open");
   };
@@ -66,7 +69,7 @@ const CharityPrograms = (props) => {
               // socialId: selectedOrganization?.id,
               // userType: userConstants.CORPORATE_VIEW,
             }
-          : isIndividualPortal
+          : isIndividualPortal || isSocialOrganizationPortal
           ? {
               userType: userConstants.INDIVIDUAL_VIEW,
               // uuid: user?.uuid,
@@ -126,36 +129,43 @@ const CharityPrograms = (props) => {
       <div className="row mb-4">
         <div className="col-md-12">
           <h1 className="ant-typography customHeading">
-            Social Organizations/Charity Programs
+            {isSocialOrganizationPortal
+              ? selectedOrganization?.name
+              : "Social Organizations"}
+            /Charity Programs
           </h1>
         </div>
       </div>
-      <div className="row mb-4">
-        <div className="col-md-12 text-right">
-          <button
-            type="button"
-            className={`${
-              currentView === charityProgramConstants.LIST_VIEW ? "active" : ""
-            } btn btn-sm btn-outline-primary btn-outline-custom mr-3`}
-            onClick={() => setCurrentView(charityProgramConstants.LIST_VIEW)}
-          >
-            <i className="bi bi-grid-3x3-gap"></i> List View
-          </button>
-          <button
-            type="button"
-            className={`${
-              currentView === charityProgramConstants.PROGRESS_VIEW
-                ? "active"
-                : ""
-            } btn btn-sm  btn-outline-primary btn-outline-custom`}
-            onClick={() =>
-              setCurrentView(charityProgramConstants.PROGRESS_VIEW)
-            }
-          >
-            <i className="bi bi-card-heading"></i> Progress view
-          </button>
+      {!isSocialOrganizationPortal && (
+        <div className="row mb-4">
+          <div className="col-md-12 text-right">
+            <button
+              type="button"
+              className={`${
+                currentView === charityProgramConstants.LIST_VIEW
+                  ? "active"
+                  : ""
+              } btn btn-sm btn-outline-primary btn-outline-custom mr-3`}
+              onClick={() => setCurrentView(charityProgramConstants.LIST_VIEW)}
+            >
+              <i className="bi bi-grid-3x3-gap"></i> List View
+            </button>
+            <button
+              type="button"
+              className={`${
+                currentView === charityProgramConstants.PROGRESS_VIEW
+                  ? "active"
+                  : ""
+              } btn btn-sm  btn-outline-primary btn-outline-custom`}
+              onClick={() =>
+                setCurrentView(charityProgramConstants.PROGRESS_VIEW)
+              }
+            >
+              <i className="bi bi-card-heading"></i> Progress view
+            </button>
+          </div>
         </div>
-      </div>
+      )}
       <div className="ant-row searchContainer mt-3 py-4 px-4 align-center">
         <div className="ant-col ant-col-24  searchContainer">
           <div className="ant-col ant-col-8">
@@ -173,119 +183,126 @@ const CharityPrograms = (props) => {
           </div>
         </div>
       </div>
-      <div className="mt-4 mb-2">
-        <h5>Categories</h5>
-      </div>
-      <div className="row mb-4">
-        <div className="col">
-          <div
-            className={`categotyButton pl-0`}
-            onClick={() =>
-              setSelectedCategory(charityProgramConstants.ALL_CATEGORY)
-            }
-          >
-            <label
-              className={`${
-                selectedCategory === charityProgramConstants.ALL_CATEGORY
-                  ? "active"
-                  : ""
-              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
-            >
-              <span>
-                <span className="bi-border-all"></span>{" "}
-                {charityProgramConstants.ALL_CATEGORY}
-              </span>
-            </label>
+      {!isSocialOrganizationPortal && (
+        <>
+          <div className="mt-4 mb-2">
+            <h5>Categories</h5>
           </div>
-        </div>
-        <div className="col">
-          <div
-            className={`categotyButton`}
-            onClick={() =>
-              setSelectedCategory(charityProgramConstants.WOMEN_CATEGORY)
-            }
-          >
-            <label
-              className={`${
-                selectedCategory === charityProgramConstants.WOMEN_CATEGORY
-                  ? "active"
-                  : ""
-              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
-            >
-              <span>
-                <img src="/assets/img/women.png" alt="Women" />{" "}
-                {charityProgramConstants.WOMEN_CATEGORY}
-              </span>
-            </label>
+          <div className="row mb-4">
+            <div className="col">
+              <div
+                className={`categotyButton pl-0`}
+                onClick={() =>
+                  setSelectedCategory(charityProgramConstants.ALL_CATEGORY)
+                }
+              >
+                <label
+                  className={`${
+                    selectedCategory === charityProgramConstants.ALL_CATEGORY
+                      ? "active"
+                      : ""
+                  } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                >
+                  <span>
+                    <span className="bi-border-all"></span>{" "}
+                    {charityProgramConstants.ALL_CATEGORY}
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div className="col">
+              <div
+                className={`categotyButton`}
+                onClick={() =>
+                  setSelectedCategory(charityProgramConstants.WOMEN_CATEGORY)
+                }
+              >
+                <label
+                  className={`${
+                    selectedCategory === charityProgramConstants.WOMEN_CATEGORY
+                      ? "active"
+                      : ""
+                  } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                >
+                  <span>
+                    <img src="/assets/img/women.png" alt="Women" />{" "}
+                    {charityProgramConstants.WOMEN_CATEGORY}
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div className="col">
+              <div
+                className={`categotyButton`}
+                onClick={() =>
+                  setSelectedCategory(charityProgramConstants.YOUTH_CATEGORY)
+                }
+              >
+                <label
+                  className={`${
+                    selectedCategory === charityProgramConstants.YOUTH_CATEGORY
+                      ? "active"
+                      : ""
+                  } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                >
+                  <span>
+                    <img src="/assets/img/youth.png" alt="Youth" />{" "}
+                    {charityProgramConstants.YOUTH_CATEGORY}
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div className="col">
+              <div
+                className={`categotyButton`}
+                onClick={() =>
+                  setSelectedCategory(charityProgramConstants.ELDERLY_CATEGORY)
+                }
+              >
+                <label
+                  className={`${
+                    selectedCategory ===
+                    charityProgramConstants.ELDERLY_CATEGORY
+                      ? "active"
+                      : ""
+                  } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                >
+                  <span>
+                    <img src="/assets/img/elderly.png" alt="Elderly" />{" "}
+                    {charityProgramConstants.ELDERLY_CATEGORY}
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div className="col">
+              <div
+                className={`categotyButton`}
+                onClick={() =>
+                  setSelectedCategory(charityProgramConstants.CHILDREN_CATEGORY)
+                }
+              >
+                <label
+                  className={`${
+                    selectedCategory ===
+                    charityProgramConstants.CHILDREN_CATEGORY
+                      ? "active"
+                      : ""
+                  } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
+                >
+                  <span>
+                    <img src="/assets/img/children.png" alt="Children" />{" "}
+                    {charityProgramConstants.CHILDREN_CATEGORY}
+                  </span>
+                </label>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="col">
-          <div
-            className={`categotyButton`}
-            onClick={() =>
-              setSelectedCategory(charityProgramConstants.YOUTH_CATEGORY)
-            }
-          >
-            <label
-              className={`${
-                selectedCategory === charityProgramConstants.YOUTH_CATEGORY
-                  ? "active"
-                  : ""
-              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
-            >
-              <span>
-                <img src="/assets/img/youth.png" alt="Youth" />{" "}
-                {charityProgramConstants.YOUTH_CATEGORY}
-              </span>
-            </label>
-          </div>
-        </div>
-        <div className="col">
-          <div
-            className={`categotyButton`}
-            onClick={() =>
-              setSelectedCategory(charityProgramConstants.ELDERLY_CATEGORY)
-            }
-          >
-            <label
-              className={`${
-                selectedCategory === charityProgramConstants.ELDERLY_CATEGORY
-                  ? "active"
-                  : ""
-              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
-            >
-              <span>
-                <img src="/assets/img/elderly.png" alt="Elderly" />{" "}
-                {charityProgramConstants.ELDERLY_CATEGORY}
-              </span>
-            </label>
-          </div>
-        </div>
-        <div className="col">
-          <div
-            className={`categotyButton`}
-            onClick={() =>
-              setSelectedCategory(charityProgramConstants.CHILDREN_CATEGORY)
-            }
-          >
-            <label
-              className={`${
-                selectedCategory === charityProgramConstants.CHILDREN_CATEGORY
-                  ? "active"
-                  : ""
-              } ant-radio-button-wrapper ant-radio-button-wrapper-checked purposePreview`}
-            >
-              <span>
-                <img src="/assets/img/children.png" alt="Children" />{" "}
-                {charityProgramConstants.CHILDREN_CATEGORY}
-              </span>
-            </label>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
       <div className="ant-tabs-nav-wrap">
         {currentPortal?.currentView === "Individual Portal" ||
-        currentPortal?.currentView === "Others Portal" ? (
+        currentPortal?.currentView === "Others Portal" ||
+        isSocialOrganizationPortal ? (
           <>
             {currentView === charityProgramConstants.LIST_VIEW && (
               <ListCharityPrograms

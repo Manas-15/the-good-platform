@@ -16,7 +16,7 @@ const preferenceForm = {
   isConsentCheck: "",
   donationConsent: ""
 };
-const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
+const DonateHeader = ({ frequency, tabType, selectedCharity, from }) => {
   const employee = useSelector((state) => state.employee.user);
   const currentView = useSelector((state) => state.currentView);
   // const [selectedCharity, setSelectedCharity] = useState();
@@ -47,9 +47,7 @@ const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
   return (
     <>
       <div
-        className={`${
-          isProgramDetail ? "donate-header-program-detail" : "donate-header"
-        }`}
+        className={`${from ? "donate-header-program-detail" : "donate-header"}`}
       >
         <div className="row">
           <div className="col-md-10 p-2">
@@ -57,7 +55,7 @@ const DonateHeader = ({ frequency, tabType, selectedCharity }) => {
               You can make a big difference to their lives?
             </span>
           </div>
-          {!isProgramDetail && (
+          {!from && (
             <div className="col-md-2">
               <a className="closebtn" onClick={closeNav}>
                 ×
