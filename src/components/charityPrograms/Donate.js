@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DonateAmount from "./DonateAmount";
-import { donationPreferenceActions } from "../../actions";
+import {
+  donationPreferenceActions,
+  selectedCharityActions
+} from "../../actions";
 import { charityProgramActions } from "../../actions";
 import {
   donationPreferenceConstants,
@@ -49,10 +52,20 @@ const Donate = ({
   const [addedFromProgramDetail, setAddedFromProgramDetail] = useState(false);
   // const [customProgramDonate, setCustomProgramDonate] = useState();
   const isCorporatePortal = employee?.user_type === userConstants.CORPORATE;
-  const isEmployeePortal = employee?.user_type === userConstants.EMPLOYEE;
-  const isProgramDetail = history.location.pathname.includes("/programs/");
+  const charityProgram = useSelector((state) => state?.charityPrograms);
+  const charityReducer = useSelector((state) => state?.selectedCharity);
+  // const isEmployeePortal = employee?.user_type === userConstants.EMPLOYEE;
+  // const isProgramDetail = history.location.pathname.includes("/programs/");
+  const selectedOrganization = useSelector(
+    (state) => state.selectedOrganization
+  );
   useEffect(() => {
     if (selectedCharity) {
+      // dispatch(
+      //   charityProgramActions.fetchProgramPrice({
+      //     programId: selectedOrganization?.organization?.id
+      //   })
+      // );
       setSelectedAmount(
         selectedCharity?.employeePreferenceId
           ? selectedCharity?.donationAmount
@@ -66,6 +79,13 @@ const Donate = ({
     if (selectedCharity?.donated && from) {
       setAddedFromProgramDetail(true);
     }
+  }, [selectedCharity]);
+  useEffect(() => {
+    dispatch(
+      selectedCharityActions.fetchProgramPrice({
+        programId: selectedOrganization?.organization?.id
+      })
+    );
   }, [selectedCharity]);
   const handleCheck = () => {
     setChecked(true);
@@ -163,14 +183,24 @@ const Donate = ({
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 1}
-                  amount={selectedCharity?.unitPrice * 1}
+                  amount={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedCharity?.unitPrice * 1
+                      : charityReducer?.fetchedPrice?.unit_price_box1
+                  }
                   setSelectedAmount={setAmount}
                 />
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 2}
-                  amount={selectedCharity?.unitPrice * 2}
+                  amount={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedCharity?.unitPrice * 2
+                      : charityReducer?.fetchedPrice?.unit_price_box2 === 0
+                      ? charityReducer?.fetchedPrice?.unit_price_box1 * 2
+                      : charityReducer?.fetchedPrice?.unit_price_box2
+                  }
                   setSelectedAmount={setAmount}
                 />
               </div>
@@ -179,14 +209,26 @@ const Donate = ({
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 3}
-                  amount={selectedCharity?.unitPrice * 3}
+                  amount={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedCharity?.unitPrice * 3
+                      : charityReducer?.fetchedPrice?.unit_price_box3 === 0
+                      ? charityReducer?.fetchedPrice?.unit_price_box1 * 3
+                      : charityReducer?.fetchedPrice?.unit_price_box3
+                  }
                   setSelectedAmount={setAmount}
                 />
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
                   isActive={selectedAmount === selectedCharity?.unitPrice * 4}
-                  amount={selectedCharity?.unitPrice * 4}
+                  amount={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedCharity?.unitPrice * 4
+                      : charityReducer?.fetchedPrice?.unit_price_box4 === 0
+                      ? charityReducer?.fetchedPrice?.unit_price_box1 * 4
+                      : charityReducer?.fetchedPrice?.unit_price_box4
+                  }
                   setSelectedAmount={setAmount}
                 />
               </div>

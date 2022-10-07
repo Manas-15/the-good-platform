@@ -3,7 +3,7 @@ import "./../../assets/css/charityProgramsList.scss";
 import {
   donationPreferenceConstants,
   viewPortalConstants,
-  userConstants,
+  userConstants
 } from "../../constants";
 import { charityProgramActions, selectedCharityActions } from "../../actions";
 import { Progress, Tooltip, Tabs } from "antd";
@@ -57,30 +57,28 @@ const CharityProgramDetails = (props) => {
           ? {
               socialId: selectedOrganization?.organization?.id,
               programId: selectedCharity?.charity?.id,
-              loggedInUserType: loggedInUserType,
+              loggedInUserType: loggedInUserType
             }
           : corporateLoggedUser
           ? {
               programId: selectedCharity?.charity?.id,
-              loggedInUserType: loggedInUserType,
+              loggedInUserType: loggedInUserType
             }
           : {
               socialId: selectedOrganization?.organization?.id,
               programId: selectedCharity?.charity?.id,
               loggedInUserType: loggedInUserType,
-              userId: user?.user_id,
+              userId: user?.user_id
             }
       )
     );
   }, []);
-
   if (selectedCharity) {
     charityFirstTwoChar = selectedCharity?.charityName
       ?.slice(0, 2)
       ?.toLowerCase();
     employeeFirstTwoChar = user?.name?.slice(0, 2)?.toLowerCase();
   }
-
   const initialValues = {
     orderId: selectedCharity
       ? charityFirstTwoChar + employeeFirstTwoChar + Date.now()
@@ -100,7 +98,7 @@ const CharityProgramDetails = (props) => {
       : user?.corporateId,
     orderPaymentStatus: 1,
     orderNote: `Donated to ${selectedCharity?.charityName}`,
-    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`,
+    donationConsent: `${donationsConsent?.consent} [Frequency: ${selectedCharity?.charity?.frequency}]`
   };
   const onScroll = () => {
     // if (listInnerRef.current) {
@@ -131,10 +129,10 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
   const data2 = {
     labels: ["Operations", "Communication", "Travel", "Administrative"],
@@ -145,10 +143,10 @@ const CharityProgramDetails = (props) => {
           "rgb(242,165,152)",
           "rgb(255,232,157)",
           "rgb(236,107,109)",
-          "rgb(122,231,125)",
-        ],
-      },
-    ],
+          "rgb(122,231,125)"
+        ]
+      }
+    ]
   };
   useEffect(() => {
     dispatch(selectedCharityActions.selectedCharity(programDetail));
@@ -177,7 +175,7 @@ const CharityProgramDetails = (props) => {
                   {programDetail?.name}
                 </h1>
                 <h6 className="mb-3">
-                  by
+                  by&nbsp;
                   {selectedCharity?.charity?.soicalName
                     ? selectedCharity?.charity?.soicalName
                     : selectedOrganization?.organization?.name}
@@ -657,7 +655,10 @@ const CharityProgramDetails = (props) => {
               <div className="col-md-5 mt-4 pl-0 pr-0" id="payment-section">
                 {/* <Payment selectedAmount={"200"} paymentValues={initialValues} /> */}
                 {/* <div className="sidepanel is-open" id="sidepanel"> */}
-                <DonateHeader selectedCharity={selectedCharity} />
+                <DonateHeader
+                  selectedCharity={selectedCharity}
+                  from={"ProgramDetail"}
+                />
                 <div className="tab-content pt-2">
                   <div
                     className="tab-pane fade show active give-once"
