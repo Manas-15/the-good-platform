@@ -154,3 +154,6 @@ export const Mail80GSchema = Yup.object().shape({
     .required("Email is required")
     .email("Invalid email address")
 });
+export const configUnitPriceSchema = Yup.object().shape({
+  price1: Yup.string().required("Amount is required")
+});

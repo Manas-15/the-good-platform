@@ -1,9 +1,9 @@
 import { socialOrganizationConstants, viewPortalConstants } from "../constants";
+import { selectedOrganization } from "./selectedOrganization.reducer";
 
 export function socialOrganizations(state = {}, action) {
   switch (action.type) {
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_REQUEST:
-      console.log(action);
       return {
         ...state,
         loading: true,
@@ -12,17 +12,12 @@ export function socialOrganizations(state = {}, action) {
         individualId: action?.data?.individualId
       };
     case socialOrganizationConstants.GET_SOCIAL_ORGANIZATIONS_SUCCESS:
-      console.log("11111", action?.socialOrganizations?.data);
-      console.log("44444", state?.individualId);
-      console.log("3333", viewPortalConstants.PAYMENT_ADMIN);
-      console.log("555555", state?.userRole);
       if (
         (state?.userType === 2 || state?.userType === 3) &&
         state?.userRole !== viewPortalConstants.PAYMENT_ADMIN &&
         state?.individualId !== "social"
       ) {
         return {
-          ...state,
           items: action?.socialOrganizations?.data?.social_organization,
           totalCount: action?.socialOrganizations?.data?.data?.numberOfElements,
           loading: false
