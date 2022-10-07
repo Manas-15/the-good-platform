@@ -99,7 +99,7 @@ const SocialOrganizationsPortal = () => {
                   return (
                     <li key={index + 1}>
                       <Link
-                        to={`/organizations/${org.id}/payroll-batch`}
+                        to={`/social-organizations/${org.id}`}
                         onClick={() => setSocialOrganization(org)}
                       >
                         {org?.name}
