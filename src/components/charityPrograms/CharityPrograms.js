@@ -75,16 +75,21 @@ const CharityPrograms = (props) => {
             }
           : {
               // uuid: user?.uuid,
-              userId: user?.user_id,
+              // *** comment for remote program *** userId: user?.user_id,
               // orgId: selectedOrganization?.id,
-              userType: isCorporatePortal
-                ? userConstants.CORPORATE_VIEW
-                : userConstants.EMPLOYEE_VIEW,
-              corporateId: isCorporatePortal
-                ? selectedCorporate?.corporate?.id
-                : user?.corporateId
+              // *** comment for remote program *** userType: isCorporatePortal
+              // *** comment for remote program *** ? userConstants.CORPORATE_VIEW
+              // *** comment for remote program *** : userConstants.EMPLOYEE_VIEW,
+              // *** comment for remote program *** corporateId: isCorporatePortal
+              // *** comment for remote program *** ? selectedCorporate?.corporate?.id
+              // *** comment for remote program *** : user?.corporateId
               // ? selectedCorporate?.corporate?.corporateId
               // : user?.corporateId,
+              orgId: selectedOrganization?.id,
+              userId: user?.user_id,
+              userType: isCorporatePortal
+                ? userConstants.CORPORATE_VIEW
+                : userConstants.EMPLOYEE_VIEW
             }
       )
     );
