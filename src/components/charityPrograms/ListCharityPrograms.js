@@ -17,6 +17,7 @@ import {
   selectedCharityTabActions
 } from "../../actions";
 import urlSlug from "url-slug";
+import ConfigureAmount from "./ConfigureAmount";
 // import DonateHeader from "./../CharityPrograms/DonateHeader";
 // import Donate from "./../CharityPrograms/Donate";
 // import { handleInputChange } from "react-select/dist/declarations/src/utils";
@@ -42,7 +43,13 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
   // const beforeUnrpomoteMsg = useSelector(
   //   (state) => state?.charityPrograms?.checkBeforeUnpromoteMsg
   // );
+
   const [open, setOpen] = useState(false);
+  const [openConfig, setOpenConfig] = useState(false);
+  const closeConfig = () => {
+    console.log("close config");
+    setOpenConfig(false);
+  };
 
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
@@ -50,6 +57,9 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
   const isEmployeePortal = user?.user_type === userConstants.EMPLOYEE;
   const isIndividualPortal =
     currentPortal?.currentView === viewPortalConstants.INDIVIDUAL_PORTAL;
+  const isSocialOrganizationPortal =
+    currentPortal?.currentView ===
+    viewPortalConstants.SOCIAL_ORGANIZATION_PORTAL;
   const selectedCorporate = useSelector((state) => state.selectedCorporate);
   const [actionType, setActionType] = useState("");
   const [actionTitle, setActionTitle] = useState("");
@@ -374,11 +384,11 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                     {/* {!customProgram && (
                       <th className="ant-table-cell">Organization</th>
                     )} */}
-                    <th className="ant-table-cell">Category</th>
+                    {/* <th className="ant-table-cell">Category</th>
                     <th className="ant-table-cell text-center">
                       Unit Price (
                       {ReactHtmlParser(donationPreferenceConstants?.CURRENCY)})
-                    </th>
+                    </th> */}
                     {customProgram && (
                       <th className="ant-table-cell">Status</th>
                     )}
@@ -441,12 +451,12 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                             {charityProgram?.organisationName}
                           </td>
                         )} */}
-                        <td className="ant-table-cell">
+                        {/* <td className="ant-table-cell">
                           {charityProgram?.category}
                         </td>
                         <td className="ant-table-cell text-center">
                           {charityProgram?.unitPrice?.toLocaleString()}
-                        </td>
+                        </td> */}
                         {customProgram && (
                           <td className="ant-table-cell">
                             {charityProgram?.approve && (
@@ -464,6 +474,13 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                           </td>
                         )}
                         <td className="ant-table-cell text-center">
+                          {isSocialOrganizationPortal && (
+                            <Tooltip title="Configure unit price">
+                              <Link to="#" onClick={() => setOpenConfig(true)}>
+                                <span className="bi-gear fs-5"></span>
+                              </Link>
+                            </Tooltip>
+                          )}
                           {isCorporatePortal &&
                             tabType === charityProgramConstants.SPONSOR && (
                               <Tooltip
@@ -506,7 +523,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                                 </Link>
                               </Tooltip>
                             )}
-                          {/* {isEmployeePortal && ( */}
                           {isEmployeePortal && charityProgram?.donated && (
                             <Tooltip title="Edit">
                               <Link
@@ -517,39 +533,41 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                               </Link>
                             </Tooltip>
                           )}
-                          {(isCorporatePortal ||
-                            (isEmployeePortal && !charityProgram?.donated) ||
-                            (isIndividualPortal && !charityProgram?.donated) ||
-                            (isOthersPortal && !charityProgram?.donated)) && (
-                            <button
-                              type="submit"
-                              className="btn btn-sm mb-2"
-                              onClick={() => openNav(charityProgram)}
-                            >
-                              <Tooltip
-                                title={`${
-                                  isEmployeePortal &&
-                                  tabType === charityProgramConstants.SPONSOR
-                                    ? "Add to donation preference"
-                                    : "Donate"
-                                }`}
+                          {!isSocialOrganizationPortal &&
+                            (isCorporatePortal ||
+                              (isEmployeePortal && !charityProgram?.donated) ||
+                              (isIndividualPortal &&
+                                !charityProgram?.donated) ||
+                              (isOthersPortal && !charityProgram?.donated)) && (
+                              <button
+                                type="submit"
+                                className="btn btn-sm mb-2"
+                                onClick={() => openNav(charityProgram)}
                               >
-                                <img
-                                  src="/assets/img/donate.png"
-                                  alt="Donate"
-                                  onMouseEnter={(event) =>
-                                    (event.target.src =
-                                      "/assets/img/donate-fill-red.png")
-                                  }
-                                  onMouseOut={(event) =>
-                                    (event.target.src =
-                                      "/assets/img/donate.png")
-                                  }
-                                  height={25}
-                                />
-                              </Tooltip>
-                            </button>
-                          )}
+                                <Tooltip
+                                  title={`${
+                                    isEmployeePortal &&
+                                    tabType === charityProgramConstants.SPONSOR
+                                      ? "Add to donation preference"
+                                      : "Donate"
+                                  }`}
+                                >
+                                  <img
+                                    src="/assets/img/donate.png"
+                                    alt="Donate"
+                                    onMouseEnter={(event) =>
+                                      (event.target.src =
+                                        "/assets/img/donate-fill-red.png")
+                                    }
+                                    onMouseOut={(event) =>
+                                      (event.target.src =
+                                        "/assets/img/donate.png")
+                                    }
+                                    height={25}
+                                  />
+                                </Tooltip>
+                              </button>
+                            )}
                         </td>
                       </tr>
                     ))
@@ -560,7 +578,8 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                           ? ReactHtmlParser(
                               isCorporatePortal
                                 ? "No programs are promoted yet"
-                                : isIndividualPortal
+                                : isIndividualPortal ||
+                                  isSocialOrganizationPortal
                                 ? "No programs found"
                                 : "No programs are promoted by your corporate.<br/>However, you can still make donation individually by browsing the programs in other category."
                             )
@@ -582,6 +601,12 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                 handleCancel={() => {
                   handleClose();
                 }}
+              />
+            )}
+            {openConfig && (
+              <ConfigureAmount
+                openConfig={openConfig}
+                closeConfig={closeConfig}
               />
             )}
           </div>

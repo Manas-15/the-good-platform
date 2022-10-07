@@ -13,6 +13,7 @@ import {
   corporateActions,
   employeeProgramActions,
   selectedCharityActions,
+  selectedOrganizationActions,
   socialOrganizationActions
 } from "../../actions";
 import { Tabs } from "antd";
@@ -93,6 +94,8 @@ const SocialOrganizations = () => {
     { name: "Social Change", value: "Social Change" }
   ];
   useEffect(() => {
+    dispatch(selectedOrganizationActions.selectedOrganization(null));
+    dispatch(selectedCharityActions.selectedCharity(null));
     dispatch(
       socialOrganizationActions.getSocialOrganizations(
         isIndividualPortal
