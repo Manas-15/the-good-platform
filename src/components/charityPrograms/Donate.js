@@ -60,6 +60,11 @@ const Donate = ({
     (state) => state.selectedOrganization
   );
   useEffect(() => {
+    if (selectedCharity?.donated && from) {
+      setAddedFromProgramDetail(true);
+    }
+  }, [selectedCharity]);
+  useEffect(() => {
     if (selectedCharity) {
       // dispatch(
       //   charityProgramActions.fetchProgramPrice({
@@ -80,10 +85,7 @@ const Donate = ({
     } else {
       setShowNextStep(false);
     }
-    if (selectedCharity?.donated && from) {
-      setAddedFromProgramDetail(true);
-    }
-  }, [selectedCharity]);
+  }, [charityReducer?.fetchedPrice]);
   useEffect(() => {
     dispatch(
       selectedCharityActions.fetchProgramPrice({
