@@ -2,6 +2,7 @@ import { Route, Router, Switch, Redirect } from "react-router-dom";
 import Dashboard from "../components/Dashboard/Dashboard";
 import CharityPrograms from "../components/CharityPrograms/CharityPrograms";
 import CharityProgramDetails from "../components/CharityPrograms/CharityProgramDetails";
+import ConfigureProgramPrice from "../components/CharityPrograms/ConfigureProgramPrice";
 import React, { useEffect } from "react";
 import { history } from "../helpers";
 import DonationPreferences from "../components/DonationPreferences/DonationPreferences";
@@ -104,6 +105,11 @@ const CreateRoutes = () => {
                 exact
                 path="/social-organizations/:slug/:slug"
                 component={CharityProgramDetails}
+              />
+              <Route
+                exact
+                path="/social-organizations/:slug/charity/:charityId/add-price"
+                component={ConfigureProgramPrice}
               />
               {!isEmployeeView && (
                 <Route
