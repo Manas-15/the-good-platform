@@ -40,7 +40,6 @@ import ListIndividuals from "../components/Individual/ListIndividuals";
 import SsoSettings from "../components/SsoSettings/SsoSettings";
 // import AddProgramme from "../components/Employee/AddProgramme";
 import EmployeesProgram from "../components/Corporate/EmployeesProgram";
-
 const CreateRoutes = () => {
   const alert = useSelector((state) => state.alert);
   // const user = useSelector((state) => state.employee.user);
