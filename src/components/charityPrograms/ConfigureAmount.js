@@ -11,6 +11,9 @@ const ConfigureAmount = ({ openConfig, closeConfig }) => {
   const selectedOrganization = useSelector(
     (state) => state.selectedOrganization?.organization
   );
+  const selectedCharity = useSelector(
+    (state) => state.selectedCharity?.charity
+  );
   const fetchedPrice = useSelector(
     (state) => state?.selectedCharity?.fetchedPrice
   );
@@ -19,8 +22,8 @@ const ConfigureAmount = ({ openConfig, closeConfig }) => {
     price2: fetchedPrice?.unit_price_box2 || "",
     price3: fetchedPrice?.unit_price_box3 || "",
     price4: fetchedPrice?.unit_price_box4 || "",
-    charityId: selectedOrganization?.id,
-    charityName: selectedOrganization?.name
+    charityId: selectedCharity?.id,
+    charityName: selectedCharity?.name
   };
   const charityPrograms = useSelector((state) => state.charityPrograms);
   const saveProgramPrice = (values) => {
@@ -84,7 +87,7 @@ const ConfigureAmount = ({ openConfig, closeConfig }) => {
                               event.preventDefault();
                             }
                           }}
-                          maxLength={10}
+                          maxLength={6}
                         />
                         <span>Amount</span>
                       </label>
@@ -114,7 +117,7 @@ const ConfigureAmount = ({ openConfig, closeConfig }) => {
                               event.preventDefault();
                             }
                           }}
-                          maxLength={10}
+                          maxLength={6}
                         />
                         <span>Amount</span>
                       </label>
@@ -146,7 +149,7 @@ const ConfigureAmount = ({ openConfig, closeConfig }) => {
                               event.preventDefault();
                             }
                           }}
-                          maxLength={10}
+                          maxLength={6}
                         />
                         <span>Amount</span>
                       </label>
@@ -176,7 +179,7 @@ const ConfigureAmount = ({ openConfig, closeConfig }) => {
                               event.preventDefault();
                             }
                           }}
-                          maxLength={10}
+                          maxLength={6}
                         />
                         <span>Amount</span>
                       </label>

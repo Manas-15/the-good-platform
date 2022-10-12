@@ -1,6 +1,7 @@
 import { charityProgramConstants } from "../constants";
 import { charityProgramService } from "../services";
 import { alertActions } from "./alert.actions";
+import { history } from "../helpers";
 
 export const selectedCharityActions = {
   selectedCharity,
@@ -18,6 +19,7 @@ function saveProgramPrice(data) {
       .saveProgramPrice(data)
       .then((res) => {
         dispatch(success(res));
+        history.push(`/social-organizations/${data?.charityId}`);
         dispatch(alertActions.success("Program price saved successfully"));
       })
       .catch((error) => {

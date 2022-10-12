@@ -18,6 +18,7 @@ import {
 } from "../../actions";
 import urlSlug from "url-slug";
 import ConfigureAmount from "./ConfigureAmount";
+import { history } from "../../helpers";
 // import DonateHeader from "./../CharityPrograms/DonateHeader";
 // import Donate from "./../CharityPrograms/Donate";
 // import { handleInputChange } from "react-select/dist/declarations/src/utils";
@@ -32,6 +33,7 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
   const employeeCount = useSelector(
     (state) => state?.charityPrograms?.employeeCount
   );
+  const charityReducer = useSelector((state) => state?.selectedCharity);
   const user = useSelector((state) => state?.employee?.user);
   const selectedCharity = useSelector(
     (state) => state?.selectedCharity?.charity
@@ -50,7 +52,6 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
     console.log("close config");
     setOpenConfig(false);
   };
-
   const isCorporatePortal =
     currentPortal?.currentView === viewPortalConstants.CORPORATE_PORTAL;
   const isOthersPortal = user?.user_type === userConstants.CORPORATE;
@@ -143,6 +144,42 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
           })
     );
   };
+  // useEffect(() => {
+  //   dispatch(
+  //     selectedCharityActions.fetchProgramPrice({
+  //       programId: selectedCharity?.id
+  //     })
+  //   );
+  // }, [selectedCharity]);
+  const handleOpenConfig = (charity) => {
+    dispatch(selectedCharityActions.selectedCharity(charity));
+    // dispatch(
+    //   selectedCharityActions.fetchProgramPrice({
+    //     programId: charity?.id
+    //   })
+    // );
+    // if (charityReducer?.fetchedPrice?.msg) {
+    //   console.log(
+    //     "1111111111 charityReducer?.msg",
+    //     charityReducer?.fetchedPrice?.msg
+    //   );
+    history.push(
+      `/social-organizations/${charity?.organisationId}/charity/${charity?.id}/add-price`
+    );
+    // } else {
+    //   console.log(
+    //     "2222222222222 charityReducer?.msg",
+    //     charityReducer?.fetchedPrice?.msg
+    //   );
+    //   setOpenConfig(true);
+    // }
+    // () => setOpenConfig(true);
+  };
+  // useEffect(() => {
+  //   if (!charityReducer?.fetchedPrice?.msg) {
+  //     history.push(`/social-organizations/${selectedCharity?.id}`);
+  //   }
+  // }, [charityReducer?.fetchedPrice]);
   const handleClose = () => setOpen(false);
   const CheckBox = ({ name, value, tick, onCheck }) => {
     return (
@@ -476,7 +513,10 @@ const ListCharityPrograms = ({ items, setCharity, tabType, customProgram }) => {
                         <td className="ant-table-cell text-center">
                           {isSocialOrganizationPortal && (
                             <Tooltip title="Configure unit price">
-                              <Link to="#" onClick={() => setOpenConfig(true)}>
+                              <Link
+                                to="#"
+                                onClick={() => handleOpenConfig(charityProgram)}
+                              >
                                 <span className="bi-gear fs-5"></span>
                               </Link>
                             </Tooltip>

@@ -83,7 +83,7 @@ const Donate = ({
   useEffect(() => {
     dispatch(
       selectedCharityActions.fetchProgramPrice({
-        programId: selectedOrganization?.organization?.id
+        programId: charityReducer?.charity?.id
       })
     );
   }, [selectedCharity]);
