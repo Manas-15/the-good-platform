@@ -67,7 +67,11 @@ const Donate = ({
       //   })
       // );
       setSelectedAmount(
-        selectedCharity?.employeePreferenceId
+        charityReducer?.fetchedPrice?.msg
+          ? selectedCharity?.unitPrice * 1
+          : charityReducer?.fetchedPrice?.unit_price_box1
+          ? charityReducer?.fetchedPrice?.unit_price_box1
+          : selectedCharity?.employeePreferenceId
           ? selectedCharity?.donationAmount
             ? selectedCharity?.donationAmount
             : selectedCharity?.unitPrice
@@ -182,7 +186,12 @@ const Donate = ({
             <div className="row mb-4">
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
-                  isActive={selectedAmount === selectedCharity?.unitPrice * 1}
+                  isActive={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedAmount === selectedCharity?.unitPrice * 1
+                      : selectedAmount ===
+                        charityReducer?.fetchedPrice?.unit_price_box1
+                  }
                   amount={
                     charityReducer?.fetchedPrice?.msg
                       ? selectedCharity?.unitPrice * 1
@@ -193,7 +202,12 @@ const Donate = ({
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
-                  isActive={selectedAmount === selectedCharity?.unitPrice * 2}
+                  isActive={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedAmount === selectedCharity?.unitPrice * 2
+                      : selectedAmount ===
+                        charityReducer?.fetchedPrice?.unit_price_box2
+                  }
                   amount={
                     charityReducer?.fetchedPrice?.msg
                       ? selectedCharity?.unitPrice * 2
@@ -208,7 +222,12 @@ const Donate = ({
             <div className="row mb-4">
               <div className="col-md-6 text-right pl-0">
                 <DonateAmount
-                  isActive={selectedAmount === selectedCharity?.unitPrice * 3}
+                  isActive={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedAmount === selectedCharity?.unitPrice * 3
+                      : selectedAmount ===
+                        charityReducer?.fetchedPrice?.unit_price_box3
+                  }
                   amount={
                     charityReducer?.fetchedPrice?.msg
                       ? selectedCharity?.unitPrice * 3
@@ -221,7 +240,12 @@ const Donate = ({
               </div>
               <div className="col-md-6 pr-0">
                 <DonateAmount
-                  isActive={selectedAmount === selectedCharity?.unitPrice * 4}
+                  isActive={
+                    charityReducer?.fetchedPrice?.msg
+                      ? selectedAmount === selectedCharity?.unitPrice * 4
+                      : selectedAmount ===
+                        charityReducer?.fetchedPrice?.unit_price_box4
+                  }
                   amount={
                     charityReducer?.fetchedPrice?.msg
                       ? selectedCharity?.unitPrice * 4
