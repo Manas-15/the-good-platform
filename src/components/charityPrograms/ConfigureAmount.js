@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { configUnitPriceSchema } from "../Validations";
 import { selectedCharityActions } from "../../actions";
-
 const ConfigureAmount = ({ openConfig, closeConfig }) => {
   const dispatch = useDispatch();
   const [selectedAmount, setSelectedAmount] = useState();

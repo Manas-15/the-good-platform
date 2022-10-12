@@ -7,7 +7,6 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { configUnitPriceSchema } from "../Validations";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { HmacSHA3 } from "crypto-js";
 
 const ConfigureProgramPrice = () => {
   const dispatch = useDispatch();
