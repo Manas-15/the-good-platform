@@ -7,7 +7,6 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { configUnitPriceSchema } from "../Validations";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 const ConfigureProgramPrice = () => {
   const dispatch = useDispatch();
   const listInnerRef = useRef();
