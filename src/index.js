@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 // import { configureFakeBackend } from "./helpers";
 // configureFakeBackend();
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename="/the-good-platform">
     <Provider store={store}>
       <App />
     </Provider>

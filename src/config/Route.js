@@ -90,7 +90,7 @@ const CreateRoutes = () => {
             )}
             <Switch>
               {!isEmployeeView && (
-                <Route exact path="/" component={Dashboard} />
+                <Route exact path="/the-good-platform" component={Dashboard} />
               )}
               <Route exact path="/profile" component={Profile} />
               <Route

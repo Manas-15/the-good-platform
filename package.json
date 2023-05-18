@@ -1,7 +1,8 @@
 {
+  "homepage": "https://manas-dweb.github.io/the-good-platform",
   "name": "the-good-platform",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
@@ -17,6 +18,7 @@
     "draftjs-to-html": "^0.9.1",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
+    "gh-pages": "^5.0.0",
     "moment": "2.24.0",
     "otp-timer": "^1.1.5",
     "react": "^18.0.0",
@@ -44,6 +46,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
