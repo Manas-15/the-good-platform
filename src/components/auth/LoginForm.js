@@ -31,7 +31,7 @@ const LoginForm = ({ submit, disable }) => {
     // };
     const newStr = str.split("?token=");
     const newData = newStr[1];
-    console.log(newData);
+
     if (newData) {
       var bytes = CryptoJS.AES.decrypt(newData, "my-secret-key@123");
       var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));

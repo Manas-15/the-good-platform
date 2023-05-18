@@ -39,6 +39,10 @@ const Payment = ({ paymentValues }) => {
     );
   };
   useEffect(() => {
+    console.log(
+      "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP",
+      paymentValues
+    );
     dispatch(paymentActions.getOrderToken(paymentValues));
   }, []);
   useEffect(() => {

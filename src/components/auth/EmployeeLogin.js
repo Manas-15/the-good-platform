@@ -16,7 +16,8 @@ const EmployeeLogin = (props) => {
       } else if (values.loginType === "Individual") {
         dispatch(employeeActions.login(values));
       } else {
-        dispatch(employeeActions.login(values));
+        // dispatch(employeeActions.login(values));
+        
       }
     }
   };

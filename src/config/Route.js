@@ -71,15 +71,13 @@ const CreateRoutes = () => {
   const otpVerified = JSON.parse(localStorage.getItem("otpVerified"));
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
-      message: message
+      message: message,
     });
   };
   return (
     <Router history={history}>
       {/* &&  otpVerified */}
-      {(user?.token && otpVerified) ||
-      (loggedInUser &&
-        loggedInUser?.loggedinUserType === userConstants.CORPORATE) ? (
+      {(user?.token === undefined && !otpVerified) || !loggedInUser ? (
         <main id="main" className="main">
           <section className="section dashboard">
             {alert.message &&
